@@ -102,22 +102,22 @@ export const InstallProgress: FunctionalComponent<InstallProgressProps> = ({
     };
 
     return (
-        <div class="install-progress-container">
-            <img src={banner} alt="Space Warp Logo" class="logo" />
+        <div className="install-progress-container">
+            <img src={banner} alt="Space Warp Logo" className="logo" />
 
             <br />
 
-            <h1 class="title">
+            <h1 className="title">
                 Installing SpaceWarp (
                 {kind == InstallKind.Doorstop ? "Standalone" : "BepInEx"})...
             </h1>
 
-            <p class="progress">
+            <p className="progress">
                 {status.percent} - {status.message}
             </p>
 
             <button
-                class="action"
+                className="action"
                 id="start"
                 onClick={!installed ? beginSetup : goBack}>
                 {!installed ? "Start" : "Back"}

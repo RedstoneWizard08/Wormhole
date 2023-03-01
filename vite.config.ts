@@ -10,6 +10,15 @@ export default defineConfig({
     server: {
         port: process.env.TAURI_WEB_DEV ? 4000 : 1420,
         strictPort: true,
+        cors: true,
+
+        proxy: {
+            "^/_spacedock/.*": {
+                target: "https://spacedock.info/api",
+                changeOrigin: true,
+                rewrite: (path) => path.replace(/^\/_spacedock/, ""),
+            }
+        },
 
         hmr: process.env.TAURI_WEB_DEV ? {
             clientPort: 443,
