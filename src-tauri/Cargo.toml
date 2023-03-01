@@ -1,10 +1,10 @@
 [package]
-name = "WarpSetup"
+name = "spacewarp-installer"
 version = "0.0.0"
-description = "A setup tool for Space Warp"
-authors = ["Sinon"]
-license = ""
-repository = ""
+description = "An installer for Space Warp"
+authors = ["SpaceWarpDev"]
+license = "MIT"
+repository = "https://github.com/SpaceWarpDev/Space-Warp-Installer"
 edition = "2021"
 
 [build-dependencies]
@@ -16,11 +16,8 @@ serde = { version = "1.0", features = ["derive"] }
 tauri = { version = "1.2", features = ["api-all"] }
 reqwest = { version = "0.11.5", features = ["json"] }
 zip-extensions = "0.6.1"
+keyvalues-parser = "0.1.0"
 
 [features]
-# by default Tauri runs in production mode
-# when `tauri dev` runs it is executed with `cargo run --no-default-features` if `devPath` is an URL
 default = ["custom-protocol"]
-# this feature is used used for production builds where `devPath` points to the filesystem
-# DO NOT remove this
 custom-protocol = ["tauri/custom-protocol"]
