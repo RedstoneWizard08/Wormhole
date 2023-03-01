@@ -91,8 +91,11 @@ impl DoorstopInstallManager {
 
         fs::remove_file(&self.ksp2_install_path.join(".spacewarp_release.zip"))
             .expect("Could not delete the SpaceWarp release file!");
-        fs::create_dir(&self.ksp2_install_path.join("SpaceWarp").join("Mods"))
-            .expect("Could not create the Mods directory!");
+        
+        if !&self.ksp2_install_path.join("SpaceWarp").join("Mods").exists() {
+            fs::create_dir(&self.ksp2_install_path.join("SpaceWarp").join("Mods"))
+                .expect("Could not create the Mods directory!");
+        }
 
         return Ok(());
     }

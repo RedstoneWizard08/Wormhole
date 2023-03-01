@@ -17,7 +17,6 @@ pub struct ReleaseUploader {
     pub organizations_url: String,
     pub repos_url: String,
     pub events_url: String,
-    pub recieved_events_url: String,
     pub r#type: String,
     pub site_admin: bool,
 }

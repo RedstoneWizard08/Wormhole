@@ -19,5 +19,9 @@ export const invoke_proxy = async <K extends keyof InvokeFunction>(
     action: K,
     args?: InvokeFunction[K][0]
 ): Promise<InvokeFunction[K][1]> => {
-    return (await invoke(action, { ...args })) as any;
+    try {
+        return (await invoke(action, { ...args })) as any;
+    } catch(e) {
+        return e as any;
+    }
 };
