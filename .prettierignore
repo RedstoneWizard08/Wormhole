@@ -1,0 +1,29 @@
+# Build outputs
+target
+build
+
+# Dependencies
+node_modules
+
+# Prettier can mess this up
+*.md
+LICENSE
+
+# Image files
+*.png
+*.svg
+*.gif
+*.jpg
+*.jpeg
+*.jfif
+
+# Lock files
+*.lock
+pnpm-lock.yaml
+package-lock.json
+
+# Git
+.git
+
+# Rust
+*.rs

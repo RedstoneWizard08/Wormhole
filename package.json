@@ -1,0 +1,49 @@
+{
+    "name": "spacewarp-installer",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "author": "SpaceWarpDev",
+    "license": "MIT",
+    "keywords": [
+        "kerbalspaceprogram",
+        "kerbalspaceprogram2",
+        "ksp",
+        "ksp2",
+        "spacewarp",
+        "spacewarpdev",
+        "installer",
+        "tauri"
+    ],
+    "scripts": {
+        "app:dev": "vite",
+        "app:build": "tsc && vite build",
+        "app:preview": "vite preview",
+        "dev": "tauri dev",
+        "build": "tauri build",
+        "tauri": "tauri",
+        "fmt": "prettier --write . && cargo fmt --manifest-path src-tauri/Cargo.toml"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/SpaceWarpDev/Space-Warp-Installer"
+    },
+    "devDependencies": {
+        "@babel/core": "^7.21.0",
+        "@preact/preset-vite": "^2.5.0",
+        "@tauri-apps/cli": "^1.2.3",
+        "@types/node": "^18.14.2",
+        "prettier": "^2.8.4",
+        "sass": "^1.58.3",
+        "ts-node": "^10.9.1",
+        "typescript": "^4.9.5",
+        "vite": "^4.1.4"
+    },
+    "dependencies": {
+        "@tauri-apps/api": "^1.2.0",
+        "preact": "^10.13.0",
+        "preact-router": "^4.1.0",
+        "react": "npm:@preact/compat@^17.1.2",
+        "react-dom": "npm:@preact/compat@^17.1.2"
+    }
+}
