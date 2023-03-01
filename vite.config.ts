@@ -10,6 +10,12 @@ export default defineConfig({
     server: {
         port: process.env.TAURI_WEB_DEV ? 4000 : 1420,
         strictPort: true,
+
+        hmr: process.env.TAURI_WEB_DEV ? {
+            clientPort: 443,
+            port: 4000,
+            protocol: "wss",
+        } : {},
     },
 
     root: path.join(__dirname, "app"),
