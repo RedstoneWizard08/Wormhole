@@ -51,6 +51,13 @@ export const Home = () => {
                     Uninstall
                 </button>
             </div>
+
+            <button
+                class="action"
+                id="launch"
+                onClick={() => invoke_proxy("launch")}>
+                Launch
+            </button>
         </div>
     );
 };

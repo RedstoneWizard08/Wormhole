@@ -4,7 +4,7 @@
 )]
 
 use installer::{bepinex::BepInExInstallManager, doorstop::DoorstopInstallManager};
-use std::path::PathBuf;
+use std::{path::PathBuf, process::Command};
 
 pub mod common;
 pub mod finder;
@@ -77,6 +77,16 @@ async fn uninstall_bepinex() -> String {
     return "Success".to_string();
 }
 
+#[tauri::command]
+async fn launch() {
+    let dir = finder::find_install_dir();
+    let executable = dir.join("KSP2_x64.exe");
+
+    Command::new(executable)
+        .spawn()
+        .expect("Failed to launch KSP2!");
+}
+
 pub fn main() {
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![
@@ -85,7 +95,8 @@ pub fn main() {
             download_bepinex,
             uninstall_bepinex,
             get_install_dir,
-            get_install_type
+            get_install_type,
+            launch
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

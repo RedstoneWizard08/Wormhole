@@ -7,7 +7,7 @@
         "withGlobalTauri": true
     },
     "package": {
-        "productName": "wormhole",
+        "productName": "Wormhole",
         "version": "0.1.0"
     },
     "tauri": {

@@ -13,6 +13,8 @@ export interface InvokeFunction {
 
     get_install_dir: [undefined, string];
     get_install_type: [undefined, string];
+
+    launch: [undefined, undefined];
 }
 
 export const invoke_proxy = async <K extends keyof InvokeFunction>(

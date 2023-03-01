@@ -29,33 +29,45 @@
         flex-direction: row;
         align-items: center;
         justify-content: space-evenly;
+    }
 
-        .action {
-            border: none;
-            border-radius: 4px;
-            background-color: #bcbfbc;
+    .action {
+        border: none;
+        border-radius: 4px;
+        background-color: #bcbfbc;
 
-            font-family: "manteka";
+        font-family: "manteka";
 
-            width: 30%;
-            padding: 1.5% 0;
+        width: 30%;
+        padding: 1.5% 0;
 
-            cursor: pointer;
-            outline: none;
-            transition: color 0.5s ease, background-color 0.5s ease;
+        cursor: pointer;
+        outline: none;
+        transition: color 0.5s ease, background-color 0.5s ease;
+
+        &:hover {
+            color: #dddfdc;
+            background-color: #3a3c3f;
+        }
+
+        &#uninstall {
+            background-color: #c04040;
+            color: #dddfdc;
 
             &:hover {
-                color: #dddfdc;
-                background-color: #3a3c3f;
+                background-color: #803030;
             }
+        }
 
-            &#uninstall {
-                background-color: #c04040;
-                color: #dddfdc;
+        &#launch {
+            background-color: #409040;
+            color: #dddfdc;
 
-                &:hover {
-                    background-color: #803030;
-                }
+            width: 15%;
+            margin-left: 42.5%;
+
+            &:hover {
+                background-color: #107010;
             }
         }
     }
