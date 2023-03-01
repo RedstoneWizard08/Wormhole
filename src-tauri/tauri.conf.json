@@ -7,7 +7,7 @@
         "withGlobalTauri": true
     },
     "package": {
-        "productName": "spacewarp-installer",
+        "productName": "wormhole",
         "version": "0.1.0"
     },
     "tauri": {
@@ -33,7 +33,7 @@
                 "icons/icon.icns",
                 "icons/icon.ico"
             ],
-            "identifier": "io.github.spacewarpdev.installer",
+            "identifier": "io.github.spacewarpdev.wormhole",
             "longDescription": "",
             "macOS": {
                 "entitlements": null,
@@ -62,7 +62,7 @@
                 "fullscreen": false,
                 "height": 600,
                 "resizable": false,
-                "title": "SpaceWarp Installer",
+                "title": "Wormhole",
                 "width": 800
             }
         ]
