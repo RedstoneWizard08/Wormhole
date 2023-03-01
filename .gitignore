@@ -28,3 +28,4 @@ testing
 # Tauri generated files
 src-tauri/target
 src-tauri/Cargo.lock
+wormhole.AppDir

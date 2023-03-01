@@ -1,7 +1,7 @@
-use std::{
-    env,
-    path::{Path, PathBuf},
-};
+#[cfg(target_os = "windows")]
+use std::{env, path::Path};
+
+use std::path::PathBuf;
 
 pub struct PDLauncherInstallFinder {}
 
@@ -10,8 +10,9 @@ impl PDLauncherInstallFinder {
         Self {}
     }
 
+    #[cfg(target_os = "windows")]
     pub fn find_ksp2_dir(&self) -> Option<PathBuf> {
-        let default_install_folder = Path::new(env::var("ProgramFiles").unwrap().as_str())
+        let default_install_folder = Path::new(env::var("PROGRAMFILES").unwrap().as_str())
             .join("Private Division")
             .join("Kerbal Space Program 2");
 
@@ -19,6 +20,11 @@ impl PDLauncherInstallFinder {
             return Some(default_install_folder.to_path_buf());
         }
 
+        return None;
+    }
+
+    #[cfg(not(target_os = "windows"))]
+    pub fn find_ksp2_dir(&self) -> Option<PathBuf> {
         return None;
     }
 }

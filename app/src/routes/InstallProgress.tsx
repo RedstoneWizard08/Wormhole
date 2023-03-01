@@ -28,7 +28,7 @@ export const InstallProgress: FunctionalComponent<InstallProgressProps> = ({
         percent: "0%",
         message: "Waiting for start button...",
     });
-    
+
     const [installed, setInstalled] = useState(false);
 
     const getInstallDir = async (): Promise<Error | null> => {
@@ -116,7 +116,10 @@ export const InstallProgress: FunctionalComponent<InstallProgressProps> = ({
                 {status.percent} - {status.message}
             </p>
 
-            <button class="action" id="start" onClick={!installed ? beginSetup : goBack}>
+            <button
+                class="action"
+                id="start"
+                onClick={!installed ? beginSetup : goBack}>
                 {!installed ? "Start" : "Back"}
             </button>
         </div>

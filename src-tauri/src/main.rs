@@ -1,12 +1,6 @@
-#![cfg_attr(
-    all(not(debug_assertions), target_os = "windows"),
-    windows_subsystem = "windows"
-)]
-
 use installer::{bepinex::BepInExInstallManager, doorstop::DoorstopInstallManager};
 use std::{path::PathBuf, process::Command};
 
-pub mod common;
 pub mod finder;
 pub mod installer;
 pub mod models;
@@ -99,5 +93,5 @@ pub fn main() {
             launch
         ])
         .run(tauri::generate_context!())
-        .expect("error while running tauri application");
+        .expect("Error while starting Wormhole!");
 }

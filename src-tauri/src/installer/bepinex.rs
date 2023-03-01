@@ -98,8 +98,13 @@ impl BepInExInstallManager {
 
         fs::remove_file(&self.ksp2_install_path.join(".spacewarp_release.zip"))
             .expect("Could not delete the SpaceWarp release file!");
-        
-        if !&self.ksp2_install_path.join("SpaceWarp").join("Mods").exists() {
+
+        if !&self
+            .ksp2_install_path
+            .join("SpaceWarp")
+            .join("Mods")
+            .exists()
+        {
             fs::create_dir(&self.ksp2_install_path.join("SpaceWarp").join("Mods"))
                 .expect("Could not create the Mods directory!");
         }
@@ -110,11 +115,13 @@ impl BepInExInstallManager {
     pub fn uninstall(&mut self) {
         fs::remove_dir_all(&self.ksp2_install_path.join("SpaceWarp"))
             .expect("Could not delete the SpaceWarp directory!");
+
         fs::remove_dir_all(&self.ksp2_install_path.join("BepInEx"))
             .expect("Could not delete the BepInEx directory!");
 
         fs::remove_file(&self.ksp2_install_path.join("winhttp.dll"))
             .expect("Could not delete the winhttp.dll file!");
+
         fs::remove_file(&self.ksp2_install_path.join("doorstop_config.ini"))
             .expect("Could not delete the doorstop_config.ini file!");
     }

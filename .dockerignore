@@ -1,0 +1,5 @@
+wormhole.AppDir
+node_modules
+dist
+target
+.vscode

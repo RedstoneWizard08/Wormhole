@@ -1,7 +1,14 @@
 use keyvalues_parser::Vdf;
 use std::{fs, path::PathBuf};
 
-pub const STEAM_CONFIG_DIR: &'static str = "C:\\Program Files (x86)\\Steam\\config";
+#[cfg(target_os = "macos")]
+use super::resolver::macos;
+
+#[cfg(target_os = "linux")]
+use super::resolver::linux;
+
+#[cfg(target_os = "windows")]
+use super::resolver::windows;
 
 #[derive(Default, Clone, Debug)]
 pub struct LibraryFolders {
@@ -17,9 +24,23 @@ impl LibraryFolders {
         };
     }
 
+    #[cfg(target_os = "macos")]
+    pub fn get_library_folders_file(&self) -> PathBuf {
+        return macos::get_steam_library_folders_file().join("libraryfolders.vdf");
+    }
+
+    #[cfg(target_os = "linux")]
+    pub fn get_library_folders_file(&self) -> PathBuf {
+        return linux::get_steam_library_folders_file().join("libraryfolders.vdf");
+    }
+
+    #[cfg(target_os = "windows")]
+    pub fn get_library_folders_file(&self) -> PathBuf {
+        return windows::get_steam_library_folders_file().join("libraryfolders.vdf");
+    }
+
     pub fn discover(&mut self) -> Option<&mut Self> {
-        let steam_config_dir = PathBuf::from(STEAM_CONFIG_DIR);
-        let libraryfolders_vdf_path = steam_config_dir.join("libraryfolders.vdf");
+        let libraryfolders_vdf_path = self.get_library_folders_file();
 
         if libraryfolders_vdf_path.is_file() {
             let vdf_text = fs::read_to_string(&libraryfolders_vdf_path).ok()?;

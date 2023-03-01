@@ -1,7 +1,7 @@
 [package]
-name = "spacewarp-installer"
+name = "wormhole"
 version = "0.0.0"
-description = "An installer for Space Warp"
+description = "An installer for the SpaceWarp mod Lloader."
 authors = ["SpaceWarpDev"]
 license = "MIT"
 repository = "https://github.com/SpaceWarpDev/Space-Warp-Installer"

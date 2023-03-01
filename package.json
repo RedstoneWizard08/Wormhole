@@ -1,5 +1,5 @@
 {
-    "name": "spacewarp-installer",
+    "name": "wormhole",
     "version": "1.0.0",
     "description": "",
     "main": "index.js",
@@ -13,7 +13,14 @@
         "spacewarp",
         "spacewarpdev",
         "installer",
-        "tauri"
+        "tauri",
+        "wormhole",
+        "vite",
+        "preact",
+        "modloader",
+        "rust",
+        "typescript",
+        "sass"
     ],
     "scripts": {
         "app:dev": "vite",
@@ -41,6 +48,8 @@
     },
     "dependencies": {
         "@tauri-apps/api": "^1.2.0",
+        "axios": "^1.3.4",
+        "eruda": "^2.11.2",
         "preact": "^10.13.0",
         "preact-router": "^4.1.0",
         "react": "npm:@preact/compat@^17.1.2",

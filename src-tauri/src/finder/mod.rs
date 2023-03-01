@@ -1,6 +1,7 @@
 use std::path::PathBuf;
 
 pub mod pdlauncher;
+pub mod resolver;
 pub mod steam;
 
 pub fn find_install_dir() -> PathBuf {

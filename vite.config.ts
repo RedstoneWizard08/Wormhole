@@ -8,7 +8,7 @@ export default defineConfig({
     plugins: [preact()],
 
     server: {
-        port: 1420,
+        port: process.env.TAURI_WEB_DEV ? 4000 : 1420,
         strictPort: true,
     },
 
