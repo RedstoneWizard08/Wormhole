@@ -1,5 +1,6 @@
 import "./Mod.scss";
 import { FunctionalComponent } from "preact";
+import { route } from "preact-router";
 
 export interface ModVersion {
     friendly_version: string;
@@ -48,7 +49,7 @@ export const fixVersions = (raw: Partial<ModVersion>[]): ModVersion[] => {
     }));
 };
 
-export const finishModInfo = (raw: Partial<ModInfo>): ModInfo => {
+export const finishModInfo = (raw: Partial<ModInfo>, full = false): ModInfo => {
     return {
         name: raw.name || "",
         id: raw.id || 0,
@@ -60,7 +61,13 @@ export const finishModInfo = (raw: Partial<ModInfo>): ModInfo => {
         author: raw.author || "",
         default_version_id: raw.default_version_id || 0,
         shared_authors: raw.shared_authors || [],
-        background: raw.background || "https://spacedock.info/static/background-s.png",
+
+        background:
+            raw.background ||
+            (full
+                ? "https://spacedock.info/static/background.png"
+                : "https://spacedock.info/static/background-s.png"),
+
         bg_offset_y: raw.bg_offset_y || "",
         license: raw.license || "",
         website: raw.website || "",
@@ -75,14 +82,13 @@ export const Mod: FunctionalComponent<ModParams> = ({ info }) => {
     const mod = finishModInfo(info);
 
     const capText = (text: string, size: number) => {
-        if (text.length > size)
-            return text.substring(0, size - 3) + "...";
-        
+        if (text.length > size) return text.substring(0, size - 3) + "...";
+
         return text;
     };
 
     return (
-        <div className="mod">
+        <div className="mod" onClick={() => route(`/mod/${mod.id}`)}>
             <img src={mod.background} class="image" />
 
             <p class="title">{capText(mod.name, 26)}</p>
