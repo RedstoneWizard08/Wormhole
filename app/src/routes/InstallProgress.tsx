@@ -3,6 +3,7 @@ import banner from "../assets/background_banner.png";
 import { useState } from "preact/hooks";
 import { invoke_proxy } from "../invoke";
 import { FunctionalComponent } from "preact";
+import { route } from "preact-router";
 
 export enum InstallKind {
     BepInEx,
@@ -27,6 +28,8 @@ export const InstallProgress: FunctionalComponent<InstallProgressProps> = ({
         percent: "0%",
         message: "Waiting for start button...",
     });
+    
+    const [installed, setInstalled] = useState(false);
 
     const getInstallDir = async (): Promise<Error | null> => {
         setStatus({ percent: "0%", message: "Finding KSP2 location..." });
@@ -91,6 +94,11 @@ export const InstallProgress: FunctionalComponent<InstallProgressProps> = ({
         }
 
         setStatus({ percent: "100%", message: "Done!" });
+        setInstalled(true);
+    };
+
+    const goBack = () => {
+        route("/");
     };
 
     return (
@@ -108,8 +116,8 @@ export const InstallProgress: FunctionalComponent<InstallProgressProps> = ({
                 {status.percent} - {status.message}
             </p>
 
-            <button class="action" id="start" onClick={beginSetup}>
-                Start
+            <button class="action" id="start" onClick={!installed ? beginSetup : goBack}>
+                {!installed ? "Start" : "Back"}
             </button>
         </div>
     );
