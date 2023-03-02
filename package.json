@@ -5,6 +5,7 @@
     "main": "index.js",
     "author": "SpaceWarpDev",
     "license": "MIT",
+    "type": "module",
     "keywords": [
         "kerbalspaceprogram",
         "kerbalspaceprogram2",

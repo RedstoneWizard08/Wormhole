@@ -15,7 +15,7 @@ export const Browse = () => {
     const spaceDock = new SpaceDockAPI();
 
     const refreshMods = async () => {
-        const data = await spaceDock.getMods(page, perPage);
+        const data = await spaceDock.getModsForGame(22407, page, perPage);
 
         setResults(data.result);
         setPages(data.pages);

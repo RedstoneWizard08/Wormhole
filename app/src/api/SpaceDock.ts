@@ -26,10 +26,11 @@ export class SpaceDockAPI {
         return finishFullModInfo(response.data);
     }
 
-    public async getModsForGame(gameId: number) {
-        const response = await this.getMods();
-        const mods = response.result.filter((mod) => mod.game_id == gameId);
-
-        return mods;
+    public async getModsForGame(gameId: number, page = 1, count = 30) {
+        // This is not implemented yet! To watch implementation status, see this PR:
+        // KSP-SpaceDock/SpaceDock#466
+        const response = await axios.get(`${this.base}/browse?page=${page}&count=${count}&game_id=${gameId}`);
+        
+        return finishBrowseResult(response.data);
     }
 }
