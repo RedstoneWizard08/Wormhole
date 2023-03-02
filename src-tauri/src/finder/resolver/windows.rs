@@ -1,4 +1,7 @@
-use std::{env, path::{Path, PathBuf}};
+use std::{
+    env,
+    path::{Path, PathBuf},
+};
 
 pub fn get_steam_library_folders_file() -> PathBuf {
     let binding = env::var("PROGRAMFILES(X86)").unwrap();

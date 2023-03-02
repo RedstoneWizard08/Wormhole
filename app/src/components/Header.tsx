@@ -5,7 +5,7 @@ import { useEffect, useState } from "preact/hooks";
 
 export const Header = () => {
     const [router, _] = useRouter();
-    
+
     const [instances, setInstances] = useState(false);
     const [mods, setMods] = useState(false);
     const [manage, setManage] = useState(false);
@@ -17,14 +17,16 @@ export const Header = () => {
     }, [router.path]);
 
     return (
-        <div class="header">
+        <div className="header">
             <img className="logo" src={logo} />
-            
-            <Link href="/" class="title-wrapper">
+
+            <Link href="/" className="title-wrapper">
                 <p className="title">SpaceWarp</p>
             </Link>
-            
-            <Link className={`link ${instances ? "active" : ""}`} href="/instances">
+
+            <Link
+                className={`link ${instances ? "active" : ""}`}
+                href="/instances">
                 <i className="icon fa-solid fa-rocket" />
                 Instances
             </Link>
@@ -33,7 +35,7 @@ export const Header = () => {
                 <i className="icon fa-solid fa-search" />
                 Browse Mods
             </Link>
-            
+
             <Link className={`link ${manage ? "active" : ""}`} href="/manage">
                 <i className="icon fa-solid fa-cog" />
                 Manage Mods

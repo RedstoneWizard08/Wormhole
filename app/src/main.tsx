@@ -1,12 +1,10 @@
-import "./style.scss";
-
 import "@fortawesome/fontawesome-free/scss/fontawesome.scss";
 import "@fortawesome/fontawesome-free/scss/regular.scss";
 import "@fortawesome/fontawesome-free/scss/solid.scss";
 import "@fortawesome/fontawesome-free/scss/brands.scss";
 
 import { render } from "preact";
-import { App } from "./app";
+import { App } from "./App";
 import { createMockAPI } from "./dev";
 import eruda from "eruda";
 

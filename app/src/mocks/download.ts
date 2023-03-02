@@ -14,8 +14,7 @@ export const toDataURI = (blob: Blob) => {
 };
 
 export const downloadBepInEx = async () => {
-    const url =
-        "/_dev/BepInEx_x64_5.4.21.0.zip";
+    const url = "/_dev/BepInEx_x64_5.4.21.0.zip";
 
     const resp = await axios.get<Blob>(url, {
         onDownloadProgress: (ev) => {
@@ -30,7 +29,7 @@ export const downloadBepInEx = async () => {
     });
 
     const fileName = url.split("/").pop()!;
-    
+
     const dataUri = await toDataURI(resp.data);
 
     const a = document.createElement("a");
@@ -39,7 +38,7 @@ export const downloadBepInEx = async () => {
     a.download = fileName;
 
     document.body.appendChild(a);
-    
+
     a.click();
     a.remove();
 };

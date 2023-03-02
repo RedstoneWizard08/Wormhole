@@ -6,4 +6,107 @@
 
     margin: 0;
     padding: 0;
+
+    .mod {
+        width: 100%;
+        height: 90%;
+
+        overflow-y: scroll;
+
+        .background {
+            width: 100%;
+            height: 70%;
+            object-fit: cover;
+            object-position: center center;
+        }
+    
+        .infos {
+            width: 97%;
+    
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+    
+            padding: 0.25% 1.5%;
+    
+            .left,
+            .right {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+            }
+    
+            .left {
+                width: 50%;
+                justify-content: flex-start;
+    
+                .name {
+                    margin-right: 2%;
+                }
+    
+                .author {
+                    margin-left: 2%;
+                    color: #bcbebc;
+                }
+            }
+    
+            .right {
+                width: 50%;
+                justify-content: flex-end;
+    
+                .downloads {
+                    color: lightgreen;
+                    margin-right: 4%;
+                }
+    
+                .followers {
+                    color: lightskyblue;
+                }
+            }
+        }
+    
+        .description {
+            width: 97%;
+            padding: 0 1.5%;
+            margin: 0;
+        }
+    }
+
+    .actions {
+        width: 98%;
+        height: 8%;
+
+        padding: 1% 1%;
+
+        .action {
+            background-color: transparent;
+            color: lightgreen;
+            border: 1px solid lightgreen;
+            border-radius: 8px;
+            padding: 0.5% 1%;
+
+            font-family: "manteka";
+            font-size: 12pt;
+            cursor: pointer;
+
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+
+            transition:
+                color 0.5s ease,
+                background-color 0.5s ease;
+
+            &:hover {
+                background-color: lightgreen;
+                color: black;
+            }
+
+            .icon {
+                font-size: 14pt;
+            }
+        }
+    }
 }

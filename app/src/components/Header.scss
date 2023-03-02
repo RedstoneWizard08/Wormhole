@@ -3,6 +3,7 @@
     height: 2rem;
 
     padding: 1% 0;
+    position: fixed;
 
     display: flex;
     flex-direction: row;
@@ -44,10 +45,8 @@
         justify-content: center;
 
         text-decoration: none;
-        
-        transition:
-            color 0.5s ease,
-            border 0.5s ease;
+
+        transition: color 0.5s ease, border 0.5s ease;
 
         &.active {
             color: white;

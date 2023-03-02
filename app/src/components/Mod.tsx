@@ -1,97 +1,34 @@
 import "./Mod.scss";
 import { FunctionalComponent } from "preact";
 import { route } from "preact-router";
-
-export interface ModVersion {
-    friendly_version: string;
-    game_version: string;
-    id: number;
-    created: string;
-    download_path: string;
-    changelog: string;
-    downloads: number;
-}
-
-export interface ModInfo {
-    name: string;
-    id: number;
-    game: string;
-    game_id: number;
-    short_description: string;
-    downloads: number;
-    followers: number;
-    author: string;
-    default_version_id: number;
-    shared_authors: unknown[];
-    background: string;
-    bg_offset_y: string;
-    license: string;
-    website: string;
-    donations: string;
-    source_code: string;
-    url: string;
-    versions: ModVersion[];
-}
-
+import { BrowseModInfo } from "../api/models/modinfo/browse";
 export interface ModParams {
-    info: Partial<ModInfo>;
+    mod: BrowseModInfo;
 }
 
-export const fixVersions = (raw: Partial<ModVersion>[]): ModVersion[] => {
-    return raw.map((version) => ({
-        friendly_version: version.friendly_version || "",
-        game_version: version.friendly_version || "",
-        id: version.id || 0,
-        created: version.created || "",
-        download_path: version.download_path || "",
-        changelog: version.changelog || "",
-        downloads: version.downloads || 0,
-    }));
-};
-
-export const finishModInfo = (raw: Partial<ModInfo>, full = false): ModInfo => {
-    return {
-        name: raw.name || "",
-        id: raw.id || 0,
-        game: raw.game || "",
-        game_id: raw.game_id || 0,
-        short_description: raw.short_description || "",
-        downloads: raw.downloads || 0,
-        followers: raw.followers || 0,
-        author: raw.author || "",
-        default_version_id: raw.default_version_id || 0,
-        shared_authors: raw.shared_authors || [],
-
-        background:
-            raw.background ||
-            (full
-                ? "https://spacedock.info/static/background.png"
-                : "https://spacedock.info/static/background-s.png"),
-
-        bg_offset_y: raw.bg_offset_y || "",
-        license: raw.license || "",
-        website: raw.website || "",
-        donations: raw.donations || "",
-        source_code: raw.source_code || "",
-        url: raw.url || "",
-        versions: raw.versions ? fixVersions(raw.versions) : [],
-    };
-};
-
-export const Mod: FunctionalComponent<ModParams> = ({ info }) => {
-    const mod = finishModInfo(info);
-
+export const Mod: FunctionalComponent<ModParams> = ({ mod }) => {
     const capText = (text: string, size: number) => {
         if (text.length > size) return text.substring(0, size - 3) + "...";
 
         return text;
     };
 
-    return (
-        <div className="mod" onClick={() => route(`/mod/${mod.id}`)}>
-            <img src={mod.background} class="image" />
+    const onDownload = (ev: MouseEvent) => {
+        ev.preventDefault();
+        ev.stopPropagation();
+    };
 
-            <p class="title">{capText(mod.name, 26)}</p>
+    return (
+        <div className="mod-tile" onClick={() => route(`/mod/${mod.id}`)}>
+            <img src={mod.background} className="image" />
+
+            <div className="info">
+                <p className="title">{capText(mod.name, 22)}</p>
+
+                <button type="button" className="action" onClick={onDownload}>
+                    <i className="icon fa-solid fa-circle-down" />
+                </button>
+            </div>
         </div>
     );
 };

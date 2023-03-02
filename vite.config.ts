@@ -17,14 +17,16 @@ export default defineConfig({
                 target: "https://spacedock.info/api",
                 changeOrigin: true,
                 rewrite: (path) => path.replace(/^\/_spacedock/, ""),
-            }
+            },
         },
 
-        hmr: process.env.TAURI_WEB_DEV ? {
-            clientPort: 443,
-            port: 4000,
-            protocol: "wss",
-        } : {},
+        hmr: process.env.TAURI_WEB_DEV
+            ? {
+                  clientPort: 443,
+                  port: 4000,
+                  protocol: "wss",
+              }
+            : {},
     },
 
     root: path.join(__dirname, "app"),

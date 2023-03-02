@@ -1,19 +1,8 @@
 import "./Browse.scss";
-import axios from "axios";
-import { Suspense, useEffect, useState } from "preact/compat";
-import { Mod, ModInfo } from "../../components/Mod";
+import { useEffect, useState } from "preact/compat";
+import { Mod } from "../../components/Mod";
 import { Pagination } from "../../components/Pagination";
-
-const apiUrl = import.meta.env.DEV
-    ? "/_spacedock"
-    : "https://spacedock.info/api";
-
-export interface SpaceDockResult {
-    result: Partial<ModInfo>[];
-    count: number;
-    pages: number;
-    page: number;
-}
+import { SpaceDockAPI } from "../../api/SpaceDock";
 
 export const Browse = () => {
     const [results, setResults] = useState<any[]>([]);
@@ -23,13 +12,12 @@ export const Browse = () => {
     const [loading, setLoading] = useState(true);
     const [initialLoad, setInitialLoad] = useState(true);
 
-    const refreshMods = async () => {
-        const { data: _data } = await axios.get(
-            `${apiUrl}/browse?page=${page}&count=${perPage}`
-        );
-        const data = _data as SpaceDockResult;
+    const spaceDock = new SpaceDockAPI();
 
-        setResults(data.result as ModInfo[]);
+    const refreshMods = async () => {
+        const data = await spaceDock.getMods(page, perPage);
+
+        setResults(data.result);
         setPages(data.pages);
 
         if (initialLoad) setInitialLoad(false);
@@ -52,12 +40,12 @@ export const Browse = () => {
             )}
 
             {loading ? (
-                <p class="loading">Loading...</p>
+                <p className="loading">Loading...</p>
             ) : (
                 <>
                     <div className="grid">
                         {results.map((mod) => (
-                            <Mod info={mod} />
+                            <Mod mod={mod} />
                         ))}
                     </div>
                 </>
