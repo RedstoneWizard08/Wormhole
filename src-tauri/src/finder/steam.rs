@@ -26,17 +26,17 @@ impl LibraryFolders {
 
     #[cfg(target_os = "macos")]
     pub fn get_library_folders_file(&self) -> PathBuf {
-        return macos::get_steam_library_folders_file().join("libraryfolders.vdf");
+        return macos::get_steam_library_folders_file();
     }
 
     #[cfg(target_os = "linux")]
     pub fn get_library_folders_file(&self) -> PathBuf {
-        return linux::get_steam_library_folders_file().join("libraryfolders.vdf");
+        return linux::get_steam_library_folders_file();
     }
 
     #[cfg(target_os = "windows")]
     pub fn get_library_folders_file(&self) -> PathBuf {
-        return windows::get_steam_library_folders_file().join("libraryfolders.vdf");
+        return windows::get_steam_library_folders_file();
     }
 
     pub fn discover(&mut self) -> Option<&mut Self> {
@@ -97,7 +97,6 @@ impl SteamInstallFinder {
 
             if ksp2_dir.is_dir() {
                 let dir_contents = fs::read_dir(&ksp2_dir).unwrap();
-                let mut ksp2_executable_found = false;
 
                 for file in dir_contents {
                     if file.is_ok() {
@@ -110,17 +109,10 @@ impl SteamInstallFinder {
                                 .unwrap()
                                 .contains("KSP2_x64.exe")
                         {
-                            ksp2_executable_found = true;
-                            break;
+                            return Some(ksp2_dir);
                         }
                     }
                 }
-
-                if !ksp2_executable_found {
-                    return None;
-                }
-
-                return Some(ksp2_dir);
             }
         }
 
