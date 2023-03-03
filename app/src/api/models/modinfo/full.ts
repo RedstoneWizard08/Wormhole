@@ -22,9 +22,7 @@ export interface FullModInfo {
     description: string;
 }
 
-export const finishFullModInfo = (
-    raw: Partial<FullModInfo>
-): FullModInfo => {
+export const finishFullModInfo = (raw: Partial<FullModInfo>): FullModInfo => {
     return {
         name: raw.name || "",
         id: raw.id || 0,

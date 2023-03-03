@@ -62,8 +62,7 @@ export const FullMod = () => {
             <div className="actions">
                 <button type="button" className="action">
                     <i className="icon fa-regular fa-circle-down" />
-                    &nbsp;
-                    Install
+                    &nbsp; Install
                 </button>
             </div>
         </div>

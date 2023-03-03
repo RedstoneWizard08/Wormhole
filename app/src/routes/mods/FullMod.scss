@@ -19,53 +19,53 @@
             object-fit: cover;
             object-position: center center;
         }
-    
+
         .infos {
             width: 97%;
-    
+
             display: flex;
             flex-direction: row;
             align-items: center;
             justify-content: space-between;
-    
+
             padding: 0.25% 1.5%;
-    
+
             .left,
             .right {
                 display: flex;
                 flex-direction: row;
                 align-items: center;
             }
-    
+
             .left {
                 width: 50%;
                 justify-content: flex-start;
-    
+
                 .name {
                     margin-right: 2%;
                 }
-    
+
                 .author {
                     margin-left: 2%;
                     color: #bcbebc;
                 }
             }
-    
+
             .right {
                 width: 50%;
                 justify-content: flex-end;
-    
+
                 .downloads {
                     color: lightgreen;
                     margin-right: 4%;
                 }
-    
+
                 .followers {
                     color: lightskyblue;
                 }
             }
         }
-    
+
         .description {
             width: 97%;
             padding: 0 1.5%;
@@ -95,9 +95,7 @@
             align-items: center;
             justify-content: center;
 
-            transition:
-                color 0.5s ease,
-                background-color 0.5s ease;
+            transition: color 0.5s ease, background-color 0.5s ease;
 
             &:hover {
                 background-color: lightgreen;

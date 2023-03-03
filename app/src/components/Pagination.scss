@@ -48,4 +48,9 @@
             background-color: #3c3f3c;
         }
     }
+
+    &.ellipsis {
+        background-color: transparent;
+        cursor: default;
+    }
 }

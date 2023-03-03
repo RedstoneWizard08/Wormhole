@@ -14,6 +14,7 @@ export interface PaginationButtonProps {
     active: boolean;
     next?: boolean;
     prev?: boolean;
+    ellipsis?: boolean;
 }
 
 export const PaginationButton: FunctionalComponent<PaginationButtonProps> = ({
@@ -22,18 +23,21 @@ export const PaginationButton: FunctionalComponent<PaginationButtonProps> = ({
     setPage,
     next,
     prev,
+    ellipsis,
 }) => {
     return (
         <div
             className={`pagination-button ${
                 active && !next && !prev ? "active" : ""
-            } ${next || prev ? "utility" : ""}`}
+            } ${next || prev ? "utility" : ""} ${ellipsis ? "ellipsis" : ""}`}
             onClick={() => setPage(page)}
             disabled={active}>
             {next ? (
                 <i className="fa-solid fa-caret-right" />
             ) : prev ? (
                 <i className="fa-solid fa-caret-left" />
+            ) : ellipsis ? (
+                <i className="fa-solid fa-ellipsis" />
             ) : (
                 page
             )}
@@ -50,8 +54,12 @@ export const Pagination: FunctionalComponent<PaginationProps> = ({
     const offsetted = 8;
 
     const setCurrent = ((n: number) => {
-        setPage(n);
-        setOffset(Math.max(0, n - 3));
+        setPage(Math.max(0, n));
+        setOffset(
+            Math.max(0, n - 3) + offsetted > pages
+                ? pages - offsetted
+                : Math.max(0, n - 3)
+        );
     }) as StateUpdater<number>;
 
     return (
@@ -73,6 +81,25 @@ export const Pagination: FunctionalComponent<PaginationProps> = ({
                 ) : (
                     <></>
                 )
+            )}
+
+            {offset + offsetted < pages ? (
+                <>
+                    <PaginationButton
+                        page={-1}
+                        setPage={(v) => void v}
+                        active={false}
+                        ellipsis
+                    />
+
+                    <PaginationButton
+                        page={pages}
+                        setPage={setCurrent}
+                        active={pages == page}
+                    />
+                </>
+            ) : (
+                <></>
             )}
 
             <PaginationButton

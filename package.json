@@ -30,7 +30,8 @@
         "dev": "tauri dev",
         "build": "tauri build",
         "tauri": "tauri",
-        "fmt": "prettier --write . && cargo fmt --manifest-path src-tauri/Cargo.toml"
+        "fmt": "prettier --write . && cargo fmt --manifest-path src-tauri/Cargo.toml",
+        "web:dev": "TAURI_WEB_DEV=1 vite"
     },
     "repository": {
         "type": "git",
