@@ -31,7 +31,7 @@ export class SpaceDockAPI {
     }
 
     public async getModsForGame(gameId: number, page = 1, count = 30) {
-        // This is not implemented yet! To watch implementation status, see this PR:
+        // This is not implemented yet! To look at the implementation, see this PR:
         // KSP-SpaceDock/SpaceDock#466
         const response = await axios.get(
             `${this.base}/browse?page=${page}&count=${count}&game_id=${gameId}`

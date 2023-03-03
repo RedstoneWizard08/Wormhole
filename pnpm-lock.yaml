@@ -7,7 +7,7 @@ specifiers:
   '@tauri-apps/api': ^1.2.0
   '@tauri-apps/cli': ^1.2.3
   '@types/marked': ^4.0.8
-  '@types/node': ^18.14.2
+  '@types/node': ^18.14.5
   axios: ^1.3.4
   eruda: ^2.11.2
   marked: ^4.2.12
@@ -37,12 +37,12 @@ devDependencies:
   '@preact/preset-vite': 2.5.0_wzm33zgg7fxctdv5dfqx47n7y4
   '@tauri-apps/cli': 1.2.3
   '@types/marked': 4.0.8
-  '@types/node': 18.14.2
+  '@types/node': 18.14.5
   prettier: 2.8.4
   sass: 1.58.3
-  ts-node: 10.9.1_ellgaeuoqnti3hful2ny2iugba
+  ts-node: 10.9.1_2cogyjchoknpkalymtikkc6nay
   typescript: 4.9.5
-  vite: 4.1.4_wlyq37gek244gc22rfb2kn6efu
+  vite: 4.1.4_52uvnhaycl4a477g5zbklhttxy
 
 packages:
 
@@ -574,7 +574,7 @@ packages:
       debug: 4.3.4
       kolorist: 1.7.0
       resolve: 1.22.1
-      vite: 4.1.4_wlyq37gek244gc22rfb2kn6efu
+      vite: 4.1.4_52uvnhaycl4a477g5zbklhttxy
     transitivePeerDependencies:
       - preact
       - supports-color
@@ -608,7 +608,7 @@ packages:
       '@prefresh/utils': 1.1.3
       '@rollup/pluginutils': 4.2.1
       preact: 10.13.0
-      vite: 4.1.4_wlyq37gek244gc22rfb2kn6efu
+      vite: 4.1.4_52uvnhaycl4a477g5zbklhttxy
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -743,8 +743,8 @@ packages:
     resolution: {integrity: sha512-HVNzMT5QlWCOdeuBsgXP8EZzKUf0+AXzN+sLmjvaB3ZlLqO+e4u0uXrdw9ub69wBKFs+c6/pA4r9sy6cCDvImw==}
     dev: true
 
-  /@types/node/18.14.2:
-    resolution: {integrity: sha512-1uEQxww3DaghA0RxqHx0O0ppVlo43pJhepY51OxuQIKHpjbnYLA7vcdwioNPzIqmC2u3I/dmylcqjlh0e7AyUA==}
+  /@types/node/18.14.5:
+    resolution: {integrity: sha512-CRT4tMK/DHYhw1fcCEBwME9CSaZNclxfzVMe7GsO6ULSwsttbj70wSiX6rZdIjGblu93sTJxLdhNIT85KKI7Qw==}
     dev: true
 
   /acorn-walk/8.2.0:
@@ -816,14 +816,14 @@ packages:
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
     dependencies:
-      caniuse-lite: 1.0.30001458
-      electron-to-chromium: 1.4.314
+      caniuse-lite: 1.0.30001460
+      electron-to-chromium: 1.4.317
       node-releases: 2.0.10
       update-browserslist-db: 1.0.10_browserslist@4.21.5
     dev: true
 
-  /caniuse-lite/1.0.30001458:
-    resolution: {integrity: sha512-lQ1VlUUq5q9ro9X+5gOEyH7i3vm+AYVT1WDCVB69XOZ17KZRhnZ9J0Sqz7wTHQaLBJccNCHq8/Ww5LlOIZbB0w==}
+  /caniuse-lite/1.0.30001460:
+    resolution: {integrity: sha512-Bud7abqjvEjipUkpLs4D7gR0l8hBYBHoa+tGtKJHvT2AYzLp1z7EmVkUT4ERpVUfca8S2HGIVs883D8pUH1ZzQ==}
     dev: true
 
   /chalk/2.4.2:
@@ -897,8 +897,8 @@ packages:
     engines: {node: '>=0.3.1'}
     dev: true
 
-  /electron-to-chromium/1.4.314:
-    resolution: {integrity: sha512-+3RmNVx9hZLlc0gW//4yep0K5SYKmIvB5DXg1Yg6varsuAHlHwTeqeygfS8DWwLCsNOWrgj+p9qgM5WYjw1lXQ==}
+  /electron-to-chromium/1.4.317:
+    resolution: {integrity: sha512-JhCRm9v30FMNzQSsjl4kXaygU+qHBD0Yh7mKxyjmF0V8VwYVB6qpBRX28GyAucrM9wDCpSUctT6FpMUQxbyKuA==}
     dev: true
 
   /eruda/2.11.2:
@@ -1149,7 +1149,6 @@ packages:
 
   /preact/10.13.0:
     resolution: {integrity: sha512-ERdIdUpR6doqdaSIh80hvzebHB7O6JxycOhyzAeLEchqOq/4yueslQbfnPwXaNhAYacFTyCclhwkEbOumT0tHw==}
-    dev: false
 
   /prettier/2.8.4:
     resolution: {integrity: sha512-vIS4Rlc2FNh0BySk3Wkd6xmwxB0FpOndW5fisM5H8hsZSxU2VWVB5CWIkIjWvrHjIhxk2g3bfMKM87zNTrZddw==}
@@ -1177,8 +1176,8 @@ packages:
       supports-preserve-symlinks-flag: 1.0.0
     dev: true
 
-  /rollup/3.17.3:
-    resolution: {integrity: sha512-p5LaCXiiOL/wrOkj8djsIDFmyU9ysUxcyW+EKRLHb6TKldJzXpImjcRSR+vgo09DBdofGcOoLOsRyxxG2n5/qQ==}
+  /rollup/3.18.0:
+    resolution: {integrity: sha512-J8C6VfEBjkvYPESMQYxKHxNOh4A5a3FlP+0BETGo34HEcE4eTlgCrO2+eWzlu2a/sHs2QUkZco+wscH7jhhgWg==}
     engines: {node: '>=14.18.0', npm: '>=8.0.0'}
     hasBin: true
     optionalDependencies:
@@ -1229,7 +1228,7 @@ packages:
       is-number: 7.0.0
     dev: true
 
-  /ts-node/10.9.1_ellgaeuoqnti3hful2ny2iugba:
+  /ts-node/10.9.1_2cogyjchoknpkalymtikkc6nay:
     resolution: {integrity: sha512-NtVysVPkxxrwFGUUxGYhfux8k78pQB3JqYBXlLRZgdGUqTO5wU/UyHop5p70iEbGhB7q5KmiZiU0Y3KlJrScEw==}
     hasBin: true
     peerDependencies:
@@ -1248,7 +1247,7 @@ packages:
       '@tsconfig/node12': 1.0.11
       '@tsconfig/node14': 1.0.3
       '@tsconfig/node16': 1.0.3
-      '@types/node': 18.14.2
+      '@types/node': 18.14.5
       acorn: 8.8.2
       acorn-walk: 8.2.0
       arg: 4.1.3
@@ -1281,7 +1280,7 @@ packages:
     resolution: {integrity: sha512-wa7YjyUGfNZngI/vtK0UHAN+lgDCxBPCylVXGp0zu59Fz5aiGtNXaq3DhIov063MorB+VfufLh3JlF2KdTK3xg==}
     dev: true
 
-  /vite/4.1.4_wlyq37gek244gc22rfb2kn6efu:
+  /vite/4.1.4_52uvnhaycl4a477g5zbklhttxy:
     resolution: {integrity: sha512-3knk/HsbSTKEin43zHu7jTwYWv81f8kgAL99G5NWBcA1LKvtvcVAC4JjBH1arBunO9kQka+1oGbrMKOjk4ZrBg==}
     engines: {node: ^14.18.0 || >=16.0.0}
     hasBin: true
@@ -1306,11 +1305,11 @@ packages:
       terser:
         optional: true
     dependencies:
-      '@types/node': 18.14.2
+      '@types/node': 18.14.5
       esbuild: 0.16.17
       postcss: 8.4.21
       resolve: 1.22.1
-      rollup: 3.17.3
+      rollup: 3.18.0
       sass: 1.58.3
     optionalDependencies:
       fsevents: 2.3.2
