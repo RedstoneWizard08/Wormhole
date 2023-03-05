@@ -32,7 +32,9 @@
         "tauri": "tauri",
         "fmt": "prettier --write . && cargo fmt --manifest-path src-tauri/Cargo.toml",
         "web:dev": "TAURI_WEB_DEV=1 vite",
-        "lint": "eslint --ext .ts,tsx ."
+        "lint:eslint": "eslint --ext .ts,tsx .",
+        "lint:stylelint": "stylelint **/*.scss **/*.css",
+        "lint": "pnpm lint:eslint && pnpm lint:stylelint"
     },
     "repository": {
         "type": "git",
@@ -50,8 +52,12 @@
         "eslint": "^8.35.0",
         "eslint-config-preact": "^1.3.0",
         "jest": "^29.4.3",
+        "postcss": "^8.4.21",
         "prettier": "^2.8.4",
         "sass": "^1.58.3",
+        "stylelint": "^15.2.0",
+        "stylelint-config-standard-scss": "^7.0.1",
+        "stylelint-scss": "^4.4.0",
         "ts-node": "^10.9.1",
         "typescript": "^4.9.5",
         "vite": "^4.1.4"
