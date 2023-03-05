@@ -1,10 +1,10 @@
 use crate::models::release::{ReleaseResponse, ReleaseZips};
 use reqwest::Client;
 
-pub const LATEST_RELEASE_URL: &'static str =
+pub const LATEST_RELEASE_URL: &str =
     "https://api.github.com/repos/SpaceWarpDev/SpaceWarp/releases/latest";
 
-pub static USER_AGENT: &'static str = "SpaceWarp Installer v0";
+pub static USER_AGENT: &str = "SpaceWarp Installer v0";
 
 pub async fn get_latest_release_data() -> ReleaseResponse {
     let client = Client::new();
@@ -27,7 +27,7 @@ pub async fn get_latest_release_data() -> ReleaseResponse {
 
 pub async fn get_latest_release_zips() -> ReleaseZips {
     let json = get_latest_release_data().await;
-    let mut zips = ReleaseZips::new();
+    let mut zips = ReleaseZips::default();
 
     for asset in json.assets {
         if asset.content_type.eq("application/x-zip-compressed") {
@@ -35,10 +35,8 @@ pub async fn get_latest_release_zips() -> ReleaseZips {
                 if zips.bepinex.is_none() {
                     zips.bepinex = Some(asset.browser_download_url);
                 }
-            } else {
-                if zips.doorstop.is_none() {
-                    zips.doorstop = Some(asset.browser_download_url);
-                }
+            } else if zips.doorstop.is_none() {
+                zips.doorstop = Some(asset.browser_download_url);
             }
         }
     }

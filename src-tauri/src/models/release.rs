@@ -65,8 +65,8 @@ pub struct ReleaseZips {
     pub bepinex: Option<String>,
 }
 
-impl ReleaseZips {
-    pub fn new() -> Self {
+impl Default for ReleaseZips {
+    fn default() -> Self {
         return ReleaseZips {
             doorstop: None,
             bepinex: None,

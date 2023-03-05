@@ -1,3 +1,5 @@
+#![allow(clippy::needless_return)]
+
 use installer::{bepinex::BepInExInstallManager, doorstop::DoorstopInstallManager};
 use std::{path::PathBuf, process::Command};
 

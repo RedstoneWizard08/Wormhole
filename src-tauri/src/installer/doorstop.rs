@@ -89,7 +89,7 @@ impl DoorstopInstallManager {
         )
         .expect("Could not extract the SpaceWarp release!");
 
-        fs::remove_file(&self.ksp2_install_path.join(".spacewarp_release.zip"))
+        fs::remove_file(self.ksp2_install_path.join(".spacewarp_release.zip"))
             .expect("Could not delete the SpaceWarp release file!");
 
         if !&self
@@ -98,7 +98,7 @@ impl DoorstopInstallManager {
             .join("Mods")
             .exists()
         {
-            fs::create_dir(&self.ksp2_install_path.join("SpaceWarp").join("Mods"))
+            fs::create_dir(self.ksp2_install_path.join("SpaceWarp").join("Mods"))
                 .expect("Could not create the Mods directory!");
         }
 
@@ -106,16 +106,16 @@ impl DoorstopInstallManager {
     }
 
     pub fn uninstall(&mut self) {
-        fs::remove_dir_all(&self.ksp2_install_path.join("SpaceWarp"))
+        fs::remove_dir_all(self.ksp2_install_path.join("SpaceWarp"))
             .expect("Could not delete the SpaceWarp directory!");
 
-        fs::remove_file(&self.ksp2_install_path.join("winhttp.dll"))
+        fs::remove_file(self.ksp2_install_path.join("winhttp.dll"))
             .expect("Could not delete the winhttp.dll file!");
 
-        fs::remove_file(&self.ksp2_install_path.join("doorstop_config.ini"))
+        fs::remove_file(self.ksp2_install_path.join("doorstop_config.ini"))
             .expect("Could not delete the doorstop_config.ini file!");
 
-        fs::remove_file(&self.ksp2_install_path.join(".doorstop_version"))
+        fs::remove_file(self.ksp2_install_path.join(".doorstop_version"))
             .expect("Could not delete the doorstop_config.ini file!");
     }
 }

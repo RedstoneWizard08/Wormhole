@@ -78,8 +78,8 @@ pub struct SteamInstallFinder {
     pub library_folders: LibraryFolders,
 }
 
-impl SteamInstallFinder {
-    pub fn new() -> Self {
+impl Default for SteamInstallFinder {
+    fn default() -> Self {
         let mut me = Self {
             library_folders: LibraryFolders::new(),
         };
@@ -90,27 +90,27 @@ impl SteamInstallFinder {
 
         return me;
     }
+}
 
+impl SteamInstallFinder {
     pub fn find_ksp2_dir(&mut self) -> Option<PathBuf> {
         for library_folder in self.library_folders.clone().paths {
             let ksp2_dir = library_folder.join("common").join("Kerbal Space Program 2");
 
             if ksp2_dir.is_dir() {
-                let dir_contents = fs::read_dir(&ksp2_dir).unwrap();
+                let dir_contents = fs::read_dir(&ksp2_dir).unwrap().flatten();
 
                 for file in dir_contents {
-                    if file.is_ok() {
-                        let file_path = file.unwrap().path();
+                    let file_path = file.path();
 
-                        if file_path.is_file()
-                            && file_path
-                                .as_os_str()
-                                .to_str()
-                                .unwrap()
-                                .contains("KSP2_x64.exe")
-                        {
-                            return Some(ksp2_dir);
-                        }
+                    if file_path.is_file()
+                        && file_path
+                            .as_os_str()
+                            .to_str()
+                            .unwrap()
+                            .contains("KSP2_x64.exe")
+                    {
+                        return Some(ksp2_dir);
                     }
                 }
             }

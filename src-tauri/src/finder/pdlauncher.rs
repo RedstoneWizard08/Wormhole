@@ -3,13 +3,10 @@ use std::{env, path::Path};
 
 use std::path::PathBuf;
 
+#[derive(Default)]
 pub struct PDLauncherInstallFinder {}
 
 impl PDLauncherInstallFinder {
-    pub fn new() -> Self {
-        Self {}
-    }
-
     #[cfg(target_os = "windows")]
     pub fn find_ksp2_dir(&self) -> Option<PathBuf> {
         let default_install_folder = Path::new(env::var("PROGRAMFILES").unwrap().as_str())
