@@ -4,10 +4,7 @@
         "es2021": true
     },
 
-    "extends": [
-        "eslint:recommended",
-        "preact"
-    ],
+    "extends": ["eslint:recommended", "preact"],
 
     "parser": "@typescript-eslint/parser",
 
@@ -21,6 +18,7 @@
     },
 
     "rules": {
-        "react/no-danger": "off"
+        "react/no-danger": "off",
+        "no-case-declarations": "off"
     }
 }

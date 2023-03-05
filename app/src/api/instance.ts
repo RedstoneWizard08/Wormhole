@@ -31,4 +31,6 @@ export interface InstanceInfo {
     game: KSPGame;
     mods: InstanceMod[];
     install_path: string;
+    description?: string;
+    timePlayed?: string;
 }

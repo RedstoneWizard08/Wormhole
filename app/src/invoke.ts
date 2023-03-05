@@ -1,7 +1,12 @@
 import { invoke } from "@tauri-apps/api";
+import { InstanceInfo } from "./api/instance";
 
 export interface DownloadArgs {
     kspGivenPath: string;
+}
+
+export interface InstanceArgs {
+    instanceId: number;
 }
 
 export interface InvokeFunction {
@@ -15,6 +20,9 @@ export interface InvokeFunction {
     get_install_type: [undefined, string];
 
     launch: [undefined, undefined];
+
+    get_instances: [undefined, InstanceInfo[]];
+    get_instance_info: [InstanceArgs, InstanceInfo];
 }
 
 export const invoke_proxy = async <K extends keyof InvokeFunction>(

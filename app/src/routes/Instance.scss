@@ -1,0 +1,176 @@
+.full-instance-container {
+    width: 100%;
+    height: calc(100% - (2rem + 2.6%));
+
+    background-color: #1f2120;
+
+    margin: 0;
+    padding: 0;
+
+    .instance {
+        width: 100%;
+        height: 90%;
+
+        overflow-y: scroll;
+
+        .background {
+            width: 90%;
+            height: 56%;
+            object-fit: contain;
+            object-position: center;
+
+            border-bottom: 1px solid white;
+            
+            padding-bottom: 4%;
+            padding-left: 3.5%;
+            padding-right: 3.5%;
+            
+            margin: 0 1.5%;
+        }
+
+        .infos {
+            width: 97%;
+
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0.25% 1.5%;
+
+            .left,
+            .right {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+            }
+
+            .left {
+                width: 50%;
+                justify-content: flex-start;
+
+                .name {
+                    margin-right: 2%;
+                }
+            }
+
+            .right {
+                width: 50%;
+                justify-content: flex-end;
+
+                .time {
+                    color: lightgreen;
+                    margin-right: 4%;
+                }
+
+                .edit {
+                    color: lightskyblue;
+                    background-color: transparent;
+
+                    border: 1px solid lightskyblue;
+                    padding: 1% 1.5%;
+                    font-size: 12pt;
+                    font-family: "manteka";
+
+                    border-radius: 8px;
+
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    justify-content: center;
+
+                    cursor: pointer;
+                    outline: none;
+
+                    transition:
+                        color 0.5s ease,
+                        background-color 0.5s ease;
+
+                    &:hover {
+                        color: black;
+                        background-color: lightskyblue;
+                    }
+                }
+            }
+        }
+
+        .description {
+            width: 97%;
+            padding: 0 1.5%;
+            margin: 0;
+
+            font-family: "Ubuntu Mono", monospace;
+        }
+
+        .editor {
+            width: 97%;
+            height: 20rem;
+
+            margin: 0 1.5%;
+
+            font-family: "Ubuntu Mono", monospace;
+
+            background-color: transparent;
+            border: 1px solid white;
+            border-radius: 8px;
+            
+            color: white;
+            
+            font-size: 14pt;
+        }
+    }
+
+    .actions {
+        width: 98%;
+        height: 8%;
+
+        padding: 1%;
+
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+
+        .action {
+            height: 60%;
+
+            background-color: transparent;
+            color: lightgreen;
+            border: 1px solid lightgreen;
+            border-radius: 8px;
+            padding: 0.5% 1%;
+
+            font-family: "manteka";
+            font-size: 12pt;
+            cursor: pointer;
+
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+
+            transition: color 0.5s ease, background-color 0.5s ease;
+
+            &:hover {
+                background-color: lightgreen;
+                color: black;
+            }
+
+            .icon {
+                font-size: 14pt;
+            }
+        }
+
+        .executable {
+            margin-left: 1.5%;
+            font-size: 12pt;
+
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+
+            height: 100%;
+        }
+    }
+}

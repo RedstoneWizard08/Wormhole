@@ -1,6 +1,32 @@
 .instance-container {
     width: 100%;
-    height: 100%;
+    height: 10rem;
 
-    background-color: white;
+    margin: 5% 0;
+    border-radius: 8px;
+
+    background-color: #3f4140;
+
+    cursor: pointer;
+
+    transition: background-color 0.5s ease;
+
+    &:hover {
+        background-color: #4f5150;
+    }
+
+    .logo {
+        width: 90%;
+        height: 5.5rem;
+
+        margin: 5%;
+
+        object-fit: cover;
+        object-position: 5% center;
+    }
+
+    .name {
+        font-size: 12pt;
+        margin: 5%;
+    }
 }

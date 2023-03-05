@@ -16,7 +16,7 @@ export const Browse = () => {
     useEffect(() => {
         (async () => {
             setLoading(true);
-            
+
             const spaceDock = new SpaceDockAPI();
             const data = await spaceDock.getModsForGame(22407, page, perPage);
 
@@ -24,7 +24,7 @@ export const Browse = () => {
             setPages(data.pages);
 
             if (initialLoad) setInitialLoad(false);
-            
+
             setLoading(false);
         })();
     }, [page, initialLoad, perPage]);

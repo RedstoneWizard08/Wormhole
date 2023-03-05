@@ -1,0 +1,119 @@
+import { useRouter } from "preact-router";
+import { useEffect, useState } from "preact/hooks";
+import { InstanceInfo, KSPGame } from "../api/instance";
+import { invoke_proxy } from "../invoke";
+import ksp1logo from "../assets/ksp.png";
+import ksp2logo from "../assets/ksp2.png";
+import "./Instance.scss";
+import { marked } from "marked";
+import { createRef } from "preact";
+
+export const Instance = () => {
+    const [router] = useRouter();
+
+    const [instanceInfo, setInstanceInfo] = useState<InstanceInfo | undefined>(
+        undefined
+    );
+
+    const [background, setBackground] = useState<string | undefined>(undefined);
+    const [executable, setExecutable] = useState<string | undefined>(undefined);
+    const [editing, setEditing] = useState(false);
+    const editor = createRef<HTMLTextAreaElement>();
+
+    const id = router.matches?.instance;
+
+    useEffect(() => {
+        (async () => {
+            const info = await invoke_proxy("get_instance_info", {
+                instanceId: parseInt(id || "-1", 10),
+            });
+
+            setInstanceInfo(info);
+            setBackground(info.game == KSPGame.KSP1 ? ksp1logo : ksp2logo);
+            setExecutable(info.install_path);
+        })();
+    }, [id]);
+
+    const save = () => {
+        if (instanceInfo)
+            setInstanceInfo({
+                ...instanceInfo,
+
+                description: editor.current?.value || instanceInfo.description,
+            });
+        
+        setEditing(false);
+    };
+
+    const edit = () => {
+        setEditing(true);
+
+        setTimeout(() => {
+            editor.current?.focus();
+        });
+    };
+
+    return (
+        <div className="full-instance-container">
+            <div className="instance">
+                <img src={background} className="background" />
+
+                <div className="infos">
+                    <div className="left">
+                        <p className="name">{instanceInfo?.name}</p>
+                    </div>
+
+                    <div className="right">
+                        <p className="time">
+                            <i className="fa-solid fa-clock" />
+                            &nbsp;&nbsp;
+                            {instanceInfo?.timePlayed || "0 minutes"}
+                        </p>
+
+                        {editing ? (
+                            <button
+                                type="button"
+                                className="edit"
+                                onClick={save}>
+                                <i className="fa-solid fa-save" />
+                                &nbsp; Save
+                            </button>
+                        ) : (
+                            <button
+                                type="button"
+                                className="edit"
+                                onClick={edit}>
+                                <i className="fa-solid fa-pencil" />
+                                &nbsp; Edit
+                            </button>
+                        )}
+                    </div>
+                </div>
+
+                {editing ? (
+                    <textarea
+                        className="editor"
+                        defaultValue={instanceInfo?.description}
+                        ref={editor}
+                    />
+                ) : (
+                    <p
+                        className="description"
+                        dangerouslySetInnerHTML={{
+                            __html: marked(instanceInfo?.description || ""),
+                        }}
+                    />
+                )}
+            </div>
+
+            <div className="actions">
+                <button type="button" className="action">
+                    <i className="icon fa-solid fa-rocket" />
+                    &nbsp; Launch
+                </button>
+
+                <p className="executable">{executable}</p>
+            </div>
+        </div>
+    );
+};
