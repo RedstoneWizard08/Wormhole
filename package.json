@@ -34,7 +34,8 @@
         "web:dev": "TAURI_WEB_DEV=1 vite",
         "lint:eslint": "eslint --ext .ts,tsx .",
         "lint:stylelint": "stylelint **/*.scss **/*.css",
-        "lint": "pnpm lint:eslint && pnpm lint:stylelint"
+        "lint:clippy": "cargo clippy --manifest-path src-tauri/Cargo.toml",
+        "lint": "pnpm lint:eslint && pnpm lint:stylelint && pnpm lint:clippy"
     },
     "repository": {
         "type": "git",

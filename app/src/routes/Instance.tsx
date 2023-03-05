@@ -41,7 +41,7 @@ export const Instance = () => {
 
                 description: editor.current?.value || instanceInfo.description,
             });
-        
+
         setEditing(false);
     };
 

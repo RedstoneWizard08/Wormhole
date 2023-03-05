@@ -17,15 +17,12 @@ export const App = () => {
             <div className="main">
                 <Router>
                     <Route path="/" component={Home} />
-                    <Route
-                        path="/instances"
-                        component={Instances}
-                    />
+                    <Route path="/instances" component={Instances} />
 
                     <Route path="/mods" component={Browse} />
                     <Route path="/manage" component={Manage} />
                     <Route path="/install" component={InstallProgressWrapper} />
-                    
+
                     <Route path="/mod/:mod" component={FullMod} />
                     <Route path="/instance/:instance" component={Instance} />
                 </Router>

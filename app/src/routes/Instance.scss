@@ -20,11 +20,11 @@
             object-position: center;
 
             border-bottom: 1px solid white;
-            
+
             padding-bottom: 4%;
             padding-left: 3.5%;
             padding-right: 3.5%;
-            
+
             margin: 0 1.5%;
         }
 
@@ -82,9 +82,7 @@
                     cursor: pointer;
                     outline: none;
 
-                    transition:
-                        color 0.5s ease,
-                        background-color 0.5s ease;
+                    transition: color 0.5s ease, background-color 0.5s ease;
 
                     &:hover {
                         color: black;
@@ -113,9 +111,9 @@
             background-color: transparent;
             border: 1px solid white;
             border-radius: 8px;
-            
+
             color: white;
-            
+
             font-size: 14pt;
         }
     }
