@@ -1,11 +1,12 @@
 import path from "path";
+import preactRefresh from "@prefresh/vite";
 import { defineConfig } from "vite";
 import { preact } from "@preact/preset-vite";
 
 export default defineConfig({
     clearScreen: false,
 
-    plugins: [preact()],
+    plugins: [preactRefresh(), preact()],
 
     server: {
         port: process.env.TAURI_WEB_DEV ? 4000 : 1420,

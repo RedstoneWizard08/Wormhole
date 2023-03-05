@@ -6,21 +6,17 @@ import { FullModInfo } from "../../api/models/modinfo/full";
 import { SpaceDockAPI } from "../../api/SpaceDock";
 
 export const FullMod = () => {
-    const [router, _] = useRouter();
+    const [router] = useRouter();
     const modId = router.matches?.mod;
 
     const [modInfo, setModInfo] = useState<FullModInfo | undefined>(undefined);
-    const spaceDock = new SpaceDockAPI();
-
-    const refreshModInfo = async () => {
-        const data = await spaceDock.getMod(modId || "");
-
-        setModInfo(data);
-    };
 
     useEffect(() => {
         (async () => {
-            await refreshModInfo();
+            const spaceDock = new SpaceDockAPI();
+            const data = await spaceDock.getMod(modId || "");
+
+            setModInfo(data);
         })();
     }, [modId]);
 

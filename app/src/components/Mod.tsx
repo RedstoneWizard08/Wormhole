@@ -8,7 +8,7 @@ export interface ModParams {
 
 export const Mod: FunctionalComponent<ModParams> = ({ mod }) => {
     const capText = (text: string, size: number) => {
-        if (text.length > size) return text.substring(0, size - 3) + "...";
+        if (text.length > size) return `${text.substring(0, size - 3)}...`;
 
         return text;
     };

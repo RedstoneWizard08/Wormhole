@@ -4,7 +4,7 @@ import { Link, useRouter } from "preact-router";
 import { useEffect, useState } from "preact/hooks";
 
 export const Header = () => {
-    const [router, _] = useRouter();
+    const [router] = useRouter();
 
     const [instances, setInstances] = useState(false);
     const [mods, setMods] = useState(false);

@@ -3,33 +3,31 @@ import { useEffect, useState } from "preact/compat";
 import { Mod } from "../../components/Mod";
 import { Pagination } from "../../components/Pagination";
 import { SpaceDockAPI } from "../../api/SpaceDock";
+import { BrowseModInfo } from "../../api/models/modinfo/browse";
 
 export const Browse = () => {
-    const [results, setResults] = useState<any[]>([]);
-    const [perPage, setPerPage] = useState(30);
+    const [results, setResults] = useState<BrowseModInfo[]>([]);
+    const [perPage] = useState(30);
     const [pages, setPages] = useState(1);
     const [page, setPage] = useState(1);
     const [loading, setLoading] = useState(true);
     const [initialLoad, setInitialLoad] = useState(true);
 
-    const spaceDock = new SpaceDockAPI();
-
-    const refreshMods = async () => {
-        const data = await spaceDock.getModsForGame(22407, page, perPage);
-
-        setResults(data.result);
-        setPages(data.pages);
-
-        if (initialLoad) setInitialLoad(false);
-    };
-
     useEffect(() => {
         (async () => {
             setLoading(true);
-            await refreshMods();
+            
+            const spaceDock = new SpaceDockAPI();
+            const data = await spaceDock.getModsForGame(22407, page, perPage);
+
+            setResults(data.result);
+            setPages(data.pages);
+
+            if (initialLoad) setInitialLoad(false);
+            
             setLoading(false);
         })();
-    }, [page]);
+    }, [page, initialLoad, perPage]);
 
     return (
         <div className="browse-container">
@@ -45,7 +43,7 @@ export const Browse = () => {
                 <>
                     <div className="grid">
                         {results.map((mod) => (
-                            <Mod mod={mod} />
+                            <Mod mod={mod} key={mod.id} />
                         ))}
                     </div>
                 </>

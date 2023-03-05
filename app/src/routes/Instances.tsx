@@ -1,12 +1,18 @@
-import { invoke_proxy } from "../invoke";
+import { FunctionalComponent } from "preact";
+import { InstanceInfo } from "../api/instance";
+import { Instance } from "../components/Instance";
 import "./Instances.scss";
 
-export const Instances = () => {
+export interface InstancesProps {
+    instances: InstanceInfo[];
+}
+
+export const Instances: FunctionalComponent<InstancesProps> = ({ instances }) => {
     return (
         <div className="instances-container">
-            <button type="button" onClick={() => invoke_proxy("launch")}>
-                Launch
-            </button>
+            {instances.map((info) => {
+                <Instance data={info} />
+            })}
         </div>
     );
 };

@@ -6,12 +6,18 @@ import { FunctionalComponent } from "preact";
 import { route } from "preact-router";
 
 export enum InstallKind {
+    // eslint-disable-next-line no-unused-vars
     BepInEx,
+
+    // eslint-disable-next-line no-unused-vars
     Doorstop,
 }
 
 export enum InstallAction {
+    // eslint-disable-next-line no-unused-vars
     Install,
+
+    // eslint-disable-next-line no-unused-vars
     Uninstall,
 }
 
@@ -36,12 +42,12 @@ export const InstallProgress: FunctionalComponent<InstallProgressProps> = ({
 
         const _dir = await invoke_proxy("get_install_dir");
 
-        if (/[A-Z]\:(?:\\|\/).+/gm.test(_dir)) {
+        if (/[A-Z]:(?:\\|\/).+/gm.test(_dir)) {
             return null;
         }
 
         return new Error(
-            "Could not find the KSP2 install directory! More details: " + _dir
+            `Could not find the KSP2 install directory! More details: ${_dir}`
         );
     };
 
@@ -58,7 +64,7 @@ export const InstallProgress: FunctionalComponent<InstallProgressProps> = ({
             return null;
         }
 
-        return new Error("Could not install SpaceWarp! More details: " + res);
+        return new Error(`Could not install SpaceWarp! More details: ${res}`);
     };
 
     const doUninstall = async (): Promise<Error | null> => {
@@ -74,7 +80,7 @@ export const InstallProgress: FunctionalComponent<InstallProgressProps> = ({
             return null;
         }
 
-        return new Error("Could not uninstall SpaceWarp! More details: " + res);
+        return new Error(`Could not uninstall SpaceWarp! More details: ${res}`);
     };
 
     const beginSetup = async () => {

@@ -2,6 +2,7 @@ import { mockIPC } from "@tauri-apps/api/mocks";
 import { downloadBepInEx } from "./mocks/download";
 
 export const createMockAPI = () => {
+    // eslint-disable-next-line no-unused-vars
     mockIPC(async (cmd, args) => {
         switch (cmd) {
             case "download_doorstop":
