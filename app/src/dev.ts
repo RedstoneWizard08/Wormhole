@@ -1,5 +1,6 @@
 import { mockIPC } from "@tauri-apps/api/mocks";
 import { InstanceInfo, KSPGame } from "./api/instance";
+import { SpaceDockAPI } from "./api/SpaceDock";
 import { downloadBepInEx } from "./mocks/download";
 
 export const repeat = <T>(arr: T[], n: number): T[] => {
@@ -36,7 +37,7 @@ export const DEV_Instances: InstanceInfo[] = repeat(
 
 export const createMockAPI = () => {
     // eslint-disable-next-line no-unused-vars
-    mockIPC(async (cmd, args) => {
+    mockIPC(async (cmd, args: any) => {
         switch (cmd) {
             case "download_doorstop":
                 return "Success";
@@ -67,6 +68,9 @@ export const createMockAPI = () => {
                 const id = (args as any).instanceId;
 
                 return DEV_Instances.find((v) => v.id == id);
+            
+            case "get_mods":
+                return await new SpaceDockAPI().getModsForGame(22407, args.page, args.count);
         }
     });
 };
