@@ -12,17 +12,33 @@ pub struct ModVersion {
     pub downloads: Option<i32>,
 }
 
-impl ModVersion {
-    pub fn finish(&mut self) -> &Self {
-        self.friendly_version = Some(self.friendly_version .unwrap_or("".to_string()));
-        self.game_version = Some(self.friendly_version .unwrap_or("".to_string()));
-        self.id = Some(self.id.unwrap_or( 0));
-        self.created = Some(self.created.unwrap_or("".to_string()));
-        self.download_path = Some(self.download_path.unwrap_or("".to_string()));
-        self.changelog = Some(self.changelog.unwrap_or("".to_string()));
-        self.downloads = Some(self.downloads.unwrap_or( 0));
+impl Default for ModVersion {
+    fn default() -> Self {
+        return Self {
+            friendly_version: None,
+            game_version: None,
+            id: None,
+            created: None,
+            download_path: None,
+            changelog: None,
+            downloads: None,
+        };
+    }
+}
 
-        return self;
+impl ModVersion {
+    pub fn finish(&self) -> Self {
+        let mut out = ModVersion::default();
+
+        out.friendly_version = Some(self.friendly_version.clone().unwrap_or("".to_string()));
+        out.game_version = Some(self.friendly_version.clone().unwrap_or("".to_string()));
+        out.id = Some(self.id.unwrap_or( 0));
+        out.created = Some(self.created.clone().unwrap_or("".to_string()));
+        out.download_path = Some(self.download_path.clone().unwrap_or("".to_string()));
+        out.changelog = Some(self.changelog.clone().unwrap_or("".to_string()));
+        out.downloads = Some(self.downloads.unwrap_or( 0));
+
+        return out.clone();
     }
 }
 
@@ -49,8 +65,35 @@ pub struct ModInfo {
     pub description: Option<String>,
 }
 
+impl Default for ModInfo {
+    fn default() -> Self {
+        return Self {
+            name: None,
+            id: None,
+            game: None,
+            game_id: None,
+            short_description: None,
+            downloads: None,
+            followers: None,
+            author: None,
+            default_version_id: None,
+            shared_authors: None,
+            background: None,
+            bg_offset_y: None,
+            license: None,
+            website: None,
+            donations: None,
+            source_code: None,
+            url: None,
+            versions: None,
+            description: None,
+        };
+    }
+}
+
 impl ModInfo {
-    pub fn finish(&mut self, browse: bool) -> &Self {
+    pub fn finish(&self, browse: bool) -> Self {
+        let mut out = ModInfo::default();
         let mut _versions = Vec::new();
         let mut bg_img = "https://spacedock.info/static/background.png".to_string();
 
@@ -58,36 +101,36 @@ impl ModInfo {
             bg_img = "https://spacedock.info/static/background-s.png".to_string();
         }
 
-        if let Some(versions) = self.versions {
-            _versions = versions.iter().map(|v| v.finish()).cloned().collect();
+        if let Some(versions) = self.versions.clone() {
+            _versions = versions.iter().map(|v| v.finish().clone()).collect();
         }
 
-        self.name = Some(self.name.unwrap_or("".to_string()));
-        self.id = Some(self.id.unwrap_or(0));
-        self.game = Some(self.game.unwrap_or("".to_string()));
-        self.game_id = Some(self.game_id.unwrap_or(0));
-        self.short_description = Some(self.short_description.unwrap_or("".to_string()));
-        self.downloads = Some(self.downloads.unwrap_or(0));
-        self.followers = Some(self.followers.unwrap_or(0));
-        self.author = Some(self.author.unwrap_or("".to_string()));
-        self.default_version_id = Some(self.default_version_id.unwrap_or(0));
-        self.shared_authors = Some(self.shared_authors.unwrap_or(Vec::new()));
+        out.name = Some(self.name.clone().unwrap_or("".to_string()));
+        out.id = Some(self.id.unwrap_or(0));
+        out.game = Some(self.game.clone().unwrap_or("".to_string()));
+        out.game_id = Some(self.game_id.unwrap_or(0));
+        out.short_description = Some(self.short_description.clone().unwrap_or("".to_string()));
+        out.downloads = Some(self.downloads.unwrap_or(0));
+        out.followers = Some(self.followers.unwrap_or(0));
+        out.author = Some(self.author.clone().unwrap_or("".to_string()));
+        out.default_version_id = Some(self.default_version_id.unwrap_or(0));
+        out.shared_authors = Some(self.shared_authors.clone().unwrap_or(Vec::new()));
         
-        self.background = Some(
-            self.background
+        out.background = Some(
+            self.background.clone()
                 .unwrap_or(bg_img),
         );
 
-        self.bg_offset_y = Some(self.bg_offset_y.unwrap_or("".to_string()));
-        self.license = Some(self.license.unwrap_or("".to_string()));
-        self.website = Some(self.website.unwrap_or("".to_string()));
-        self.donations = Some(self.donations.unwrap_or("".to_string()));
-        self.source_code = Some(self.source_code.unwrap_or("".to_string()));
-        self.url = Some(self.url.unwrap_or("".to_string()));
-        self.versions = Some(_versions);
-        self.description = Some(self.description.unwrap_or("".to_string()));
+        out.bg_offset_y = Some(self.bg_offset_y.clone().unwrap_or("".to_string()));
+        out.license = Some(self.license.clone().unwrap_or("".to_string()));
+        out.website = Some(self.website.clone().unwrap_or("".to_string()));
+        out.donations = Some(self.donations.clone().unwrap_or("".to_string()));
+        out.source_code = Some(self.source_code.clone().unwrap_or("".to_string()));
+        out.url = Some(self.url.clone().unwrap_or("".to_string()));
+        out.versions = Some(_versions);
+        out.description = Some(self.description.clone().unwrap_or("".to_string()));
 
-        return self;
+        return out.clone();
     }
 }
 
@@ -99,19 +142,31 @@ pub struct BrowseResult {
     pub page: Option<i32>,
 }
 
+impl Default for BrowseResult {
+    fn default() -> Self {
+        return Self {
+            result: None,
+            count: None,
+            pages: None,
+            page: None,
+        };
+    }
+}
+
 impl BrowseResult {
-    pub fn finish(&mut self) -> &Self {
+    pub fn finish(&self) -> Self {
+        let mut out = BrowseResult::default();
         let mut _res = Vec::new();
 
-        if let Some(result) = self.result {
-            _res = result.iter().map(|v| v.finish(true)).cloned().collect();
+        if let Some(result) = self.result.clone() {
+            _res = result.iter().map(|v| v.finish(true).clone()).collect();
         }
 
-        self.result = Some(_res);
-        self.count = Some(self.count.unwrap_or(0));
-        self.pages = Some(self.pages.unwrap_or(0));
-        self.page = Some(self.page.unwrap_or(0));
+        out.result = Some(_res);
+        out.count = Some(self.count.unwrap_or(0));
+        out.pages = Some(self.pages.unwrap_or(0));
+        out.page = Some(self.page.unwrap_or(0));
 
-        return self;
+        return out.clone();
     }
 }

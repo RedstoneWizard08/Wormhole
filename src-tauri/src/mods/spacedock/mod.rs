@@ -21,7 +21,7 @@ impl SpaceDockAPI {
     pub async fn get_mod(&self, id: i32) -> ModInfo {
         let uri = format!("{}/mod/{}", self.base, id);
         let resp = reqwest::get(uri).await.unwrap();
-        let mut data = resp.json::<ModInfo>().await.unwrap();
+        let data = resp.json::<ModInfo>().await.unwrap();
 
         return data.finish(false).clone();
     }
@@ -29,7 +29,7 @@ impl SpaceDockAPI {
     pub async fn get_mods(&self, page: i32, count: i32) -> BrowseResult {
         let uri = format!("{}/browse?page={}&count={}", self.base, page, count);
         let resp = reqwest::get(uri).await.unwrap();
-        let mut data = resp.json::<BrowseResult>().await.unwrap();
+        let data = resp.json::<BrowseResult>().await.unwrap();
 
         return data.finish().clone();
     }
@@ -37,7 +37,7 @@ impl SpaceDockAPI {
     pub async fn get_mods_for_game(&self, game: i32, page: i32, count: i32) -> BrowseResult {
         let uri = format!("{}/browse?page={}&count={}&game_id={}", self.base, page, count, game);
         let resp = reqwest::get(uri).await.unwrap();
-        let mut data = resp.json::<BrowseResult>().await.unwrap();
+        let data = resp.json::<BrowseResult>().await.unwrap();
 
         return data.finish().clone();
     }
