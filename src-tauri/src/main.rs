@@ -1,6 +1,9 @@
 #![allow(clippy::needless_return)]
 
 use installer::{bepinex::BepInExInstallManager, doorstop::DoorstopInstallManager};
+use instances::InstanceInfo;
+use mods::{spacedock::SpaceDockAPI, schema::browse::{BrowseResult, ModInfo}};
+use serde::{Deserialize, Serialize};
 use std::{path::PathBuf, process::Command};
 
 pub mod finder;
@@ -85,6 +88,45 @@ async fn launch() {
         .expect("Failed to launch KSP2!");
 }
 
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct InstanceArgs {
+    pub instance_id: i32,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct ModArgs {
+    pub mod_id: i32,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct ModsArgs {
+    game_id: Option<i32>,
+    page: i32,
+    count: i32,
+}
+
+#[tauri::command]
+async fn get_instances() -> Vec<InstanceInfo> {
+    return InstanceInfo::defaults();
+}
+
+#[tauri::command]
+async fn get_instance_info(args: InstanceArgs) -> Option<InstanceInfo> {
+    return InstanceInfo::defaults().iter().find(|i| i.id == args.instance_id).cloned();
+}
+
+#[tauri::command]
+async fn get_mod(args: ModArgs) -> ModInfo {
+    return SpaceDockAPI::new().get_mod(args.mod_id).await;
+}
+
+#[tauri::command]
+async fn get_mods(args: ModsArgs) -> BrowseResult {
+    let game_id = args.game_id.unwrap_or(22407);
+
+    return SpaceDockAPI::new().get_mods_for_game(game_id, args.page, args.count).await;
+}
+
 pub fn main() {
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![
@@ -94,7 +136,11 @@ pub fn main() {
             uninstall_bepinex,
             get_install_dir,
             get_install_type,
-            launch
+            launch,
+            get_instance_info,
+            get_instances,
+            get_mod,
+            get_mods
         ])
         .run(tauri::generate_context!())
         .expect("Error while starting Wormhole!");
