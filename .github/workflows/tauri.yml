@@ -19,7 +19,7 @@ jobs:
         with:
           node-version: 16
 
-      - name: install Rust stable
+      - name: install Rust nightly
         uses: dtolnay/rust-toolchain@nightly
 
       - name: install dependencies (ubuntu only)
