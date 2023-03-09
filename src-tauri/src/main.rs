@@ -7,6 +7,8 @@ pub mod finder;
 pub mod installer;
 pub mod models;
 pub mod releases;
+pub mod mods;
+pub mod instances;
 
 #[tauri::command]
 fn get_install_dir() -> PathBuf {

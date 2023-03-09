@@ -12,8 +12,7 @@ const root = document.getElementById("root")!;
 
 if (import.meta.env.TAURI_WEB_DEV) {
     eruda.init();
+    createMockAPI();
 }
-
-createMockAPI();
 
 render(<App />, root);
