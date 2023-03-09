@@ -2,8 +2,8 @@ import "./Browse.scss";
 import { useEffect, useState } from "preact/compat";
 import { Mod } from "../../components/Mod";
 import { Pagination } from "../../components/Pagination";
-import { SpaceDockAPI } from "../../api/SpaceDock";
 import { BrowseModInfo } from "../../api/models/modinfo/browse";
+import { invoke_proxy } from "../../invoke";
 
 export const Browse = () => {
     const [results, setResults] = useState<BrowseModInfo[]>([]);
@@ -17,8 +17,11 @@ export const Browse = () => {
         (async () => {
             setLoading(true);
 
-            const spaceDock = new SpaceDockAPI();
-            const data = await spaceDock.getModsForGame(22407, page, perPage);
+            const data = await invoke_proxy("get_mods", {
+                gameId: 22407,
+                count: perPage,
+                page,
+            });
 
             setResults(data.result);
             setPages(data.pages);

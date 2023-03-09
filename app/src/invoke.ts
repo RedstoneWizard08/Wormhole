@@ -1,5 +1,7 @@
 import { invoke } from "@tauri-apps/api";
 import { InstanceInfo } from "./api/instance";
+import { BrowseResult } from "./api/models/browse";
+import { FullModInfo } from "./api/models/modinfo/full";
 
 export interface DownloadArgs {
     kspGivenPath: string;
@@ -7,6 +9,16 @@ export interface DownloadArgs {
 
 export interface InstanceArgs {
     instanceId: number;
+}
+
+export interface ModArgs {
+    modId: number;
+}
+
+export interface ModsArgs {
+    gameId?: number;
+    page: number;
+    count: number;
 }
 
 export interface InvokeFunction {
@@ -23,6 +35,9 @@ export interface InvokeFunction {
 
     get_instances: [undefined, InstanceInfo[]];
     get_instance_info: [InstanceArgs, InstanceInfo];
+
+    get_mod: [ModArgs, FullModInfo];
+    get_mods: [ModsArgs, BrowseResult];
 }
 
 export const invoke_proxy = async <K extends keyof InvokeFunction>(

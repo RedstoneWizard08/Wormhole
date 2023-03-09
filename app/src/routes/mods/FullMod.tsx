@@ -3,7 +3,7 @@ import { useRouter } from "preact-router";
 import { useEffect, useState } from "preact/hooks";
 import { marked } from "marked";
 import { FullModInfo } from "../../api/models/modinfo/full";
-import { SpaceDockAPI } from "../../api/SpaceDock";
+import { invoke_proxy } from "../../invoke";
 
 export const FullMod = () => {
     const [router] = useRouter();
@@ -13,10 +13,11 @@ export const FullMod = () => {
 
     useEffect(() => {
         (async () => {
-            const spaceDock = new SpaceDockAPI();
-            const data = await spaceDock.getMod(modId || "");
-
-            setModInfo(data);
+            setModInfo(
+                await invoke_proxy("get_mod", {
+                    modId: parseInt(modId || "-1", 10),
+                })
+            );
         })();
     }, [modId]);
 
