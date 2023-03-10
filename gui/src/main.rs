@@ -2,27 +2,20 @@
 #![allow(clippy::needless_return)]
 
 use installer::bepinex::BepInExInstallManager;
-use instances::InstanceInfo;
-use mods::{spacedock::SpaceDockAPI, schema::browse::{BrowseResult, ModInfo}};
 use tauri::Window;
 use std::{path::PathBuf, process::Command};
 
-pub mod finder;
 pub mod installer;
-pub mod models;
-pub mod releases;
-pub mod mods;
-pub mod instances;
 pub mod progress;
 
 #[tauri::command]
 fn get_install_dir() -> PathBuf {
-    return finder::find_install_dir();
+    return find_install_dir();
 }
 
 #[tauri::command]
 fn get_install_type() -> bool {
-    let dir = finder::find_install_dir();
+    let dir = find_install_dir();
     let files = dir.read_dir().expect("Failed to read install directory!");
 
     let mut is_bepinex = false;

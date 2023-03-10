@@ -26,6 +26,5 @@ testing
 *.sw?
 
 # Tauri generated files
-src-tauri/target
-src-tauri/Cargo.lock
+target
 wormhole.AppDir
