@@ -6,6 +6,20 @@
     src: url("assets/manteka.otf");
 }
 
+::-webkit-scrollbar {
+    width: 8px;
+    margin: 0;
+}
+
+::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #4c4c4c;
+    border-radius: 5px;
+}
+
 html,
 body,
 #root,
