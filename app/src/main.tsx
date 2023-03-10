@@ -12,7 +12,7 @@ const root = document.getElementById("root")!;
 
 if (import.meta.env.TAURI_WEB_DEV) {
     eruda.init();
-    eruda.position({ x: window.innerWidth - 45, y: window.innerHeight - 45 });
+    eruda.position({ x: 10, y: window.innerHeight - 45 });
     createMockAPI();
 }
 
