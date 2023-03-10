@@ -95,6 +95,7 @@ impl BepInExInstallManager {
         fs::remove_file(self.ksp2_install_path.join(".spacewarp_release.zip"))
             .expect("Could not delete the SpaceWarp release file!");
 
+
         return Ok(());
     }
 
