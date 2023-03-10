@@ -12,8 +12,14 @@ export const Header = () => {
     const [spacewarp, setSpacewarp] = useState(false);
 
     useEffect(() => {
-        setInstances(router.path == "/instances");
-        setMods(router.path == "/mods");
+        setInstances(
+            /\/instances?(\/\d+)?/i.test(router.path!)
+        );
+
+        setMods(
+            /\/mods?(\/\d+)?/i.test(router.path!)
+        );
+
         setManage(router.path == "/manage");
         setSpacewarp(router.path == "/");
     }, [router.path]);
