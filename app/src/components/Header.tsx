@@ -38,7 +38,7 @@ export const Header = () => {
             <Link
                 className={`link ${instances ? "active" : ""}`}
                 href="/instances">
-                <i className="icon fa-solid fa-rocket" />
+                <i className="icon fa-solid fa-download" />
                 Instances
             </Link>
 
