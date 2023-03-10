@@ -61,10 +61,12 @@
         "windows": [
             {
                 "fullscreen": false,
-                "height": 600,
+                "height": 800,
+                "width": 1200,
                 "resizable": true,
                 "title": "Wormhole",
-                "width": 800
+                "minHeight": 400,
+                "minWidth": 600
             }
         ]
     }

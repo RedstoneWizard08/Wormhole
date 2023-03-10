@@ -51,3 +51,24 @@
         }
     }
 }
+
+.pagination-search-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.25rem;
+    overflow: hidden;
+    background-color: #842222;
+    margin-bottom: 5px;
+}
+
+.pagination-search-bar input {
+    border: none;
+    font-family: "manteka", serif;
+    text-align: center;
+    background-color: transparent;
+    color: #ffffff;
+    padding: 0.5rem;
+    outline: none;
+    width: 100%;
+}

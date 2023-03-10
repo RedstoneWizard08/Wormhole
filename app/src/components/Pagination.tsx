@@ -63,51 +63,47 @@ export const Pagination: FunctionalComponent<PaginationProps> = ({
     }) as StateUpdater<number>;
 
     return (
-        <div className="pagination">
-            <PaginationButton
-                page={Math.max(0, page - 1)}
-                setPage={setCurrent}
-                active={Math.max(0, page - 1) == page}
-                prev
-            />
+        <>
+            <div className="pagination">
+                <PaginationButton
+                    page={Math.max(0, page - 1)}
+                    setPage={setCurrent}
+                    active={Math.max(0, page - 1) == page}
+                    prev />
 
-            {[...Array(offsetted + 1)].map(
-                (_, i) =>
-                    i + offset > 0 && i + offset <= pages && (
+                {[...Array(offsetted + 1)].map(
+                    (_, i) => i + offset > 0 && i + offset <= pages && (
                         <PaginationButton
                             page={i + offset}
                             setPage={setCurrent}
                             active={i + offset == page}
-                            key={i + offset}
-                        />
+                            key={i + offset} />
                     )
-            )}
+                )}
 
-            {offset + offsetted < pages ? (
-                <>
-                    <PaginationButton
-                        page={-1}
-                        setPage={(v) => void v}
-                        active={false}
-                        ellipsis
-                    />
+                {offset + offsetted < pages ? (
+                    <>
+                        <PaginationButton
+                            page={-1}
+                            setPage={(v) => void v}
+                            active={false}
+                            ellipsis />
 
-                    <PaginationButton
-                        page={pages}
-                        setPage={setCurrent}
-                        active={pages == page}
-                    />
-                </>
-            ) : (
-                <></>
-            )}
+                        <PaginationButton
+                            page={pages}
+                            setPage={setCurrent}
+                            active={pages == page} />
+                    </>
+                ) : (
+                    <></>
+                )}
 
-            <PaginationButton
-                page={Math.min(pages, page + 1)}
-                setPage={setCurrent}
-                active={Math.min(pages, page + 1) == page}
-                next
-            />
-        </div>
+                <PaginationButton
+                    page={Math.min(pages, page + 1)}
+                    setPage={setCurrent}
+                    active={Math.min(pages, page + 1) == page}
+                    next />
+            </div>
+        </>
     );
 };
