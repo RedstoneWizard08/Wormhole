@@ -5,12 +5,17 @@
     margin: 0;
     padding: 0;
 
-    background-image: linear-gradient(to bottom, #7c7c7c, #fff);
+    background-image: linear-gradient(to bottom, #171717, #868686);
+
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 50vh;
+    }
 
     .logo {
-        width: 75%;
-
-        margin: 4% 12.5%;
+        width: 65%;
         border-radius: 8px;
     }
 

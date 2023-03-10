@@ -42,7 +42,7 @@ export const InstallProgress: FunctionalComponent<InstallProgressProps> = ({
 
         const _dir = await invoke_proxy("get_install_dir");
 
-        if (/[A-Z]:(?:\\|\/).+/gm.test(_dir)) {
+        if (/[A-Z]:[\\/].+/gm.test(_dir)) {
             return null;
         }
 
@@ -91,6 +91,8 @@ export const InstallProgress: FunctionalComponent<InstallProgressProps> = ({
             return;
         }
 
+        console.log(action);
+
         if (action == InstallAction.Install) err = await doInstall();
         else err = await doUninstall();
 
@@ -109,7 +111,9 @@ export const InstallProgress: FunctionalComponent<InstallProgressProps> = ({
 
     return (
         <div className="install-progress-container">
-            <img src={banner} alt="Space Warp Logo" className="logo" />
+            <div class="container">
+                <img src={banner} alt="Space Warp Logo" className="logo" />
+            </div>
 
             <br />
 
