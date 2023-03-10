@@ -21,7 +21,7 @@ export const Header = () => {
         );
 
         setManage(router.path == "/manage");
-        setSpacewarp(router.path == "/");
+        setSpacewarp(router.path == "/" || router.path == "/install");
     }, [router.path]);
 
     return (
