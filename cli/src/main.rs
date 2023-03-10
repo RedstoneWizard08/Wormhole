@@ -20,7 +20,7 @@ pub async fn main() {
             Commands::Mod { command } => {
                 if let Some(scmd) = command {
                     match scmd {
-                        ModCommands::Install { id, instance_id } => {
+                        ModCommands::Install { id, instance_id: _instance_id } => {
                             install_mod(id, verbose).await;
                         },
 
