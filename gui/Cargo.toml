@@ -1,5 +1,5 @@
 [package]
-name = "wormhole"
+name = "wormhole-gui"
 version = "0.0.0"
 description = "An installer for the SpaceWarp mod Lloader."
 authors = ["SpaceWarpDev"]

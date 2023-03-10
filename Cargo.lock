@@ -393,10 +393,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "cli"
-version = "0.1.0"
-
-[[package]]
 name = "cocoa"
 version = "0.24.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -4547,22 +4543,8 @@ dependencies = [
 ]
 
 [[package]]
-name = "wormhole"
-version = "0.0.0"
-dependencies = [
- "ckandex",
- "keyvalues-parser",
- "reqwest 0.11.14",
- "serde",
- "serde_json",
- "tauri",
- "tauri-build",
- "tokio 1.26.0",
- "tokio-stream",
- "tokio-util 0.7.7",
- "wormhole-common",
- "zip-extensions",
-]
+name = "wormhole-cli"
+version = "0.1.0"
 
 [[package]]
 name = "wormhole-common"
@@ -4576,6 +4558,24 @@ dependencies = [
  "tokio 1.26.0",
  "tokio-stream",
  "tokio-util 0.7.7",
+ "zip-extensions",
+]
+
+[[package]]
+name = "wormhole-gui"
+version = "0.0.0"
+dependencies = [
+ "ckandex",
+ "keyvalues-parser",
+ "reqwest 0.11.14",
+ "serde",
+ "serde_json",
+ "tauri",
+ "tauri-build",
+ "tokio 1.26.0",
+ "tokio-stream",
+ "tokio-util 0.7.7",
+ "wormhole-common",
  "zip-extensions",
 ]
 
