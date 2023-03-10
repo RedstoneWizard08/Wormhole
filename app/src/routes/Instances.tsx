@@ -18,6 +18,7 @@ export const Instances = () => {
 
     return (
         <div className="instances-wrapper">
+            <button className="add-instance-button">Add Instance</button>
             <div className="instances-container">
                 {Array.isArray(instances) && instances.map((info) => (
                     <Instance data={info} key={info.name} />
@@ -25,4 +26,5 @@ export const Instances = () => {
             </div>
         </div>
     );
+
 };

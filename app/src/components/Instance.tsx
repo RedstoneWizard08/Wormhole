@@ -17,12 +17,35 @@ export const Instance: FunctionalComponent<InstanceProps> = ({ data }) => {
     return (
         <div className="instance-container" onClick={clicked}>
             {data.game == KSPGame.KSP2 ? (
-                <img src={ksp2logo} className="logo" />
+                <><img src={ksp2logo} className="logo"  alt={"background"} />
+                </>
             ) : (
-                <img src={ksp1logo} className="logo" />
+                <img src={ksp1logo} className="logo"  alt={"background"} />
             )}
-
-            <p className="name">{data.name}</p>
+            <p className="name">{data.name}<br />
+                <div className="instance-button-container">
+                    <button
+                        type="button"
+                        className="action"
+                        id="launch-button"
+                        onClick={(e) => {
+                            e.stopPropagation(); // stop the click event from bubbling up to the container
+                            console.log("test");
+                        }}
+                    ><i className="icon fa-solid fa-caret-up" /> {/* TODO: find better icon */}
+                    </button>
+                    <button
+                        type="button"
+                        className="action"
+                        id="delete-button"
+                        onClick={(e) => {
+                            e.stopPropagation(); // stop the click event from bubbling up to the container
+                            console.log("test");
+                        }}
+                    ><i className="icon fa-solid fa-trash-can" />
+                    </button>
+                </div>
+            </p>
         </div>
     );
 };
