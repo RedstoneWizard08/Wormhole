@@ -5,17 +5,12 @@
     margin: 0;
     padding: 0;
 
-    background-image: linear-gradient(to bottom, #171717, #868686);
-
-    .container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 50vh;
-    }
+    background-color: #1f2120;
 
     .logo {
-        width: 65%;
+        width: 50%;
+
+        margin: 4% 25%;
         border-radius: 8px;
     }
 
@@ -32,10 +27,11 @@
     }
 
     .action {
-        border: none;
+        border: 2px solid #3c3c3e;
         border-radius: 4px;
-        background-color: #bcbfbc;
+        background-color: transparent;
 
+        color: #dddfdc;
         font-family: "manteka", serif;
 
         width: 10%;
@@ -47,8 +43,7 @@
         transition: color 0.5s ease, background-color 0.5s ease;
 
         &:hover {
-            color: #dddfdc;
-            background-color: #3a3c3f;
+            background-color: #3c3c3e;
         }
     }
 }
