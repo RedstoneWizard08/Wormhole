@@ -15,7 +15,7 @@ export const FullMod = () => {
         (async () => {
             setModInfo(
                 await invoke_proxy("get_mod", {
-                    mod_id: parseInt(modId || "-1", 10),
+                    modId: parseInt(modId || "-1", 10),
                 })
             );
         })();
@@ -23,7 +23,7 @@ export const FullMod = () => {
 
     const install = async () => {
         window.open(await invoke_proxy("get_mod_download", {
-            mod_id: parseInt(modId || "-1", 10),
+            modId: parseInt(modId || "-1", 10),
         }));
     };
 

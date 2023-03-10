@@ -55,7 +55,7 @@ pub struct ModInfo {
     pub default_version_id: Option<i32>,
     pub shared_authors: Option<Vec<Value>>,
     pub background: Option<String>,
-    pub bg_offset_y: Option<String>,
+    pub bg_offset_y: Option<i32>,
     pub license: Option<String>,
     pub website: Option<String>,
     pub donations: Option<String>,
@@ -121,7 +121,7 @@ impl ModInfo {
                 .unwrap_or(bg_img),
         );
 
-        out.bg_offset_y = Some(self.bg_offset_y.clone().unwrap_or("".to_string()));
+        out.bg_offset_y = Some(self.bg_offset_y.clone().unwrap_or(0));
         out.license = Some(self.license.clone().unwrap_or("".to_string()));
         out.website = Some(self.website.clone().unwrap_or("".to_string()));
         out.donations = Some(self.donations.clone().unwrap_or("".to_string()));

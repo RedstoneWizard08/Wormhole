@@ -73,7 +73,7 @@ export const Pagination: FunctionalComponent<PaginationProps> = ({
 
             {[...Array(offsetted + 1)].map(
                 (_, i) =>
-                    i != 0 && (
+                    i + offset > 0 && i + offset <= pages && (
                         <PaginationButton
                             page={i + offset}
                             setPage={setCurrent}

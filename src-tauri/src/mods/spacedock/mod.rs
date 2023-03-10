@@ -43,8 +43,13 @@ impl SpaceDockAPI {
     pub async fn get_mods_for_game(&self, game: i32, page: i32, count: i32) -> BrowseResult {
         let uri = format!("{}/browse?page={}&count={}&game_id={}", self.base, page, count, game);
         let resp = reqwest::get(uri).await.unwrap();
-        let data = resp.json::<BrowseResult>().await.unwrap();
+        let text = resp.text().await.unwrap();
+        let data = serde_json::from_str::<BrowseResult>(&text);
 
-        return data.finish();
+        if let Ok(data) = data {
+            return data.finish();
+        }
+
+        panic!("Found: {}", text);
     }
 }
