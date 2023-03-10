@@ -71,6 +71,9 @@ export const createMockAPI = () => {
             
             case "get_mod_download":
                 return await new SpaceDockAPI().getModDownload(args.modId);
+            
+            case "install_mod":
+                return await new SpaceDockAPI().getModDownload(args.modId);
         }
     });
 };

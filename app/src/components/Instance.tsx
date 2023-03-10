@@ -1,6 +1,5 @@
 import { FunctionalComponent } from "preact";
 import { route } from "preact-router";
-import { Mouse } from "puppeteer";
 import { InstanceInfo, KSPGame } from "../api/instance";
 import ksp1logo from "../assets/ksp.png";
 import ksp2logo from "../assets/ksp2.png";

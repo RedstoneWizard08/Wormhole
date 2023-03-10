@@ -22,9 +22,13 @@ export const FullMod = () => {
     }, [modId]);
 
     const install = async () => {
-        window.open(await invoke_proxy("get_mod_download", {
+        // window.open(await invoke_proxy("get_mod_download", {
+        //     modId: parseInt(modId || "-1", 10),
+        // }));
+
+        await invoke_proxy("get_mod_download", {
             modId: parseInt(modId || "-1", 10),
-        }));
+        });
     };
 
     return (

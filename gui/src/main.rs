@@ -4,7 +4,7 @@
 use installer::bepinex::BepInExInstallManager;
 use tauri::Window;
 use std::{path::PathBuf, process::Command};
-use wormhole_common::{finder::find_install_dir, instances::InstanceInfo, mods::{spacedock::SpaceDockAPI, schema::browse::{ModInfo, BrowseResult}}};
+use wormhole_common::{finder::find_install_dir, instances::InstanceInfo, mods::{spacedock::SpaceDockAPI, schema::browse::{ModInfo, BrowseResult}}, installer::mods::ModInstaller};
 
 pub mod installer;
 pub mod progress;
@@ -85,6 +85,13 @@ async fn get_mods(game_id: i32, count: i32, page: i32) -> BrowseResult {
     return SpaceDockAPI::new().get_mods_for_game(game_id, page, count).await;
 }
 
+#[tauri::command]
+async fn install_mod(mod_id: i32) {
+    let installer = ModInstaller::new(find_install_dir());
+
+    installer.install_from_spacedock(mod_id).await;
+}
+
 pub fn main() {
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![
@@ -96,7 +103,8 @@ pub fn main() {
             get_instance_info,
             get_instances,
             get_mod,
-            get_mods
+            get_mods,
+            install_mod
         ])
         .run(tauri::generate_context!())
         .expect("Error while starting Wormhole!");

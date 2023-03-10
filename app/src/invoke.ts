@@ -36,6 +36,8 @@ export interface InvokeFunction {
     get_mod: [ModArgs, FullModInfo];
     get_mod_download: [ModArgs, string];
     get_mods: [ModsArgs, BrowseResult];
+
+    install_mod: [ModArgs, undefined];
 }
 
 export const invoke_proxy = async <K extends keyof InvokeFunction>(
