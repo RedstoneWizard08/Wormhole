@@ -5,6 +5,7 @@ use crate::models::latest::LatestSchema;
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct SpaceDockAPI {
     pub base: String,
+    pub api_base: String,
 }
 
 impl Default for SpaceDockAPI {
@@ -16,7 +17,8 @@ impl Default for SpaceDockAPI {
 impl SpaceDockAPI {
     pub fn new() -> Self {
         return Self {
-            base: SpaceDockAPI::get_default_api_url(),
+            base: SpaceDockAPI::get_default_url(),
+            api_base: SpaceDockAPI::get_default_api_url(),
         };
     }
 
@@ -24,8 +26,12 @@ impl SpaceDockAPI {
         return "https://spacedock.info/api".to_string();
     }
 
+    pub fn get_default_url() -> String {
+        return "https://spacedock.info".to_string();
+    }
+
     pub async fn get_mod(&self, id: i32) -> ModInfo {
-        let uri = format!("{}/mod/{}", self.base, id);
+        let uri = format!("{}/mod/{}", self.api_base, id);
         let resp = reqwest::get(uri).await.unwrap();
         let data = resp.json::<ModInfo>().await.unwrap();
 
@@ -33,7 +39,7 @@ impl SpaceDockAPI {
     }
 
     pub async fn get_mods(&self, page: i32, count: i32) -> BrowseResult {
-        let uri = format!("{}/browse?page={}&count={}", self.base, page, count);
+        let uri = format!("{}/browse?page={}&count={}", self.api_base, page, count);
         let resp = reqwest::get(uri).await.unwrap();
         let data = resp.json::<BrowseResult>().await.unwrap();
 
@@ -41,7 +47,7 @@ impl SpaceDockAPI {
     }
 
     pub async fn get_mods_for_game(&self, game: i32, page: i32, count: i32) -> BrowseResult {
-        let uri = format!("{}/browse?page={}&count={}&game_id={}", self.base, page, count, game);
+        let uri = format!("{}/browse?page={}&count={}&game_id={}", self.api_base, page, count, game);
         let resp = reqwest::get(uri).await.unwrap();
         let text = resp.text().await.unwrap();
         let data = serde_json::from_str::<BrowseResult>(&text);
@@ -54,7 +60,7 @@ impl SpaceDockAPI {
     }
 
     pub async fn get_mod_download(&self, id: i32) -> String {
-        let uri = format!("{}/mod/{}/latest", self.base.clone(), id);
+        let uri = format!("{}/mod/{}/latest", self.api_base, id);
         let resp = reqwest::get(uri).await.unwrap();
         let text = resp.text().await.unwrap();
         let data = serde_json::from_str::<LatestSchema>(&text).unwrap();
