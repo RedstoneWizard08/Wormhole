@@ -1,7 +1,7 @@
 import "./Instances.scss";
 import { InstanceInfo } from "../api/instance";
 import { Instance } from "../components/Instance";
-import { useState } from "preact/hooks";
+import { useState, useEffect } from "preact/hooks";
 import { invoke_proxy } from "../invoke";
 
 export const Instances = () => {
@@ -9,16 +9,17 @@ export const Instances = () => {
 
     const refreshInstances = async () => {
         const data = await invoke_proxy("get_instances");
-
         setInstances(data);
     };
 
-    refreshInstances();
+    useEffect(() => {
+        refreshInstances().then(r => r);
+    }, []);
 
     return (
         <div className="instances-wrapper">
             <div className="instances-container">
-                {instances.map((info) => (
+                {Array.isArray(instances) && instances.map((info) => (
                     <Instance data={info} key={info.name} />
                 ))}
             </div>
