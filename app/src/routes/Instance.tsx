@@ -67,7 +67,7 @@ export const Instance = () => {
                         <p className="time">
                             <i className="fa-solid fa-clock" />
                             &nbsp;&nbsp;
-                            {instanceInfo?.timePlayed || "0 minutes"}
+                            {instanceInfo?.time_played || "0 minutes"}
                         </p>
 
                         {editing ? (

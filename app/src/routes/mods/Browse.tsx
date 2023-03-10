@@ -18,7 +18,7 @@ export const Browse = () => {
             setLoading(true);
 
             const data = await invoke_proxy("get_mods", {
-                gameId: 22407,
+                game_id: 22407,
                 count: perPage,
                 page,
             });
