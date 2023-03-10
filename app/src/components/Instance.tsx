@@ -22,7 +22,9 @@ export const Instance: FunctionalComponent<InstanceProps> = ({ data }) => {
             ) : (
                 <img src={ksp1logo} className="logo" alt={"background"} />
             )}
+            
             <p className="name">{data.name}</p>
+
             <div className="buttons">
                 <button
                     type="button"
@@ -32,8 +34,10 @@ export const Instance: FunctionalComponent<InstanceProps> = ({ data }) => {
                         e.stopPropagation(); // stop the click event from bubbling up to the container
                         console.log("test");
                     }}
-                ><i className="icon fa-solid fa-caret-up" /> {/* TODO: find better icon */}
+                >
+                    <i className="icon fa-solid fa-play" />
                 </button>
+
                 <button
                     type="button"
                     className="action"
@@ -42,7 +46,8 @@ export const Instance: FunctionalComponent<InstanceProps> = ({ data }) => {
                         e.stopPropagation(); // stop the click event from bubbling up to the container
                         console.log("test");
                     }}
-                ><i className="icon fa-solid fa-trash-can" />
+                >
+                    <i className="icon fa-solid fa-trash-can" />
                 </button>
             </div>
         </div>
