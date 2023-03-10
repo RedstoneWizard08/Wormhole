@@ -56,10 +56,6 @@ impl BepInExInstallManager {
             if file_name.contains("BepInEx") {
                 bepinex_installed = true;
             }
-
-            if file_name.contains("SpaceWarp") {
-                return Err("SpaceWarp or another mod loader is already installed!".to_string());
-            }
         }
 
         if !bepinex_installed {
@@ -98,16 +94,6 @@ impl BepInExInstallManager {
 
         fs::remove_file(self.ksp2_install_path.join(".spacewarp_release.zip"))
             .expect("Could not delete the SpaceWarp release file!");
-
-        if !&self
-            .ksp2_install_path
-            .join("SpaceWarp")
-            .join("Mods")
-            .exists()
-        {
-            fs::create_dir(self.ksp2_install_path.join("SpaceWarp").join("Mods"))
-                .expect("Could not create the Mods directory!");
-        }
 
         return Ok(());
     }

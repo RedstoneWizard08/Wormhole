@@ -9,7 +9,10 @@ export const Home = () => {
 
     return (
         <div className="home-container">
-            <img src={banner} alt="Space Warp Logo" className="logo" />
+            <div class="container">
+                <img src={banner} alt="Space Warp Logo" className="logo"/>
+            </div>
+
 
             <br />
 

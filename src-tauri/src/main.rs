@@ -1,6 +1,5 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 #![allow(clippy::needless_return)]
-#![feature(async_closure)]
 
 use installer::{bepinex::BepInExInstallManager, doorstop::DoorstopInstallManager};
 use instances::InstanceInfo;

@@ -9,7 +9,7 @@
 
     .mod {
         width: 100%;
-        height: 90%;
+        height: 85%;
 
         overflow-y: scroll;
 
@@ -76,9 +76,8 @@
     }
 
     .actions {
-        width: 98%;
-        height: 8%;
-
+        width: 100%;
+        height: auto;
         padding: 1%;
 
         .action {
@@ -88,7 +87,7 @@
             border-radius: 8px;
             padding: 0.5% 1%;
 
-            font-family: "manteka";
+            font-family: "manteka", serif;
             font-size: 12pt;
             cursor: pointer;
 
