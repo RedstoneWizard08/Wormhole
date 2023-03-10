@@ -1,13 +1,12 @@
 use tauri::Window;
-
-use crate::{
-    installer::bepinex_loader::BepInExLoaderInstallManager, releases::get_latest_release_zips, progress::Downloader,
-};
+use wormhole_common::releases::get_latest_release_zips;
 
 use std::{
     fs,
     path::PathBuf,
 };
+
+use crate::{installer::bepinex_loader::BepInExLoaderInstallManager, progress::Downloader};
 
 pub struct BepInExInstallManager {
     pub ksp2_install_path: PathBuf,

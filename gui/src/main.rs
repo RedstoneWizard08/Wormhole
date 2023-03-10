@@ -4,6 +4,7 @@
 use installer::bepinex::BepInExInstallManager;
 use tauri::Window;
 use std::{path::PathBuf, process::Command};
+use wormhole_common::{finder::find_install_dir, instances::InstanceInfo, mods::{spacedock::SpaceDockAPI, schema::browse::{ModInfo, BrowseResult}}};
 
 pub mod installer;
 pub mod progress;
@@ -56,7 +57,7 @@ async fn uninstall_bepinex() -> String {
 
 #[tauri::command]
 async fn launch() {
-    let dir = finder::find_install_dir();
+    let dir = find_install_dir();
     let executable = dir.join("KSP2_x64.exe");
 
     Command::new(executable)

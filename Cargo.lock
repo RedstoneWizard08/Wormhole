@@ -444,21 +444,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "common"
-version = "0.1.0"
-dependencies = [
- "ckandex",
- "keyvalues-parser",
- "reqwest 0.11.14",
- "serde",
- "serde_json",
- "tokio 1.26.0",
- "tokio-stream",
- "tokio-util 0.7.7",
- "zip-extensions",
-]
-
-[[package]]
 name = "convert_case"
 version = "0.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -4572,6 +4557,22 @@ dependencies = [
  "serde_json",
  "tauri",
  "tauri-build",
+ "tokio 1.26.0",
+ "tokio-stream",
+ "tokio-util 0.7.7",
+ "wormhole-common",
+ "zip-extensions",
+]
+
+[[package]]
+name = "wormhole-common"
+version = "0.1.0"
+dependencies = [
+ "ckandex",
+ "keyvalues-parser",
+ "reqwest 0.11.14",
+ "serde",
+ "serde_json",
  "tokio 1.26.0",
  "tokio-stream",
  "tokio-util 0.7.7",
