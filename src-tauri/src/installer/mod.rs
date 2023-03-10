@@ -2,3 +2,4 @@
 pub mod bepinex;
 pub mod bepinex_loader;
 pub mod doorstop;
+pub mod mods;

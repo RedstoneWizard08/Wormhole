@@ -1,6 +1,6 @@
 use serde::{Serialize, Deserialize};
-
 use super::schema::browse::{BrowseResult, ModInfo};
+use crate::models::latest::LatestSchema;
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct SpaceDockAPI {
@@ -51,5 +51,14 @@ impl SpaceDockAPI {
         }
 
         panic!("Found: {}", text);
+    }
+
+    pub async fn get_mod_download(&self, id: i32) -> String {
+        let uri = format!("{}/mod/${}/latest", self.base.clone(), id);
+        let resp = reqwest::get(uri).await.unwrap();
+        let text = resp.text().await.unwrap();
+        let data = serde_json::from_str::<LatestSchema>(&text).unwrap();
+
+        return format!("{}{}", self.base, data.download_path);
     }
 }

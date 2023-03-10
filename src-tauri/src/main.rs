@@ -1,4 +1,6 @@
+#![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 #![allow(clippy::needless_return)]
+#![feature(async_closure)]
 
 use installer::{bepinex::BepInExInstallManager, doorstop::DoorstopInstallManager};
 use instances::InstanceInfo;
@@ -125,3 +127,4 @@ pub fn main() {
         .run(tauri::generate_context!())
         .expect("Error while starting Wormhole!");
 }
+// BIE KSP2 = 3255
