@@ -32,5 +32,5 @@ export interface InstanceInfo {
     mods: InstanceMod[];
     install_path: string;
     description?: string;
-    timePlayed?: string;
+    time_played?: string;
 }

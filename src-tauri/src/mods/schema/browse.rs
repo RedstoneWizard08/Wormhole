@@ -28,17 +28,17 @@ impl Default for ModVersion {
 
 impl ModVersion {
     pub fn finish(&self) -> Self {
-        let mut out = ModVersion::default();
+        let out = ModVersion {
+            friendly_version: Some(self.friendly_version.clone().unwrap_or("".to_string())),
+            game_version: Some(self.friendly_version.clone().unwrap_or("".to_string())),
+            id: Some(self.id.unwrap_or( 0)),
+            created: Some(self.created.clone().unwrap_or("".to_string())),
+            download_path: Some(self.download_path.clone().unwrap_or("".to_string())),
+            changelog: Some(self.changelog.clone().unwrap_or("".to_string())),
+            downloads: Some(self.downloads.unwrap_or( 0)),
+        };
 
-        out.friendly_version = Some(self.friendly_version.clone().unwrap_or("".to_string()));
-        out.game_version = Some(self.friendly_version.clone().unwrap_or("".to_string()));
-        out.id = Some(self.id.unwrap_or( 0));
-        out.created = Some(self.created.clone().unwrap_or("".to_string()));
-        out.download_path = Some(self.download_path.clone().unwrap_or("".to_string()));
-        out.changelog = Some(self.changelog.clone().unwrap_or("".to_string()));
-        out.downloads = Some(self.downloads.unwrap_or( 0));
-
-        return out.clone();
+        return out;
     }
 }
 
@@ -102,7 +102,7 @@ impl ModInfo {
         }
 
         if let Some(versions) = self.versions.clone() {
-            _versions = versions.iter().map(|v| v.finish().clone()).collect();
+            _versions = versions.iter().map(|v| v.finish()).collect();
         }
 
         out.name = Some(self.name.clone().unwrap_or("".to_string()));
@@ -130,7 +130,7 @@ impl ModInfo {
         out.versions = Some(_versions);
         out.description = Some(self.description.clone().unwrap_or("".to_string()));
 
-        return out.clone();
+        return out;
     }
 }
 
@@ -159,7 +159,7 @@ impl BrowseResult {
         let mut _res = Vec::new();
 
         if let Some(result) = self.result.clone() {
-            _res = result.iter().map(|v| v.finish(true).clone()).collect();
+            _res = result.iter().map(|v| v.finish(true)).collect();
         }
 
         out.result = Some(_res);
@@ -167,6 +167,6 @@ impl BrowseResult {
         out.pages = Some(self.pages.unwrap_or(0));
         out.page = Some(self.page.unwrap_or(0));
 
-        return out.clone();
+        return out;
     }
 }

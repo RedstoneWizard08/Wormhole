@@ -4,7 +4,7 @@ import { BrowseResult } from "./api/models/browse";
 import { FullModInfo } from "./api/models/modinfo/full";
 
 export interface DownloadArgs {
-    kspGivenPath: string;
+    ksp_given_path: string;
 }
 
 export interface InstanceArgs {
@@ -12,11 +12,11 @@ export interface InstanceArgs {
 }
 
 export interface ModArgs {
-    modId: number;
+    mod_id: number;
 }
 
 export interface ModsArgs {
-    gameId?: number;
+    game_id?: number;
     page: number;
     count: number;
 }
