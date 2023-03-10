@@ -14,9 +14,10 @@ export default defineConfig({
 
         proxy: {
             "^/_spacedock/.*": {
-                target: "https://spacedock.info/api",
+                target: "https://spacedock.info/",
                 changeOrigin: true,
                 rewrite: (path) => path.replace(/^\/_spacedock/, ""),
+                followRedirects: true,
             },
         },
 

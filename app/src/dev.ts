@@ -73,7 +73,10 @@ export const createMockAPI = () => {
                 return await new SpaceDockAPI().getModsForGame(22407, args.page, args.count);
             
             case "get_mod":
-                return await new SpaceDockAPI().getMod(args.modId);
+                return await new SpaceDockAPI().getMod(args.mod_id);
+            
+            case "get_mod_download":
+                return await new SpaceDockAPI().getModDownload(args.mod_id);
         }
     });
 };

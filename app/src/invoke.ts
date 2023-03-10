@@ -37,6 +37,7 @@ export interface InvokeFunction {
     get_instance_info: [InstanceArgs, InstanceInfo];
 
     get_mod: [ModArgs, FullModInfo];
+    get_mod_download: [ModArgs, string];
     get_mods: [ModsArgs, BrowseResult];
 }
 

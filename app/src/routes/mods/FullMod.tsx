@@ -15,11 +15,17 @@ export const FullMod = () => {
         (async () => {
             setModInfo(
                 await invoke_proxy("get_mod", {
-                    modId: parseInt(modId || "-1", 10),
+                    mod_id: parseInt(modId || "-1", 10),
                 })
             );
         })();
     }, [modId]);
+
+    const install = async () => {
+        window.open(await invoke_proxy("get_mod_download", {
+            mod_id: parseInt(modId || "-1", 10),
+        }));
+    };
 
     return (
         <div className="full-mod-container">
@@ -57,7 +63,7 @@ export const FullMod = () => {
             </div>
 
             <div className="actions">
-                <button type="button" className="action">
+                <button type="button" className="action" onClick={install}>
                     <i className="icon fa-regular fa-circle-down" />
                     &nbsp; Install
                 </button>

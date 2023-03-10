@@ -12,7 +12,7 @@ export class SpaceDockAPI {
 
     public static getDefaultAPIUrl() {
         return import.meta.env.DEV
-            ? "/_spacedock"
+            ? "/_spacedock/api"
             : "https://spacedock.info/api";
     }
 
@@ -28,6 +28,15 @@ export class SpaceDockAPI {
         const response = await axios.get(`${this.base}/mod/${id}`);
 
         return finishFullModInfo(response.data);
+    }
+
+    public async getModDownload(id: string | number) {
+        const response = await axios.get(`${this.base}/mod/${id}/latest`);
+
+        return (
+            (this.base == "/_spacedock/api" ? "/_spacedock" : this.base) +
+            response.data.download_path
+        );
     }
 
     public async getModsForGame(gameId: number, page = 1, count = 30) {
