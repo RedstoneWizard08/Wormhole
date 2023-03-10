@@ -1,9 +1,11 @@
+use tauri::Window;
+
 use crate::{
-    installer::bepinex_loader::BepInExLoaderInstallManager, releases::get_latest_release_zips,
+    installer::bepinex_loader::BepInExLoaderInstallManager, releases::get_latest_release_zips, progress::Downloader,
 };
+
 use std::{
-    fs::{self, File},
-    io,
+    fs,
     path::PathBuf,
 };
 
@@ -32,7 +34,7 @@ impl BepInExInstallManager {
         return Ok(());
     }
 
-    pub async fn download(&mut self) -> Result<(), String> {
+    pub async fn download(&mut self, window: Window) -> Result<(), String> {
         if !self.ksp2_install_path.is_dir() {
             return Err("KSP2 install path is not a directory!".to_string());
         }
@@ -61,7 +63,7 @@ impl BepInExInstallManager {
         if !bepinex_installed {
             let mut bepinex = BepInExLoaderInstallManager::new(self.ksp2_install_path.clone());
 
-            bepinex.download().await?;
+            bepinex.download(window.clone()).await?;
         }
 
         let download_url = self
@@ -71,20 +73,9 @@ impl BepInExInstallManager {
 
         println!("Downloading from URL: {}", download_url);
 
-        let response = reqwest::get(download_url)
-            .await
-            .expect("Could not download the SpaceWarp release!");
-
-        let body = response
-            .bytes()
-            .await
-            .expect("Could not read the SpaceWarp release!");
-
-        let mut out_file = File::create(self.ksp2_install_path.join(".spacewarp_release.zip"))
-            .expect("Could not create the SpaceWarp release file!");
-
-        io::copy(&mut body.as_ref(), &mut out_file)
-            .expect("Could not copy the SpaceWarp release to the file!");
+        let out_file = self.ksp2_install_path.join(".spacewarp_release.zip");
+        
+        Downloader::download(download_url, out_file, window).await;
 
         zip_extensions::read::zip_extract(
             &PathBuf::from(&self.ksp2_install_path.join(".spacewarp_release.zip")),

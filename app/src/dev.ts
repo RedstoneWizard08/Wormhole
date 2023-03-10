@@ -39,14 +39,8 @@ export const createMockAPI = () => {
     // eslint-disable-next-line no-unused-vars
     mockIPC(async (cmd, args: any) => {
         switch (cmd) {
-            case "download_doorstop":
-                return "Success";
-
             case "download_bepinex":
                 await downloadBepInEx();
-                return "Success";
-
-            case "uninstall_doorstop":
                 return "Success";
 
             case "uninstall_bepinex":

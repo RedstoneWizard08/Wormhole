@@ -1,8 +1,11 @@
 use std::{
-    fs::{self, File},
-    io,
+    fs,
     path::PathBuf,
 };
+
+use tauri::Window;
+
+use crate::progress::Downloader;
 
 pub struct BepInExLoaderInstallManager {
     pub ksp2_install_path: PathBuf,
@@ -22,7 +25,7 @@ impl BepInExLoaderInstallManager {
         };
     }
 
-    pub async fn download(&mut self) -> Result<(), String> {
+    pub async fn download(&mut self, window: Window) -> Result<(), String> {
         if !self.ksp2_install_path.is_dir() {
             return Err("KSP2 install path is not a directory!".to_string());
         }
@@ -47,20 +50,9 @@ impl BepInExLoaderInstallManager {
 
         println!("Downloading from URL: {}", download_url);
 
-        let response = reqwest::get(download_url)
-            .await
-            .expect("Could not download the BepInEx release!");
+        let out_file = self.ksp2_install_path.join(".bepinex_release.zip");
 
-        let body = response
-            .bytes()
-            .await
-            .expect("Could not read the BepInEx release!");
-
-        let mut out_file = File::create(self.ksp2_install_path.join(".bepinex_release.zip"))
-            .expect("Could not create the BepInEx release file!");
-
-        io::copy(&mut body.as_ref(), &mut out_file)
-            .expect("Could not copy the BepInEx release to the file!");
+        Downloader::download(download_url, out_file, window).await;
 
         zip_extensions::read::zip_extract(
             &PathBuf::from(&self.ksp2_install_path.join(".bepinex_release.zip")),

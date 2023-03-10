@@ -22,10 +22,7 @@ export interface ModsArgs {
 }
 
 export interface InvokeFunction {
-    download_doorstop: [DownloadArgs, string];
     download_bepinex: [DownloadArgs, string];
-
-    uninstall_doorstop: [undefined, string];
     uninstall_bepinex: [undefined, string];
 
     get_install_dir: [undefined, string];

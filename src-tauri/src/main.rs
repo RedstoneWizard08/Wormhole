@@ -1,9 +1,10 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 #![allow(clippy::needless_return)]
 
-use installer::{bepinex::BepInExInstallManager, doorstop::DoorstopInstallManager};
+use installer::bepinex::BepInExInstallManager;
 use instances::InstanceInfo;
 use mods::{spacedock::SpaceDockAPI, schema::browse::{BrowseResult, ModInfo}};
+use tauri::Window;
 use std::{path::PathBuf, process::Command};
 
 pub mod finder;
@@ -12,6 +13,7 @@ pub mod models;
 pub mod releases;
 pub mod mods;
 pub mod instances;
+pub mod progress;
 
 #[tauri::command]
 fn get_install_dir() -> PathBuf {
@@ -41,30 +43,11 @@ fn get_install_type() -> bool {
 }
 
 #[tauri::command]
-async fn download_doorstop() -> String {
-    let mut install_manager = DoorstopInstallManager::new(get_install_dir());
-
-    install_manager.resolve().await.unwrap();
-    install_manager.download().await.unwrap();
-
-    return "Success".to_string();
-}
-
-#[tauri::command]
-async fn download_bepinex() -> String {
+async fn download_bepinex(window: Window) -> String {
     let mut install_manager = BepInExInstallManager::new(get_install_dir());
 
     install_manager.resolve().await.unwrap();
-    install_manager.download().await.unwrap();
-
-    return "Success".to_string();
-}
-
-#[tauri::command]
-async fn uninstall_doorstop() -> String {
-    let mut install_manager = DoorstopInstallManager::new(get_install_dir());
-
-    install_manager.uninstall();
+    install_manager.download(window).await.unwrap();
 
     return "Success".to_string();
 }
@@ -111,8 +94,6 @@ async fn get_mods(game_id: i32, count: i32, page: i32) -> BrowseResult {
 pub fn main() {
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![
-            download_doorstop,
-            uninstall_doorstop,
             download_bepinex,
             uninstall_bepinex,
             get_install_dir,

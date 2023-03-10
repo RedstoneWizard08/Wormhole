@@ -14,11 +14,13 @@ tauri-build = { version = "1.2", features = [] }
 serde_json = "1.0"
 serde = { version = "1.0", features = ["derive"] }
 tauri = { version = "1.2", features = ["api-all"] }
-reqwest = { version = "0.11.5", features = ["json"] }
 zip-extensions = "0.6.1"
 keyvalues-parser = "0.1.0"
 ckandex = "0.4.2"
 tokio = { version = "1.26.0", features = ["full"] }
+reqwest = { version = "0.11.14", features = ["stream", "gzip"] }
+tokio-util = { version = "0.7.7", features = ["full"] }
+tokio-stream = { version = "0.1.12", features = ["tokio-util", "fs", "net", "sync"] }
 
 [features]
 default = ["custom-protocol"]
