@@ -1,13 +1,29 @@
 import "./InstallProgress.scss";
 import banner from "../assets/background_banner.png";
-import { useState } from "preact/hooks";
+import { useEffect, useState } from "preact/hooks";
 import { invoke_proxy } from "../invoke";
 import { route } from "preact-router";
+import { listen } from "@tauri-apps/api/event";
+
+let _listening = false;
 
 export const InstallProgress = () => {
     const [status, setStatus] = useState({
         percent: "0%",
         message: "Waiting for start button...",
+    });
+
+    useEffect(() => {
+        if (!_listening) {
+            listen("download_progress", (ev) => {
+                setStatus({
+                    percent: ((100 * (ev.payload as any).received) / (ev.payload as any).total) + "%",
+                    message: status.message,
+                });
+            });
+
+            _listening = true;
+        }
     });
 
     const [installed, setInstalled] = useState(false);
@@ -17,7 +33,7 @@ export const InstallProgress = () => {
 
         const _dir = await invoke_proxy("get_install_dir");
 
-        if (/[A-Z]:(?:\\|\/).+/gm.test(_dir)) {
+        if (/(?:(:?[A-Z]:(?:\\|\/).+)|(:?\/.+))/gm.test(_dir)) {
             return null;
         }
 

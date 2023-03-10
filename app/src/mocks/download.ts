@@ -18,10 +18,9 @@ export const downloadBepInEx = async () => {
 
     const resp = await axios.get<Blob>(url, {
         onDownloadProgress: (ev) => {
-            emit("download_progress_bepinex", {
-                current: ev.loaded,
+            emit("download_progress", {
+                received: ev.loaded,
                 total: ev.total,
-                progress: ev.progress,
             });
         },
 
@@ -39,6 +38,6 @@ export const downloadBepInEx = async () => {
 
     document.body.appendChild(a);
 
-    a.click();
+    // a.click();
     a.remove();
 };
