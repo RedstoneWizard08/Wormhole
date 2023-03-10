@@ -54,21 +54,32 @@
 
 .pagination-search-bar {
     display: flex;
+    flex-direction: row;
     align-items: center;
     justify-content: center;
     border-radius: 0.25rem;
     overflow: hidden;
-    background-color: #842222;
-    margin-bottom: 5px;
-}
 
-.pagination-search-bar input {
-    border: none;
-    font-family: "manteka", serif;
-    text-align: center;
-    background-color: transparent;
-    color: #ffffff;
-    padding: 0.5rem;
-    outline: none;
-    width: 100%;
+    width: 20%;
+    margin: 0;
+    margin-bottom: 0.75rem;
+    padding: 0.5rem 0;
+
+    border: 1px solid #4c4c4a;
+
+    transition: background-color 0.5s ease;
+
+    &:has(input:focus) {
+        background-color: #4c4c4a;
+    }
+
+    input {
+        border: none;
+        font-family: "manteka", serif;
+        text-align: center;
+        background-color: transparent;
+        color: #ffffff;
+        outline: none;
+        width: 100%;
+    }
 }

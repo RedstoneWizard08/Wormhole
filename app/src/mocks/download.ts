@@ -38,6 +38,6 @@ export const downloadBepInEx = async () => {
 
     document.body.appendChild(a);
 
-    // a.click();
+    a.click();
     a.remove();
 };

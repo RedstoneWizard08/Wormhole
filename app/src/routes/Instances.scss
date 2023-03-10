@@ -14,25 +14,23 @@
     align-items: center;
     justify-content: center;
 
-    .add-instance-button:hover {
-        background-color: green;
-        color: white;
-    }
-
     .add-instance-button {
-        width: 100%;
+        width: 25%;
         height: 3rem;
 
         position: absolute;
         top: 0;
 
-        background-color: #4c4c4c;
+        background-color: transparent;
         color: white;
         border-radius: 8px;
         padding: 8px;
         font-size: 16px;
         cursor: pointer;
-        transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+        transition: background-color 0.5s ease, color 0.5s ease;
+        border: 1px solid #4c4c4c;
+        outline: none;
+        margin: 0.5% 37.5%;
 
         font-family: "manteka", serif;
 
@@ -50,6 +48,11 @@
 
         .add-instance-text {
             font-size: 1rem;
+        }
+
+        &:hover {
+            background-color: #4c4c4c;
+            color: white;
         }
     }
 
