@@ -1,6 +1,10 @@
-use std::{fs::File, io::{self, Cursor}, path::PathBuf};
+use std::{
+    fs::File,
+    io::{self, Cursor},
+    path::PathBuf,
+};
 
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 use tauri::Window;
 use tokio_stream::StreamExt;
 
@@ -21,20 +25,30 @@ impl Downloader {
         let mut stream = resp.bytes_stream();
         let mut bytes: Vec<u8> = Vec::new();
 
-        window.emit("download_progress", DownloadProgress {
-            total: size,
-            received: recv,
-        }).unwrap();
+        window
+            .emit(
+                "download_progress",
+                DownloadProgress {
+                    total: size,
+                    received: recv,
+                },
+            )
+            .unwrap();
 
         while let Some(Ok(item)) = stream.next().await {
             recv += item.len();
 
             bytes.append(&mut item.to_vec());
 
-            window.emit("download_progress", DownloadProgress {
-                total: size,
-                received: recv,
-            }).unwrap();
+            window
+                .emit(
+                    "download_progress",
+                    DownloadProgress {
+                        total: size,
+                        received: recv,
+                    },
+                )
+                .unwrap();
         }
 
         let mut bytes_cursor = Cursor::new(bytes);

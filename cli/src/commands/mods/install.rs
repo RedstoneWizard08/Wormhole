@@ -1,4 +1,4 @@
-use wormhole_common::{installer::mods::ModInstaller, finder::find_install_dir};
+use wormhole_common::{finder::find_install_dir, installer::mods::ModInstaller};
 
 pub async fn install_mod(id: i32, verbose: bool) {
     if verbose {

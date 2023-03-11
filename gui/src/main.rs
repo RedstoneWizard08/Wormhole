@@ -2,10 +2,17 @@
 #![allow(clippy::needless_return)]
 
 use installer::bepinex::BepInExInstallManager;
-use tauri::Window;
 use std::{path::PathBuf, process::Command};
-use wormhole_common::{finder::find_install_dir, instances::InstanceInfo, mods::{spacedock::SpaceDockAPI, schema::browse::{ModInfo, BrowseResult}}};
+use tauri::Window;
 use wormhole_common::installer::mods::ModInstaller;
+use wormhole_common::{
+    finder::find_install_dir,
+    instances::InstanceInfo,
+    mods::{
+        schema::browse::{BrowseResult, ModInfo},
+        spacedock::SpaceDockAPI,
+    },
+};
 
 pub mod installer;
 pub mod progress;
@@ -73,7 +80,10 @@ async fn get_instances() -> Vec<InstanceInfo> {
 
 #[tauri::command]
 async fn get_instance_info(instance_id: i32) -> Option<InstanceInfo> {
-    return InstanceInfo::defaults().iter().find(|i| i.id == instance_id).cloned();
+    return InstanceInfo::defaults()
+        .iter()
+        .find(|i| i.id == instance_id)
+        .cloned();
 }
 
 #[tauri::command]
@@ -83,7 +93,9 @@ async fn get_mod(mod_id: i32) -> ModInfo {
 
 #[tauri::command]
 async fn get_mods(game_id: i32, count: i32, page: i32) -> BrowseResult {
-    return SpaceDockAPI::new().get_mods_for_game(game_id, page, count).await;
+    return SpaceDockAPI::new()
+        .get_mods_for_game(game_id, page, count)
+        .await;
 }
 
 #[tauri::command]
@@ -93,6 +105,7 @@ async fn install_mod(mod_id: i32) {
     installer.install_from_spacedock(mod_id).await;
 }
 
+#[allow(clippy::needless_range_loop)]
 async fn levenshtein_distance(a: &str, b: &str) -> usize {
     let m = a.chars().count();
     let n = b.chars().count();
@@ -128,7 +141,7 @@ async fn levenshtein_distance(a: &str, b: &str) -> usize {
 }
 
 #[tauri::command]
-async fn get_distance(mod_name:&str, query: &str) -> Result<usize, String> {
+async fn get_distance(mod_name: &str, query: &str) -> Result<usize, String> {
     Ok(levenshtein_distance(query, mod_name).await)
 }
 

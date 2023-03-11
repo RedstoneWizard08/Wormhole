@@ -21,7 +21,6 @@ export interface BrowseModInfo {
     versions: ModVersion[];
 }
 
-
 export interface ModWithDistance {
     mod: BrowseModInfo;
     dist: undefined;

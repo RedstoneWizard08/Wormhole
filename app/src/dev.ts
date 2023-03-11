@@ -62,16 +62,20 @@ export const createMockAPI = () => {
                 const id = (args as any).instanceId;
 
                 return DEV_Instances.find((v) => v.id == id);
-            
+
             case "get_mods":
-                return await new SpaceDockAPI().getModsForGame(args.gameId, args.page, args.count);
-            
+                return await new SpaceDockAPI().getModsForGame(
+                    args.gameId,
+                    args.page,
+                    args.count
+                );
+
             case "get_mod":
                 return await new SpaceDockAPI().getMod(args.modId);
-            
+
             case "get_mod_download":
                 return await new SpaceDockAPI().getModDownload(args.modId);
-            
+
             case "install_mod":
                 return await new SpaceDockAPI().getModDownload(args.modId);
         }

@@ -49,7 +49,6 @@ impl InstanceInfo {
                 description: None,
                 time_played: None,
             },
-            
             InstanceInfo {
                 id: 1,
                 name: "KSP1 Default Instance".to_string(),

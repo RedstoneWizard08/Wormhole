@@ -6,6 +6,8 @@
     "rules": {
         "font-family-name-quotes": null,
         "declaration-empty-line-before": null,
-        "font-family-no-missing-generic-family-keyword": null
+        "font-family-no-missing-generic-family-keyword": null,
+        "no-empty-source": null,
+        "color-hex-length": null
     }
 }

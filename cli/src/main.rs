@@ -1,3 +1,5 @@
+#![allow(clippy::needless_return)]
+
 pub mod cli;
 pub mod commands;
 
@@ -15,21 +17,14 @@ pub async fn main() {
         println!("Command: {:?}", cli.command);
     }
 
-    if let Some(scmd) = cli.command {
-        match scmd {
-            Commands::Mod { command } => {
-                if let Some(scmd) = command {
-                    match scmd {
-                        ModCommands::Install { id, instance_id: _instance_id } => {
-                            install_mod(id, verbose).await;
-                        },
-
-                        _ => (),
-                    };
-                }
-            },
-
-            _ => (),
-        };
+    if let Some(Commands::Mod {
+        command:
+            Some(ModCommands::Install {
+                id,
+                instance_id: _iid,
+            }),
+    }) = cli.command
+    {
+        install_mod(id, verbose).await;
     }
 }

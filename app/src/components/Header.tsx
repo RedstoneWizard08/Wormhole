@@ -12,13 +12,9 @@ export const Header = () => {
     const [spacewarp, setSpacewarp] = useState(false);
 
     useEffect(() => {
-        setInstances(
-            /\/instances?(\/\d+)?/i.test(router.path!)
-        );
+        setInstances(/\/instances?(\/\d+)?/i.test(router.path!));
 
-        setMods(
-            /\/mods?(\/\d+)?/i.test(router.path!)
-        );
+        setMods(/\/mods?(\/\d+)?/i.test(router.path!));
 
         setManage(router.path == "/manage");
         setSpacewarp(router.path == "/" || router.path == "/install");
@@ -26,11 +22,13 @@ export const Header = () => {
 
     return (
         <div className="header">
-            <img className="logo" src={logo}  alt="insert space warp logo here" />
+            <img
+                className="logo"
+                src={logo}
+                alt="insert space warp logo here"
+            />
 
-            <Link
-                className={`link ${spacewarp ? "active" : ""}`}
-                href="/">
+            <Link className={`link ${spacewarp ? "active" : ""}`} href="/">
                 <i className="icon fa-solid fa-rocket" />
                 SpaceWarp
             </Link>
@@ -42,14 +40,12 @@ export const Header = () => {
                 Instances
             </Link>
 
-            <Link className={`link ${mods ? "active" : ""}`}
-                  href={"/mods"}>
+            <Link className={`link ${mods ? "active" : ""}`} href={"/mods"}>
                 <i className="icon fa-solid fa-search" />
                 Browse Mods
             </Link>
 
-            <Link className={`link ${manage ? "active" : ""}`}
-                  href={"/manage"}>
+            <Link className={`link ${manage ? "active" : ""}`} href={"/manage"}>
                 <i className="icon fa-solid fa-cog" />
                 Manage Mods
             </Link>

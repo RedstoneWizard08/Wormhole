@@ -69,16 +69,20 @@ export const Pagination: FunctionalComponent<PaginationProps> = ({
                     page={Math.max(0, page - 1)}
                     setPage={setCurrent}
                     active={Math.max(0, page - 1) == page}
-                    prev />
+                    prev
+                />
 
                 {[...Array(offsetted + 1)].map(
-                    (_, i) => i + offset > 0 && i + offset <= pages && (
-                        <PaginationButton
-                            page={i + offset}
-                            setPage={setCurrent}
-                            active={i + offset == page}
-                            key={i + offset} />
-                    )
+                    (_, i) =>
+                        i + offset > 0 &&
+                        i + offset <= pages && (
+                            <PaginationButton
+                                page={i + offset}
+                                setPage={setCurrent}
+                                active={i + offset == page}
+                                key={i + offset}
+                            />
+                        )
                 )}
 
                 {offset + offsetted < pages ? (
@@ -87,12 +91,14 @@ export const Pagination: FunctionalComponent<PaginationProps> = ({
                             page={-1}
                             setPage={(v) => void v}
                             active={false}
-                            ellipsis />
+                            ellipsis
+                        />
 
                         <PaginationButton
                             page={pages}
                             setPage={setCurrent}
-                            active={pages == page} />
+                            active={pages == page}
+                        />
                     </>
                 ) : (
                     <></>
@@ -102,7 +108,8 @@ export const Pagination: FunctionalComponent<PaginationProps> = ({
                     page={Math.min(pages, page + 1)}
                     setPage={setCurrent}
                     active={Math.min(pages, page + 1) == page}
-                    next />
+                    next
+                />
             </div>
         </>
     );

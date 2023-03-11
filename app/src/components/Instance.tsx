@@ -16,7 +16,7 @@ export const Instance: FunctionalComponent<InstanceProps> = ({ data }) => {
 
     const doLaunch = (e: MouseEvent) => {
         e.stopPropagation();
-        
+
         // TODO: Launch game
     };
 
@@ -30,12 +30,13 @@ export const Instance: FunctionalComponent<InstanceProps> = ({ data }) => {
     return (
         <div className="instance-container" onClick={clicked}>
             {data.game == KSPGame.KSP2 ? (
-                <><img src={ksp2logo} className="logo" alt={"background"} />
+                <>
+                    <img src={ksp2logo} className="logo" alt={"background"} />
                 </>
             ) : (
                 <img src={ksp1logo} className="logo" alt={"background"} />
             )}
-            
+
             <p className="name">{data.name}</p>
 
             <div className="buttons">
@@ -43,8 +44,7 @@ export const Instance: FunctionalComponent<InstanceProps> = ({ data }) => {
                     type="button"
                     className="action"
                     id="launch-button"
-                    onClick={doLaunch}
-                >
+                    onClick={doLaunch}>
                     <i className="icon fa-solid fa-play" />
                 </button>
 
@@ -52,8 +52,7 @@ export const Instance: FunctionalComponent<InstanceProps> = ({ data }) => {
                     type="button"
                     className="action"
                     id="delete-button"
-                    onClick={doDelete}
-                >
+                    onClick={doDelete}>
                     <i className="icon fa-solid fa-trash-can" />
                 </button>
             </div>

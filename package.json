@@ -30,11 +30,11 @@
         "dev": "tauri dev",
         "build": "tauri build",
         "tauri": "tauri",
-        "fmt": "prettier --write . && cargo fmt --manifest-path src-tauri/Cargo.toml",
+        "fmt": "prettier --write . && cargo fmt",
         "web:dev": "TAURI_WEB_DEV=1 vite",
         "lint:eslint": "eslint --ext .ts,tsx .",
         "lint:stylelint": "stylelint **/*.scss **/*.css",
-        "lint:clippy": "cargo clippy --manifest-path src-tauri/Cargo.toml",
+        "lint:clippy": "cargo clippy",
         "lint": "pnpm lint:eslint && pnpm lint:stylelint && pnpm lint:clippy",
         "console": "ts-node app/scripts/console.ts"
     },

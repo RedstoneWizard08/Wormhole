@@ -1,10 +1,13 @@
 import "./Browse.scss";
-import {useEffect, useState} from "preact/compat";
-import {Mod} from "../../components/Mod";
-import {Pagination} from "../../components/Pagination";
-import {BrowseModInfo, ModWithDistance} from "../../api/models/modinfo/browse";
-import {invoke_proxy} from "../../invoke";
-import {SearchBar} from "../../components/SearchBar";
+import { useEffect, useState } from "preact/compat";
+import { Mod } from "../../components/Mod";
+import { Pagination } from "../../components/Pagination";
+import {
+    BrowseModInfo,
+    ModWithDistance,
+} from "../../api/models/modinfo/browse";
+import { invoke_proxy } from "../../invoke";
+import { SearchBar } from "../../components/SearchBar";
 
 export const Browse = () => {
     const [results, setResults] = useState<BrowseModInfo[]>([]);
@@ -33,21 +36,33 @@ export const Browse = () => {
         })();
     }, [page, initialLoad, perPage]);
 
-    async function searchMods(mods: BrowseModInfo[], query: string): Promise<BrowseModInfo[]> {
+    async function searchMods(
+        mods: BrowseModInfo[],
+        query: string
+    ): Promise<BrowseModInfo[]> {
         console.log();
-        const test_data = await invoke_proxy("get_distance", {query, modName: mods[0].name});
+        const test_data = await invoke_proxy("get_distance", {
+            query,
+            modName: mods[0].name,
+        });
         console.log(test_data);
         const exactMatches: BrowseModInfo[] = [];
         const closeMatches: ModWithDistance[] = [];
 
-        const regex = new RegExp(`^${query}`, 'i');
+        const regex = new RegExp(`^${query}`, "i");
 
         for (const mod of mods) {
-            if (mod.name.toLowerCase() === query.toLowerCase() || regex.test(mod.name)) {
+            if (
+                mod.name.toLowerCase() === query.toLowerCase() ||
+                regex.test(mod.name)
+            ) {
                 exactMatches.push(mod);
             } else {
-                const dist = await invoke_proxy("get_distance", {query, modName: mod.name});
-                closeMatches.push({mod, dist});
+                const dist = await invoke_proxy("get_distance", {
+                    query,
+                    modName: mod.name,
+                });
+                closeMatches.push({ mod, dist });
             }
         }
 
@@ -57,12 +72,9 @@ export const Browse = () => {
     }
 
     const handleSearch = async (query: string) => {
-        console.log('Searching for:', query);
+        console.log("Searching for:", query);
 
-        const matches = await searchMods(
-            results,
-            query
-        );
+        const matches = await searchMods(results, query);
 
         console.log(matches);
 

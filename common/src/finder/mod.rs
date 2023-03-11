@@ -1,4 +1,4 @@
-use std::{path::PathBuf, fs};
+use std::{fs, path::PathBuf};
 
 pub mod pdlauncher;
 pub mod resolver;
@@ -22,7 +22,9 @@ pub fn find_install_dir() -> PathBuf {
         return dir;
     }
 
-    let p = PathBuf::from("/home/jacob/.local/share/steam/root/steamapps/common/Kerbal Space Program 2");
+    let p = PathBuf::from(
+        "/home/jacob/.local/share/steam/root/steamapps/common/Kerbal Space Program 2",
+    );
 
     fs::create_dir_all(p.clone()).unwrap();
 

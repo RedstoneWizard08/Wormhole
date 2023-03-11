@@ -17,7 +17,10 @@ export const InstallProgress = () => {
         if (!_listening) {
             listen("download_progress", (ev) => {
                 setStatus({
-                    percent: ((100 * (ev.payload as any).received) / (ev.payload as any).total) + "%",
+                    percent: `${
+                        (100 * (ev.payload as any).received) /
+                        (ev.payload as any).total
+                    }%`,
                     message: status.message,
                 });
             });
@@ -78,9 +81,7 @@ export const InstallProgress = () => {
 
             <br />
 
-            <h1 className="title">
-                Installing SpaceWarp...
-            </h1>
+            <h1 className="title">Installing SpaceWarp...</h1>
 
             <p className="progress">
                 {status.percent} - {status.message}

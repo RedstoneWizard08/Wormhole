@@ -1,6 +1,6 @@
-use serde::{Serialize, Deserialize};
 use super::schema::browse::{BrowseResult, ModInfo};
 use crate::models::latest::LatestSchema;
+use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct SpaceDockAPI {
@@ -47,7 +47,10 @@ impl SpaceDockAPI {
     }
 
     pub async fn get_mods_for_game(&self, game: i32, page: i32, count: i32) -> BrowseResult {
-        let uri = format!("{}/browse?page={}&count={}&game_id={}", self.api_base, page, count, game);
+        let uri = format!(
+            "{}/browse?page={}&count={}&game_id={}",
+            self.api_base, page, count, game
+        );
         let resp = reqwest::get(uri).await.unwrap();
         let text = resp.text().await.unwrap();
         let data = serde_json::from_str::<BrowseResult>(&text);

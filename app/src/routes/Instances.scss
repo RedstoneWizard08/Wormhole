@@ -26,13 +26,14 @@
         padding: 8px;
         font-size: 16px;
         cursor: pointer;
-        transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease;
+        transition: background-color 0.5s ease, color 0.5s ease,
+            border-color 0.5s ease;
         border: 1px solid #4c4c4c;
         outline: none;
-        
+
         margin-left: calc(100% - 4rem);
         margin-top: calc(50% - 6rem);
-        
+
         z-index: 4;
 
         font-family: "manteka", serif;
@@ -42,7 +43,8 @@
         align-items: center;
         justify-content: center;
 
-        i, i::after {
+        i,
+        i::after {
             text-align: center;
         }
 

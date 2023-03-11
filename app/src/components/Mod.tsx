@@ -39,11 +39,13 @@ export const Mod: FunctionalComponent<ModParams> = ({ mod }) => {
                 <p className="title">{capText(mod.name, 22)}</p>
 
                 <button type="button" className="action" onClick={onDownload}>
-                    {
-                        installing ? <i className="icon fa-solid fa-spinner fa-spin" /> :
-                        installed ? <i className="icon fa-solid fa-trash-can" /> :
+                    {installing ? (
+                        <i className="icon fa-solid fa-spinner fa-spin" />
+                    ) : installed ? (
+                        <i className="icon fa-solid fa-trash-can" />
+                    ) : (
                         <i className="icon fa-solid fa-circle-down" />
-                    }
+                    )}
                 </button>
             </div>
         </div>

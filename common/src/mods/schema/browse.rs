@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
@@ -31,11 +31,11 @@ impl ModVersion {
         let out = ModVersion {
             friendly_version: Some(self.friendly_version.clone().unwrap_or("".to_string())),
             game_version: Some(self.friendly_version.clone().unwrap_or("".to_string())),
-            id: Some(self.id.unwrap_or( 0)),
+            id: Some(self.id.unwrap_or(0)),
             created: Some(self.created.clone().unwrap_or("".to_string())),
             download_path: Some(self.download_path.clone().unwrap_or("".to_string())),
             changelog: Some(self.changelog.clone().unwrap_or("".to_string())),
-            downloads: Some(self.downloads.unwrap_or( 0)),
+            downloads: Some(self.downloads.unwrap_or(0)),
         };
 
         return out;
@@ -115,13 +115,10 @@ impl ModInfo {
         out.author = Some(self.author.clone().unwrap_or("".to_string()));
         out.default_version_id = Some(self.default_version_id.unwrap_or(0));
         out.shared_authors = Some(self.shared_authors.clone().unwrap_or(Vec::new()));
-        
-        out.background = Some(
-            self.background.clone()
-                .unwrap_or(bg_img),
-        );
 
-        out.bg_offset_y = Some(self.bg_offset_y.clone().unwrap_or(0));
+        out.background = Some(self.background.clone().unwrap_or(bg_img));
+
+        out.bg_offset_y = Some(self.bg_offset_y.unwrap_or(0));
         out.license = Some(self.license.clone().unwrap_or("".to_string()));
         out.website = Some(self.website.clone().unwrap_or("".to_string()));
         out.donations = Some(self.donations.clone().unwrap_or("".to_string()));
@@ -174,21 +171,21 @@ impl BrowseResult {
 #[derive(Debug, Deserialize)]
 pub struct BrowseModInfo {
     pub name: String,
-    id: i32,
-    game: String,
-    game_id: i32,
-    short_description: String,
-    downloads: i32,
-    followers: i32,
-    author: String,
-    default_version_id: i32,
-    shared_authors: Vec<Value>,
-    background: String,
-    bg_offset_y: String,
-    license: String,
-    website: String,
-    donations: String,
-    source_code: String,
-    url: String,
-    versions: Vec<ModVersion>,
+    pub id: i32,
+    pub game: String,
+    pub game_id: i32,
+    pub short_description: String,
+    pub downloads: i32,
+    pub followers: i32,
+    pub author: String,
+    pub default_version_id: i32,
+    pub shared_authors: Vec<Value>,
+    pub background: String,
+    pub bg_offset_y: String,
+    pub license: String,
+    pub website: String,
+    pub donations: String,
+    pub source_code: String,
+    pub url: String,
+    pub versions: Vec<ModVersion>,
 }

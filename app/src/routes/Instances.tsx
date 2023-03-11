@@ -13,7 +13,7 @@ export const Instances = () => {
     };
 
     useEffect(() => {
-        refreshInstances().then(r => r);
+        refreshInstances().then((r) => r);
     }, []);
 
     return (
@@ -23,11 +23,11 @@ export const Instances = () => {
             </button>
 
             <div className="instances-container">
-                {Array.isArray(instances) && instances.map((info) => (
-                    <Instance data={info} key={info.name} />
-                ))}
+                {Array.isArray(instances) &&
+                    instances.map((info) => (
+                        <Instance data={info} key={info.name} />
+                    ))}
             </div>
         </div>
     );
-
 };

@@ -13,12 +13,13 @@ export const Home = () => {
                 <img src={banner} alt="Space Warp Logo" className="logo" />
             </div>
 
-
             <br />
 
             <h1 className="title">Welcome to Wormhole</h1>
 
-            <button type="button" className="action" onClick={doInstall}>Install SpaceWarp</button>
+            <button type="button" className="action" onClick={doInstall}>
+                Install SpaceWarp
+            </button>
         </div>
     );
 };
