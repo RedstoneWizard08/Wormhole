@@ -6,7 +6,6 @@ use tauri::Window;
 use std::{path::PathBuf, process::Command};
 use wormhole_common::{finder::find_install_dir, instances::InstanceInfo, mods::{spacedock::SpaceDockAPI, schema::browse::{ModInfo, BrowseResult}}};
 use wormhole_common::installer::mods::ModInstaller;
-use wormhole_common::mods::schema::browse::BrowseModInfo;
 
 pub mod installer;
 pub mod progress;
