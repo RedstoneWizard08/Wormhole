@@ -26,7 +26,7 @@ export const Header = () => {
 
     return (
         <div className="header">
-            <img className="logo" src={logo} />
+            <img className="logo" src={logo}  alt="insert space warp logo here" />
 
             <Link
                 className={`link ${spacewarp ? "active" : ""}`}
@@ -34,7 +34,6 @@ export const Header = () => {
                 <i className="icon fa-solid fa-rocket" />
                 SpaceWarp
             </Link>
-
 
             <Link
                 className={`link ${instances ? "active" : ""}`}
@@ -44,13 +43,13 @@ export const Header = () => {
             </Link>
 
             <Link className={`link ${mods ? "active" : ""}`}
-                  href="/mods">
+                  href={"/mods"}>
                 <i className="icon fa-solid fa-search" />
                 Browse Mods
             </Link>
 
             <Link className={`link ${manage ? "active" : ""}`}
-                  href="/manage">
+                  href={"/manage"}>
                 <i className="icon fa-solid fa-cog" />
                 Manage Mods
             </Link>

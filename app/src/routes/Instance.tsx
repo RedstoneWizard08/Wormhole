@@ -61,68 +61,67 @@ export const Instance = () => {
     };
 
     return (
-        <div className="full-instance-container">
-            <Link
-                className={`link ${instances ? "active" : ""}`}
-                href="/instances">
-                <div className="return-container">
-                    <div className="return-arrow">
-                        <i className="fa-solid fa-long-arrow-left" />
+        <>
+            <div className="full-instance-container">
+                <Link
+                    className={`link ${instances ? "active" : ""}`}
+                    href="/instances">
+                    <div className="return-container">
+                        <div className="return-arrow">
+                            <i className="fa-solid fa-long-arrow-left" />
+                        </div>
+                        <div className="return-circle" />
                     </div>
-                    <div className="return-circle" />
+                </Link>
+                <div className="instance">
+                    <img src={background} className="background" alt="background" />
+
+                    <div className="infos">
+                        <div className="left">
+                            <p className="name">{instanceInfo?.name}</p>
+                        </div>
+
+                        <div className="right">
+                            <p className="time">
+                                <i className="fa-solid fa-clock" />
+                                &nbsp;&nbsp;
+                                {instanceInfo?.time_played || "0 minutes"}
+                            </p>
+
+                            {editing ? (
+                                <button
+                                    type="button"
+                                    className="edit"
+                                    onClick={save}>
+                                    <i className="fa-solid fa-save" />
+                                    &nbsp; Save
+                                </button>
+                            ) : (
+                                <button
+                                    type="button"
+                                    className="edit"
+                                    onClick={edit}>
+                                    <i className="fa-solid fa-pencil" />
+                                    &nbsp; Edit
+                                </button>
+                            )}
+                        </div>
+                    </div>
+
+                    {editing ? (
+                        <textarea
+                            className="editor"
+                            defaultValue={instanceInfo?.description}
+                            ref={editor} />
+                    ) : (
+                        <p
+                            className="description"
+                            dangerouslySetInnerHTML={{
+                                __html: marked(instanceInfo?.description || ""),
+                            }} />
+                    )}
                 </div>
-            </Link>
-            <div className="instance">
-                <img src={background} className="background"  alt="background" />
-
-                <div className="infos">
-                    <div className="left">
-                        <p className="name">{instanceInfo?.name}</p>
-                    </div>
-
-                    <div className="right">
-                        <p className="time">
-                            <i className="fa-solid fa-clock" />
-                            &nbsp;&nbsp;
-                            {instanceInfo?.time_played || "0 minutes"}
-                        </p>
-
-                        {editing ? (
-                            <button
-                                type="button"
-                                className="edit"
-                                onClick={save}>
-                                <i className="fa-solid fa-save" />
-                                &nbsp; Save
-                            </button>
-                        ) : (
-                            <button
-                                type="button"
-                                className="edit"
-                                onClick={edit}>
-                                <i className="fa-solid fa-pencil" />
-                                &nbsp; Edit
-                            </button>
-                        )}
-                    </div>
-                </div>
-
-                {editing ? (
-                    <textarea
-                        className="editor"
-                        defaultValue={instanceInfo?.description}
-                        ref={editor}
-                    />
-                ) : (
-                    <p
-                        className="description"
-                        dangerouslySetInnerHTML={{
-                            __html: marked(instanceInfo?.description || ""),
-                        }}
-                    />
-                )}
             </div>
-
             <div className="actions">
                 <button type="button" className="action">
                     <i className="icon fa-solid fa-rocket" />
@@ -131,6 +130,6 @@ export const Instance = () => {
 
                 <p className="executable">{executable}</p>
             </div>
-        </div>
+        </>
     );
 };

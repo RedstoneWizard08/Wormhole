@@ -16,25 +16,18 @@
     .logo {
         width: 65%;
         border-radius: 8px;
-    }
-
-
-    .logo {
-        width: 65%;
-        border-radius: 8px;
+        user-select: none;
     }
 
     .title {
         width: 100%;
-
+        user-select: none;
         text-align: center;
     }
 
     .actions {
         width: 80%;
-
         padding: 2% 10%;
-
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -45,7 +38,7 @@
         border: 2px solid #3c3c3e;
         border-radius: 4px;
         background-color: transparent;
-
+        user-select: none;
         color: #dddfdc;
         font-family: "manteka", serif;
 
