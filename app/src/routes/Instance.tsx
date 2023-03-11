@@ -1,4 +1,4 @@
-import { useRouter } from "preact-router";
+import {Link, useRouter} from "preact-router";
 import { useEffect, useState } from "preact/hooks";
 import { InstanceInfo, KSPGame } from "../api/instance";
 import { invoke_proxy } from "../invoke";
@@ -10,6 +10,14 @@ import { createRef } from "preact";
 
 export const Instance = () => {
     const [router] = useRouter();
+
+    const [instances, setInstances] = useState(false);
+
+    useEffect(() => {
+        setInstances(
+            /\/instances?(\/\d+)?/i.test(router.path!)
+        );
+    }, [router.path]);
 
     const [instanceInfo, setInstanceInfo] = useState<InstanceInfo | undefined>(
         undefined
@@ -47,7 +55,6 @@ export const Instance = () => {
 
     const edit = () => {
         setEditing(true);
-
         setTimeout(() => {
             editor.current?.focus();
         });
@@ -55,8 +62,18 @@ export const Instance = () => {
 
     return (
         <div className="full-instance-container">
+            <Link
+                className={`link ${instances ? "active" : ""}`}
+                href="/instances">
+                <div className="return-container">
+                    <div className="return-arrow">
+                        <i className="fa-solid fa-long-arrow-left" />
+                    </div>
+                    <div className="return-circle" />
+                </div>
+            </Link>
             <div className="instance">
-                <img src={background} className="background" />
+                <img src={background} className="background"  alt="background" />
 
                 <div className="infos">
                     <div className="left">
