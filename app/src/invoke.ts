@@ -21,6 +21,11 @@ export interface ModsArgs {
     count: number;
 }
 
+export interface QueryData {
+    query: string;
+    modName: string;
+}
+
 export interface InvokeFunction {
     download_bepinex: [DownloadArgs, string];
     uninstall_bepinex: [undefined, string];
@@ -36,6 +41,7 @@ export interface InvokeFunction {
     get_mod: [ModArgs, FullModInfo];
     get_mod_download: [ModArgs, string];
     get_mods: [ModsArgs, BrowseResult];
+    get_distance: [QueryData, undefined];
 
     install_mod: [ModArgs, undefined];
 }

@@ -170,3 +170,25 @@ impl BrowseResult {
         return out;
     }
 }
+
+#[derive(Debug, Deserialize)]
+pub struct BrowseModInfo {
+    pub name: String,
+    id: i32,
+    game: String,
+    game_id: i32,
+    short_description: String,
+    downloads: i32,
+    followers: i32,
+    author: String,
+    default_version_id: i32,
+    shared_authors: Vec<Value>,
+    background: String,
+    bg_offset_y: String,
+    license: String,
+    website: String,
+    donations: String,
+    source_code: String,
+    url: String,
+    versions: Vec<ModVersion>,
+}

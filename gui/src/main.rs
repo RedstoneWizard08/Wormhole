@@ -4,7 +4,9 @@
 use installer::bepinex::BepInExInstallManager;
 use tauri::Window;
 use std::{path::PathBuf, process::Command};
-use wormhole_common::{finder::find_install_dir, instances::InstanceInfo, mods::{spacedock::SpaceDockAPI, schema::browse::{ModInfo, BrowseResult}}, installer::mods::ModInstaller};
+use wormhole_common::{finder::find_install_dir, instances::InstanceInfo, mods::{spacedock::SpaceDockAPI, schema::browse::{ModInfo, BrowseResult}}};
+use wormhole_common::installer::mods::ModInstaller;
+use wormhole_common::mods::schema::browse::BrowseModInfo;
 
 pub mod installer;
 pub mod progress;
@@ -92,6 +94,45 @@ async fn install_mod(mod_id: i32) {
     installer.install_from_spacedock(mod_id).await;
 }
 
+async fn levenshtein_distance(a: &str, b: &str) -> usize {
+    let m = a.chars().count();
+    let n = b.chars().count();
+    let mut matrix = vec![vec![0; n + 1]; m + 1];
+
+    if m == 0 {
+        return n;
+    }
+    if n == 0 {
+        return m;
+    }
+
+    for i in 0..=m {
+        matrix[i][0] = i;
+    }
+    for j in 0..=n {
+        matrix[0][j] = j;
+    }
+
+    for i in 1..=m {
+        for j in 1..=n {
+            let cost = if a.chars().nth(i - 1) == b.chars().nth(j - 1) {
+                0
+            } else {
+                1
+            };
+            matrix[i][j] = (matrix[i - 1][j] + 1)
+                .min(matrix[i][j - 1] + 1)
+                .min(matrix[i - 1][j - 1] + cost);
+        }
+    }
+    matrix[m][n]
+}
+
+#[tauri::command]
+async fn get_distance(mod_name:&str, query: &str) -> Result<usize, String> {
+    Ok(levenshtein_distance(query, mod_name).await)
+}
+
 pub fn main() {
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![
@@ -104,7 +145,8 @@ pub fn main() {
             get_instances,
             get_mod,
             get_mods,
-            install_mod
+            install_mod,
+            get_distance
         ])
         .run(tauri::generate_context!())
         .expect("Error while starting Wormhole!");
