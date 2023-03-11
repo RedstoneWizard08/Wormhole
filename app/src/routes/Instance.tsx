@@ -1,4 +1,4 @@
-import {Link, useRouter} from "preact-router";
+import { Link, useRouter } from "preact-router";
 import { useEffect, useState } from "preact/hooks";
 import { InstanceInfo, KSPGame } from "../api/instance";
 import { invoke_proxy } from "../invoke";
@@ -14,9 +14,7 @@ export const Instance = () => {
     const [instances, setInstances] = useState(false);
 
     useEffect(() => {
-        setInstances(
-            /\/instances?(\/\d+)?/i.test(router.path!)
-        );
+        setInstances(/\/instances?(\/\d+)?/i.test(router.path!));
     }, [router.path]);
 
     const [instanceInfo, setInstanceInfo] = useState<InstanceInfo | undefined>(
@@ -74,7 +72,11 @@ export const Instance = () => {
                     </div>
                 </Link>
                 <div className="instance">
-                    <img src={background} className="background" alt="background" />
+                    <img
+                        src={background}
+                        className="background"
+                        alt="background"
+                    />
 
                     <div className="infos">
                         <div className="left">
@@ -112,13 +114,20 @@ export const Instance = () => {
                         <textarea
                             className="editor"
                             defaultValue={instanceInfo?.description}
-                            ref={editor} />
+                            ref={editor}
+                        />
                     ) : (
                         <p
                             className="description"
                             dangerouslySetInnerHTML={{
-                                __html: marked(instanceInfo?.description || ""),
-                            }} />
+                                __html: marked(
+                                    instanceInfo?.description || "",
+                                    {
+                                        sanitize: true,
+                                    }
+                                ),
+                            }}
+                        />
                     )}
                 </div>
             </div>

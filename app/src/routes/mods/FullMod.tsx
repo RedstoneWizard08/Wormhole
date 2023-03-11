@@ -61,7 +61,9 @@ export const FullMod = () => {
                 <p
                     className="description"
                     dangerouslySetInnerHTML={{
-                        __html: marked(modInfo?.description || ""),
+                        __html: marked(modInfo?.description || "", {
+                            sanitize: true,
+                        }),
                     }}
                 />
             </div>
