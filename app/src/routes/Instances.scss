@@ -64,7 +64,7 @@
     overflow-y: scroll;
 
     display: grid;
-    grid-template-columns: 18.5% 18.5% 18.5% 18.5% 18.5%;
+    grid-template-columns: repeat(5, 18.5%);
     grid-column-gap: 1.5%;
     grid-template-rows: auto auto 1fr 1fr 1fr auto auto;
   }

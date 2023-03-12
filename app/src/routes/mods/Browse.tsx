@@ -1,11 +1,15 @@
 import "./Browse.scss";
-import {useEffect, useState} from "preact/compat";
-import {Mod} from "../../components/Mod";
-import {Pagination} from "../../components/Pagination";
-import {BrowseModInfo, ModWithDistance,} from "../../api/models/modinfo/browse";
-import {invoke_proxy} from "../../invoke";
-import {SearchBar} from "../../components/SearchBar";
+import { useEffect, useState } from "preact/compat";
+import { Mod } from "../../components/Mod";
+import { Pagination } from "../../components/Pagination";
+import {
+    BrowseModInfo,
+    ModWithDistance,
+} from "../../api/models/modinfo/browse";
+import { invoke_proxy } from "../../invoke";
+import { SearchBar } from "../../components/SearchBar";
 import { LoadingPage } from "../../components/LoadingPage";
+import { Dropdown } from "../../components/Dropdown";
 
 export const Browse = () => {
     const [results, setResults] = useState<BrowseModInfo[]>([]);
@@ -14,12 +18,23 @@ export const Browse = () => {
     const [page, setPage] = useState(1);
     const [loading, setLoading] = useState(true);
     const [initialLoad, setInitialLoad] = useState(true);
+    const [gameId, setGameId] = useState(3102);
+
+    // These must be managed outside of the
+    // dropdown component, otherwise the
+    // component's data will reset every
+    // time the mod list is refreshed.
+    const [game, setGame] = useState("ksp1");
+    const [gameText, setGameText] = useState("KSP 1");
+
+    useEffect(() => {
+        setGameId(game == "ksp1" ? 3102 : 22407);
+    }, [game]);
 
     useEffect(() => {
         (async () => {
-
             const data = await invoke_proxy("get_mods", {
-                gameId: 22407,
+                gameId,
                 count: perPage,
                 page,
             });
@@ -31,7 +46,8 @@ export const Browse = () => {
 
             setLoading(false);
         })();
-    }, [page, initialLoad, perPage]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [page, perPage, gameId]);
 
     async function searchMods(
         mods: BrowseModInfo[],
@@ -62,7 +78,7 @@ export const Browse = () => {
                     query,
                     modName: mod.name,
                 });
-                closeMatches.push({mod, dist});
+                closeMatches.push({ mod, dist });
             }
         }
 
@@ -90,19 +106,29 @@ export const Browse = () => {
                     <></>
                 )}
 
+                <div className="top">
+                    <Dropdown
+                        val={game}
+                        setVal={setGame}
+                        valText={gameText}
+                        setValText={setGameText}
+                    />
+
+                    <div className="search-bar">
+                        <SearchBar onSearch={handleSearch} />
+                    </div>
+
+                    <div className="_blank" />
+                </div>
+
                 {loading ? (
                     <LoadingPage />
                 ) : (
-                    <>
-                        <div className="pagination-search-bar">
-                            <SearchBar onSearch={handleSearch} />
-                        </div>
-                        <div className="grid">
-                            {results.map((mod) => (
-                                <Mod mod={mod} key={mod.id} />
-                            ))}
-                        </div>
-                    </>
+                    <div className="grid">
+                        {results.map((mod) => (
+                            <Mod mod={mod} key={mod.id} />
+                        ))}
+                    </div>
                 )}
             </div>
         </>
