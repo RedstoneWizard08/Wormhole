@@ -44,8 +44,6 @@ jobs:
                       See the assets to download this version and install.
                   releaseDraft: false
                   prerelease: true
-                  includeDebug: true
-                  includeRelease: true
                   tauriScript: pnpm tauri
 
     publish-tauri-arm64:
@@ -99,7 +97,5 @@ jobs:
                       See the assets to download this version and install.
                   releaseDraft: false
                   prerelease: true
-                  includeDebug: true
-                  includeRelease: true
                   tauriScript: pnpm tauri
                   args: --target aarch64-unknown-linux-gnu --runner cross

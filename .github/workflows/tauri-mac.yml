@@ -39,6 +39,4 @@ jobs:
                       See the assets to download this version and install.
                   releaseDraft: false
                   prerelease: true
-                  includeDebug: true
-                  includeRelease: true
                   tauriScript: pnpm tauri
