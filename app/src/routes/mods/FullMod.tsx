@@ -1,12 +1,12 @@
 import "./FullMod.scss";
-import {useRouter} from "preact-router";
-import {useEffect, useState} from "preact/hooks";
-import {marked} from "marked";
-import {FullModInfo} from "../../api/models/modinfo/full";
-import {invoke_proxy} from "../../invoke";
+import { useRouter } from "preact-router";
+import { useEffect, useState } from "preact/hooks";
+import { marked } from "marked";
+import { FullModInfo } from "../../api/models/modinfo/full";
+import { invoke_proxy } from "../../invoke";
 
 // @ts-ignore
-import DOMPurify from 'dompurify';
+import DOMPurify from "dompurify";
 
 export const FullMod = () => {
     const [router] = useRouter();
@@ -47,16 +47,11 @@ export const FullMod = () => {
     };
 
     const handleHtml = (html: string) => {
-
-        const processes = [
-            marked,
-            DOMPurify.sanitize,
-            linkFix,
-        ];
+        const processes = [marked, DOMPurify.sanitize, linkFix];
 
         html = processes.reduce((html, process) => process(html), html);
-        return html
-    }
+        return html;
+    };
 
     const install = async () => {
         // window.open(await invoke_proxy("get_mod_download", {
@@ -73,7 +68,11 @@ export const FullMod = () => {
     return (
         <div className="full-mod-container">
             <div className="mod">
-                <img src={modInfo?.background} className="background"  alt="mod-background-image" />
+                <img
+                    src={modInfo?.background}
+                    className="background"
+                    alt="mod-background-image"
+                />
 
                 <div className="infos">
                     <div className="left">
@@ -99,7 +98,12 @@ export const FullMod = () => {
 
                 <p
                     className="description"
-                    dangerouslySetInnerHTML={{ __html: handleHtml(modInfo?.description || "Mod does not have a description.") }}
+                    dangerouslySetInnerHTML={{
+                        __html: handleHtml(
+                            modInfo?.description ||
+                                "Mod does not have a description."
+                        ),
+                    }}
                 />
             </div>
 
