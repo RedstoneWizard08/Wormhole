@@ -1,9 +1,12 @@
 import "./FullMod.scss";
-import { useRouter } from "preact-router";
-import { useEffect, useState } from "preact/hooks";
-import { marked } from "marked";
-import { FullModInfo } from "../../api/models/modinfo/full";
-import { invoke_proxy } from "../../invoke";
+import {useRouter} from "preact-router";
+import {useEffect, useState} from "preact/hooks";
+import {marked} from "marked";
+import {FullModInfo} from "../../api/models/modinfo/full";
+import {invoke_proxy} from "../../invoke";
+
+// @ts-ignore
+import DOMPurify from 'dompurify';
 
 export const FullMod = () => {
     const [router] = useRouter();
@@ -21,6 +24,40 @@ export const FullMod = () => {
         })();
     }, [modId]);
 
+    const linkFix = (html: string) => {
+        const regex = /(<a.*?>)(.*?)(<\/a>)/gi;
+        const matches = html.matchAll(regex);
+
+        for (const match of matches) {
+            const startTag = match[1];
+            const linkContent = match[2];
+            const endTag = match[3];
+            const urlRegex = /href=["'](.*?)["']/i;
+            const targetRegex = /target=["'](.*?)["']/i;
+
+            // Check if the link has a valid URL and no existing target attribute
+            if (urlRegex.test(startTag) && !targetRegex.test(startTag)) {
+                const newStartTag = `${startTag} target="_blank"`;
+                const newLink = `${newStartTag}${linkContent}${endTag}`;
+                html = html.replace(match[0], newLink);
+            }
+        }
+
+        return html;
+    };
+
+    const handleHtml = (html: string) => {
+
+        const processes = [
+            marked,
+            DOMPurify.sanitize,
+            linkFix,
+        ];
+
+        html = processes.reduce((html, process) => process(html), html);
+        return html
+    }
+
     const install = async () => {
         // window.open(await invoke_proxy("get_mod_download", {
         //     modId: parseInt(modId || "-1", 10),
@@ -36,7 +73,7 @@ export const FullMod = () => {
     return (
         <div className="full-mod-container">
             <div className="mod">
-                <img src={modInfo?.background} className="background" />
+                <img src={modInfo?.background} className="background"  alt="mod-background-image" />
 
                 <div className="infos">
                     <div className="left">
@@ -62,11 +99,7 @@ export const FullMod = () => {
 
                 <p
                     className="description"
-                    dangerouslySetInnerHTML={{
-                        __html: marked(modInfo?.description || "", {
-                            sanitize: true,
-                        }),
-                    }}
+                    dangerouslySetInnerHTML={{ __html: handleHtml(modInfo?.description || "") }}
                 />
             </div>
 
