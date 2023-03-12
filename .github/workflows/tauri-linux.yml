@@ -82,6 +82,10 @@ jobs:
               id: short-sha
               with:
                   length: 7
+            
+            - name: Install cross
+              run: |
+                cargo install cross
 
             - uses: tauri-apps/tauri-action@v0
               env:
@@ -98,4 +102,4 @@ jobs:
                   includeDebug: true
                   includeRelease: true
                   tauriScript: pnpm tauri
-                  args: --target aarch64-unknown-linux-gnu
+                  args: --target aarch64-unknown-linux-gnu --runner cross
