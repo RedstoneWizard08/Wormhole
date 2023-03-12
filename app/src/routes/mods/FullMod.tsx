@@ -99,7 +99,7 @@ export const FullMod = () => {
 
                 <p
                     className="description"
-                    dangerouslySetInnerHTML={{ __html: handleHtml(modInfo?.description || "") }}
+                    dangerouslySetInnerHTML={{ __html: handleHtml(modInfo?.description || "Mod does not have a description.") }}
                 />
             </div>
 
