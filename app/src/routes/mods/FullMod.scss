@@ -1,115 +1,142 @@
 .full-mod-container {
+  width: 100%;
+  height: 100%;
+
+  background-color: #1f2120;
+
+  margin: 0;
+  padding: 0;
+
+  .mod {
     width: 100%;
-    height: 100%;
+    height: 85%;
 
-    background-color: #1f2120;
+    overflow-y: scroll;
 
-    margin: 0;
-    padding: 0;
-
-    .mod {
-        width: 100%;
-        height: 85%;
-
-        overflow-y: scroll;
-
-        .background {
-            width: 100%;
-            height: 70%;
-            object-fit: cover;
-            object-position: center center;
-        }
-
-        .infos {
-            width: 97%;
-
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: space-between;
-
-            padding: 0.25% 1.5%;
-
-            .left,
-            .right {
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-            }
-
-            .left {
-                width: 50%;
-                justify-content: flex-start;
-
-                .name {
-                    margin-right: 2%;
-                }
-
-                .author {
-                    margin-left: 2%;
-                    color: #bcbebc;
-                }
-            }
-
-            .right {
-                width: 50%;
-                justify-content: flex-end;
-
-                .downloads {
-                    color: lightgreen;
-                    margin-right: 4%;
-                }
-
-                .followers {
-                    color: lightskyblue;
-                }
-            }
-        }
-
-        .description {
-            width: 97%;
-            padding: 0 1.5%;
-            margin: 0;
-
-            font-family: "Ubuntu Mono", monospace;
-
-            a {
-                color: inherit;
-            }
-        }
+    .background {
+      width: 100%;
+      height: 70%;
+      object-fit: cover;
+      object-position: center center;
     }
 
-    .actions {
-        width: 100%;
-        height: auto;
-        padding: 1%;
+    .infos {
+      width: 97%;
 
-        .action {
-            background-color: transparent;
-            color: lightgreen;
-            border: 1px solid lightgreen;
-            border-radius: 8px;
-            padding: 0.5% 1%;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
 
-            font-family: "manteka", serif;
-            font-size: 12pt;
-            cursor: pointer;
+      padding: 0.25% 1.5%;
 
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: center;
+      .left,
+      .right {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+      }
 
-            transition: color 0.5s ease, background-color 0.5s ease;
+      .left {
+        width: 50%;
+        justify-content: flex-start;
 
-            &:hover {
-                background-color: lightgreen;
-                color: black;
-            }
-
-            .icon {
-                font-size: 14pt;
-            }
+        .name {
+          margin-right: 2%;
         }
+
+        .author {
+          margin-left: 2%;
+          color: #bcbebc;
+        }
+      }
+
+      .right {
+        width: 50%;
+        justify-content: flex-end;
+
+        .downloads {
+          color: lightgreen;
+          margin-right: 4%;
+        }
+
+        .followers {
+          color: lightskyblue;
+        }
+      }
     }
+
+    .description {
+      width: 97%;
+      padding: 0 1.5%;
+      margin: 0;
+
+      font-family: "Ubuntu Mono", monospace;
+
+      a {
+        color: inherit;
+      }
+    }
+  }
+
+  .actions {
+    width: 100%;
+    height: auto;
+    padding: 1%;
+
+    .action {
+      background-color: transparent;
+      color: lightgreen;
+      border: 1px solid lightgreen;
+      border-radius: 8px;
+      padding: 0.5% 1%;
+
+      font-family: "manteka", serif;
+      font-size: 12pt;
+      cursor: pointer;
+
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+
+      transition: color 0.5s ease, background-color 0.5s ease;
+
+      &:hover {
+        background-color: lightgreen;
+        color: black;
+      }
+
+      .icon {
+        font-size: 14pt;
+      }
+    }
+  }
+}
+
+.loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: #1f2120;
+}
+
+.spinner {
+  border: 8px solid #eee;
+  border-top: 8px solid #007bff;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

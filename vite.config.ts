@@ -1,6 +1,6 @@
 import path from "path";
 import preactRefresh from "@prefresh/vite";
-import { defineConfig } from "vite";
+import {defineConfig} from "vite";
 
 export default defineConfig({
     clearScreen: false,
@@ -23,10 +23,10 @@ export default defineConfig({
 
         hmr: process.env.TAURI_WEB_DEV
             ? {
-                  clientPort: 443,
-                  port: 4000,
-                  protocol: "wss",
-              }
+                clientPort: 443,
+                port: 4000,
+                protocol: "wss",
+            }
             : {},
     },
 

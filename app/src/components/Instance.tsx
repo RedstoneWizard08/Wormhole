@@ -1,6 +1,6 @@
-import { FunctionalComponent } from "preact";
-import { route } from "preact-router";
-import { InstanceInfo, KSPGame } from "../api/instance";
+import {FunctionalComponent} from "preact";
+import {route} from "preact-router";
+import {InstanceInfo, KSPGame} from "../api/instance";
 import ksp1logo from "../assets/ksp.png";
 import ksp2logo from "../assets/ksp2.png";
 import "./Instance.scss";
@@ -9,7 +9,7 @@ export interface InstanceProps {
     data: InstanceInfo;
 }
 
-export const Instance: FunctionalComponent<InstanceProps> = ({ data }) => {
+export const Instance: FunctionalComponent<InstanceProps> = ({data}) => {
     const clicked = () => {
         route(`/instance/${data.id}`);
     };

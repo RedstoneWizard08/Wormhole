@@ -1,6 +1,8 @@
-use super::schema::browse::{BrowseResult, ModInfo};
-use crate::models::latest::LatestSchema;
 use serde::{Deserialize, Serialize};
+
+use crate::models::latest::LatestSchema;
+
+use super::schema::browse::{BrowseResult, ModInfo};
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct SpaceDockAPI {

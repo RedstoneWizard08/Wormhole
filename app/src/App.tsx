@@ -1,13 +1,13 @@
 import "./App.scss";
-import { Route, Router } from "preact-router";
-import { Header } from "./components/Header";
-import { Home } from "./routes/Home";
-import { InstallProgress } from "./routes/InstallProgress";
-import { Instances } from "./routes/Instances";
-import { Browse } from "./routes/mods/Browse";
-import { FullMod } from "./routes/mods/FullMod";
-import { Manage } from "./routes/mods/Manage";
-import { Instance } from "./routes/Instance";
+import {Route, Router} from "preact-router";
+import {Header} from "./components/Header";
+import {Home} from "./routes/Home";
+import {InstallProgress} from "./routes/InstallProgress";
+import {Instances} from "./routes/Instances";
+import {Browse} from "./routes/mods/Browse";
+import {FullMod} from "./routes/mods/FullMod";
+import {Manage} from "./routes/mods/Manage";
+import {Instance} from "./routes/Instance";
 
 export const App = () => {
     return (

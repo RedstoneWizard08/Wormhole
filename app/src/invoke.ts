@@ -1,7 +1,7 @@
-import { invoke } from "@tauri-apps/api";
-import { InstanceInfo } from "./api/instance";
-import { BrowseResult } from "./api/models/browse";
-import { FullModInfo } from "./api/models/modinfo/full";
+import {invoke} from "@tauri-apps/api";
+import {InstanceInfo} from "./api/instance";
+import {BrowseResult} from "./api/models/browse";
+import {FullModInfo} from "./api/models/modinfo/full";
 
 export interface DownloadArgs {
     kspGivenPath: string;
@@ -51,7 +51,7 @@ export const invoke_proxy = async <K extends keyof InvokeFunction>(
     args?: InvokeFunction[K][0]
 ): Promise<InvokeFunction[K][1]> => {
     try {
-        return (await invoke(action, { ...args })) as any;
+        return (await invoke(action, {...args})) as any;
     } catch (e) {
         return e as any;
     }

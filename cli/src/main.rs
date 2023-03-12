@@ -1,12 +1,13 @@
 #![allow(clippy::needless_return)]
 
-pub mod cli;
-pub mod commands;
-
 use clap::Parser;
+use tokio::main;
+
 use cli::{Cli, Commands, ModCommands};
 use commands::mods::install::install_mod;
-use tokio::main;
+
+pub mod cli;
+pub mod commands;
 
 #[main]
 pub async fn main() {
@@ -18,12 +19,12 @@ pub async fn main() {
     }
 
     if let Some(Commands::Mod {
-        command:
-            Some(ModCommands::Install {
-                id,
-                instance_id: _iid,
-            }),
-    }) = cli.command
+                    command:
+                    Some(ModCommands::Install {
+                             id,
+                             instance_id: _iid,
+                         }),
+                }) = cli.command
     {
         install_mod(id, verbose).await;
     }

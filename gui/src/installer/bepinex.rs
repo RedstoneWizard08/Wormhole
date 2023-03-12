@@ -1,7 +1,8 @@
-use tauri::Window;
-use wormhole_common::releases::get_latest_release_zips;
-
 use std::{fs, path::PathBuf};
+
+use tauri::Window;
+
+use wormhole_common::releases::get_latest_release_zips;
 
 use crate::{installer::bepinex_loader::BepInExLoaderInstallManager, progress::Downloader};
 
@@ -77,7 +78,7 @@ impl BepInExInstallManager {
             &PathBuf::from(&self.ksp2_install_path.join(".spacewarp_release.zip")),
             &PathBuf::from(&self.ksp2_install_path),
         )
-        .expect("Could not extract the SpaceWarp release!");
+            .expect("Could not extract the SpaceWarp release!");
 
         fs::remove_file(self.ksp2_install_path.join(".spacewarp_release.zip"))
             .expect("Could not delete the SpaceWarp release file!");

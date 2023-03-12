@@ -1,6 +1,5 @@
 #[cfg(target_os = "windows")]
 use std::{env, path::Path};
-
 use std::path::PathBuf;
 
 #[derive(Default)]

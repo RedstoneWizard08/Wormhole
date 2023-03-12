@@ -1,32 +1,36 @@
 {
-    "compilerOptions": {
-        "allowJs": true,
-        "alwaysStrict": true,
-        "declaration": true,
-        "emitDecoratorMetadata": true,
-        "experimentalDecorators": true,
-
-        "lib": ["esnext", "dom"],
-
-        "module": "esnext",
-        "moduleResolution": "node",
-        "strict": true,
-        "target": "esnext",
-        "noEmit": true,
-        "skipLibCheck": true,
-        "jsx": "react-jsx",
-        "jsxImportSource": "preact",
-        "allowSyntheticDefaultImports": true,
-
-        "paths": {
-            "react": ["./node_modules/preact/compat"],
-            "react-dom": ["./node_modules/preact/compat"]
-        }
-    },
-
-    "include": ["app"],
-
-    "ts-node": {
-        "esm": true
+  "compilerOptions": {
+    "allowJs": true,
+    "alwaysStrict": true,
+    "declaration": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "lib": [
+      "esnext",
+      "dom"
+    ],
+    "module": "esnext",
+    "moduleResolution": "node",
+    "strict": true,
+    "target": "esnext",
+    "noEmit": true,
+    "skipLibCheck": true,
+    "jsx": "react-jsx",
+    "jsxImportSource": "preact",
+    "allowSyntheticDefaultImports": true,
+    "paths": {
+      "react": [
+        "./node_modules/preact/compat"
+      ],
+      "react-dom": [
+        "./node_modules/preact/compat"
+      ]
     }
+  },
+  "include": [
+    "app"
+  ],
+  "ts-node": {
+    "esm": true
+  }
 }

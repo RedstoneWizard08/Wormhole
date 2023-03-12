@@ -1,11 +1,11 @@
 use std::{fs, path::PathBuf};
 
+use pdlauncher::PDLauncherInstallFinder;
+use steam::SteamInstallFinder;
+
 pub mod pdlauncher;
 pub mod resolver;
 pub mod steam;
-
-use pdlauncher::PDLauncherInstallFinder;
-use steam::SteamInstallFinder;
 
 pub fn find_install_dir() -> PathBuf {
     let mut steam_install_finder = SteamInstallFinder::default();

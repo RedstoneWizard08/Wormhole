@@ -55,7 +55,7 @@ impl BepInExLoaderInstallManager {
             &PathBuf::from(&self.ksp2_install_path.join(".bepinex_release.zip")),
             &PathBuf::from(&self.ksp2_install_path),
         )
-        .expect("Could not extract the BepInEx release!");
+            .expect("Could not extract the BepInEx release!");
 
         fs::remove_file(self.ksp2_install_path.join(".bepinex_release.zip"))
             .expect("Could not delete the BepInEx release file!");

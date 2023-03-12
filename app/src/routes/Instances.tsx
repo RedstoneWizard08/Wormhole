@@ -1,8 +1,8 @@
 import "./Instances.scss";
-import { InstanceInfo } from "../api/instance";
-import { Instance } from "../components/Instance";
-import { useState, useEffect } from "preact/hooks";
-import { invoke_proxy } from "../invoke";
+import {InstanceInfo} from "../api/instance";
+import {Instance} from "../components/Instance";
+import {useEffect, useState} from "preact/hooks";
+import {invoke_proxy} from "../invoke";
 
 export const Instances = () => {
     const [instances, setInstances] = useState<InstanceInfo[]>([]);

@@ -1,80 +1,80 @@
 .home-container {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+
+  background-color: #1f2120;
+
+  .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 55vh;
+  }
+
+  .logo {
+    width: 65%;
+    border-radius: 8px;
+    user-select: none;
+  }
+
+  .title {
     width: 100%;
-    height: 100%;
-    margin: 0;
-    padding: 0;
+    user-select: none;
+    text-align: center;
+  }
 
-    background-color: #1f2120;
+  .actions {
+    width: 80%;
+    padding: 2% 10%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+  }
 
-    .container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 55vh;
+  .action {
+    border: 2px solid #3c3c3e;
+    border-radius: 4px;
+    background-color: transparent;
+    user-select: none;
+    color: #dddfdc;
+    font-family: "manteka", serif;
+
+    width: 30%;
+    padding: 1.5% 0;
+
+    margin-top: 2%;
+    margin-left: 35%;
+
+    cursor: pointer;
+    outline: none;
+    transition: color 0.5s ease, background-color 0.5s ease;
+
+    &:hover {
+      background-color: #3c3c3e;
     }
 
-    .logo {
-        width: 65%;
-        border-radius: 8px;
-        user-select: none;
+    &#uninstall {
+      background-color: #c04040;
+      color: #dddfdc;
+
+      &:hover {
+        background-color: #803030;
+      }
     }
 
-    .title {
-        width: 100%;
-        user-select: none;
-        text-align: center;
+    &#launch {
+      background-color: #409040;
+      color: #dddfdc;
+
+      width: 15%;
+      margin-left: 42.5%;
+
+      &:hover {
+        background-color: #107010;
+      }
     }
-
-    .actions {
-        width: 80%;
-        padding: 2% 10%;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-evenly;
-    }
-
-    .action {
-        border: 2px solid #3c3c3e;
-        border-radius: 4px;
-        background-color: transparent;
-        user-select: none;
-        color: #dddfdc;
-        font-family: "manteka", serif;
-
-        width: 30%;
-        padding: 1.5% 0;
-
-        margin-top: 2%;
-        margin-left: 35%;
-
-        cursor: pointer;
-        outline: none;
-        transition: color 0.5s ease, background-color 0.5s ease;
-
-        &:hover {
-            background-color: #3c3c3e;
-        }
-
-        &#uninstall {
-            background-color: #c04040;
-            color: #dddfdc;
-
-            &:hover {
-                background-color: #803030;
-            }
-        }
-
-        &#launch {
-            background-color: #409040;
-            color: #dddfdc;
-
-            width: 15%;
-            margin-left: 42.5%;
-
-            &:hover {
-                background-color: #107010;
-            }
-        }
-    }
+  }
 }

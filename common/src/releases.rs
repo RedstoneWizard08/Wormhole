@@ -1,5 +1,6 @@
-use crate::models::release::{ReleaseResponse, ReleaseZips};
 use reqwest::Client;
+
+use crate::models::release::{ReleaseResponse, ReleaseZips};
 
 pub const LATEST_RELEASE_URL: &str =
     "https://api.github.com/repos/SpaceWarpDev/SpaceWarp/releases/latest";

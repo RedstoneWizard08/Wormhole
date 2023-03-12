@@ -1,13 +1,10 @@
 import "./Browse.scss";
-import { useEffect, useState } from "preact/compat";
-import { Mod } from "../../components/Mod";
-import { Pagination } from "../../components/Pagination";
-import {
-    BrowseModInfo,
-    ModWithDistance,
-} from "../../api/models/modinfo/browse";
-import { invoke_proxy } from "../../invoke";
-import { SearchBar } from "../../components/SearchBar";
+import {useEffect, useState} from "preact/compat";
+import {Mod} from "../../components/Mod";
+import {Pagination} from "../../components/Pagination";
+import {BrowseModInfo, ModWithDistance,} from "../../api/models/modinfo/browse";
+import {invoke_proxy} from "../../invoke";
+import {SearchBar} from "../../components/SearchBar";
 
 export const Browse = () => {
     const [results, setResults] = useState<BrowseModInfo[]>([]);
@@ -19,7 +16,6 @@ export const Browse = () => {
 
     useEffect(() => {
         (async () => {
-            setLoading(true);
 
             const data = await invoke_proxy("get_mods", {
                 gameId: 22407,
@@ -41,14 +37,14 @@ export const Browse = () => {
         query: string
     ): Promise<BrowseModInfo[]> {
         console.log();
-        
+
         const test_data = await invoke_proxy("get_distance", {
             query,
             modName: mods[0].name,
         });
 
         console.log(test_data);
-        
+
         const exactMatches: BrowseModInfo[] = [];
         const closeMatches: ModWithDistance[] = [];
 
@@ -65,7 +61,7 @@ export const Browse = () => {
                     query,
                     modName: mod.name,
                 });
-                closeMatches.push({ mod, dist });
+                closeMatches.push({mod, dist});
             }
         }
 
@@ -94,7 +90,10 @@ export const Browse = () => {
                 )}
 
                 {loading ? (
-                    <p className="loading">Loading...</p>
+                    <div class="loader">
+                        <div class="spinner" />
+                        <p>Loading...</p>
+                    </div>
                 ) : (
                     <>
                         <div className="pagination-search-bar">

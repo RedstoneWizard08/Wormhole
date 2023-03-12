@@ -1,4 +1,4 @@
-import { FunctionalComponent } from "preact";
+import {FunctionalComponent} from "preact";
 import "./SearchBar.scss";
 
 interface SearchBarProps {
@@ -7,8 +7,8 @@ interface SearchBarProps {
 }
 
 export const SearchBar: FunctionalComponent<SearchBarProps> = ({
-    onSearch,
-}) => {
+                                                                   onSearch,
+                                                               }) => {
     const handleInput = (event: Event) => {
         const target = event.target as HTMLInputElement;
         onSearch(target.value);

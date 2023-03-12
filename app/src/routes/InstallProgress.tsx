@@ -1,9 +1,9 @@
 import "./InstallProgress.scss";
 import banner from "../assets/background_banner.png";
-import { useEffect, useState } from "preact/hooks";
-import { invoke_proxy } from "../invoke";
-import { route } from "preact-router";
-import { listen } from "@tauri-apps/api/event";
+import {useEffect, useState} from "preact/hooks";
+import {invoke_proxy} from "../invoke";
+import {route} from "preact-router";
+import {listen} from "@tauri-apps/api/event";
 
 let _listening = false;
 
@@ -32,11 +32,11 @@ export const InstallProgress = () => {
     const [installed, setInstalled] = useState(false);
 
     const getInstallDir = async (): Promise<Error | null> => {
-        setStatus({ percent: "0%", message: "Finding KSP2 location..." });
+        setStatus({percent: "0%", message: "Finding KSP2 location..."});
 
         const _dir = await invoke_proxy("get_install_dir");
 
-        if (/(?:(:?[A-Z]:(?:\\|\/).+)|(:?\/.+))/gm.test(_dir)) {
+        if (/(:?[A-Z]:[\\/].+)|(:?\/.+)/gm.test(_dir)) {
             return null;
         }
 
@@ -46,7 +46,7 @@ export const InstallProgress = () => {
     };
 
     const doInstall = async (): Promise<Error | null> => {
-        setStatus({ percent: "50%", message: "Installing SpaceWarp..." });
+        setStatus({percent: "50%", message: "Installing SpaceWarp..."});
 
         const res = await invoke_proxy("download_bepinex");
 
@@ -61,13 +61,13 @@ export const InstallProgress = () => {
         let err = await getInstallDir();
 
         if (err) {
-            setStatus({ ...status, message: err.message });
+            setStatus({...status, message: err.message});
             return;
         }
 
         await doInstall();
 
-        setStatus({ percent: "100%", message: "Done!" });
+        setStatus({percent: "100%", message: "Done!"});
         setInstalled(true);
     };
 

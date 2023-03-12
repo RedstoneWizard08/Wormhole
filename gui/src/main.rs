@@ -1,10 +1,11 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 #![allow(clippy::needless_return)]
 
-use installer::bepinex::BepInExInstallManager;
 use std::{path::PathBuf, process::Command};
+
 use tauri::Window;
-use wormhole_common::installer::mods::ModInstaller;
+
+use installer::bepinex::BepInExInstallManager;
 use wormhole_common::{
     finder::find_install_dir,
     instances::InstanceInfo,
@@ -13,6 +14,7 @@ use wormhole_common::{
         spacedock::SpaceDockAPI,
     },
 };
+use wormhole_common::installer::mods::ModInstaller;
 
 pub mod installer;
 pub mod progress;

@@ -1,54 +1,54 @@
 .mod-tile {
+  width: 96%;
+  height: 90%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  padding: 2%;
+  border-radius: 4px;
+
+  transition: background-color 0.5s ease;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #3f4140;
+  }
+
+  .image {
+    margin-top: 2%;
     width: 96%;
-    height: 90%;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-
-    padding: 2%;
+    height: 100%;
+    object-fit: cover;
     border-radius: 4px;
+  }
 
-    transition: background-color 0.5s ease;
-    cursor: pointer;
+  .info {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
 
-    &:hover {
-        background-color: #3f4140;
-    }
+    width: 96%;
+    padding: 0 2%;
 
-    .image {
-        margin-top: 2%;
-        width: 96%;
-        height: 100%;
-        object-fit: cover;
-        border-radius: 4px;
-    }
+    .action {
+      border: none;
+      background-color: transparent;
 
-    .info {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
+      .icon {
+        color: #90ee90;
+        font-size: 14pt;
+        cursor: pointer;
 
-        width: 96%;
-        padding: 0 2%;
+        transition: color 0.5s ease;
 
-        .action {
-            border: none;
-            background-color: transparent;
-
-            .icon {
-                color: #90ee90;
-                font-size: 14pt;
-                cursor: pointer;
-
-                transition: color 0.5s ease;
-
-                &:hover {
-                    color: #50ae50;
-                }
-            }
+        &:hover {
+          color: #50ae50;
         }
+      }
     }
+  }
 }

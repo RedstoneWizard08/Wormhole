@@ -1,12 +1,11 @@
-use keyvalues_parser::Vdf;
 use std::{fs, path::PathBuf};
 
-#[cfg(target_os = "macos")]
-use super::resolver::macos;
+use keyvalues_parser::Vdf;
 
 #[cfg(target_os = "linux")]
 use super::resolver::linux;
-
+#[cfg(target_os = "macos")]
+use super::resolver::macos;
 #[cfg(target_os = "windows")]
 use super::resolver::windows;
 
@@ -105,10 +104,10 @@ impl SteamInstallFinder {
 
                     if file_path.is_file()
                         && file_path
-                            .as_os_str()
-                            .to_str()
-                            .unwrap()
-                            .contains("KSP2_x64.exe")
+                        .as_os_str()
+                        .to_str()
+                        .unwrap()
+                        .contains("KSP2_x64.exe")
                     {
                         return Some(ksp2_dir);
                     }

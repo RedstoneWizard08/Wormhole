@@ -1,4 +1,4 @@
-import { finishVersions, ModVersion } from "../versions";
+import {finishVersions, ModVersion} from "../versions";
 
 export interface BrowseModInfo {
     name: string;
@@ -25,6 +25,7 @@ export interface ModWithDistance {
     mod: BrowseModInfo;
     dist: undefined;
 }
+
 export const finishBrowseModInfo = (
     raw: Partial<BrowseModInfo>
 ): BrowseModInfo => {

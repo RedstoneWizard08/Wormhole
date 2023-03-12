@@ -1,5 +1,5 @@
 import axios from "axios";
-import { emit } from "@tauri-apps/api/event";
+import {emit} from "@tauri-apps/api/event";
 
 export const toDataURI = (blob: Blob) => {
     return new Promise<string>((resolve, reject) => {

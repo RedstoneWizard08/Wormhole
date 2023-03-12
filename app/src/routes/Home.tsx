@@ -1,6 +1,6 @@
 import "./Home.scss";
 import banner from "../assets/background_banner.png";
-import { route } from "preact-router";
+import {route} from "preact-router";
 
 export const Home = () => {
     const doInstall = () => {
