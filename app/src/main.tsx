@@ -3,16 +3,16 @@ import "@fortawesome/fontawesome-free/scss/regular.scss";
 import "@fortawesome/fontawesome-free/scss/solid.scss";
 import "@fortawesome/fontawesome-free/scss/brands.scss";
 
-import {render} from "preact";
-import {App} from "./App";
-import {createMockAPI} from "./dev";
+import { render } from "preact";
+import { App } from "./App";
+import { createMockAPI } from "./dev";
 import eruda from "eruda";
 
 const root = document.getElementById("root")!;
 
 if (import.meta.env.TAURI_WEB_DEV) {
     eruda.init();
-    eruda.position({x: 10, y: window.innerHeight - 45});
+    eruda.position({ x: 10, y: window.innerHeight - 45 });
 
     createMockAPI();
 }

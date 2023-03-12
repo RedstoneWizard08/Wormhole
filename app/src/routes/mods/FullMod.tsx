@@ -13,43 +13,37 @@ export const FullMod = () => {
     const modId = router.matches?.mod;
 
     const [modInfo, setModInfo] = useState<FullModInfo | undefined>(undefined);
-    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         (async () => {
-            const mod = await invoke_proxy("get_mod", {
-                modId: parseInt(modId || "-1", 10),
-            });
-            setModInfo(mod);
-            setIsLoading(false);
+            setModInfo(
+                await invoke_proxy("get_mod", {
+                    modId: parseInt(modId || "-1", 10),
+                })
+            );
         })();
     }, [modId]);
 
     const linkFix = (html: string) => {
-        const linkRegex = /(<a\s+(?!.*\btarget=)[^>]*)(href="https?:\/\/)(.*?")/gi;
-        const matches = html.matchAll(linkRegex);
+        const regex = /(<a.*?>)(.*?)(<\/a>)/gi;
+        const matches = html.matchAll(regex);
 
         for (const match of matches) {
             const startTag = match[1];
-            const href = match[2] + match[3];
-            const newStartTag = `${startTag} target="_blank"`;
-            const newLink = `${newStartTag} ${href}`;
-            html = html.replace(match[0], newLink);
+            const linkContent = match[2];
+            const endTag = match[3];
+            const urlRegex = /href=["'](.*?)["']/i;
+            const targetRegex = /target=["'](.*?)["']/i;
+
+            // Check if the link has a valid URL and no existing target attribute
+            if (urlRegex.test(startTag) && !targetRegex.test(startTag)) {
+                const newStartTag = `${startTag} target="_blank"`;
+                const newLink = `${newStartTag}${linkContent}${endTag}`;
+                html = html.replace(match[0], newLink);
+            }
         }
 
         return html;
-    };
-
-
-    const imageFix = (html: string) => {
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(html, "text/html");
-        const images = doc.querySelectorAll("img");
-        images.forEach((img) => {
-            img.style.maxWidth = "50%";
-        });
-
-        return doc.body.innerHTML;
     };
 
     const handleHtml = (html: string) => {
@@ -66,29 +60,21 @@ export const FullMod = () => {
     }
 
     const install = async () => {
+        // window.open(await invoke_proxy("get_mod_download", {
+        //     modId: parseInt(modId || "-1", 10),
+        // }));
+
         const downloadUrl = await invoke_proxy("get_mod_download", {
             modId: parseInt(modId || "-1", 10),
-        })
+        });
+
         void downloadUrl;
     };
-
-    if (isLoading) {
-        return (
-            <div class="loader">
-                <div class="spinner" />
-                <p>Loading...</p>
-            </div>
-        );
-    }
 
     return (
         <div className="full-mod-container">
             <div className="mod">
-                <img
-                    src={modInfo?.background}
-                    className="background"
-                    alt="mod-background-image"
-                />
+                <img src={modInfo?.background} className="background"  alt="mod-background-image" />
 
                 <div className="infos">
                     <div className="left">

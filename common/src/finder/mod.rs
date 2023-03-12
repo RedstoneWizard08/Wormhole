@@ -1,4 +1,4 @@
-use std::{fs, path::PathBuf};
+use std::path::PathBuf;
 
 use pdlauncher::PDLauncherInstallFinder;
 use steam::SteamInstallFinder;
@@ -22,12 +22,5 @@ pub fn find_install_dir() -> PathBuf {
         return dir;
     }
 
-    let p = PathBuf::from(
-        "/home/jacob/.local/share/steam/root/steamapps/common/Kerbal Space Program 2",
-    );
-
-    fs::create_dir_all(p.clone()).unwrap();
-
-    return p;
-    // return None.expect("No KSP2 install found!");
+    return None.expect("No KSP2 install found!");
 }

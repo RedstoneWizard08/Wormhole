@@ -1,13 +1,16 @@
 {
-  "extends": "stylelint-config-standard-scss",
-  "plugins": [
-    "stylelint-scss"
-  ],
-  "rules": {
-    "font-family-name-quotes": null,
-    "declaration-empty-line-before": null,
-    "font-family-no-missing-generic-family-keyword": null,
-    "no-empty-source": null,
-    "color-hex-length": null
-  }
+    "extends": "stylelint-config-standard-scss",
+
+    "plugins": ["stylelint-scss"],
+
+    "rules": {
+        "font-family-name-quotes": null,
+        "declaration-empty-line-before": null,
+        "font-family-no-missing-generic-family-keyword": null,
+        "no-empty-source": null,
+        "color-hex-length": null,
+        "shorthand-property-no-redundant-values": null,
+        "color-function-notation": null,
+        "alpha-value-notation": null
+    }
 }
