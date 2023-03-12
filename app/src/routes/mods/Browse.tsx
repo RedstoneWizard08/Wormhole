@@ -5,6 +5,7 @@ import {Pagination} from "../../components/Pagination";
 import {BrowseModInfo, ModWithDistance,} from "../../api/models/modinfo/browse";
 import {invoke_proxy} from "../../invoke";
 import {SearchBar} from "../../components/SearchBar";
+import { LoadingPage } from "../../components/LoadingPage";
 
 export const Browse = () => {
     const [results, setResults] = useState<BrowseModInfo[]>([]);
@@ -90,10 +91,7 @@ export const Browse = () => {
                 )}
 
                 {loading ? (
-                    <div class="loader">
-                        <div class="spinner" />
-                        <p>Loading...</p>
-                    </div>
+                    <LoadingPage />
                 ) : (
                     <>
                         <div className="pagination-search-bar">

@@ -7,8 +7,15 @@ import { render } from "preact";
 import { App } from "./App";
 import { createMockAPI } from "./dev";
 import eruda from "eruda";
+import { backend_boot } from "./boot";
+import { LoadingPage } from "./components/LoadingPage";
+
 
 const root = document.getElementById("root")!;
+
+render(<LoadingPage />, root);
+
+await backend_boot();
 
 if (import.meta.env.TAURI_WEB_DEV) {
     eruda.init();

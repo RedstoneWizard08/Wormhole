@@ -5,4 +5,5 @@ pub mod installer;
 pub mod instances;
 pub mod models;
 pub mod mods;
+pub mod boot;
 pub mod releases;

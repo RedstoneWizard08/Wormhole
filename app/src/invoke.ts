@@ -44,6 +44,8 @@ export interface InvokeFunction {
     get_distance: [QueryData, undefined];
 
     install_mod: [ModArgs, undefined];
+
+    backend_boot: [undefined, undefined];
 }
 
 export const invoke_proxy = async <K extends keyof InvokeFunction>(

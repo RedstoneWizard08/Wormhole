@@ -6,6 +6,7 @@ use std::{path::PathBuf, process::Command};
 use tauri::Window;
 
 use installer::bepinex::BepInExInstallManager;
+
 use wormhole_common::{
     finder::find_install_dir,
     instances::InstanceInfo,
@@ -13,8 +14,10 @@ use wormhole_common::{
         schema::browse::{BrowseResult, ModInfo},
         spacedock::SpaceDockAPI,
     },
+    boot::integrity::check_directories,
+    installer::mods::ModInstaller,
 };
-use wormhole_common::installer::mods::ModInstaller;
+use wormhole_common::boot::integrity::check_files;
 
 pub mod installer;
 pub mod progress;
@@ -147,6 +150,12 @@ async fn get_distance(mod_name: &str, query: &str) -> Result<usize, String> {
     Ok(levenshtein_distance(query, mod_name).await)
 }
 
+#[tauri::command]
+async fn backend_boot() {
+    check_directories();
+    check_files();
+}
+
 pub fn main() {
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![
@@ -160,7 +169,8 @@ pub fn main() {
             get_mod,
             get_mods,
             install_mod,
-            get_distance
+            get_distance,
+            backend_boot
         ])
         .run(tauri::generate_context!())
         .expect("Error while starting Wormhole!");

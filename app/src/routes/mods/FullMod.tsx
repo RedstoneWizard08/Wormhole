@@ -7,6 +7,7 @@ import {invoke_proxy} from "../../invoke";
 
 // @ts-ignore
 import DOMPurify from 'dompurify';
+import { LoadingPage } from "../../components/LoadingPage";
 
 export const FullMod = () => {
     const [router] = useRouter();
@@ -78,12 +79,7 @@ export const FullMod = () => {
     };
 
     if (isLoading) {
-        return (
-          <div class="loader">
-              <div class="spinner" />
-              <p>Loading...</p>
-          </div>
-        );
+        return <LoadingPage />;
     }
 
     return (
