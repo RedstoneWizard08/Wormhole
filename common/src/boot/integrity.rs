@@ -1,7 +1,21 @@
 use std::path::PathBuf;
 use std::{fs};
+use serde::{Deserialize, Serialize};
 
-pub fn check_directories() {
+#[derive(Debug, Deserialize, Serialize)]
+pub struct Mods {
+    mods: Vec<Mod>,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+struct Mod {
+    name: String,
+    date_installed: String,
+    size: u64,
+    install_path: String,
+}
+
+fn check_directories() {
     let mut dir_path = PathBuf::from(std::env::var("APPDATA").unwrap());
     dir_path.push("Wormhole");
 
@@ -9,24 +23,63 @@ pub fn check_directories() {
         let _ = fs::create_dir_all(&dir_path);
     }
 
-    if !&dir_path.join("Instances").exists() {
-        let _ = fs::create_dir_all(&dir_path.join("Instances"));
+    if !&dir_path.join("instances").exists() {
+        let _ = fs::create_dir_all(&dir_path.join("instances"));
     }
 
-    if !&dir_path.join("Mods").exists() {
-        let _ = fs::create_dir_all(&dir_path.join("Mods"));
+    if !&dir_path.join("mods").exists() {
+        let _ = fs::create_dir_all(&dir_path.join("mods"));
     }
 }
 
-pub fn check_files() {
+fn check_files() {
     let mut dir_path = PathBuf::from(std::env::var("APPDATA").unwrap());
     dir_path.push("Wormhole");
 
-    if !&dir_path.join("Instances").join("instances.json").exists() {
-        let _ = fs::write(&dir_path.join("Instances").join("instances.json"), "[]");
+    if !&dir_path.join("instances").join("instances.json").exists() {
+        let _ = fs::write(&dir_path.join("instances").join("instances.json"), "[]");
     }
 
-    if !&dir_path.join("Mods").join("mods.json").exists() {
-        let _ = fs::write(&dir_path.join("Mods").join("mods.json"), "[]");
+    const MODS_TEMPLATE: &str = r#"{
+      "mods": [
+        {
+          "name": "Mod 1",
+          "date_installed": "2022-03-10T10:30:00Z",
+          "size": 1000000,
+          "install_path": "C:\\Users\\username\\AppData\\Roaming\\Wormhole\\mods\\mod1"
+        },
+        {
+          "name": "Mod 2",
+          "date_installed": "2022-03-09T15:20:00Z",
+          "size": 500000,
+          "install_path": "C:\\Users\\username\\AppData\\Roaming\\Wormhole\\mods\\mod2"
+        },
+        {
+          "name": "Mod 3",
+          "date_installed": "2022-03-08T11:45:00Z",
+          "size": 2000000,
+          "install_path": "C:\\Users\\username\\AppData\\Roaming\\Wormhole\\mods\\mod3"
+        }
+      ]
     }
+    "#;
+
+    if !&dir_path.join("mods").join("mods.json").exists() {
+        let _ = fs::write(&dir_path.join("mods").join("mods.json"), MODS_TEMPLATE);
+    }
+}
+
+pub fn directory_integrity_check() {
+    check_directories();
+    check_files();
+}
+
+pub fn read_mods_file() -> Mods {
+    let mut dir_path = PathBuf::from(std::env::var("APPDATA").unwrap());
+    dir_path.push("Wormhole");
+    dir_path.push("mods");
+    dir_path.push("mods.json");
+    let mods_file_contents = fs::read_to_string(dir_path);
+    let mods: Mods = serde_json::from_str(&mods_file_contents.unwrap()).unwrap();
+    return mods
 }

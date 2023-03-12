@@ -46,6 +46,8 @@ export interface InvokeFunction {
     install_mod: [ModArgs, undefined];
 
     backend_boot: [undefined, undefined];
+
+    read_mod_json: [undefined, undefined];
 }
 
 export const invoke_proxy = async <K extends keyof InvokeFunction>(

@@ -14,10 +14,9 @@ use wormhole_common::{
         schema::browse::{BrowseResult, ModInfo},
         spacedock::SpaceDockAPI,
     },
-    boot::integrity::check_directories,
     installer::mods::ModInstaller,
 };
-use wormhole_common::boot::integrity::check_files;
+use wormhole_common::boot::integrity::{directory_integrity_check, Mods, read_mods_file};
 
 pub mod installer;
 pub mod progress;
@@ -152,8 +151,12 @@ async fn get_distance(mod_name: &str, query: &str) -> Result<usize, String> {
 
 #[tauri::command]
 async fn backend_boot() {
-    check_directories();
-    check_files();
+    directory_integrity_check();
+}
+
+#[tauri::command]
+fn read_mod_json() -> Mods {
+    return read_mods_file();
 }
 
 pub fn main() {
@@ -170,7 +173,8 @@ pub fn main() {
             get_mods,
             install_mod,
             get_distance,
-            backend_boot
+            backend_boot,
+            read_mod_json
         ])
         .run(tauri::generate_context!())
         .expect("Error while starting Wormhole!");
