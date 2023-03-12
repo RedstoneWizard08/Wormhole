@@ -41,11 +41,14 @@ export const Browse = () => {
         query: string
     ): Promise<BrowseModInfo[]> {
         console.log();
+        
         const test_data = await invoke_proxy("get_distance", {
             query,
             modName: mods[0].name,
         });
+
         console.log(test_data);
+        
         const exactMatches: BrowseModInfo[] = [];
         const closeMatches: ModWithDistance[] = [];
 

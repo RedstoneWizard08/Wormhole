@@ -26,9 +26,11 @@ export const FullMod = () => {
         //     modId: parseInt(modId || "-1", 10),
         // }));
 
-        await invoke_proxy("get_mod_download", {
+        const downloadUrl = await invoke_proxy("get_mod_download", {
             modId: parseInt(modId || "-1", 10),
         });
+
+        void downloadUrl;
     };
 
     return (
