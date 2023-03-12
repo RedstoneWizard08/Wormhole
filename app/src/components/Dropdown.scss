@@ -17,7 +17,7 @@
         border-radius: 8px;
         background-color: transparent;
 
-        &:after {
+        &::after {
             position: absolute;
             content: "";
             top: 14px;
@@ -33,7 +33,7 @@
             border-bottom-right-radius: 0;
         }
 
-        .arrow-active:after {
+        .arrow-active::after {
             border-color: transparent transparent #fff transparent;
             top: 7px;
         }

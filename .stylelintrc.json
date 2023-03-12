@@ -8,6 +8,9 @@
         "declaration-empty-line-before": null,
         "font-family-no-missing-generic-family-keyword": null,
         "no-empty-source": null,
-        "color-hex-length": null
+        "color-hex-length": null,
+        "shorthand-property-no-redundant-values": null,
+        "color-function-notation": null,
+        "alpha-value-notation": null
     }
 }
