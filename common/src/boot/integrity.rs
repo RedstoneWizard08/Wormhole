@@ -30,6 +30,10 @@ fn check_directories() {
     if !&dir_path.join("mods").exists() {
         let _ = fs::create_dir_all(&dir_path.join("mods"));
     }
+
+    if !&dir_path.join("cache").exists() {
+        let _ = fs::create_dir_all(&dir_path.join("cache"));
+    }
 }
 
 fn check_files() {
@@ -40,7 +44,8 @@ fn check_files() {
         let _ = fs::write(&dir_path.join("instances").join("instances.json"), "[]");
     }
 
-    const MODS_TEMPLATE: &str = r#"{
+    const MODS_TEMPLATE: &str = r#"
+    {
       "mods": [
         {
           "name": "Mod 1",
@@ -82,4 +87,13 @@ pub fn read_mods_file() -> Mods {
     let mods_file_contents = fs::read_to_string(dir_path);
     let mods: Mods = serde_json::from_str(&mods_file_contents.unwrap()).unwrap();
     return mods
+}
+
+// write to mods file
+pub fn write_mods_file(mods: Mods) {
+    let mut dir_path = PathBuf::from(std::env::var("APPDATA").unwrap());
+    dir_path.push("Wormhole");
+    dir_path.push("mods");
+    dir_path.push("mods.json");
+    let _mods_file_contents = fs::write(dir_path, serde_json::to_string(&mods).unwrap());
 }

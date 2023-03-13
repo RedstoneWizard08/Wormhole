@@ -2,6 +2,8 @@
     width: 40%;
     margin-left: 1.5%;
 
+    user-select: none;
+
     justify-self: start;
     position: relative;
 
@@ -25,7 +27,6 @@
             width: 0;
             height: 0;
             border: 6px solid transparent;
-            border-color: #fff transparent transparent transparent;
         }
 
         &.active {
@@ -43,7 +44,6 @@
     .selected {
         color: #fff;
         padding: 8px 16px;
-        border: 1px solid transparent;
         border-color: transparent transparent rgba(0, 0, 0, 0.1) transparent;
         cursor: pointer;
     }

@@ -16,6 +16,7 @@ use wormhole_common::{
     },
     installer::mods::ModInstaller,
 };
+use wormhole_common::boot::cache::update_cache;
 use wormhole_common::boot::integrity::{directory_integrity_check, Mods, read_mods_file};
 
 pub mod installer;
@@ -152,6 +153,7 @@ async fn get_distance(mod_name: &str, query: &str) -> Result<usize, String> {
 #[tauri::command]
 async fn backend_boot() {
     directory_integrity_check();
+    update_cache();
 }
 
 #[tauri::command]

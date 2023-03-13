@@ -20,7 +20,7 @@ export const Browse = () => {
     const [initialLoad, setInitialLoad] = useState(true);
     const [gameId, setGameId] = useState(3102);
 
-    // These must be managed outside of the
+    // These must be managed outside the
     // dropdown component, otherwise the
     // component's data will reset every
     // time the mod list is refreshed.
@@ -32,6 +32,7 @@ export const Browse = () => {
     }, [game]);
 
     useEffect(() => {
+        setLoading(true);
         (async () => {
             const data = await invoke_proxy("get_mods", {
                 gameId,
@@ -39,8 +40,12 @@ export const Browse = () => {
                 page,
             });
 
+            console.log(data);
+
             setResults(data.result);
             setPages(data.pages);
+
+            if (page > data.pages) setPage(data.pages - 1);
 
             if (initialLoad) setInitialLoad(false);
 
@@ -53,15 +58,6 @@ export const Browse = () => {
         mods: BrowseModInfo[],
         query: string
     ): Promise<BrowseModInfo[]> {
-        console.log();
-
-        const test_data = await invoke_proxy("get_distance", {
-            query,
-            modName: mods[0].name,
-        });
-
-        console.log(test_data);
-
         const exactMatches: BrowseModInfo[] = [];
         const closeMatches: ModWithDistance[] = [];
 
