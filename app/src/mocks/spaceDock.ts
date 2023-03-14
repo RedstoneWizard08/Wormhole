@@ -1,4 +1,4 @@
-import {SpaceDockAPI} from "../api/SpaceDock";
+import { SpaceDockAPI } from "../api/SpaceDock";
 
 export const getMod = async (modId?: string) => {
     const api = new SpaceDockAPI();

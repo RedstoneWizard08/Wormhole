@@ -1,6 +1,6 @@
-use std::path::PathBuf;
-use std::{fs};
 use serde::{Deserialize, Serialize};
+use std::fs;
+use std::path::PathBuf;
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct Mods {
@@ -86,7 +86,7 @@ pub fn read_mods_file() -> Mods {
     dir_path.push("mods.json");
     let mods_file_contents = fs::read_to_string(dir_path);
     let mods: Mods = serde_json::from_str(&mods_file_contents.unwrap()).unwrap();
-    return mods
+    return mods;
 }
 
 // write to mods file

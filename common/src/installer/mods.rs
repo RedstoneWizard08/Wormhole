@@ -34,7 +34,7 @@ impl ModInstaller {
             &PathBuf::from(&self.install_path.join(".mod.zip")),
             &PathBuf::from(&self.install_path),
         )
-            .expect("Could not extract the mod!");
+        .expect("Could not extract the mod!");
 
         fs::remove_file(self.install_path.join(".mod.zip"))
             .expect("Could not delete the mod file!");

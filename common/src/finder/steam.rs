@@ -104,10 +104,10 @@ impl SteamInstallFinder {
 
                     if file_path.is_file()
                         && file_path
-                        .as_os_str()
-                        .to_str()
-                        .unwrap()
-                        .contains("KSP2_x64.exe")
+                            .as_os_str()
+                            .to_str()
+                            .unwrap()
+                            .contains("KSP2_x64.exe")
                     {
                         return Some(ksp2_dir);
                     }

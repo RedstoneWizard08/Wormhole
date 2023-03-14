@@ -80,7 +80,7 @@ jobs:
     #           id: short-sha
     #           with:
     #               length: 7
-            
+
     #         - name: Install cross
     #           run: |
     #             cargo install cross

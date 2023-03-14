@@ -1,4 +1,4 @@
-import {finishVersions, ModVersion} from "../versions";
+import { finishVersions, ModVersion } from "../versions";
 
 export interface FullModInfo {
     name: string;

@@ -1,13 +1,7 @@
 import "./App.scss";
-import {Route, Router} from "preact-router";
-import {Header} from "./components/Header";
-import {Home} from "./routes/Home";
-import {InstallProgress} from "./routes/InstallProgress";
-import {Instances} from "./routes/Instances";
-import {Browse} from "./routes/mods/Browse";
-import {FullMod} from "./routes/mods/FullMod";
-import {Manage} from "./routes/mods/Manage";
-import {Instance} from "./routes/Instance";
+import { Router } from "preact-router";
+import { Header } from "./components/Header";
+import AsyncRoute from "preact-async-route";
 
 export const App = () => {
     return (
@@ -16,15 +10,60 @@ export const App = () => {
 
             <div className="main">
                 <Router>
-                    <Route path="/" component={Home} />
-                    <Route path="/instances" component={Instances} />
+                    <AsyncRoute
+                        path="/"
+                        getComponent={() =>
+                            import("./routes/Home").then((m) => m.Home)
+                        }
+                    />
 
-                    <Route path="/mods" component={Browse} />
-                    <Route path="/manage" component={Manage} />
-                    <Route path="/install" component={InstallProgress} />
+                    <AsyncRoute
+                        path="/instances"
+                        getComponent={() =>
+                            import("./routes/Instances").then(
+                                (m) => m.Instances
+                            )
+                        }
+                    />
 
-                    <Route path="/mod/:mod" component={FullMod} />
-                    <Route path="/instance/:instance" component={Instance} />
+                    <AsyncRoute
+                        path="/mods"
+                        getComponent={() =>
+                            import("./routes/mods/Browse").then((m) => m.Browse)
+                        }
+                    />
+
+                    <AsyncRoute
+                        path="/manage"
+                        getComponent={() =>
+                            import("./routes/mods/Manage").then((m) => m.Manage)
+                        }
+                    />
+
+                    <AsyncRoute
+                        path="/install"
+                        getComponent={() =>
+                            import("./routes/InstallProgress").then(
+                                (m) => m.InstallProgress
+                            )
+                        }
+                    />
+
+                    <AsyncRoute
+                        path="/mod/:mod"
+                        getComponent={() =>
+                            import("./routes/mods/FullMod").then(
+                                (m) => m.FullMod
+                            )
+                        }
+                    />
+
+                    <AsyncRoute
+                        path="/instance/:instance"
+                        getComponent={() =>
+                            import("./routes/Instance").then((m) => m.Instance)
+                        }
+                    />
                 </Router>
             </div>
         </div>

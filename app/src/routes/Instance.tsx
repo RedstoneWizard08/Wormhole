@@ -1,16 +1,15 @@
-import {Link, useRouter} from "preact-router";
-import {useEffect, useState} from "preact/hooks";
-import {InstanceInfo, KSPGame} from "../api/instance";
-import {invoke_proxy} from "../invoke";
+import { Link, useRouter } from "preact-router";
+import { useEffect, useState } from "preact/hooks";
+import { InstanceInfo, KSPGame } from "../api/instance";
+import { invoke_proxy } from "../invoke";
 import ksp1logo from "../assets/ksp.png";
 import ksp2logo from "../assets/ksp2.png";
 import "./Instance.scss";
-import {marked} from "marked";
-import {createRef} from "preact";
+import { marked } from "marked";
+import { createRef } from "preact";
 
 export const Instance = () => {
     const [router] = useRouter();
-
     const [instances, setInstances] = useState(false);
 
     useEffect(() => {

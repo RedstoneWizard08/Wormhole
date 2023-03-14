@@ -1,4 +1,4 @@
-import {blue, cyan, green, magenta, red, yellow} from "colorette";
+import { blue, cyan, green, magenta, red, yellow } from "colorette";
 import puppeteer from "puppeteer";
 
 const main = async () => {
@@ -21,7 +21,7 @@ const main = async () => {
         console.log(color(`${type} ${message.text()}`));
     });
 
-    page.on("pageerror", ({message}) => console.log(red(message)));
+    page.on("pageerror", ({ message }) => console.log(red(message)));
 
     page.on(
         "response",

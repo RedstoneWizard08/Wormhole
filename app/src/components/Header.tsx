@@ -1,7 +1,7 @@
 import "./Header.scss";
 import logo from "../assets/icon.png";
-import {Link, useRouter} from "preact-router";
-import {useEffect, useState} from "preact/hooks";
+import { Link, useRouter } from "preact-router";
+import { useEffect, useState } from "preact/hooks";
 
 export const Header = () => {
     const [router] = useRouter();

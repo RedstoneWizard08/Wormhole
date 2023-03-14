@@ -1,2 +1,2 @@
-pub mod integrity;
 pub mod cache;
+pub mod integrity;

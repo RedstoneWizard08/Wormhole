@@ -1,5 +1,5 @@
-use std::path::PathBuf;
 use rusqlite::{params, Connection};
+use std::path::PathBuf;
 
 pub struct Cache {
     conn: Connection,
@@ -22,7 +22,9 @@ impl Cache {
     }
 
     pub fn get(&self, game_id: i32) -> Result<Option<String>, rusqlite::Error> {
-        let mut stmt = self.conn.prepare("SELECT data FROM cache WHERE game_id = ?1")?;
+        let mut stmt = self
+            .conn
+            .prepare("SELECT data FROM cache WHERE game_id = ?1")?;
         let row = stmt.query_row(params![game_id], |row| row.get(0));
         match row {
             Ok(data) => Ok(Some(data)),

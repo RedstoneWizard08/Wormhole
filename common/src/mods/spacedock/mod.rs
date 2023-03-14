@@ -1,5 +1,5 @@
-use std::time::Instant;
 use serde::{Deserialize, Serialize};
+use std::time::Instant;
 
 use crate::models::latest::LatestSchema;
 
@@ -52,7 +52,10 @@ impl SpaceDockAPI {
     pub async fn get_mods_for_game(&self, game: i32, page: i32, count: i32) -> BrowseResult {
         let start_time = Instant::now();
 
-        let uri = format!("{}/browse?page={}&count={}&game_id={}", self.api_base, page, count, game);
+        let uri = format!(
+            "{}/browse?page={}&count={}&game_id={}",
+            self.api_base, page, count, game
+        );
         let resp = reqwest::get(uri).await.unwrap();
         let text = resp.text().await.unwrap();
         let data = serde_json::from_str::<BrowseResult>(&text);

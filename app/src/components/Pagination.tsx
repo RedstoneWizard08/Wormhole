@@ -1,6 +1,6 @@
 import "./Pagination.scss";
-import {FunctionalComponent} from "preact";
-import {StateUpdater, useState} from "preact/hooks";
+import { FunctionalComponent } from "preact";
+import { StateUpdater, useState } from "preact/hooks";
 
 export interface PaginationProps {
     setPage: StateUpdater<number>;
@@ -18,13 +18,13 @@ export interface PaginationButtonProps {
 }
 
 export const PaginationButton: FunctionalComponent<PaginationButtonProps> = ({
-                                                                                 page,
-                                                                                 active,
-                                                                                 setPage,
-                                                                                 next,
-                                                                                 prev,
-                                                                                 ellipsis,
-                                                                             }) => {
+    page,
+    active,
+    setPage,
+    next,
+    prev,
+    ellipsis,
+}) => {
     return (
         <div
             className={`pagination-button ${
@@ -46,10 +46,10 @@ export const PaginationButton: FunctionalComponent<PaginationButtonProps> = ({
 };
 
 export const Pagination: FunctionalComponent<PaginationProps> = ({
-                                                                     pages,
-                                                                     page,
-                                                                     setPage,
-                                                                 }) => {
+    pages,
+    page,
+    setPage,
+}) => {
     const [offset, setOffset] = useState(0);
     const offsetted = 8;
 

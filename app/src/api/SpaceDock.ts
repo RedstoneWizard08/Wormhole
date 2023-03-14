@@ -1,7 +1,7 @@
 import axios from "axios";
 
-import {finishBrowseResult} from "./models/browse";
-import {finishFullModInfo} from "./models/modinfo/full";
+import { finishBrowseResult } from "./models/browse";
+import { finishFullModInfo } from "./models/modinfo/full";
 
 export class SpaceDockAPI {
     private base: string;

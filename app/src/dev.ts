@@ -1,7 +1,7 @@
-import {mockIPC} from "@tauri-apps/api/mocks";
-import {InstanceInfo, KSPGame} from "./api/instance";
-import {SpaceDockAPI} from "./api/SpaceDock";
-import {downloadBepInEx} from "./mocks/download";
+import { mockIPC } from "@tauri-apps/api/mocks";
+import { InstanceInfo, KSPGame } from "./api/instance";
+import { SpaceDockAPI } from "./api/SpaceDock";
+import { downloadBepInEx } from "./mocks/download";
 
 export const repeat = <T>(arr: T[], n: number): T[] => {
     const final: T[] = [];

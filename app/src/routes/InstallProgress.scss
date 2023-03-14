@@ -1,50 +1,50 @@
 .install-progress-container {
-  width: 100%;
-  height: 100%;
-
-  margin: 0;
-  padding: 0;
-
-  background-color: #1f2120;
-
-  .logo {
-    width: 50%;
-    user-select: none;
-    margin: 4% 25%;
-    border-radius: 8px;
-  }
-
-  .title {
     width: 100%;
-    user-select: none;
-    text-align: center;
-  }
+    height: 100%;
 
-  .progress {
-    width: 100%;
-    margin: 4% 0;
-    user-select: none;
-    text-align: center;
-  }
+    margin: 0;
+    padding: 0;
 
-  .action {
-    border: 2px solid #3c3c3e;
-    border-radius: 4px;
-    background-color: transparent;
-    user-select: none;
-    color: #dddfdc;
-    font-family: "manteka", serif;
+    background-color: #1f2120;
 
-    width: 10%;
-    padding: 1.5% 0;
-    margin-left: 45%;
-
-    cursor: pointer;
-    outline: none;
-    transition: color 0.5s ease, background-color 0.5s ease;
-
-    &:hover {
-      background-color: #3c3c3e;
+    .logo {
+        width: 50%;
+        user-select: none;
+        margin: 4% 25%;
+        border-radius: 8px;
     }
-  }
+
+    .title {
+        width: 100%;
+        user-select: none;
+        text-align: center;
+    }
+
+    .progress {
+        width: 100%;
+        margin: 4% 0;
+        user-select: none;
+        text-align: center;
+    }
+
+    .action {
+        border: 2px solid #3c3c3e;
+        border-radius: 4px;
+        background-color: transparent;
+        user-select: none;
+        color: #dddfdc;
+        font-family: "manteka", serif;
+
+        width: 10%;
+        padding: 1.5% 0;
+        margin-left: 45%;
+
+        cursor: pointer;
+        outline: none;
+        transition: color 0.5s ease, background-color 0.5s ease;
+
+        &:hover {
+            background-color: #3c3c3e;
+        }
+    }
 }

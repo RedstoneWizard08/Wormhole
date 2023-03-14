@@ -7,17 +7,17 @@ use tauri::Window;
 
 use installer::bepinex::BepInExInstallManager;
 
+use wormhole_common::boot::cache::update_cache;
+use wormhole_common::boot::integrity::{directory_integrity_check, read_mods_file, Mods};
 use wormhole_common::{
     finder::find_install_dir,
+    installer::mods::ModInstaller,
     instances::InstanceInfo,
     mods::{
         schema::browse::{BrowseResult, ModInfo},
         spacedock::SpaceDockAPI,
     },
-    installer::mods::ModInstaller,
 };
-use wormhole_common::boot::cache::update_cache;
-use wormhole_common::boot::integrity::{directory_integrity_check, Mods, read_mods_file};
 
 pub mod installer;
 pub mod progress;
