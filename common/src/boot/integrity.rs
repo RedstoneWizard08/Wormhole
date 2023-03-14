@@ -24,15 +24,15 @@ fn check_directories() {
     }
 
     if !&dir_path.join("instances").exists() {
-        let _ = fs::create_dir_all(&dir_path.join("instances"));
+        let _ = fs::create_dir_all(dir_path.join("instances"));
     }
 
     if !&dir_path.join("mods").exists() {
-        let _ = fs::create_dir_all(&dir_path.join("mods"));
+        let _ = fs::create_dir_all(dir_path.join("mods"));
     }
 
     if !&dir_path.join("cache").exists() {
-        let _ = fs::create_dir_all(&dir_path.join("cache"));
+        let _ = fs::create_dir_all(dir_path.join("cache"));
     }
 }
 
@@ -41,7 +41,7 @@ fn check_files() {
     dir_path.push("Wormhole");
 
     if !&dir_path.join("instances").join("instances.json").exists() {
-        let _ = fs::write(&dir_path.join("instances").join("instances.json"), "[]");
+        let _ = fs::write(dir_path.join("instances").join("instances.json"), "[]");
     }
 
     const MODS_TEMPLATE: &str = r#"
@@ -70,7 +70,7 @@ fn check_files() {
     "#;
 
     if !&dir_path.join("mods").join("mods.json").exists() {
-        let _ = fs::write(&dir_path.join("mods").join("mods.json"), MODS_TEMPLATE);
+        let _ = fs::write(dir_path.join("mods").join("mods.json"), MODS_TEMPLATE);
     }
 }
 
