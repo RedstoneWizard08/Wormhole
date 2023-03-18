@@ -59,6 +59,7 @@
         overflow-y: scroll;
 
         .background {
+            user-select: none;
             width: 100%;
             height: 70%;
             object-fit: cover;
@@ -67,7 +68,7 @@
 
         .infos {
             width: 97%;
-
+            user-select: none;
             display: flex;
             flex-direction: row;
             align-items: center;
@@ -127,6 +128,7 @@
     .actions {
         width: 100%;
         height: auto;
+        margin: 0;
         padding: 1%;
 
         .action {
