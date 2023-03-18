@@ -5,7 +5,7 @@ jobs:
     publish-tauri-amd64:
         permissions:
             contents: write
-        runs-on: macos-latest
+        runs-on: windows-latest
         steps:
             - uses: actions/checkout@v3
 
