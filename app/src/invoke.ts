@@ -27,6 +27,11 @@ export interface GameArgs {
     gameId: number;
 }
 
+export interface InstanceUpdateArgs {
+    instanceId: number;
+    description: string;
+}
+
 export interface InvokeFunction {
     download_bepinex: [GameArgs, string];
     uninstall_bepinex: [GameArgs, string];
@@ -47,6 +52,8 @@ export interface InvokeFunction {
     install_mod: [ModArgs, undefined];
     backend_boot: [undefined, undefined];
     read_mod_json: [undefined, undefined];
+
+    update_description: [InstanceUpdateArgs, undefined];
 }
 
 export const invoke_proxy = async <K extends keyof InvokeFunction>(

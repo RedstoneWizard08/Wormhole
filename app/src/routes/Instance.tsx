@@ -39,27 +39,32 @@ export const Instance = () => {
         })();
     }, [id]);
 
-    const save = () => {
-        if (instanceInfo)
+    const save = async () => {
+        if (instanceInfo) {
             setInstanceInfo({
                 ...instanceInfo,
 
                 description: editor.current?.value || instanceInfo.description,
             });
 
+            await invoke_proxy("update_description", {
+                instanceId: instanceInfo.id,
+                description: (editor.current?.value || instanceInfo.description)!,
+            });
+        }
+
         setEditing(false);
     };
 
     const edit = () => {
         setEditing(true);
+        
         setTimeout(() => {
             editor.current?.focus();
         });
     };
 
     const launch = async () => {
-        console.log(instanceInfo);
-
         await invoke_proxy("launch", {
             gameId: KSPGame[instanceInfo?.game || "KSP1"] as number,
         });

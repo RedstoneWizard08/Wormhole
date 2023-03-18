@@ -50,7 +50,7 @@ async fn uninstall_bepinex(game_id: i32) -> String {
 #[tauri::command]
 async fn launch(game_id: i32) {
     println!("Launching game: {:?}", game_id);
-    
+
     let game = KSPGame::from_id(game_id).unwrap();
     let dir = find_install_dir(game.clone());
 
@@ -73,7 +73,7 @@ async fn get_instances() -> Vec<InstanceInfo> {
 
 #[tauri::command]
 async fn get_instance_info(instance_id: i32) -> Option<InstanceInfo> {
-    let it = InstanceInfo::defaults()
+    let it = InstanceInfo::fetch()
         .iter()
         .find(|i| i.id == instance_id)
         .cloned();
@@ -106,6 +106,26 @@ async fn install_mod(mod_id: i32, game_id: i32) {
     let installer = ModInstaller::new(find_install_dir(KSPGame::from_id(game_id).unwrap()));
 
     installer.install_from_spacedock(mod_id).await;
+}
+
+#[tauri::command]
+async fn update_description(instance_id: i32, description: String) {
+    let instances = InstanceInfo::defaults();
+    let mut infos = get_instance_info(instance_id).await.unwrap();
+
+    infos.description = Some(description);
+
+    let mut new_instances = Vec::new();
+
+    for instance in instances {
+        if instance.id == instance_id {
+            new_instances.push(infos.clone());
+        } else {
+            new_instances.push(instance);
+        }
+    }
+
+    InstanceInfo::save(&new_instances);
 }
 
 #[allow(clippy::needless_range_loop)]
@@ -173,7 +193,8 @@ pub fn main() {
             install_mod,
             get_distance,
             backend_boot,
-            read_mod_json
+            read_mod_json,
+            update_description
         ])
         .run(tauri::generate_context!())
         .expect("Error while starting Wormhole!");

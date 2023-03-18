@@ -1,4 +1,4 @@
-use std::{io, fs, path::Path};
+use std::{io, fs, path::{Path, PathBuf}};
 
 pub fn copy_dir_all(src: impl AsRef<Path>, dst: impl AsRef<Path>) -> io::Result<()> {
     fs::create_dir_all(&dst)?;
@@ -13,4 +13,23 @@ pub fn copy_dir_all(src: impl AsRef<Path>, dst: impl AsRef<Path>) -> io::Result<
         }
     }
     Ok(())
+}
+
+#[cfg(target_os = "windows")]
+fn get_platform_data_dir() -> String {
+    return std::env::var("APPDATA").unwrap();
+}
+
+#[cfg(target_os = "linux")]
+fn get_platform_data_dir() -> String {
+    return std::env::var("HOME").unwrap() + "/.local/share";
+}
+
+#[cfg(target_os = "macos")]
+fn get_platform_data_dir() -> String {
+    return std::env::var("HOME").unwrap() + "/Library/Application Support";
+}
+
+pub fn get_data_dir() -> PathBuf {
+    return PathBuf::from(get_platform_data_dir()).join("Wormhole");
 }

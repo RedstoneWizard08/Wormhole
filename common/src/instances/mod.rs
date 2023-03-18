@@ -1,5 +1,7 @@
 use serde::{Deserialize, Serialize};
 
+use crate::util::get_data_dir;
+
 // The expected size of KSP1's `steam_api64.dll` in bytes.
 // This helps to make sure that the game is not pirated.
 // File path: `[KSP1_ROOT]/KSP_x64_Data/Plugins/x86_64/steam_api64.dll`
@@ -79,5 +81,31 @@ impl InstanceInfo {
         ];
 
         return v;
+    }
+
+    pub fn fetch() -> Vec<Self> {
+        let instances;
+        let instances_path = get_data_dir().join("instances.json");
+
+        if instances_path.exists() {
+            let file = std::fs::File::open(instances_path).unwrap();
+            let reader = std::io::BufReader::new(file);
+
+            instances = serde_json::from_reader(reader).unwrap();
+        } else {
+            instances = InstanceInfo::defaults();
+
+            InstanceInfo::save(&instances);
+        }
+
+        return instances;
+    }
+
+    pub fn save(instances: &Vec<Self>) {
+        let instances_path = get_data_dir().join("instances.json");
+        let file = std::fs::File::create(instances_path).unwrap();
+        let writer = std::io::BufWriter::new(file);
+
+        serde_json::to_writer_pretty(writer, instances).unwrap();
     }
 }
