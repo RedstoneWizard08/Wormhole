@@ -1,6 +1,8 @@
+use std::path::PathBuf;
+
 use serde::{Deserialize, Serialize};
 
-use crate::util::get_data_dir;
+use crate::{util::get_data_dir, finder::{find_ksp2_install_dir, find_ksp1_install_dir}};
 
 // The expected size of KSP1's `steam_api64.dll` in bytes.
 // This helps to make sure that the game is not pirated.
@@ -33,7 +35,7 @@ pub struct InstanceInfo {
     pub name: String,
     pub game: KSPGame,
     pub mods: Vec<InstanceMod>,
-    pub install_path: String,
+    pub install_path: PathBuf,
     pub description: Option<String>,
     pub time_played: Option<String>,
 }
@@ -62,19 +64,17 @@ impl InstanceInfo {
                 id: 0,
                 name: "KSP2 Default Instance".to_string(),
                 game: KSPGame::KSP2,
-                install_path: "/home/steam/.steam/root/steamapps/common/Kerbal Space Program 2"
-                    .to_string(),
+                install_path: find_ksp2_install_dir(),
                 mods: Vec::new(),
                 description: None,
                 time_played: None,
             },
-            
+
             InstanceInfo {
                 id: 1,
                 name: "KSP1 Default Instance".to_string(),
                 game: KSPGame::KSP1,
-                install_path: "/home/steam/.steam/root/steamapps/common/Kerbal Space Program"
-                    .to_string(),
+                install_path: find_ksp1_install_dir(),
                 mods: Vec::new(),
                 description: None,
                 time_played: None,

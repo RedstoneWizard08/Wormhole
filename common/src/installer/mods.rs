@@ -64,6 +64,20 @@ impl ModInstaller {
                         )
                         .expect("Could not move the BepInEx folder!");
                     }
+                } else {
+                    let mod_contents = fs::read_dir(mod_tmp_path)
+                        .expect("Could not read the mod tmp folder!");
+                    
+                    let files = mod_contents.filter_map(|entry| entry.ok()).collect::<Vec<_>>();
+                    let files_strs = files.iter().map(|entry| entry.file_name().into_string().unwrap()).collect::<Vec<_>>();
+
+                    if files_strs.contains(&"GameData".to_string()) {
+                        copy_dir_all(mod_tmp_path, self.install_path.clone())
+                            .expect("Could not move the GameData folder!");
+                    } else {
+                        copy_dir_all(mod_tmp_path, self.install_path.join("GameData"))
+                            .expect("Could not move the GameData folder!");
+                    }
                 }
             }
         }
