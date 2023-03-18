@@ -4719,6 +4719,7 @@ version = "0.1.0"
 dependencies = [
  "ckandex",
  "keyvalues-parser",
+ "rand 0.8.5",
  "reqwest 0.11.14",
  "rusqlite",
  "serde",

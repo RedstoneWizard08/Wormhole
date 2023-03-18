@@ -23,14 +23,18 @@ export const Browse = () => {
     const [page, setPage] = useState(1);
     const [loading, setLoading] = useState(true);
     const [initialLoad, setInitialLoad] = useState(true);
-    const [gameId, setGameId] = useState(parseInt(params.get("game") || "3102", 10));
+    const [gameId, setGameId] = useState(
+        parseInt(params.get("game") || "3102", 10)
+    );
 
     // These must be managed outside the
     // dropdown component, otherwise the
     // component's data will reset every
     // time the mod list is refreshed.
     const [game, setGame] = useState(gameId == 3102 ? "ksp1" : "ksp2");
-    const [gameText, setGameText] = useState(gameId == 3102 ? "KSP 1" : "KSP 2");
+    const [gameText, setGameText] = useState(
+        gameId == 3102 ? "KSP 1" : "KSP 2"
+    );
 
     useEffect(() => {
         setGameId(game == "ksp1" ? 3102 : 22407);

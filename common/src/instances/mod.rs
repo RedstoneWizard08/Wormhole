@@ -2,7 +2,10 @@ use std::path::PathBuf;
 
 use serde::{Deserialize, Serialize};
 
-use crate::{util::get_data_dir, finder::{find_ksp2_install_dir, find_ksp1_install_dir}};
+use crate::{
+    finder::{find_ksp1_install_dir, find_ksp2_install_dir},
+    util::get_data_dir,
+};
 
 // The expected size of KSP1's `steam_api64.dll` in bytes.
 // This helps to make sure that the game is not pirated.
@@ -69,7 +72,6 @@ impl InstanceInfo {
                 description: None,
                 time_played: None,
             },
-
             InstanceInfo {
                 id: 1,
                 name: "KSP1 Default Instance".to_string(),

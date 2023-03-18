@@ -34,7 +34,11 @@ export const Instance = () => {
             });
 
             setInstanceInfo(info);
-            setBackground(parseInt(KSPGame[info.game], 10) == KSPGame.KSP1 ? ksp1logo : ksp2logo);
+            setBackground(
+                parseInt(KSPGame[info.game], 10) == KSPGame.KSP1
+                    ? ksp1logo
+                    : ksp2logo
+            );
             setExecutable(info.install_path);
         })();
     }, [id]);

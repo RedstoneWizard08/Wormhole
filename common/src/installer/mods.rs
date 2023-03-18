@@ -4,8 +4,8 @@ use std::{
     path::PathBuf,
 };
 
-use rand::{Rng, distributions::Alphanumeric, thread_rng};
 use crate::{instances::KSPGame, mods::spacedock::SpaceDockAPI, util::copy_dir_all};
+use rand::{distributions::Alphanumeric, thread_rng, Rng};
 
 pub struct ModInstaller {
     pub install_path: PathBuf,
@@ -19,7 +19,11 @@ impl ModInstaller {
     pub async fn install_from_spacedock(&self, id: i32) {
         let api = SpaceDockAPI::new();
         let url = api.get_mod_download(id).await;
-        let tmp_name = thread_rng().sample_iter(&Alphanumeric).take(10).map(char::from).collect::<String>();
+        let tmp_name = thread_rng()
+            .sample_iter(&Alphanumeric)
+            .take(10)
+            .map(char::from)
+            .collect::<String>();
 
         let response = reqwest::get(url)
             .await
@@ -28,8 +32,7 @@ impl ModInstaller {
         let body = response.bytes().await.expect("Could not read the mod!");
         let out_path = &self.install_path.join(format!(".{}.mod.zip", tmp_name));
 
-        let mut out_file = File::create(out_path)
-            .expect("Could not create the mod file!");
+        let mut out_file = File::create(out_path).expect("Could not create the mod file!");
 
         io::copy(&mut body.as_ref(), &mut out_file).expect("Could not copy the mod to the file!");
 
@@ -41,14 +44,10 @@ impl ModInstaller {
 
         fs::create_dir_all(mod_tmp_path).expect("Could not create the mod tmp folder!");
 
-        zip_extensions::read::zip_extract(
-            &PathBuf::from(out_path),
-            &PathBuf::from(mod_tmp_path),
-        )
-        .expect("Could not extract the mod!");
+        zip_extensions::read::zip_extract(&PathBuf::from(out_path), &PathBuf::from(mod_tmp_path))
+            .expect("Could not extract the mod!");
 
-        fs::remove_file(out_path)
-            .expect("Could not delete the mod file!");
+        fs::remove_file(out_path).expect("Could not delete the mod file!");
 
         let mod_info = api.get_mod(id).await;
 
@@ -68,11 +67,16 @@ impl ModInstaller {
                         .expect("Could not move the BepInEx folder!");
                     }
                 } else {
-                    let mod_contents = fs::read_dir(mod_tmp_path)
-                        .expect("Could not read the mod tmp folder!");
-                    
-                    let files = mod_contents.filter_map(|entry| entry.ok()).collect::<Vec<_>>();
-                    let files_strs = files.iter().map(|entry| entry.file_name().into_string().unwrap()).collect::<Vec<_>>();
+                    let mod_contents =
+                        fs::read_dir(mod_tmp_path).expect("Could not read the mod tmp folder!");
+
+                    let files = mod_contents
+                        .filter_map(|entry| entry.ok())
+                        .collect::<Vec<_>>();
+                    let files_strs = files
+                        .iter()
+                        .map(|entry| entry.file_name().into_string().unwrap())
+                        .collect::<Vec<_>>();
 
                     if files_strs.contains(&"GameData".to_string()) {
                         copy_dir_all(mod_tmp_path, self.install_path.clone())
