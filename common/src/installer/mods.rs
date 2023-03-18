@@ -4,6 +4,7 @@ use std::{
     path::PathBuf,
 };
 
+use rand::{Rng, distributions::Alphanumeric, thread_rng};
 use crate::{instances::KSPGame, mods::spacedock::SpaceDockAPI, util::copy_dir_all};
 
 pub struct ModInstaller {
@@ -18,19 +19,21 @@ impl ModInstaller {
     pub async fn install_from_spacedock(&self, id: i32) {
         let api = SpaceDockAPI::new();
         let url = api.get_mod_download(id).await;
+        let tmp_name = thread_rng().sample_iter(&Alphanumeric).take(10).map(char::from).collect::<String>();
 
         let response = reqwest::get(url)
             .await
             .expect("Could not download the mod!");
 
         let body = response.bytes().await.expect("Could not read the mod!");
+        let out_path = &self.install_path.join(format!(".{}.mod.zip", tmp_name));
 
-        let mut out_file = File::create(self.install_path.join(".mod.zip"))
+        let mut out_file = File::create(out_path)
             .expect("Could not create the mod file!");
 
         io::copy(&mut body.as_ref(), &mut out_file).expect("Could not copy the mod to the file!");
 
-        let mod_tmp_path = &self.install_path.join(".mod_tmp");
+        let mod_tmp_path = &self.install_path.join(format!(".{}.mod_tmp", tmp_name));
 
         if mod_tmp_path.exists() {
             fs::remove_dir_all(mod_tmp_path).expect("Could not delete the mod tmp folder!");
@@ -39,12 +42,12 @@ impl ModInstaller {
         fs::create_dir_all(mod_tmp_path).expect("Could not create the mod tmp folder!");
 
         zip_extensions::read::zip_extract(
-            &PathBuf::from(&self.install_path.join(".mod.zip")),
+            &PathBuf::from(out_path),
             &PathBuf::from(mod_tmp_path),
         )
         .expect("Could not extract the mod!");
 
-        fs::remove_file(self.install_path.join(".mod.zip"))
+        fs::remove_file(out_path)
             .expect("Could not delete the mod file!");
 
         let mod_info = api.get_mod(id).await;
