@@ -34,7 +34,7 @@ export const Instance = () => {
             });
 
             setInstanceInfo(info);
-            setBackground(info.game == KSPGame.KSP1 ? ksp1logo : ksp2logo);
+            setBackground(parseInt(KSPGame[info.game], 10) == KSPGame.KSP1 ? ksp1logo : ksp2logo);
             setExecutable(info.install_path);
         })();
     }, [id]);
@@ -84,6 +84,7 @@ export const Instance = () => {
                         <div className="return-circle" />
                     </div>
                 </Link>
+
                 <div className="instance">
                     <img
                         src={background}
