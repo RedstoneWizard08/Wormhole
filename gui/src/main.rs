@@ -85,10 +85,20 @@ async fn get_instances() -> Vec<InstanceInfo> {
 
 #[tauri::command]
 async fn get_instance_info(instance_id: i32) -> Option<InstanceInfo> {
-    return InstanceInfo::defaults()
+    let it = InstanceInfo::defaults()
         .iter()
         .find(|i| i.id == instance_id)
         .cloned();
+
+    if let Some(info) = it {
+        let mut infos = info;
+
+        infos.install_path = get_install_dir().to_str().unwrap().to_string();
+
+        return Some(infos);
+    }
+
+    return it;
 }
 
 #[tauri::command]

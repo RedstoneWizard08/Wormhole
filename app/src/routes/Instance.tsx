@@ -57,6 +57,10 @@ export const Instance = () => {
         });
     };
 
+    const launch = async () => {
+        await invoke_proxy("launch");
+    };
+
     return (
         <>
             <div className="full-instance-container">
@@ -131,7 +135,7 @@ export const Instance = () => {
                 </div>
             </div>
             <div className="actions">
-                <button type="button" className="action">
+                <button type="button" className="action" onClick={launch}>
                     <i className="icon fa-solid fa-rocket" />
                     &nbsp; Launch
                 </button>
