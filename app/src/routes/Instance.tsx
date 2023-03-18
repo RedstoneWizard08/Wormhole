@@ -49,7 +49,8 @@ export const Instance = () => {
 
             await invoke_proxy("update_description", {
                 instanceId: instanceInfo.id,
-                description: (editor.current?.value || instanceInfo.description)!,
+                description: (editor.current?.value ||
+                    instanceInfo.description)!,
             });
         }
 
@@ -58,7 +59,7 @@ export const Instance = () => {
 
     const edit = () => {
         setEditing(true);
-        
+
         setTimeout(() => {
             editor.current?.focus();
         });

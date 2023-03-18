@@ -1,4 +1,6 @@
-use wormhole_common::{finder::find_install_dir, installer::mods::ModInstaller, instances::KSPGame};
+use wormhole_common::{
+    finder::find_install_dir, installer::mods::ModInstaller, instances::KSPGame,
+};
 
 pub async fn install_mod(id: i32, verbose: bool) {
     if verbose {

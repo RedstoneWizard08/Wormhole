@@ -1,5 +1,5 @@
-use rusqlite::{params, Connection};
 use crate::util::get_data_dir;
+use rusqlite::{params, Connection};
 
 pub struct Cache {
     conn: Connection,
@@ -9,7 +9,7 @@ impl Cache {
     pub fn new(path: &str) -> Result<Self, rusqlite::Error> {
         let dir_path = get_data_dir().join("cache");
         let conn = Connection::open(dir_path.join(path))?;
-        
+
         conn.execute(
             "CREATE TABLE IF NOT EXISTS cache (
                  game_id INTEGER PRIMARY KEY,
@@ -17,7 +17,7 @@ impl Cache {
              )",
             params![],
         )?;
-        
+
         Ok(Self { conn })
     }
 
@@ -25,9 +25,9 @@ impl Cache {
         let mut stmt = self
             .conn
             .prepare("SELECT data FROM cache WHERE game_id = ?1")?;
-        
+
         let row = stmt.query_row(params![game_id], |row| row.get(0));
-        
+
         match row {
             Ok(data) => Ok(Some(data)),
             Err(rusqlite::Error::QueryReturnedNoRows) => Ok(None),
@@ -40,15 +40,15 @@ impl Cache {
             "INSERT OR REPLACE INTO cache (game_id, data) VALUES (?1, ?2)",
             params![game_id, data],
         )?;
-        
+
         Ok(())
     }
 }
 
 pub fn update_cache() {
     let cache = Cache::new("cache.sqlite").unwrap();
-    
+
     cache.set(1, "test").unwrap();
-    
+
     println!("{:?}", cache.get(1).unwrap());
 }

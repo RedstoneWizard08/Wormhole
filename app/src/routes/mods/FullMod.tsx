@@ -24,7 +24,7 @@ export const FullMod = () => {
                 modId: parseInt(modId || "-1", 10),
                 gameId: modInfo?.game_id || KSPGame.KSP1,
             });
-            
+
             setModInfo(mod);
             setIsLoading(false);
         })();

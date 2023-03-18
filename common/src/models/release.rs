@@ -66,8 +66,6 @@ pub struct ReleaseZips {
 
 impl Default for ReleaseZips {
     fn default() -> Self {
-        return ReleaseZips {
-            bepinex: None,
-        };
+        return ReleaseZips { bepinex: None };
     }
 }

@@ -81,7 +81,10 @@ async fn get_instance_info(instance_id: i32) -> Option<InstanceInfo> {
     if let Some(info) = it {
         let mut infos = info;
 
-        infos.install_path = get_install_dir(infos.game.as_i32()).to_str().unwrap().to_string();
+        infos.install_path = get_install_dir(infos.game.as_i32())
+            .to_str()
+            .unwrap()
+            .to_string();
 
         return Some(infos);
     }

@@ -9,7 +9,7 @@ export const Instances = () => {
 
     const refreshInstances = async () => {
         const data = await invoke_proxy("get_instances", undefined);
-        
+
         setInstances(data);
     };
 

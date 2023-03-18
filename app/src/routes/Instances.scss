@@ -29,8 +29,8 @@
 
         transition: background-color 0.5s ease, color 0.5s ease,
             border-color 0.5s ease;
-        
-            border: 1px solid #4c4c4c;
+
+        border: 1px solid #4c4c4c;
         outline: none;
 
         left: calc(100% - 3rem);
@@ -76,28 +76,28 @@
                 grid-column-gap: 2%;
             }
         }
-    
+
         @media screen and (max-width: 1099px) {
             .grid {
                 grid-template-columns: repeat(4, 23%);
                 grid-column-gap: 2%;
             }
         }
-    
+
         @media screen and (max-width: 900px) {
             .grid {
                 grid-template-columns: repeat(3, 31%);
                 grid-column-gap: 3%;
             }
         }
-    
+
         @media screen and (max-width: 600px) {
             .grid {
                 grid-template-columns: repeat(2, 48%);
                 grid-column-gap: 4%;
             }
         }
-    
+
         @media screen and (max-width: 400px) {
             .grid {
                 grid-template-columns: repeat(1, 96%);

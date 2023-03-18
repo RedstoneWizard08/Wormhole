@@ -33,8 +33,11 @@ export const Mod: FunctionalComponent<ModParams> = ({ mod }) => {
 
         setInstalling(true);
 
-        await invoke_proxy("install_mod", { modId: mod.id, gameId: KSPGame.KSP2 });
-        
+        await invoke_proxy("install_mod", {
+            modId: mod.id,
+            gameId: KSPGame.KSP2,
+        });
+
         setInstalling(false);
         setInstalled(!installed);
 
