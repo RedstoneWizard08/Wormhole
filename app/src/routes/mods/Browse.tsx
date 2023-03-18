@@ -12,22 +12,25 @@ import { invoke_proxy } from "../../invoke";
 import { SearchBar } from "../../components/SearchBar";
 import { LoadingPage } from "../../components/LoadingPage";
 import { Dropdown } from "../../components/Dropdown";
+import { useRouter } from "preact-router";
 
 export const Browse = () => {
+    const [router] = useRouter();
+    const params = new URL(`http://localhost/${router.url}`).searchParams;
     const [results, setResults] = useState<BrowseModInfo[]>([]);
     const [perPage] = useState(30);
     const [pages, setPages] = useState(1);
     const [page, setPage] = useState(1);
     const [loading, setLoading] = useState(true);
     const [initialLoad, setInitialLoad] = useState(true);
-    const [gameId, setGameId] = useState(3102);
+    const [gameId, setGameId] = useState(parseInt(params.get("game") || "3102", 10));
 
     // These must be managed outside the
     // dropdown component, otherwise the
     // component's data will reset every
     // time the mod list is refreshed.
-    const [game, setGame] = useState("ksp1");
-    const [gameText, setGameText] = useState("KSP 1");
+    const [game, setGame] = useState(gameId == 3102 ? "ksp1" : "ksp2");
+    const [gameText, setGameText] = useState(gameId == 3102 ? "KSP 1" : "KSP 2");
 
     useEffect(() => {
         setGameId(game == "ksp1" ? 3102 : 22407);

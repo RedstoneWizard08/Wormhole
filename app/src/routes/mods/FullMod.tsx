@@ -82,7 +82,7 @@ export const FullMod = () => {
 
     return (
         <div className="full-mod-container">
-            <Link className={`link ${mods ? "active" : ""}`} href={"/mods"}>
+            <Link className={`link ${mods ? "active" : ""}`} href={`/mods?game=${modInfo?.game_id}`}>
                 <div className="return-container">
                     <div className="return-arrow">
                         <i className="fa-solid fa-long-arrow-left" />
@@ -90,6 +90,7 @@ export const FullMod = () => {
                     <div className="return-circle" />
                 </div>
             </Link>
+
             <div className="mod">
                 <img
                     src={modInfo?.background}
