@@ -11,6 +11,8 @@ export interface InstanceProps {
 }
 
 export const Instance: FunctionalComponent<InstanceProps> = ({ data }) => {
+    console.log(data);
+
     const clicked = () => {
         route(`/instance/${data.id}`);
     };
@@ -32,10 +34,8 @@ export const Instance: FunctionalComponent<InstanceProps> = ({ data }) => {
 
     return (
         <div className="instance-container" onClick={clicked}>
-            {data.game == KSPGame.KSP2 ? (
-                <>
-                    <img src={ksp2logo} className="logo" alt={"background"} />
-                </>
+            {parseInt(KSPGame[data.game], 10) == KSPGame.KSP2 ? (
+                <img src={ksp2logo} className="logo" alt={"background"} />
             ) : (
                 <img src={ksp1logo} className="logo" alt={"background"} />
             )}
