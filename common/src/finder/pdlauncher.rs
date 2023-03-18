@@ -23,4 +23,22 @@ impl PDLauncherInstallFinder {
     pub fn find_ksp2_dir(&self) -> Option<PathBuf> {
         return None;
     }
+
+    #[cfg(target_os = "windows")]
+    pub fn find_ksp1_dir(&self) -> Option<PathBuf> {
+        let default_install_folder = Path::new(env::var("PROGRAMFILES").unwrap().as_str())
+            .join("Private Division")
+            .join("Kerbal Space Program");
+
+        if default_install_folder.exists() {
+            return Some(default_install_folder.to_path_buf());
+        }
+
+        return None;
+    }
+
+    #[cfg(not(target_os = "windows"))]
+    pub fn find_ksp1_dir(&self) -> Option<PathBuf> {
+        return None;
+    }
 }

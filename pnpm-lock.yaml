@@ -9,6 +9,7 @@ specifiers:
   '@prefresh/vite': ^2.2.9
   '@tauri-apps/api': ^1.2.0
   '@tauri-apps/cli': ^1.2.3
+  '@types/dompurify': ^3.0.0
   '@types/marked': ^4.0.8
   '@types/node': ^18.14.5
   '@types/path-browserify': ^1.0.0
@@ -61,6 +62,7 @@ devDependencies:
   '@preact/preset-vite': 2.5.0_wzm33zgg7fxctdv5dfqx47n7y4
   '@prefresh/vite': 2.2.9_preact@10.13.0+vite@4.1.4
   '@tauri-apps/cli': 1.2.3
+  '@types/dompurify': 3.0.0
   '@types/marked': 4.0.8
   '@types/node': 18.14.5
   '@types/path-browserify': 1.0.0
@@ -1319,6 +1321,12 @@ packages:
       '@babel/types': 7.21.2
     dev: true
 
+  /@types/dompurify/3.0.0:
+    resolution: {integrity: sha512-EcSqmgm/xJwH8CcJPy9AHNypp/j58CYga3nWdl93/wLxX6OH+rSD3aAj75NQazcZd1YKHJ/pjNZ9qmgVajggwQ==}
+    dependencies:
+      '@types/trusted-types': 2.0.3
+    dev: true
+
   /@types/graceful-fs/4.1.6:
     resolution: {integrity: sha512-Sig0SNORX9fdW+bQuTEovKj3uHcUL6LQKbCrrqb1X7J6/ReAbhCXRAhc+SMejhLELFj2QcyuxmUooZ4bt5ReSw==}
     dependencies:
@@ -1381,6 +1389,10 @@ packages:
 
   /@types/stack-utils/2.0.1:
     resolution: {integrity: sha512-Hl219/BT5fLAaz6NDkSuhzasy49dwQS/DSdu4MdggFB8zcXv7vflBI3xp7FEmkmdDkBUI2bPUNeMttp2knYdxw==}
+    dev: true
+
+  /@types/trusted-types/2.0.3:
+    resolution: {integrity: sha512-NfQ4gyz38SL8sDNrSixxU2Os1a5xcdFxipAFxYEuLUlvU2uDwS4NUpsImcf1//SlWItCVMMLiylsxbmNMToV/g==}
     dev: true
 
   /@types/yargs-parser/21.0.0:

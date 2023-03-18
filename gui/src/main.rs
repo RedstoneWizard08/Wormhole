@@ -9,6 +9,7 @@ use installer::bepinex::BepInExInstallManager;
 
 use wormhole_common::boot::cache::update_cache;
 use wormhole_common::boot::integrity::{directory_integrity_check, read_mods_file, Mods};
+use wormhole_common::instances::KSPGame;
 use wormhole_common::{
     finder::find_install_dir,
     installer::mods::ModInstaller,
@@ -23,35 +24,13 @@ pub mod installer;
 pub mod progress;
 
 #[tauri::command]
-fn get_install_dir() -> PathBuf {
-    return find_install_dir();
+fn get_install_dir(game_id: i32) -> PathBuf {
+    return find_install_dir(KSPGame::from_id(game_id).unwrap());
 }
 
 #[tauri::command]
-fn get_install_type() -> bool {
-    let dir = find_install_dir();
-    let files = dir.read_dir().expect("Failed to read install directory!");
-
-    let mut is_bepinex = false;
-
-    for file in files {
-        if file
-            .unwrap()
-            .file_name()
-            .to_str()
-            .unwrap()
-            .contains("BepInEx")
-        {
-            is_bepinex = true;
-        }
-    }
-
-    return is_bepinex;
-}
-
-#[tauri::command]
-async fn download_bepinex(window: Window) -> String {
-    let mut install_manager = BepInExInstallManager::new(get_install_dir());
+async fn download_bepinex(window: Window, game_id: i32) -> String {
+    let mut install_manager = BepInExInstallManager::new(get_install_dir(game_id));
 
     install_manager.resolve().await.unwrap();
     install_manager.download(window).await.unwrap();
@@ -60,8 +39,8 @@ async fn download_bepinex(window: Window) -> String {
 }
 
 #[tauri::command]
-async fn uninstall_bepinex() -> String {
-    let mut install_manager = BepInExInstallManager::new(get_install_dir());
+async fn uninstall_bepinex(game_id: i32) -> String {
+    let mut install_manager = BepInExInstallManager::new(get_install_dir(game_id));
 
     install_manager.uninstall();
 
@@ -69,13 +48,22 @@ async fn uninstall_bepinex() -> String {
 }
 
 #[tauri::command]
-async fn launch() {
-    let dir = find_install_dir();
-    let executable = dir.join("KSP2_x64.exe");
+async fn launch(game_id: i32) {
+    println!("Launching game: {:?}", game_id);
+    
+    let game = KSPGame::from_id(game_id).unwrap();
+    let dir = find_install_dir(game.clone());
+
+    let executable = match game {
+        KSPGame::KSP2 => dir.join("KSP2_x64.exe"),
+        KSPGame::KSP1 => dir.join("KSP_x64.exe"),
+    };
+
+    println!("Launching game: {:?}", executable);
 
     Command::new(executable)
         .spawn()
-        .expect("Failed to launch KSP2!");
+        .expect("Failed to launch the game!");
 }
 
 #[tauri::command]
@@ -93,7 +81,7 @@ async fn get_instance_info(instance_id: i32) -> Option<InstanceInfo> {
     if let Some(info) = it {
         let mut infos = info;
 
-        infos.install_path = get_install_dir().to_str().unwrap().to_string();
+        infos.install_path = get_install_dir(infos.game.as_i32()).to_str().unwrap().to_string();
 
         return Some(infos);
     }
@@ -114,8 +102,8 @@ async fn get_mods(game_id: i32, count: i32, page: i32) -> BrowseResult {
 }
 
 #[tauri::command]
-async fn install_mod(mod_id: i32) {
-    let installer = ModInstaller::new(find_install_dir());
+async fn install_mod(mod_id: i32, game_id: i32) {
+    let installer = ModInstaller::new(find_install_dir(KSPGame::from_id(game_id).unwrap()));
 
     installer.install_from_spacedock(mod_id).await;
 }
@@ -177,7 +165,6 @@ pub fn main() {
             download_bepinex,
             uninstall_bepinex,
             get_install_dir,
-            get_install_type,
             launch,
             get_instance_info,
             get_instances,

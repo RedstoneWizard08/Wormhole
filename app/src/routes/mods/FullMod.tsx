@@ -4,10 +4,9 @@ import { useEffect, useState } from "preact/hooks";
 import { marked } from "marked";
 import { FullModInfo } from "../../api/models/modinfo/full";
 import { invoke_proxy } from "../../invoke";
-
-// @ts-ignore
 import DOMPurify from "dompurify";
 import { LoadingPage } from "../../components/LoadingPage";
+import { KSPGame } from "../../api/instance";
 
 export const FullMod = () => {
     const [router] = useRouter();
@@ -22,7 +21,9 @@ export const FullMod = () => {
         (async () => {
             const mod = await invoke_proxy("get_mod", {
                 modId: parseInt(modId || "-1", 10),
+                gameId: KSPGame.KSP2,
             });
+            
             setModInfo(mod);
             setIsLoading(false);
         })();
@@ -64,12 +65,9 @@ export const FullMod = () => {
     };
 
     const install = async () => {
-        // window.open(await invoke_proxy("get_mod_download", {
-        //     modId: parseInt(modId || "-1", 10),
-        // }));
-
         const downloadUrl = await invoke_proxy("get_mod_download", {
             modId: parseInt(modId || "-1", 10),
+            gameId: KSPGame.KSP2,
         });
 
         void downloadUrl;

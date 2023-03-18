@@ -117,4 +117,30 @@ impl SteamInstallFinder {
 
         return None;
     }
+
+    pub fn find_ksp1_dir(&mut self) -> Option<PathBuf> {
+        for library_folder in self.library_folders.clone().paths {
+            let ksp2_dir = library_folder.join("common").join("Kerbal Space Program");
+
+            if ksp2_dir.is_dir() {
+                let dir_contents = fs::read_dir(&ksp2_dir).unwrap().flatten();
+
+                for file in dir_contents {
+                    let file_path = file.path();
+
+                    if file_path.is_file()
+                        && file_path
+                            .as_os_str()
+                            .to_str()
+                            .unwrap()
+                            .contains("KSP_x64.exe")
+                    {
+                        return Some(ksp2_dir);
+                    }
+                }
+            }
+        }
+
+        return None;
+    }
 }

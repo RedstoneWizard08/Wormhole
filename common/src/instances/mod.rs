@@ -36,6 +36,23 @@ pub struct InstanceInfo {
     pub time_played: Option<String>,
 }
 
+impl KSPGame {
+    pub fn from_id(id: i32) -> Option<Self> {
+        match id {
+            3102 => Some(KSPGame::KSP1),
+            22407 => Some(KSPGame::KSP2),
+            _ => None,
+        }
+    }
+
+    pub fn as_i32(&self) -> i32 {
+        return match self {
+            KSPGame::KSP1 => 3102,
+            KSPGame::KSP2 => 22407,
+        };
+    }
+}
+
 impl InstanceInfo {
     pub fn defaults() -> Vec<Self> {
         let v = vec![

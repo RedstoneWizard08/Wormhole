@@ -4,6 +4,7 @@ import { route } from "preact-router";
 import { BrowseModInfo } from "../api/models/modinfo/browse";
 import { invoke_proxy } from "../invoke";
 import { useState } from "preact/hooks";
+import { KSPGame } from "../api/instance";
 
 export interface ModParams {
     mod: BrowseModInfo;
@@ -32,8 +33,8 @@ export const Mod: FunctionalComponent<ModParams> = ({ mod }) => {
 
         setInstalling(true);
 
-        await invoke_proxy("install_mod", { modId: mod.id });
-        // window.open(await invoke_proxy("install_mod", { modId: mod.id }));
+        await invoke_proxy("install_mod", { modId: mod.id, gameId: KSPGame.KSP2 });
+        
         setInstalling(false);
         setInstalled(!installed);
 

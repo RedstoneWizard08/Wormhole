@@ -3,16 +3,13 @@ import { InstanceInfo } from "./api/instance";
 import { BrowseResult } from "./api/models/browse";
 import { FullModInfo } from "./api/models/modinfo/full";
 
-export interface DownloadArgs {
-    kspGivenPath: string;
-}
-
 export interface InstanceArgs {
     instanceId: number;
 }
 
 export interface ModArgs {
     modId: number;
+    gameId: number;
 }
 
 export interface ModsArgs {
@@ -26,14 +23,18 @@ export interface QueryData {
     modName: string;
 }
 
-export interface InvokeFunction {
-    download_bepinex: [DownloadArgs, string];
-    uninstall_bepinex: [undefined, string];
+export interface GameArgs {
+    gameId: number;
+}
 
-    get_install_dir: [undefined, string];
+export interface InvokeFunction {
+    download_bepinex: [GameArgs, string];
+    uninstall_bepinex: [GameArgs, string];
+
+    get_install_dir: [GameArgs, string];
     get_install_type: [undefined, string];
 
-    launch: [undefined, undefined];
+    launch: [GameArgs, undefined];
 
     get_instances: [undefined, InstanceInfo[]];
     get_instance_info: [InstanceArgs, InstanceInfo];
@@ -44,15 +45,13 @@ export interface InvokeFunction {
     get_distance: [QueryData, undefined];
 
     install_mod: [ModArgs, undefined];
-
     backend_boot: [undefined, undefined];
-
     read_mod_json: [undefined, undefined];
 }
 
 export const invoke_proxy = async <K extends keyof InvokeFunction>(
     action: K,
-    args?: InvokeFunction[K][0]
+    args: InvokeFunction[K][0]
 ): Promise<InvokeFunction[K][1]> => {
     try {
         return (await invoke(action, { ...args })) as any;

@@ -4,6 +4,7 @@ import { InstanceInfo, KSPGame } from "../api/instance";
 import ksp1logo from "../assets/ksp.png";
 import ksp2logo from "../assets/ksp2.png";
 import "./Instance.scss";
+import { invoke_proxy } from "../invoke";
 
 export interface InstanceProps {
     data: InstanceInfo;
@@ -17,7 +18,9 @@ export const Instance: FunctionalComponent<InstanceProps> = ({ data }) => {
     const doLaunch = (e: MouseEvent) => {
         e.stopPropagation();
 
-        // TODO: Launch game
+        invoke_proxy("launch", {
+            gameId: data.game,
+        });
     };
 
     const doDelete = (e: MouseEvent) => {

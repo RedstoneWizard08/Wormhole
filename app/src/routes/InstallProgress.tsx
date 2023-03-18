@@ -4,6 +4,7 @@ import { useEffect, useState } from "preact/hooks";
 import { invoke_proxy } from "../invoke";
 import { route } from "preact-router";
 import { listen } from "@tauri-apps/api/event";
+import { KSPGame } from "../api/instance";
 
 let _listening = false;
 
@@ -35,7 +36,9 @@ export const InstallProgress = () => {
     const getInstallDir = async (): Promise<Error | null> => {
         setStatus({ percent: "0%", message: "Finding KSP2 location..." });
 
-        const _dir = await invoke_proxy("get_install_dir");
+        const _dir = await invoke_proxy("get_install_dir", {
+            gameId: KSPGame.KSP2,
+        });
 
         if (/(:?[A-Z]:[\\/].+)|(:?\/.+)/gm.test(_dir)) {
             return null;
@@ -49,7 +52,9 @@ export const InstallProgress = () => {
     const doInstall = async (): Promise<Error | null> => {
         setStatus({ percent: "50%", message: "Installing SpaceWarp..." });
 
-        const res = await invoke_proxy("download_bepinex");
+        const res = await invoke_proxy("download_bepinex", {
+            gameId: KSPGame.KSP2,
+        });
 
         if (res == "Success") {
             return null;

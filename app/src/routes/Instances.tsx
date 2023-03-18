@@ -8,7 +8,8 @@ export const Instances = () => {
     const [instances, setInstances] = useState<InstanceInfo[]>([]);
 
     const refreshInstances = async () => {
-        const data = await invoke_proxy("get_instances");
+        const data = await invoke_proxy("get_instances", undefined);
+        
         setInstances(data);
     };
 

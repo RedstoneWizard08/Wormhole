@@ -2,10 +2,12 @@ import "./Browse.scss";
 import { useEffect, useState } from "preact/compat";
 import { Mod } from "../../components/Mod";
 import { Pagination } from "../../components/Pagination";
+
 import {
     BrowseModInfo,
     ModWithDistance,
 } from "../../api/models/modinfo/browse";
+
 import { invoke_proxy } from "../../invoke";
 import { SearchBar } from "../../components/SearchBar";
 import { LoadingPage } from "../../components/LoadingPage";
