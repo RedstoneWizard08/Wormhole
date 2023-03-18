@@ -33,10 +33,8 @@ pub async fn get_latest_release_zips() -> ReleaseZips {
     for asset in json.assets {
         if asset.content_type.eq("application/x-zip-compressed") {
             // This is so we get only the non-bepinex-packaged version
-            if !asset.name.to_lowercase().contains("bepinex") {
-                if zips.bepinex.is_none() {
-                    zips.bepinex = Some(asset.browser_download_url);
-                }
+            if !asset.name.to_lowercase().contains("bepinex") && zips.bepinex.is_none() {
+                zips.bepinex = Some(asset.browser_download_url);
             }
         }
     }

@@ -14,7 +14,7 @@ pub const KSP1_STEAM_API_SIZE: i32 = 249120;
 // Information from: SteamDB, DepotDownloader, KSP2 Installed Files
 pub const KSP2_STEAM_API_SIZE: i32 = 295336;
 
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone, Eq, PartialEq)]
 pub enum KSPGame {
     KSP1 = 3102,
     KSP2 = 22407,
