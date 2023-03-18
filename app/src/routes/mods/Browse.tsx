@@ -35,6 +35,8 @@ export const Browse = () => {
 
     useEffect(() => {
         setLoading(true);
+        setPages(0);
+
         (async () => {
             const data = await invoke_proxy("get_mods", {
                 gameId,
@@ -95,7 +97,7 @@ export const Browse = () => {
     return (
         <>
             <div className="browse-container">
-                {!initialLoad ? (
+                {!initialLoad && pages > 0 ? (
                     <Pagination pages={pages} page={page} setPage={setPage} />
                 ) : (
                     <></>
