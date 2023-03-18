@@ -18,20 +18,23 @@ export const FullMod = () => {
 
     useEffect(() => {
         setMods(/\/mods?(\/\d+)?/i.test(router.path!));
+
         (async () => {
             const mod = await invoke_proxy("get_mod", {
                 modId: parseInt(modId || "-1", 10),
-                gameId: KSPGame.KSP2,
+                gameId: modInfo?.game_id || KSPGame.KSP1,
             });
             
             setModInfo(mod);
             setIsLoading(false);
         })();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [modId, router.path]);
 
     const linkFix = (html: string) => {
         const linkRegex =
             /(<a\s+(?!.*\btarget=)[^>]*)(href="https?:\/\/)(.*?")/gi;
+
         const matches = html.matchAll(linkRegex);
 
         for (const match of matches) {
@@ -67,7 +70,7 @@ export const FullMod = () => {
     const install = async () => {
         const downloadUrl = await invoke_proxy("get_mod_download", {
             modId: parseInt(modId || "-1", 10),
-            gameId: KSPGame.KSP2,
+            gameId: modInfo?.game_id || KSPGame.KSP1,
         });
 
         void downloadUrl;

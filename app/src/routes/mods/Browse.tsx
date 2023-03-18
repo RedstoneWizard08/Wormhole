@@ -42,13 +42,10 @@ export const Browse = () => {
                 page,
             });
 
-            console.log(data);
-
             setResults(data.result);
             setPages(data.pages);
 
             if (page > data.pages) setPage(data.pages - 1);
-
             if (initialLoad) setInitialLoad(false);
 
             setLoading(false);

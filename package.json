@@ -79,7 +79,6 @@
         "dompurify": "^3.0.1",
         "eruda": "^2.11.2",
         "marked": "^4.2.12",
-        "path-browserify": "^1.0.1",
         "preact": "^10.13.0",
         "preact-async-route": "^2.2.1",
         "preact-router": "^4.1.0",

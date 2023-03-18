@@ -1,4 +1,4 @@
-import path from "path-browserify";
+import path from "path";
 import preactRefresh from "@prefresh/vite";
 import { defineConfig } from "vite";
 
