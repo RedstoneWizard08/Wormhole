@@ -16,12 +16,13 @@ export const InstallProgress = () => {
     useEffect(() => {
         if (!_listening) {
             listen("download_progress", (ev) => {
+                const percent =
+                    (100 * (ev.payload as any).received) /
+                    (ev.payload as any).total;
+
                 setStatus({
-                    percent: `${
-                        (100 * (ev.payload as any).received) /
-                        (ev.payload as any).total
-                    }%`,
-                    message: status.message,
+                    percent: `${percent}%`,
+                    message: percent == 100 ? "Done!" : status.message,
                 });
             });
 

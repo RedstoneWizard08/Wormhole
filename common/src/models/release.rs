@@ -61,14 +61,12 @@ pub struct ReleaseResponse {
 }
 
 pub struct ReleaseZips {
-    pub doorstop: Option<String>,
     pub bepinex: Option<String>,
 }
 
 impl Default for ReleaseZips {
     fn default() -> Self {
         return ReleaseZips {
-            doorstop: None,
             bepinex: None,
         };
     }
