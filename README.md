@@ -38,3 +38,4 @@ The (unofficial) successor to CKAN.
 - [x] Friendly UI
 - [x] Fast UI
 - [x] 100% Open Source
+- [x] Automated SpaceWarp installation
