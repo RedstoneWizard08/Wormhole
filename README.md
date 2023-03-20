@@ -1,10 +1,14 @@
 # Wormhole
 
-![Lines of Code](https://tokei.rs/b1/github/RedstoneWizard08/Wormhole?category=code)
 ![GitHub all releases](https://img.shields.io/github/downloads/RedstoneWizard08/Wormhole/total?style=flat-square)
+[![crates.io (common)](https://img.shields.io/crates/v/wormhole-common?label=crates.io%20%28common%29&style=flat-square)](https://crates.io/crates/wormhole-common)
+[![crates.io (cli)](https://img.shields.io/crates/v/wormhole-cli?label=crates.io%20%28cli%29&style=flat-square)](https://crates.io/crates/wormhole-cli)
 
-A new launcher and mod manager for Kerbal Space Program and Kerbal Space Program 2. \
+A new launcher and mod manager for Kerbal Space Program and Kerbal Space Program 2.
+
 The (unofficial) successor to CKAN.
+
+[API Documentation](https://docs.rs/wormhole-common)
 
 ## Features
 
