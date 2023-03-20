@@ -104,11 +104,6 @@ export const Browse = () => {
     return (
         <>
             <div className="browse-container">
-                {!initialLoad && pages > 0 ? (
-                    <Pagination pages={pages} page={page} setPage={setPage} />
-                ) : (
-                    <></>
-                )}
 
                 <div className="top">
                     <Dropdown
@@ -133,6 +128,12 @@ export const Browse = () => {
                             <Mod mod={mod} key={mod.id} />
                         ))}
                     </div>
+                )}
+
+                {!initialLoad && pages > 0 ? (
+                    <Pagination pages={pages} page={page} setPage={setPage} />
+                ) : (
+                    <></>
                 )}
             </div>
         </>
