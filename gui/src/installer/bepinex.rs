@@ -87,9 +87,6 @@ impl BepInExInstallManager {
     }
 
     pub fn uninstall(&mut self) {
-        fs::remove_dir_all(self.ksp2_install_path.join("SpaceWarp"))
-            .expect("Could not delete the SpaceWarp directory!");
-
         fs::remove_dir_all(self.ksp2_install_path.join("BepInEx"))
             .expect("Could not delete the BepInEx directory!");
 
