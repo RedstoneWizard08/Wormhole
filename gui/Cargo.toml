@@ -1,11 +1,13 @@
 [package]
 name = "wormhole-gui"
-version = "0.0.0"
+version = "0.1.0"
+edition = "2021"
 description = "An installer for the SpaceWarp mod Lloader."
-authors = ["SpaceWarpDev"]
 license = "MIT"
 repository = "https://github.com/SpaceWarpDev/Space-Warp-Installer"
-edition = "2021"
+homepage = "https://github.com/RedstoneWizard08/Wormhole"
+readme = "../README.md"
+authors = ["RedstoneWizard08", "Rexicon226", "cheese3660", "Wormhole Contributors"]
 
 [build-dependencies]
 tauri-build = { version = "1.2", features = [] }

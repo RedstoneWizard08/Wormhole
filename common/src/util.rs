@@ -21,17 +21,17 @@ pub fn copy_dir_all(src: impl AsRef<Path>, dst: impl AsRef<Path>) -> io::Result<
 }
 
 #[cfg(target_os = "windows")]
-fn get_platform_data_dir() -> String {
+pub fn get_platform_data_dir() -> String {
     return std::env::var("APPDATA").unwrap();
 }
 
 #[cfg(target_os = "linux")]
-fn get_platform_data_dir() -> String {
+pub fn get_platform_data_dir() -> String {
     return std::env::var("HOME").unwrap() + "/.local/share";
 }
 
 #[cfg(target_os = "macos")]
-fn get_platform_data_dir() -> String {
+pub fn get_platform_data_dir() -> String {
     return std::env::var("HOME").unwrap() + "/Library/Application Support";
 }
 

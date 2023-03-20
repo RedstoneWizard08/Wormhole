@@ -15,7 +15,7 @@ struct Mod {
     install_path: String,
 }
 
-fn check_directories() {
+pub fn check_directories() {
     let mut dir_path = PathBuf::from(std::env::var("APPDATA").unwrap());
     dir_path.push("Wormhole");
 
@@ -36,7 +36,7 @@ fn check_directories() {
     }
 }
 
-fn check_files() {
+pub fn check_files() {
     let mut dir_path = PathBuf::from(std::env::var("APPDATA").unwrap());
     dir_path.push("Wormhole");
 

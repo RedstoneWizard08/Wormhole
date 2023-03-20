@@ -2,6 +2,12 @@
 name = "wormhole-cli"
 version = "0.1.0"
 edition = "2021"
+description = "The Wormhole CLI."
+license = "MIT"
+repository = "https://github.com/RedstoneWizard08/Wormhole"
+homepage = "https://github.com/RedstoneWizard08/Wormhole"
+readme = "../README.md"
+authors = ["RedstoneWizard08", "Rexicon226", "cheese3660", "Wormhole Contributors"]
 
 [dependencies]
 clap = { version = "4.1.8", features = ["derive", "env", "string", "debug"] }
