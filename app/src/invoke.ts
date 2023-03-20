@@ -37,7 +37,6 @@ export interface InvokeFunction {
     uninstall_spacewarp: [undefined, string];
 
     get_install_dir: [GameArgs, string];
-    get_install_type: [undefined, string];
 
     launch: [GameArgs, undefined];
 

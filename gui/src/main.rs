@@ -117,7 +117,7 @@ async fn update_description(instance_id: i32, description: String) {
         }
     }
 
-    InstanceInfo::save(&new_instances);
+    InstanceInfo::save_all(&new_instances);
 }
 
 #[allow(clippy::needless_range_loop)]

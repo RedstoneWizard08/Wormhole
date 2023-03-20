@@ -1,6 +1,7 @@
 import { mockIPC } from "@tauri-apps/api/mocks";
 import { InstanceInfo, KSPGame } from "./api/instance";
 import { SpaceDockAPI } from "./api/SpaceDock";
+import { InvokeFunction } from "./invoke";
 import { downloadBepInEx } from "./mocks/download";
 
 export const repeat = <T>(arr: T[], n: number): T[] => {
@@ -37,7 +38,10 @@ export const DEV_Instances: InstanceInfo[] = repeat(
 
 export const createMockAPI = () => {
     // eslint-disable-next-line no-unused-vars
-    mockIPC(async (cmd, args: any) => {
+    mockIPC((async <K extends keyof InvokeFunction>(
+        cmd: K,
+        args: InvokeFunction[K][0]
+    ): Promise<InvokeFunction[K][1]> => {
         switch (cmd) {
             case "download_bepinex":
                 await downloadBepInEx();
@@ -49,9 +53,6 @@ export const createMockAPI = () => {
             case "get_install_dir":
                 return "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Kerbal Space Program 2";
 
-            case "get_install_type":
-                return true;
-
             case "launch":
                 return undefined;
 
@@ -59,25 +60,34 @@ export const createMockAPI = () => {
                 return DEV_Instances;
 
             case "get_instance_info":
-                const id = (args as any).instanceId;
+                const id = (args as InvokeFunction["get_instance_info"][0])
+                    .instanceId;
 
                 return DEV_Instances.find((v) => v.id == id);
 
             case "get_mods":
+                const fargs = args as InvokeFunction["get_mods"][0];
+
                 return await new SpaceDockAPI().getModsForGame(
-                    args.gameId,
-                    args.page,
-                    args.count
+                    fargs.gameId,
+                    fargs.page,
+                    fargs.count
                 );
 
             case "get_mod":
-                return await new SpaceDockAPI().getMod(args.modId);
+                return await new SpaceDockAPI().getMod(
+                    (args as InvokeFunction["get_mod"][0]).modId
+                );
 
             case "get_mod_download":
-                return await new SpaceDockAPI().getModDownload(args.modId);
+                return await new SpaceDockAPI().getModDownload(
+                    (args as InvokeFunction["get_mod_download"][0]).modId
+                );
 
             case "install_mod":
-                return await new SpaceDockAPI().getModDownload(args.modId);
+                return await new SpaceDockAPI().getModDownload(
+                    (args as InvokeFunction["install_mod"][0]).modId
+                );
         }
-    });
+    }) as any);
 };
