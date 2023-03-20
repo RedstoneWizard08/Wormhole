@@ -12,4 +12,4 @@ authors = ["RedstoneWizard08", "Rexicon226", "cheese3660", "Wormhole Contributor
 [dependencies]
 clap = { version = "4.1.8", features = ["derive", "env", "string", "debug"] }
 tokio = { version = "1.26.0", features = ["full"] }
-wormhole-common = { path = "../common" }
+wormhole-common = { path = "../common", version = "0.1.0" }
