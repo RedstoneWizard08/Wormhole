@@ -213,4 +213,16 @@ impl Instance {
             }
         }
     }
+
+    pub fn is_active(&self) -> bool {
+        let active = Instance::get_active_instance(self.game.clone());
+
+        if let Some(active) = active {
+            if active.id == self.id {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

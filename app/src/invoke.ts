@@ -32,6 +32,17 @@ export interface InstanceUpdateArgs {
     description: string;
 }
 
+export interface ModIntegrity {
+    name: string;
+    date_installed: string;
+    size: number;
+    install_path: string;
+}
+
+export interface ModsIntegrity {
+    mods: ModIntegrity[];
+}
+
 export interface InvokeFunction {
     install_spacewarp: [undefined, string];
     uninstall_spacewarp: [undefined, string];
@@ -48,11 +59,12 @@ export interface InvokeFunction {
     get_mods: [ModsArgs, BrowseResult];
     get_distance: [QueryData, undefined];
 
-    install_mod: [ModArgs, undefined];
+    install_mod: [ModArgs & InstanceArgs, undefined];
     backend_boot: [undefined, undefined];
-    read_mod_json: [undefined, undefined];
+    read_mod_json: [undefined, ModsIntegrity];
 
     update_description: [InstanceUpdateArgs, undefined];
+    get_active_instance: [GameArgs, number];
 }
 
 export const invoke_proxy = async <K extends keyof InvokeFunction>(

@@ -25,11 +25,11 @@ pub enum Commands {
 
 #[derive(Subcommand, Debug, Clone, Copy)]
 pub enum ModCommands {
-    Install { id: i32, instance_id: Option<i32> },
+    Install { id: i32, instance_id: i32 },
 
-    Info { id: i32, instance_id: Option<i32> },
+    Info { id: i32, instance_id: i32 },
 
-    Remove { id: i32, instance_id: Option<i32> },
+    Remove { id: i32, instance_id: i32 },
 }
 
 #[derive(Subcommand, Debug, Clone, Copy)]

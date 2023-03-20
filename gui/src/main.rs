@@ -96,10 +96,11 @@ async fn get_mods(game_id: i32, count: i32, page: i32) -> BrowseResult {
 }
 
 #[tauri::command]
-async fn install_mod(mod_id: i32, game_id: i32) {
-    let installer = ModInstaller::new(find_install_dir(KSPGame::from_id(game_id).unwrap()));
+async fn install_mod(mod_id: i32, instance_id: i32) {
+    let instance = Instance::from_id(instance_id).unwrap();
+    let installer = ModInstaller::new(instance.install_path);
 
-    installer.install_from_spacedock(mod_id).await;
+    installer.install_from_spacedock(mod_id, instance_id).await;
 }
 
 #[tauri::command]
@@ -173,6 +174,17 @@ fn read_mod_json() -> Mods {
     return read_mods_file();
 }
 
+#[tauri::command]
+fn get_active_instance(game_id: i32) -> i32 {
+    let instance = Instance::get_active_instance(KSPGame::from_id(game_id).unwrap());
+
+    if let Some(instance) = instance {
+        return instance.id;
+    }
+
+    return -1;
+}
+
 pub fn main() {
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![
@@ -188,7 +200,8 @@ pub fn main() {
             get_distance,
             backend_boot,
             read_mod_json,
-            update_description
+            update_description,
+            get_active_instance
         ])
         .run(tauri::generate_context!())
         .expect("Error while starting Wormhole!");

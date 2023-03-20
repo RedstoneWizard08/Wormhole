@@ -35,6 +35,9 @@ export const Mod: FunctionalComponent<ModParams> = ({ mod }) => {
         await invoke_proxy("install_mod", {
             modId: mod.id,
             gameId: mod.game_id,
+            instanceId: await invoke_proxy("get_active_instance", {
+                gameId: mod.game_id,
+            }),
         });
 
         setInstalling(false);

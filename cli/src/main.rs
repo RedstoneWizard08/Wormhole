@@ -22,10 +22,10 @@ pub async fn main() {
         command:
             Some(ModCommands::Install {
                 id,
-                instance_id: _iid,
+                instance_id,
             }),
     }) = cli.command
     {
-        install_mod(id, verbose).await;
+        install_mod(id, instance_id, verbose).await;
     }
 }
