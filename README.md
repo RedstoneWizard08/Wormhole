@@ -16,3 +16,25 @@ The (unofficial) successor to CKAN.
 - Easy-to-use UI.
 - Super fast!
 - Memory-efficient!
+
+## Roadmap
+
+- [x] Support for KSP 2
+- [x] Support for KSP 1
+- [x] Support for Windows, Linux, and MacOS
+- [x] Support for any steam library location
+- [x] Support for Private Division launcher
+- [x] Mod installation & browsing from SpaceDock
+- [ ] Mod installation & browsing from CKAN
+- [ ] Mod installation & browsing from CurseForge
+- [x] GUI app
+- [ ] CLI app
+- [ ] Full instances support
+- [ ] Full modpack support
+- [ ] Mod configuration editor
+- [ ] Mod dependency resolution
+- [ ] Mod conflict resolution
+- [ ] Game version compatibility checking
+- [x] Friendly UI
+- [x] Fast UI
+- [x] 100% Open Source
