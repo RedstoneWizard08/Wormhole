@@ -1,17 +1,14 @@
+use crate::downloader::Downloader;
 use std::{fs, path::PathBuf};
 
-use tauri::Window;
-
-use crate::progress::Downloader;
-
-pub struct BepInExLoaderInstallManager {
+pub struct BepInExInstallManager {
     pub ksp2_install_path: PathBuf,
     pub zip_url: String,
 }
 
-impl BepInExLoaderInstallManager {
+impl BepInExInstallManager {
     pub fn new(ksp2_install_path: PathBuf) -> Self {
-        return BepInExLoaderInstallManager {
+        return BepInExInstallManager {
             ksp2_install_path,
 
             // For now, this is hard-coded because SpaceWarp uses BepInEx 5,
@@ -22,7 +19,15 @@ impl BepInExLoaderInstallManager {
         };
     }
 
-    pub async fn download(&mut self, window: Window) -> Result<(), String> {
+    pub async fn download<W>(
+        &mut self,
+        on_progress: fn(u64, usize, W) -> (),
+        on_finish: fn(u64, W) -> (),
+        window: W,
+    ) -> Result<(), String>
+    where
+        W: Clone,
+    {
         if !self.ksp2_install_path.is_dir() {
             return Err("KSP2 install path is not a directory!".to_string());
         }
@@ -49,16 +54,19 @@ impl BepInExLoaderInstallManager {
 
         let out_file = self.ksp2_install_path.join(".bepinex_release.zip");
 
-        Downloader::download(download_url, out_file, window).await;
-
-        zip_extensions::read::zip_extract(
-            &PathBuf::from(&self.ksp2_install_path.join(".bepinex_release.zip")),
-            &PathBuf::from(&self.ksp2_install_path),
+        Downloader::download(
+            download_url,
+            out_file.clone(),
+            on_progress,
+            on_finish,
+            window,
         )
-        .expect("Could not extract the BepInEx release!");
+        .await;
 
-        fs::remove_file(self.ksp2_install_path.join(".bepinex_release.zip"))
-            .expect("Could not delete the BepInEx release file!");
+        zip_extensions::read::zip_extract(&out_file, &self.ksp2_install_path)
+            .expect("Could not extract the BepInEx release!");
+
+        fs::remove_file(out_file).expect("Could not delete the BepInEx release file!");
 
         return Ok(());
     }

@@ -1,5 +1,5 @@
 use std::{
-    fs::{File, remove_dir_all},
+    fs::{remove_dir_all, File},
     io::{Read, Write},
     path::PathBuf,
 };
@@ -8,7 +8,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::{
     finder::{find_ksp1_install_dir, find_ksp2_install_dir},
-    util::{get_data_dir, copy_dir_all},
+    util::{copy_dir_all, get_data_dir},
 };
 
 // The expected size of KSP1's `steam_api64.dll` in bytes.
@@ -81,7 +81,6 @@ impl InstanceInfo {
                 description: None,
                 time_played: None,
             },
-
             InstanceInfo {
                 id: 1,
                 name: "KSP1 Default Instance".to_string(),
@@ -102,8 +101,12 @@ impl InstanceInfo {
         for instance in instances {
             if instance.install_path.exists() {
                 let api_dll = match instance.game {
-                    KSPGame::KSP1 => instance.install_path.join("KSP_x64_Data/Plugins/x86_64/steam_api64.dll"),
-                    KSPGame::KSP2 => instance.install_path.join("KSP2_x64_Data/Plugins/x86_64/steam_api64.dll`"),
+                    KSPGame::KSP1 => instance
+                        .install_path
+                        .join("KSP_x64_Data/Plugins/x86_64/steam_api64.dll"),
+                    KSPGame::KSP2 => instance
+                        .install_path
+                        .join("KSP2_x64_Data/Plugins/x86_64/steam_api64.dll`"),
                 };
 
                 let size = api_dll.metadata().unwrap().len();
@@ -202,7 +205,7 @@ impl InstanceInfo {
                     .join("instances")
                     .join(self.id.to_string())
                     .join(path);
-                
+
                 copy_dir_all(saved_path, local_path).unwrap();
             }
         }
@@ -217,7 +220,7 @@ impl InstanceInfo {
                     .join("instances")
                     .join(self.id.to_string())
                     .join(path);
-                
+
                 copy_dir_all(local_path.clone(), saved_path).unwrap();
                 remove_dir_all(local_path).unwrap();
             }

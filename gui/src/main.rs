@@ -2,14 +2,12 @@
 #![allow(clippy::needless_return)]
 
 use std::{path::PathBuf, process::Command};
-
 use tauri::Window;
-
-use installer::bepinex::BepInExInstallManager;
 
 use wormhole_common::boot::cache::update_cache;
 use wormhole_common::boot::integrity::{directory_integrity_check, read_mods_file, Mods};
 use wormhole_common::instances::KSPGame;
+
 use wormhole_common::{
     finder::find_install_dir,
     installer::mods::ModInstaller,
@@ -21,7 +19,6 @@ use wormhole_common::{
 };
 
 pub mod installer;
-pub mod progress;
 
 #[tauri::command]
 fn get_install_dir(game_id: i32) -> PathBuf {
@@ -29,20 +26,15 @@ fn get_install_dir(game_id: i32) -> PathBuf {
 }
 
 #[tauri::command]
-async fn download_bepinex(window: Window, game_id: i32) -> String {
-    let mut install_manager = BepInExInstallManager::new(get_install_dir(game_id));
-
-    install_manager.resolve().await.unwrap();
-    install_manager.download(window).await.unwrap();
+async fn install_spacewarp(window: Window) -> String {
+    installer::install_spacewarp(window).await;
 
     return "Success".to_string();
 }
 
 #[tauri::command]
-async fn uninstall_bepinex(game_id: i32) -> String {
-    let mut install_manager = BepInExInstallManager::new(get_install_dir(game_id));
-
-    install_manager.uninstall();
+async fn uninstall_spacewarp() -> String {
+    installer::uninstall_spacewarp();
 
     return "Success".to_string();
 }
@@ -73,7 +65,7 @@ async fn get_instances() -> Vec<InstanceInfo> {
 
 #[tauri::command]
 async fn get_instance_info(instance_id: i32) -> Option<InstanceInfo> {
-    let it = InstanceInfo::fetch()
+    let it = InstanceInfo::load()
         .iter()
         .find(|i| i.id == instance_id)
         .cloned();
@@ -182,8 +174,8 @@ fn read_mod_json() -> Mods {
 pub fn main() {
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![
-            download_bepinex,
-            uninstall_bepinex,
+            install_spacewarp,
+            uninstall_spacewarp,
             get_install_dir,
             launch,
             get_instance_info,

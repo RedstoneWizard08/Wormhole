@@ -33,8 +33,8 @@ export interface InstanceUpdateArgs {
 }
 
 export interface InvokeFunction {
-    download_bepinex: [GameArgs, string];
-    uninstall_bepinex: [GameArgs, string];
+    install_spacewarp: [undefined, string];
+    uninstall_spacewarp: [undefined, string];
 
     get_install_dir: [GameArgs, string];
     get_install_type: [undefined, string];

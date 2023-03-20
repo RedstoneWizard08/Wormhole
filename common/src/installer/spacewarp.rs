@@ -1,19 +1,18 @@
+use crate::{
+    downloader::Downloader, installer::bepinex::BepInExInstallManager,
+    releases::get_latest_release_zips,
+};
+
 use std::{fs, path::PathBuf};
 
-use tauri::Window;
-
-use wormhole_common::releases::get_latest_release_zips;
-
-use crate::{installer::bepinex_loader::BepInExLoaderInstallManager, progress::Downloader};
-
-pub struct BepInExInstallManager {
+pub struct SpaceWarpInstallManager {
     pub ksp2_install_path: PathBuf,
     pub zip_url: Option<String>,
 }
 
-impl BepInExInstallManager {
+impl SpaceWarpInstallManager {
     pub fn new(ksp2_install_path: PathBuf) -> Self {
-        return BepInExInstallManager {
+        return SpaceWarpInstallManager {
             ksp2_install_path,
             zip_url: None,
         };
@@ -22,16 +21,24 @@ impl BepInExInstallManager {
     pub async fn resolve(&mut self) -> Result<(), String> {
         let latest_release = get_latest_release_zips().await;
 
-        if latest_release.bepinex.is_some() {
-            self.zip_url = latest_release.bepinex;
+        if let Some(release) = latest_release {
+            self.zip_url = Some(release);
         } else {
-            return Err("No BepInEx release found!".to_string());
+            return Err("No SpaceWarp release found!".to_string());
         }
 
         return Ok(());
     }
 
-    pub async fn download(&mut self, window: Window) -> Result<(), String> {
+    pub async fn download<W>(
+        &mut self,
+        on_progress: fn(u64, usize, W) -> (),
+        on_finish: fn(u64, W) -> (),
+        window: W,
+    ) -> Result<(), String>
+    where
+        W: Clone,
+    {
         if !self.ksp2_install_path.is_dir() {
             return Err("KSP2 install path is not a directory!".to_string());
         }
@@ -58,9 +65,11 @@ impl BepInExInstallManager {
         }
 
         if !bepinex_installed {
-            let mut bepinex = BepInExLoaderInstallManager::new(self.ksp2_install_path.clone());
+            let mut bepinex = BepInExInstallManager::new(self.ksp2_install_path.clone());
 
-            bepinex.download(window.clone()).await?;
+            bepinex
+                .download(on_progress, on_finish, window.clone())
+                .await?;
         }
 
         let download_url = self
@@ -72,7 +81,7 @@ impl BepInExInstallManager {
 
         let out_file = self.ksp2_install_path.join(".spacewarp_release.zip");
 
-        Downloader::download(download_url, out_file, window).await;
+        Downloader::download(download_url, out_file, on_progress, on_finish, window).await;
 
         zip_extensions::read::zip_extract(
             &PathBuf::from(&self.ksp2_install_path.join(".spacewarp_release.zip")),

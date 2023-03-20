@@ -3,8 +3,8 @@ import banner from "../assets/background_banner.png";
 import { useEffect, useState } from "preact/hooks";
 import { invoke_proxy } from "../invoke";
 import { route } from "preact-router";
-import { listen } from "@tauri-apps/api/event";
 import { KSPGame } from "../api/instance";
+import { listen_proxy } from "../listen";
 
 let _listening = false;
 
@@ -16,10 +16,8 @@ export const InstallProgress = () => {
 
     useEffect(() => {
         if (!_listening) {
-            listen("download_progress", (ev) => {
-                const percent =
-                    (100 * (ev.payload as any).received) /
-                    (ev.payload as any).total;
+            listen_proxy("download_progress", (ev) => {
+                const percent = (100 * ev.payload.received) / ev.payload.total;
 
                 setStatus({
                     percent: `${percent}%`,
@@ -52,9 +50,7 @@ export const InstallProgress = () => {
     const doInstall = async (): Promise<Error | null> => {
         setStatus({ percent: "50%", message: "Installing SpaceWarp..." });
 
-        const res = await invoke_proxy("download_bepinex", {
-            gameId: KSPGame.KSP2,
-        });
+        const res = await invoke_proxy("install_spacewarp", undefined);
 
         if (res == "Success") {
             return null;

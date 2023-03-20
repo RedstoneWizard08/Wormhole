@@ -59,13 +59,3 @@ pub struct ReleaseResponse {
     pub zipball_url: String,
     pub body: String,
 }
-
-pub struct ReleaseZips {
-    pub bepinex: Option<String>,
-}
-
-impl Default for ReleaseZips {
-    fn default() -> Self {
-        return ReleaseZips { bepinex: None };
-    }
-}

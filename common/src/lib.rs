@@ -1,6 +1,7 @@
 #![allow(clippy::needless_return)]
 
 pub mod boot;
+pub mod downloader;
 pub mod finder;
 pub mod installer;
 pub mod instances;
