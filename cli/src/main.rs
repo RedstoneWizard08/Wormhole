@@ -19,11 +19,7 @@ pub async fn main() {
     }
 
     if let Some(Commands::Mod {
-        command:
-            Some(ModCommands::Install {
-                id,
-                instance_id,
-            }),
+        command: Some(ModCommands::Install { id, instance_id }),
     }) = cli.command
     {
         install_mod(id, instance_id, verbose).await;

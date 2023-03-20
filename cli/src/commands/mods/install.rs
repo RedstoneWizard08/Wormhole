@@ -1,6 +1,4 @@
-use wormhole_common::{
-    installer::mods::ModInstaller, instances::Instance,
-};
+use wormhole_common::{installer::mods::ModInstaller, instances::Instance};
 
 pub async fn install_mod(id: i32, instance_id: i32, verbose: bool) {
     if verbose {
