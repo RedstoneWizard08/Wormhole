@@ -11,7 +11,7 @@ use wormhole_common::instances::KSPGame;
 use wormhole_common::{
     finder::find_install_dir,
     installer::mods::ModInstaller,
-    instances::InstanceInfo,
+    instances::Instance,
     mods::{
         schema::browse::{BrowseResult, ModInfo},
         spacedock::SpaceDockAPI,
@@ -59,13 +59,13 @@ async fn launch(game_id: i32) {
 }
 
 #[tauri::command]
-async fn get_instances() -> Vec<InstanceInfo> {
-    return InstanceInfo::defaults();
+async fn get_instances() -> Vec<Instance> {
+    return Instance::defaults();
 }
 
 #[tauri::command]
-async fn get_instance_info(instance_id: i32) -> Option<InstanceInfo> {
-    let it = InstanceInfo::load()
+async fn get_instance_info(instance_id: i32) -> Option<Instance> {
+    let it = Instance::load()
         .iter()
         .find(|i| i.id == instance_id)
         .cloned();
@@ -102,7 +102,7 @@ async fn install_mod(mod_id: i32, game_id: i32) {
 
 #[tauri::command]
 async fn update_description(instance_id: i32, description: String) {
-    let instances = InstanceInfo::defaults();
+    let instances = Instance::defaults();
     let mut infos = get_instance_info(instance_id).await.unwrap();
 
     infos.description = Some(description);
@@ -117,7 +117,7 @@ async fn update_description(instance_id: i32, description: String) {
         }
     }
 
-    InstanceInfo::save_all(&new_instances);
+    Instance::save_all(&new_instances);
 }
 
 #[allow(clippy::needless_range_loop)]

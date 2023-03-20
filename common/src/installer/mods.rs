@@ -5,7 +5,7 @@ use std::{
 };
 
 use crate::{
-    instances::{InstanceInfo, InstanceMod, KSPGame},
+    instances::{Instance, InstanceMod, KSPGame},
     mods::spacedock::SpaceDockAPI,
     util::copy_dir_all,
 };
@@ -72,7 +72,7 @@ impl ModInstaller {
 
         if let Some(game_id) = mod_info.game_id {
             if let Some(game) = KSPGame::from_id(game_id) {
-                let instance = InstanceInfo::get_active_instance(game.clone());
+                let instance = Instance::get_active_instance(game.clone());
 
                 let mut instance_mod = InstanceMod {
                     id: mod_info.id.unwrap(),
