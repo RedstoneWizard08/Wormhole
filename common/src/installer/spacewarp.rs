@@ -1,9 +1,14 @@
+use zip::ZipArchive;
+
 use crate::{
     downloader::Downloader, installer::bepinex::BepInExInstallManager,
     releases::get_latest_release_zips,
 };
 
-use std::{fs, path::PathBuf};
+use std::{
+    fs::{self, File},
+    path::PathBuf,
+};
 
 pub struct SpaceWarpInstallManager {
     pub ksp2_install_path: PathBuf,
@@ -81,13 +86,19 @@ impl SpaceWarpInstallManager {
 
         let out_file = self.ksp2_install_path.join(".spacewarp_release.zip");
 
-        Downloader::download(download_url, out_file, on_progress, on_finish, window).await;
-
-        zip_extensions::read::zip_extract(
-            &PathBuf::from(&self.ksp2_install_path.join(".spacewarp_release.zip")),
-            &PathBuf::from(&self.ksp2_install_path),
+        Downloader::download(
+            download_url,
+            out_file.clone(),
+            on_progress,
+            on_finish,
+            window,
         )
-        .expect("Could not extract the SpaceWarp release!");
+        .await;
+
+        let mut zip = ZipArchive::new(File::open(out_file).unwrap()).unwrap();
+
+        zip.extract(self.ksp2_install_path.clone())
+            .expect("Could not extract the SpaceWarp release!");
 
         fs::remove_file(self.ksp2_install_path.join(".spacewarp_release.zip"))
             .expect("Could not delete the SpaceWarp release file!");

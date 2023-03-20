@@ -4806,7 +4806,7 @@ dependencies = [
 
 [[package]]
 name = "wormhole-cli"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "clap",
  "tokio 1.26.0",
@@ -4815,7 +4815,7 @@ dependencies = [
 
 [[package]]
 name = "wormhole-common"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "ckandex",
  "keyvalues-parser",
@@ -4826,14 +4826,12 @@ dependencies = [
  "serde_json",
  "tokio 1.26.0",
  "tokio-stream",
- "tokio-util 0.7.7",
  "zip 0.6.4",
- "zip-extensions",
 ]
 
 [[package]]
 name = "wormhole-gui"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "ckandex",
  "keyvalues-parser",

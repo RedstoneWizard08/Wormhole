@@ -1,5 +1,10 @@
+use zip::ZipArchive;
+
 use crate::downloader::Downloader;
-use std::{fs, path::PathBuf};
+use std::{
+    fs::{self, File},
+    path::PathBuf,
+};
 
 pub struct BepInExInstallManager {
     pub ksp2_install_path: PathBuf,
@@ -63,7 +68,9 @@ impl BepInExInstallManager {
         )
         .await;
 
-        zip_extensions::read::zip_extract(&out_file, &self.ksp2_install_path)
+        let mut zip = ZipArchive::new(File::open(out_file.clone()).unwrap()).unwrap();
+
+        zip.extract(self.ksp2_install_path.clone())
             .expect("Could not extract the BepInEx release!");
 
         fs::remove_file(out_file).expect("Could not delete the BepInEx release file!");
