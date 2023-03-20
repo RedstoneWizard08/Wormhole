@@ -1,4 +1,4 @@
-import "./InstallProgress.scss";
+import "./Install.scss";
 import banner from "../assets/background_banner.png";
 import { useEffect, useState } from "preact/hooks";
 import { invoke_proxy } from "../invoke";

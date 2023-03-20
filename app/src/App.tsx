@@ -43,7 +43,7 @@ export const App = () => {
                     <AsyncRoute
                         path="/install"
                         getComponent={() =>
-                            import("./routes/InstallProgress").then(
+                            import("./routes/Install").then(
                                 (m) => m.InstallProgress
                             )
                         }
