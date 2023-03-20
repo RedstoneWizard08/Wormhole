@@ -1,6 +1,6 @@
 # Wormhole
 
-![Lines of code](https://img.shields.io/tokei/lines/github/RedstoneWizard08/Wormhole?style=flat-square)
+![Lines of code](https://img.shields.io/tokei/lines/github/RedstoneWizard08/Wormhole?label=lines%20of%20code&style=flat-square)
 ![GitHub all releases](https://img.shields.io/github/downloads/RedstoneWizard08/Wormhole/total?style=flat-square)
 [![crates.io (common)](https://img.shields.io/crates/v/wormhole-common?label=crates.io%20%28common%29&style=flat-square)](https://crates.io/crates/wormhole-common)
 [![crates.io (cli)](https://img.shields.io/crates/v/wormhole-cli?label=crates.io%20%28cli%29&style=flat-square)](https://crates.io/crates/wormhole-cli)
