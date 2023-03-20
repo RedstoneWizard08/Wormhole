@@ -195,7 +195,7 @@ impl Instance {
             }
         }
 
-        Instance::set_active_instance(&self);
+        Instance::set_active_instance(self);
     }
 
     pub fn disable(&self) {
