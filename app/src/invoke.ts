@@ -38,7 +38,7 @@ export interface InvokeFunction {
 
     get_install_dir: [GameArgs, string];
 
-    launch: [GameArgs, undefined];
+    launch: [InstanceArgs, undefined];
 
     get_instances: [undefined, InstanceInfo[]];
     get_instance_info: [InstanceArgs, InstanceInfo];

@@ -104,7 +104,6 @@ export const Browse = () => {
     return (
         <>
             <div className="browse-container">
-
                 <div className="top">
                     <Dropdown
                         val={game}

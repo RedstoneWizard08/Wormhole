@@ -21,7 +21,7 @@ export const Instance: FunctionalComponent<InstanceProps> = ({ data }) => {
         e.stopPropagation();
 
         invoke_proxy("launch", {
-            gameId: data.game,
+            instanceId: data.id,
         });
     };
 

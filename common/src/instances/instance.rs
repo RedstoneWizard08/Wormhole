@@ -157,6 +157,24 @@ impl Instance {
         return None;
     }
 
+    pub fn set_active_instance(instance: &Instance) {
+        let instance_info_file_path = (match instance.game {
+            KSPGame::KSP1 => find_ksp1_install_dir(),
+            KSPGame::KSP2 => find_ksp2_install_dir(),
+        })
+        .join("instance.json");
+
+        let mut instance_info_file = File::create(instance_info_file_path).unwrap();
+
+        instance_info_file
+            .write_all(
+                serde_json::to_string(&InstanceJson { id: instance.id })
+                    .unwrap()
+                    .as_bytes(),
+            )
+            .unwrap();
+    }
+
     pub fn enable(&self) {
         let active = Instance::get_active_instance(self.game.clone());
 
@@ -176,6 +194,8 @@ impl Instance {
                 copy_dir_all(saved_path, local_path).unwrap();
             }
         }
+
+        Instance::set_active_instance(&self);
     }
 
     pub fn disable(&self) {

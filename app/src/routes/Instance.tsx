@@ -71,7 +71,7 @@ export const Instance = () => {
 
     const launch = async () => {
         await invoke_proxy("launch", {
-            gameId: KSPGame[instanceInfo?.game || "KSP1"] as number,
+            instanceId: instanceInfo?.id || -1,
         });
     };
 

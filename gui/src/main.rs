@@ -40,35 +40,37 @@ async fn uninstall_spacewarp() -> String {
 }
 
 #[tauri::command]
-async fn launch(game_id: i32) {
-    println!("Launching game: {:?}", game_id);
+async fn launch(instance_id: i32) {
+    println!("[Pre-launch] Launching instance: {:?}", instance_id);
 
-    let game = KSPGame::from_id(game_id).unwrap();
-    let dir = find_install_dir(game.clone());
+    let instance = Instance::from_id(instance_id).unwrap();
 
-    let executable = match game {
-        KSPGame::KSP2 => dir.join("KSP2_x64.exe"),
-        KSPGame::KSP1 => dir.join("KSP_x64.exe"),
+    let executable = match instance.game {
+        KSPGame::KSP2 => instance.install_path.join("KSP2_x64.exe"),
+        KSPGame::KSP1 => instance.install_path.join("KSP_x64.exe"),
     };
 
-    println!("Launching game: {:?}", executable);
+    if let Some(active) = Instance::get_active_instance(instance.clone().game) {
+        if active.id != instance.id {
+            instance.enable();
+        }
+    }
+
+    println!("[Launch] Launching game executable: {:?}", executable);
 
     Command::new(executable)
         .spawn()
-        .expect("Failed to launch the game!");
+        .expect("Failed to launch the instance!");
 }
 
 #[tauri::command]
 async fn get_instances() -> Vec<Instance> {
-    return Instance::defaults();
+    return Instance::load();
 }
 
 #[tauri::command]
 async fn get_instance_info(instance_id: i32) -> Option<Instance> {
-    let it = Instance::load()
-        .iter()
-        .find(|i| i.id == instance_id)
-        .cloned();
+    let it = Instance::from_id(instance_id);
 
     if let Some(info) = it {
         let mut infos = info;
@@ -102,7 +104,7 @@ async fn install_mod(mod_id: i32, game_id: i32) {
 
 #[tauri::command]
 async fn update_description(instance_id: i32, description: String) {
-    let instances = Instance::defaults();
+    let instances = Instance::load();
     let mut infos = get_instance_info(instance_id).await.unwrap();
 
     infos.description = Some(description);
