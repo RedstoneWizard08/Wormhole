@@ -1,7 +1,7 @@
 use std::{
     fs::{remove_dir_all, File},
     io::{Read, Write},
-    path::PathBuf,
+    path::PathBuf, mem::replace,
 };
 
 use serde::{Deserialize, Serialize};
@@ -138,18 +138,30 @@ impl InstanceInfo {
         } else {
             instances = InstanceInfo::defaults();
 
-            InstanceInfo::save(&instances);
+            InstanceInfo::save_all(&instances);
         }
 
         return instances;
     }
 
-    pub fn save(instances: &Vec<Self>) {
+    pub fn save_all(instances: &Vec<Self>) {
         let instances_path = get_data_dir().join("instances.json");
         let mut file = File::create(instances_path).unwrap();
 
-        file.write(serde_json::to_string(&instances).unwrap().as_bytes())
+        file.write_all(serde_json::to_string(&instances).unwrap().as_bytes())
             .unwrap();
+    }
+
+    pub fn save(&self) {
+        let mut instances = InstanceInfo::load();
+
+        for (index, instance) in instances.clone().iter().enumerate() {
+            if instance.id == self.id {
+                let _ = replace(&mut instances[index], self.clone());
+            }
+        }
+
+        InstanceInfo::save_all(&instances);
     }
 
     pub fn from_id(id: i32) -> Option<InstanceInfo> {

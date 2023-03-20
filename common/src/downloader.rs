@@ -15,8 +15,7 @@ impl Downloader {
         progress_callback: fn(u64, usize, W) -> (),
         finished_callback: fn(u64, W) -> (),
         window: W,
-    ) -> ()
-    where
+    ) where
         W: Clone,
     {
         let resp = reqwest::get(url).await.unwrap();

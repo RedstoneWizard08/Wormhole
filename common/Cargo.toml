@@ -21,3 +21,4 @@ tokio-util = { version = "0.7.7", features = ["full"] }
 tokio-stream = { version = "0.1.12", features = ["tokio-util", "fs", "net", "sync"] }
 rusqlite = { version = "0.28.0", features = ["bundled"] }
 rand = "0.8.5"
+zip = "0.6.4"
