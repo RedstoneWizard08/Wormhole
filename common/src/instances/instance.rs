@@ -96,7 +96,51 @@ impl Instance {
             Instance::save_all(&instances);
         }
 
+        Instance::set_default_instances();
+
         return instances;
+    }
+
+    pub fn set_default_instances() {
+        let instances = Instance::load();
+
+        let ksp1_default = instances
+            .iter()
+            .find(|i| i.game == KSPGame::KSP1)
+            .unwrap()
+            .clone();
+
+        let ksp2_default = instances
+            .iter()
+            .find(|i| i.game == KSPGame::KSP2)
+            .unwrap()
+            .clone();
+
+        let ksp1_default_json = InstanceJson {
+            id: ksp1_default.id,
+        };
+
+        let ksp2_default_json = InstanceJson {
+            id: ksp2_default.id,
+        };
+
+        let ksp1_instance_json_path = ksp1_default.install_path.join("instance.json");
+        let ksp2_instance_json_path = ksp2_default.install_path.join("instance.json");
+
+        let ksp1_instance_json = serde_json::to_string(&ksp1_default_json).unwrap();
+        let ksp2_instance_json = serde_json::to_string(&ksp2_default_json).unwrap();
+
+        if !ksp1_instance_json_path.exists() {
+            let mut file = File::create(ksp1_instance_json_path).unwrap();
+
+            file.write_all(ksp1_instance_json.as_bytes()).unwrap();
+        }
+
+        if !ksp2_instance_json_path.exists() {
+            let mut file = File::create(ksp2_instance_json_path).unwrap();
+
+            file.write_all(ksp2_instance_json.as_bytes()).unwrap();
+        }
     }
 
     pub fn save_all(instances: &Vec<Self>) {
