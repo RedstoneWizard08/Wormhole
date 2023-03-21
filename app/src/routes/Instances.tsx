@@ -12,7 +12,8 @@ export const Instances = () => {
     const [adding, setAdding] = useState(false);
     const [deleteing, setDeleteing] = useState(true);
     const [instances, setInstances] = useState<InstanceInfo[]>([]);
-    const [instanceToDelete, setInstanceToDelete] = useState<InstanceInfo | null>(null);
+    const [instanceToDelete, setInstanceToDelete] =
+        useState<InstanceInfo | null>(null);
 
     const [game, setGame] = useState("ksp1");
     const [gameText, setGameText] = useState("KSP 1");
@@ -140,7 +141,10 @@ export const Instances = () => {
                             />
                         </div>
 
-                        <p className="delete-text">Are you sure you want to delete the instance "{instanceToDelete?.name}"?</p>
+                        <p className="delete-text">
+                            Are you sure you want to delete the instance "
+                            {instanceToDelete?.name}"?
+                        </p>
 
                         <button
                             type="button"
@@ -171,7 +175,13 @@ export const Instances = () => {
                 <div className="instances-container">
                     {Array.isArray(instances) &&
                         instances.map((info) => (
-                            <Instance data={info} key={info.name} setInstanceToDelete={setInstanceToDelete} deleteing={deleteing} setDeleteing={setDeleteing} />
+                            <Instance
+                                data={info}
+                                key={info.name}
+                                setInstanceToDelete={setInstanceToDelete}
+                                deleteing={deleteing}
+                                setDeleteing={setDeleteing}
+                            />
                         ))}
                 </div>
             </div>

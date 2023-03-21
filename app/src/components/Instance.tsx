@@ -14,7 +14,12 @@ export interface InstanceProps {
     setDeleteing: StateUpdater<boolean>;
 }
 
-export const Instance: FunctionalComponent<InstanceProps> = ({ data, setDeleteing, setInstanceToDelete, deleteing }) => {
+export const Instance: FunctionalComponent<InstanceProps> = ({
+    data,
+    setDeleteing,
+    setInstanceToDelete,
+    deleteing,
+}) => {
     const clicked = () => {
         route(`/instance/${data.id}`);
     };
