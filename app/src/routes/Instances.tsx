@@ -69,6 +69,8 @@ export const Instances = () => {
             await invoke_proxy("delete_instance", {
                 instanceId: instanceToDelete.id,
             });
+        
+        setDeleteing(!deleteing);
     };
 
     return (
