@@ -17,18 +17,20 @@ export const Header = () => {
         setMods(/\/mods?(\/\d+)?/i.test(router.path!));
 
         setManage(router.path == "/manage");
-        setSpacewarp(router.path == "/" || router.path == "/install");
+        setSpacewarp(router.path == "/spacewarp" || router.path == "/install");
     }, [router.path]);
 
     return (
         <div className="header">
-            <img
-                className="logo"
-                src={logo}
-                alt="insert space warp logo here"
-            />
+            <Link className="logo-link" href="/">
+                <img
+                    className="logo"
+                    src={logo}
+                    alt="insert space warp logo here"
+                />
+            </Link>
 
-            <Link className={`link ${spacewarp ? "active" : ""}`} href="/">
+            <Link className={`link ${spacewarp ? "active" : ""}`} href="/spacewarp">
                 <i className="icon fa-solid fa-rocket" />
                 SpaceWarp
             </Link>

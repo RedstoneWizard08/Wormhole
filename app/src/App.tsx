@@ -18,6 +18,15 @@ export const App = () => {
                     />
 
                     <AsyncRoute
+                        path="/spacewarp"
+                        getComponent={() =>
+                            import("./routes/SpaceWarp").then(
+                                (m) => m.SpaceWarp
+                            )
+                        }
+                    />
+
+                    <AsyncRoute
                         path="/instances"
                         getComponent={() =>
                             import("./routes/Instances").then(
