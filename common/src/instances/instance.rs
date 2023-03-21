@@ -25,6 +25,30 @@ pub struct Instance {
 }
 
 impl Instance {
+    pub fn blank() -> Instance {
+        return Instance {
+            id: -1,
+            name: "".to_string(),
+            game: KSPGame::KSP1,
+            mods: Vec::new(),
+            install_path: PathBuf::from(""),
+            description: None,
+            time_played: None,
+        };
+    }
+
+    pub fn new_id() -> i32 {
+        let mut id = Instance::load().len() as i32 - 1;
+        let mut instance = Some(Instance::blank());
+
+        while instance.is_some() {
+            id += 1;
+            instance = Instance::from_id(id);
+        }
+
+        return id;
+    }
+
     pub fn defaults() -> Vec<Self> {
         let v = vec![
             Instance {

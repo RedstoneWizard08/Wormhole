@@ -46,7 +46,7 @@ export interface ModsIntegrity {
 export interface AddInstanceArgs {
     gameId: number;
     name: string;
-    install_path: string;
+    installPath: string;
 }
 
 export interface InvokeFunction {

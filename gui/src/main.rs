@@ -194,6 +194,23 @@ fn set_active_instance(instance_id: i32) {
     }
 }
 
+#[tauri::command]
+fn add_instance(game_id: i32, name: String, install_path: String) {
+    let id = Instance::new_id();
+
+    let instance = Instance {
+        id,
+        name,
+        game: KSPGame::from_id(game_id).unwrap(),
+        description: None,
+        mods: Vec::new(),
+        install_path: PathBuf::from(install_path),
+        time_played: None,
+    };
+
+    instance.save();
+}
+
 pub fn main() {
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![
@@ -211,7 +228,8 @@ pub fn main() {
             read_mod_json,
             update_description,
             get_active_instance,
-            set_active_instance
+            set_active_instance,
+            add_instance
         ])
         .run(tauri::generate_context!())
         .expect("Error while starting Wormhole!");
