@@ -143,13 +143,15 @@ impl ModInstaller {
                                 .expect("Could not move the BepInEx folder!");
                             }
 
-                            for file in bep_in_ex_dir.read_dir().unwrap() {
-                                let file = file.unwrap();
+                            if bep_in_ex_dir.exists() && bep_in_ex_dir.is_dir() {
+                                for file in bep_in_ex_dir.read_dir().unwrap() {
+                                    let file = file.unwrap();
 
-                                instance_mod.paths.push(
-                                    "BepInEx/plugins/".to_string()
-                                        + file.file_name().into_string().unwrap().as_str(),
-                                );
+                                    instance_mod.paths.push(
+                                        "BepInEx/plugins/".to_string()
+                                            + file.file_name().into_string().unwrap().as_str(),
+                                    );
+                                }
                             }
                         }
                     } else {
