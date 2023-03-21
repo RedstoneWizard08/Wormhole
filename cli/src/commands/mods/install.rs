@@ -1,4 +1,4 @@
-use wormhole_common::{installer::mods::ModInstaller, instances::Instance};
+use wormhole_common::{installer::{spacedock::SpaceDockModInstaller, mods::ModInstaller}, instances::Instance};
 
 pub async fn install_mod(id: i32, instance_id: i32, verbose: bool) {
     if verbose {
@@ -6,13 +6,13 @@ pub async fn install_mod(id: i32, instance_id: i32, verbose: bool) {
     }
 
     let instance = Instance::from_id(instance_id).unwrap();
-    let installer = ModInstaller::new(instance.install_path);
+    let installer = SpaceDockModInstaller::new(instance.install_path);
 
     if verbose {
         println!("Installing mod...");
     }
 
-    installer.install_from_spacedock(id, instance_id).await;
+    installer.install(id, instance_id).await;
 
     if verbose {
         println!("Mod installed!");

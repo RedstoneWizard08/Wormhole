@@ -6,11 +6,12 @@ use tauri::Window;
 
 use wormhole_common::boot::cache::update_cache;
 use wormhole_common::boot::integrity::{directory_integrity_check, read_mods_file, Mods};
+use wormhole_common::installer::mods::ModInstaller;
 use wormhole_common::instances::KSPGame;
 
 use wormhole_common::{
     finder::find_install_dir,
-    installer::mods::ModInstaller,
+    installer::spacedock::SpaceDockModInstaller,
     instances::Instance,
     mods::{
         schema::browse::{BrowseResult, ModInfo},
@@ -98,9 +99,9 @@ async fn get_mods(game_id: i32, count: i32, page: i32) -> BrowseResult {
 #[tauri::command]
 async fn install_mod(mod_id: i32, instance_id: i32) {
     let instance = Instance::from_id(instance_id).unwrap();
-    let installer = ModInstaller::new(instance.install_path);
+    let installer = SpaceDockModInstaller::new(instance.install_path);
 
-    installer.install_from_spacedock(mod_id, instance_id).await;
+    installer.install(mod_id, instance_id).await;
 }
 
 #[tauri::command]
