@@ -246,6 +246,10 @@ impl Instance {
 
         for instance_mod in self.mods.clone() {
             for path in instance_mod.paths {
+                if path.contains("SpaceWarp") || path.contains("ConfigurationManager") {
+                    continue;
+                }
+                
                 let local_path = self.install_path.join(path.clone());
 
                 let saved_path = get_data_dir()
@@ -263,6 +267,10 @@ impl Instance {
     pub fn disable(&self) {
         for instance_mod in self.mods.clone() {
             for path in instance_mod.paths {
+                if path.contains("SpaceWarp") || path.contains("ConfigurationManager") {
+                    continue;
+                }
+
                 let local_path = self.install_path.join(path.clone());
 
                 let saved_path = get_data_dir()
