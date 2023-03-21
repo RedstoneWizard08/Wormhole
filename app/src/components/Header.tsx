@@ -26,7 +26,7 @@ export const Header = () => {
                 <img
                     className="logo"
                     src={logo}
-                    alt="insert space warp logo here"
+                    alt="insert wormhole logo here"
                 />
             </Link>
 
