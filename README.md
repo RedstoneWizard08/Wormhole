@@ -34,7 +34,7 @@ The (unofficial) successor to CKAN.
 - [ ] Mod installation & browsing from CurseForge
 - [x] GUI app
 - [ ] CLI app
-- [x] Full instances support
+- [ ] Full instances support
 - [ ] Full modpack support
 - [ ] Mod configuration editor
 - [ ] Mod dependency resolution
