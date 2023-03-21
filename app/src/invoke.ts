@@ -43,6 +43,12 @@ export interface ModsIntegrity {
     mods: ModIntegrity[];
 }
 
+export interface AddInstanceArgs {
+    gameId: number;
+    name: string;
+    install_path: string;
+}
+
 export interface InvokeFunction {
     install_spacewarp: [undefined, string];
     uninstall_spacewarp: [undefined, string];
@@ -59,6 +65,7 @@ export interface InvokeFunction {
     get_mods: [ModsArgs, BrowseResult];
     get_distance: [QueryData, undefined];
 
+    add_instance: [AddInstanceArgs, undefined];
     install_mod: [ModArgs & InstanceArgs, undefined];
     backend_boot: [undefined, undefined];
     read_mod_json: [undefined, ModsIntegrity];

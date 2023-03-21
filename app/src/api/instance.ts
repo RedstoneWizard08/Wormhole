@@ -10,14 +10,16 @@ export const KSP1_STEAM_API_SIZE = 249120;
 // Information from: SteamDB, DepotDownloader, KSP2 Installed Files
 export const KSP2_STEAM_API_SIZE = 295336;
 
-// This uses the game's ID in SpaceDock as the enum value
-export enum KSPGame {
-    // eslint-disable-next-line no-unused-vars
-    KSP1 = 3102,
-
-    // eslint-disable-next-line no-unused-vars
-    KSP2 = 22407,
+export interface KSPGameType {
+    KSP1: number;
+    KSP2: number;
 }
+
+// This uses the game's ID in SpaceDock as the enum value
+export const KSPGame: KSPGameType = {
+    KSP1: 3102,
+    KSP2: 22407,
+};
 
 export interface InstanceMod {
     id: number;
@@ -28,7 +30,7 @@ export interface InstanceMod {
 export interface InstanceInfo {
     id: number;
     name: string;
-    game: KSPGame;
+    game: number;
     mods: InstanceMod[];
     install_path: string;
     description?: string;

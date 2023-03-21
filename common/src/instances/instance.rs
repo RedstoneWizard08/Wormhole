@@ -127,10 +127,7 @@ impl Instance {
         let instances = Instance::load_no_set();
 
         if !ksp1_instance_json_path.exists() {
-            let ksp1_default = instances
-                .iter()
-                .find(|i| i.game == KSPGame::KSP1)
-                .unwrap();
+            let ksp1_default = instances.iter().find(|i| i.game == KSPGame::KSP1).unwrap();
 
             let ksp1_default_json = InstanceJson {
                 id: ksp1_default.id,
@@ -144,10 +141,7 @@ impl Instance {
         }
 
         if !ksp2_instance_json_path.exists() {
-            let ksp2_default = instances
-                .iter()
-                .find(|i| i.game == KSPGame::KSP2)
-                .unwrap();
+            let ksp2_default = instances.iter().find(|i| i.game == KSPGame::KSP2).unwrap();
 
             let ksp2_default_json = InstanceJson {
                 id: ksp2_default.id,
@@ -249,7 +243,7 @@ impl Instance {
                 if path.contains("SpaceWarp") || path.contains("ConfigurationManager") {
                     continue;
                 }
-                
+
                 let local_path = self.install_path.join(path.clone());
 
                 let saved_path = get_data_dir()
