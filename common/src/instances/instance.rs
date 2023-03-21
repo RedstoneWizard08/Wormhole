@@ -165,11 +165,18 @@ impl Instance {
 
     pub fn save(&self) {
         let mut instances = Instance::load();
+        let mut found = false;
 
         for (index, instance) in instances.clone().iter().enumerate() {
             if instance.id == self.id {
                 let _ = replace(&mut instances[index], self.clone());
+
+                found = true;
             }
+        }
+
+        if !found {
+            instances.push(self.clone());
         }
 
         Instance::save_all(&instances);
