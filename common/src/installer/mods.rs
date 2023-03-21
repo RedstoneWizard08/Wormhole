@@ -51,7 +51,8 @@ impl ModInstaller {
 
         fs::create_dir_all(mod_tmp_path).expect("Could not create the mod tmp folder!");
 
-        let mut zip = ZipArchive::new(out_file).unwrap();
+        let zip_file = File::open(out_path).unwrap();
+        let mut zip = ZipArchive::new(zip_file).unwrap();
         let zip_size = zip.len();
 
         let mut files: Vec<String> = Vec::new();
