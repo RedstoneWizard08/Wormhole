@@ -34,7 +34,7 @@ The (unofficial) successor to CKAN.
 - [ ] Mod installation & browsing from CurseForge
 - [x] GUI app
 - [ ] CLI app
-- [ ] Full instances support
+- [x] Full instances support
 - [ ] Full modpack support
 - [ ] Mod configuration editor
 - [ ] Mod dependency resolution
@@ -44,3 +44,9 @@ The (unofficial) successor to CKAN.
 - [x] Fast UI
 - [x] 100% Open Source
 - [x] Automated SpaceWarp installation
+
+## Long-term plans
+
+- [ ] SvelteKit rewrite
+- [ ] Better settings
+- [ ] Installed mod discovery

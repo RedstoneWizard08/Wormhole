@@ -10,7 +10,9 @@ import { appDir } from "@tauri-apps/api/path";
 
 export const Instances = () => {
     const [adding, setAdding] = useState(false);
+    const [deleteing, setDeleteing] = useState(true);
     const [instances, setInstances] = useState<InstanceInfo[]>([]);
+    const [instanceToDelete, setInstanceToDelete] = useState<InstanceInfo | null>(null);
 
     const [game, setGame] = useState("ksp1");
     const [gameText, setGameText] = useState("KSP 1");
@@ -59,6 +61,13 @@ export const Instances = () => {
 
             setPath(dir as string);
         }
+    };
+
+    const deleteInstance = async () => {
+        if (instanceToDelete)
+            await invoke_proxy("delete_instance", {
+                instanceId: instanceToDelete.id,
+            });
     };
 
     return (
@@ -119,6 +128,39 @@ export const Instances = () => {
                 <></>
             )}
 
+            {deleteing ? (
+                <div className="add-modal-background">
+                    <div className="add-modal">
+                        <div className="modal-header">
+                            <span className="title">Delete Instance</span>
+
+                            <i
+                                className="fa-solid fa-times close"
+                                onClick={() => setDeleteing(!deleteing)}
+                            />
+                        </div>
+
+                        <p className="delete-text">Are you sure you want to delete the instance "{instanceToDelete?.name}"?</p>
+
+                        <button
+                            type="button"
+                            className="yes-button"
+                            onClick={deleteInstance}>
+                            Yes
+                        </button>
+
+                        <button
+                            type="button"
+                            className="no-button"
+                            onClick={() => setDeleteing(!deleteing)}>
+                            No
+                        </button>
+                    </div>
+                </div>
+            ) : (
+                <></>
+            )}
+
             <div className="instances-wrapper">
                 <button
                     className="add-instance-button"
@@ -129,7 +171,7 @@ export const Instances = () => {
                 <div className="instances-container">
                     {Array.isArray(instances) &&
                         instances.map((info) => (
-                            <Instance data={info} key={info.name} />
+                            <Instance data={info} key={info.name} setInstanceToDelete={setInstanceToDelete} deleteing={deleteing} setDeleteing={setDeleteing} />
                         ))}
                 </div>
             </div>

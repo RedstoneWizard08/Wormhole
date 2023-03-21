@@ -211,6 +211,15 @@ fn add_instance(game_id: i32, name: String, install_path: String) {
     instance.save();
 }
 
+#[tauri::command]
+fn delete_instance(instance_id: i32) {
+    let instance = Instance::from_id(instance_id);
+
+    if let Some(instance) = instance {
+        instance.remove();
+    }
+}
+
 pub fn main() {
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![
@@ -229,7 +238,8 @@ pub fn main() {
             update_description,
             get_active_instance,
             set_active_instance,
-            add_instance
+            add_instance,
+            delete_instance
         ])
         .run(tauri::generate_context!())
         .expect("Error while starting Wormhole!");

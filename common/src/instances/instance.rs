@@ -206,6 +206,27 @@ impl Instance {
         Instance::save_all(&instances);
     }
 
+    pub fn remove(&self) {
+        if self.is_active() {
+            self.disable();
+        }
+
+        let mut instances = Instance::load();
+        let mut instance_index = 999;
+
+        for (index, instance) in instances.clone().iter().enumerate() {
+            if instance.id == self.id {
+                instance_index = index;
+            }
+        }
+
+        if instance_index != 999 {
+            instances.remove(instance_index);
+        }
+
+        Instance::save_all(&instances);
+    }
+
     pub fn from_id(id: i32) -> Option<Instance> {
         let instances = Instance::load();
         let instance = instances.iter().find(|i| i.id == id).cloned();

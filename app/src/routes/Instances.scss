@@ -261,5 +261,52 @@
                 background-color: #4f5150;
             }
         }
+
+        .yes-button {
+            margin: 0.5% 1.5%;
+            padding: 1.25% 1.5%;
+
+            color: white;
+            font-family: "manteka", serif;
+            text-transform: uppercase;
+            background-color: #1c7c1c;
+
+            border: 2px solid #1cac1c;
+            border-radius: 8px;
+            cursor: pointer;
+            outline: none;
+
+            transition: background-color 0.5s ease;
+
+            &:hover {
+                background-color: #1cac1c;
+            }
+        }
+
+        .no-button {
+            margin: 0.5% 0.5%;
+            padding: 1.25% 2%;
+
+            color: white;
+            font-family: "manteka", serif;
+            text-transform: uppercase;
+            background-color: #9c1c1c;
+
+            border: 2px solid #cc1c1c;
+            border-radius: 8px;
+            cursor: pointer;
+            outline: none;
+
+            transition: background-color 0.5s ease;
+
+            &:hover {
+                background-color: #cc1c1c;
+            }
+        }
+
+        .delete-text {
+            margin: 1.5%;
+            font-family: Ubuntu;
+        }
     }
 }

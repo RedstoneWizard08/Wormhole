@@ -5,12 +5,16 @@ import ksp1logo from "../assets/ksp.png";
 import ksp2logo from "../assets/ksp2.png";
 import "./Instance.scss";
 import { invoke_proxy } from "../invoke";
+import { StateUpdater } from "preact/hooks";
 
 export interface InstanceProps {
     data: InstanceInfo;
+    setInstanceToDelete: StateUpdater<InstanceInfo | null>;
+    deleteing: boolean;
+    setDeleteing: StateUpdater<boolean>;
 }
 
-export const Instance: FunctionalComponent<InstanceProps> = ({ data }) => {
+export const Instance: FunctionalComponent<InstanceProps> = ({ data, setDeleteing, setInstanceToDelete, deleteing }) => {
     const clicked = () => {
         route(`/instance/${data.id}`);
     };
@@ -26,8 +30,8 @@ export const Instance: FunctionalComponent<InstanceProps> = ({ data }) => {
     const doDelete = (e: MouseEvent) => {
         e.stopPropagation();
 
-        // TODO: Show confirmation modal
-        // TODO: Delete instance
+        setInstanceToDelete(data);
+        setDeleteing(!deleteing);
     };
 
     return (

@@ -73,6 +73,8 @@ export interface InvokeFunction {
     update_description: [InstanceUpdateArgs, undefined];
     get_active_instance: [GameArgs, number];
     set_active_instance: [InstanceArgs, undefined];
+
+    delete_instance: [InstanceArgs, undefined];
 }
 
 export const invoke_proxy = async <K extends keyof InvokeFunction>(
