@@ -10,7 +10,7 @@ import { appDir } from "@tauri-apps/api/path";
 
 export const Instances = () => {
     const [adding, setAdding] = useState(false);
-    const [deleteing, setDeleteing] = useState(true);
+    const [deleteing, setDeleteing] = useState(false);
     const [instances, setInstances] = useState<InstanceInfo[]>([]);
     const [instanceToDelete, setInstanceToDelete] =
         useState<InstanceInfo | null>(null);
