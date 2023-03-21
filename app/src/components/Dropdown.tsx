@@ -2,12 +2,20 @@ import { FunctionalComponent } from "preact";
 import { StateUpdater, useState } from "preact/hooks";
 import "./Dropdown.scss";
 
+export interface DropdownItem {
+    id: string | number;
+    text: string;
+}
+
 export interface DropdownProps {
-    val?: string;
-    setVal?: StateUpdater<string>;
+    val?: string | number;
+    setVal?: StateUpdater<string> | StateUpdater<number>;
 
     valText?: string;
     setValText?: StateUpdater<string>;
+
+    left?: boolean;
+    items: DropdownItem[];
 }
 
 export const Dropdown: FunctionalComponent<DropdownProps> = ({
@@ -15,6 +23,8 @@ export const Dropdown: FunctionalComponent<DropdownProps> = ({
     setVal,
     valText,
     setValText,
+    left,
+    items,
 }) => {
     if (!val || !setVal)
         // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -26,9 +36,9 @@ export const Dropdown: FunctionalComponent<DropdownProps> = ({
 
     const [shown, setShown] = useState(false);
 
-    const makeOnSelected = (val: string, txt: string) => {
+    const makeOnSelected = (val: string | number, txt: string) => {
         return () => {
-            setVal!(val);
+            setVal!(val as any);
             setValText!(txt);
 
             setShown(false);
@@ -40,7 +50,9 @@ export const Dropdown: FunctionalComponent<DropdownProps> = ({
     };
 
     return (
-        <div className={`dropdown ${shown ? "active" : ""}`}>
+        <div
+            className={`dropdown ${shown ? "active" : ""}`}
+            style={{ justifySelf: left ? "start" : "end" }}>
             <div
                 className={`selected ${shown ? "active" : ""}`}
                 onClick={onClick}>
@@ -48,17 +60,14 @@ export const Dropdown: FunctionalComponent<DropdownProps> = ({
             </div>
 
             <div className={`items ${!shown ? "hide" : ""}`}>
-                <div
-                    className={val == "ksp1" ? "same" : ""}
-                    onClick={makeOnSelected("ksp1", "KSP 1")}>
-                    KSP 1
-                </div>
-
-                <div
-                    className={val == "ksp2" ? "same" : ""}
-                    onClick={makeOnSelected("ksp2", "KSP 2")}>
-                    KSP 2
-                </div>
+                {items.map((item) => (
+                    <div
+                        className={val == item.id ? "same" : ""}
+                        onClick={makeOnSelected(item.id, item.text)}
+                        key={item.id}>
+                        {item.text}
+                    </div>
+                ))}
             </div>
         </div>
     );

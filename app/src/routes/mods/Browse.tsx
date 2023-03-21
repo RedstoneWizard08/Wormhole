@@ -11,8 +11,20 @@ import {
 import { invoke_proxy } from "../../invoke";
 import { SearchBar } from "../../components/SearchBar";
 import { LoadingPage } from "../../components/LoadingPage";
-import { Dropdown } from "../../components/Dropdown";
+import { Dropdown, DropdownItem } from "../../components/Dropdown";
 import { useRouter } from "preact-router";
+
+export const gameItems: DropdownItem[] = [
+    {
+        id: "ksp1",
+        text: "KSP 1",
+    },
+
+    {
+        id: "ksp2",
+        text: "KSP 2",
+    },
+];
 
 export const Browse = () => {
     const [router] = useRouter();
@@ -36,9 +48,22 @@ export const Browse = () => {
         gameId == 3102 ? "KSP 1" : "KSP 2"
     );
 
+    const [instance, setInstance] = useState(-1);
+    const [instanceText, setInstanceText] = useState("Unknown");
+
+    const [instances, setInstances] = useState<DropdownItem[]>([]);
+
     useEffect(() => {
         setGameId(game == "ksp1" ? 3102 : 22407);
     }, [game]);
+
+    useEffect(() => {
+        (async () => {
+            await invoke_proxy("set_active_instance", {
+                instanceId: instance,
+            });
+        })();
+    }, [instance]);
 
     useEffect(() => {
         setLoading(true);
@@ -55,7 +80,19 @@ export const Browse = () => {
             setPages(data.pages);
 
             if (page > data.pages) setPage(data.pages - 1);
-            if (initialLoad) setInitialLoad(false);
+
+            if (initialLoad) {
+                setInstances(
+                    (await invoke_proxy("get_instances", undefined)).map(
+                        (instance) => ({
+                            id: instance.id,
+                            text: instance.name,
+                        })
+                    )
+                );
+
+                setInitialLoad(false);
+            }
 
             setLoading(false);
         })();
@@ -106,17 +143,25 @@ export const Browse = () => {
             <div className="browse-container">
                 <div className="top">
                     <Dropdown
+                        left
                         val={game}
                         setVal={setGame}
                         valText={gameText}
                         setValText={setGameText}
+                        items={gameItems}
                     />
 
                     <div className="search-bar">
                         <SearchBar onSearch={handleSearch} />
                     </div>
 
-                    <div className="_blank" />
+                    <Dropdown
+                        val={instance}
+                        setVal={setInstance}
+                        valText={instanceText}
+                        setValText={setInstanceText}
+                        items={instances}
+                    />
                 </div>
 
                 {loading ? (

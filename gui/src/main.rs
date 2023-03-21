@@ -185,6 +185,15 @@ fn get_active_instance(game_id: i32) -> i32 {
     return -1;
 }
 
+#[tauri::command]
+fn set_active_instance(instance_id: i32) {
+    let instance = Instance::from_id(instance_id);
+
+    if let Some(instance) = instance {
+        instance.enable();
+    }
+}
+
 pub fn main() {
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![
@@ -201,7 +210,8 @@ pub fn main() {
             backend_boot,
             read_mod_json,
             update_description,
-            get_active_instance
+            get_active_instance,
+            set_active_instance
         ])
         .run(tauri::generate_context!())
         .expect("Error while starting Wormhole!");
