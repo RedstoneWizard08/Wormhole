@@ -15,6 +15,8 @@ export interface DropdownProps {
     setValText?: StateUpdater<string>;
 
     left?: boolean;
+    right?: boolean;
+
     items: DropdownItem[];
 }
 
@@ -24,6 +26,7 @@ export const Dropdown: FunctionalComponent<DropdownProps> = ({
     valText,
     setValText,
     left,
+    right,
     items,
 }) => {
     if (!val || !setVal)
@@ -52,7 +55,7 @@ export const Dropdown: FunctionalComponent<DropdownProps> = ({
     return (
         <div
             className={`dropdown ${shown ? "active" : ""}`}
-            style={{ justifySelf: left ? "start" : "end" }}>
+            style={{ justifySelf: left ? "start" : right ? "end" : undefined }}>
             <div
                 className={`selected ${shown ? "active" : ""}`}
                 onClick={onClick}>

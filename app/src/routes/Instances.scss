@@ -110,7 +110,7 @@
 .add-modal-background {
     width: 100%;
     height: 100%;
-    
+
     margin: 0;
     padding: 0;
 
@@ -127,18 +127,18 @@
     .add-modal {
         width: 50%;
         height: 50%;
-    
+
         margin: 0;
         padding: 0;
 
         margin-top: 10%;
         border-radius: 8px;
 
-        background-color: #3f4140;
+        background-color: #2f3130;
 
         .modal-header {
             border-radius: 8px 8px 0 0;
-            
+
             width: 98.3%;
             height: 10%;
 
@@ -151,11 +151,11 @@
             justify-content: space-between;
 
             border: 1px solid #3f4140;
-            background-color: #2f3130;
+            background-color: #3f4140;
 
             .close {
                 cursor: pointer;
-                
+
                 height: 100%;
                 width: 6%;
 
@@ -172,6 +172,87 @@
                 &:hover {
                     background-color: #4f5150;
                 }
+            }
+        }
+
+        .dropdown {
+            margin-top: 1.5%;
+        }
+
+        .name {
+            margin: 1.5%;
+
+            width: 95.5%;
+            height: 8%;
+
+            text-indent: 6px;
+            font-family: Ubuntu;
+            font-size: 11pt;
+            background-color: transparent;
+
+            border: 2px solid #3f4140;
+            border-radius: 8px;
+
+            color: white;
+            outline: none;
+        }
+
+        .select-dir {
+            margin: 0 1.5%;
+            width: 95.5%;
+
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-start;
+
+            .select-dir-button {
+                margin: 0;
+                padding: 1.25% 1.5%;
+
+                color: white;
+                font-family: "manteka", serif;
+                text-transform: uppercase;
+                background-color: transparent;
+
+                border: 2px solid #3f4140;
+                border-radius: 8px;
+                cursor: pointer;
+                outline: none;
+
+                transition: background-color 0.5s ease;
+
+                &:hover {
+                    background-color: #4f5150;
+                }
+            }
+
+            .select-dir-text {
+                margin: 0;
+                padding: 0;
+
+                margin-left: 2%;
+            }
+        }
+
+        .submit-button {
+            margin: 1.5%;
+            padding: 1.25% 1.5%;
+
+            color: white;
+            font-family: "manteka", serif;
+            text-transform: uppercase;
+            background-color: transparent;
+
+            border: 2px solid #3f4140;
+            border-radius: 8px;
+            cursor: pointer;
+            outline: none;
+
+            transition: background-color 0.5s ease;
+
+            &:hover {
+                background-color: #4f5150;
             }
         }
     }

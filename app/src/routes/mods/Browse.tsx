@@ -161,6 +161,7 @@ export const Browse = () => {
                         valText={instanceText}
                         setValText={setInstanceText}
                         items={instances}
+                        right
                     />
                 </div>
 
