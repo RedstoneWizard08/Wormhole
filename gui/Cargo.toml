@@ -1,6 +1,6 @@
 [package]
 name = "wormhole-gui"
-version = "0.3.0"
+version = "0.3.1"
 edition = "2021"
 description = "An installer for the SpaceWarp mod Lloader."
 license = "MIT"
@@ -23,7 +23,7 @@ tokio = { version = "1.26.0", features = ["full"] }
 reqwest = { version = "0.11.14", features = ["stream", "gzip"] }
 tokio-util = { version = "0.7.7", features = ["full"] }
 tokio-stream = { version = "0.1.12", features = ["tokio-util", "fs", "net", "sync"] }
-wormhole-common = { path = "../common", version = "0.3.0" }
+wormhole-common = { path = "../common", version = "0.3.1" }
 
 [features]
 default = ["custom-protocol"]

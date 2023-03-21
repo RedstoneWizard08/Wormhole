@@ -4813,7 +4813,7 @@ dependencies = [
 
 [[package]]
 name = "wormhole-cli"
-version = "0.3.0"
+version = "0.3.1"
 dependencies = [
  "clap",
  "tokio 1.26.0",
@@ -4822,7 +4822,7 @@ dependencies = [
 
 [[package]]
 name = "wormhole-common"
-version = "0.3.0"
+version = "0.3.1"
 dependencies = [
  "ckandex",
  "keyvalues-parser",
@@ -4838,7 +4838,7 @@ dependencies = [
 
 [[package]]
 name = "wormhole-gui"
-version = "0.3.0"
+version = "0.3.1"
 dependencies = [
  "ckandex",
  "keyvalues-parser",
