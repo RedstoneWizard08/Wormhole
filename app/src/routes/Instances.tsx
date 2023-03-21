@@ -6,6 +6,7 @@ import { invoke_proxy } from "../invoke";
 import { Dropdown } from "../components/Dropdown";
 import { gameItems } from "./mods/Browse";
 import { open } from "@tauri-apps/api/dialog";
+import { appDir } from "@tauri-apps/api/path";
 
 export const Instances = () => {
     const [adding, setAdding] = useState(false);
@@ -53,6 +54,7 @@ export const Instances = () => {
         } else {
             const dir = await open({
                 directory: true,
+                defaultPath: await appDir(),
             });
 
             setPath(dir as string);

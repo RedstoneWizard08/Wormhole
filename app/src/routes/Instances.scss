@@ -195,6 +195,12 @@
 
             color: white;
             outline: none;
+
+            &::placeholder {
+                font-size: 10pt;
+                font-family: "manteka", serif;
+                text-transform: uppercase;
+            }
         }
 
         .select-dir {
