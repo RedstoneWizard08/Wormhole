@@ -8,7 +8,7 @@ import { gameItems } from "./mods/Browse";
 import { open } from "@tauri-apps/api/dialog";
 
 export const Instances = () => {
-    const [adding, setAdding] = useState(true);
+    const [adding, setAdding] = useState(false);
     const [instances, setInstances] = useState<InstanceInfo[]>([]);
 
     const [game, setGame] = useState("ksp1");
