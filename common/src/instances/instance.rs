@@ -270,8 +270,10 @@ impl Instance {
                     .join(self.id.to_string())
                     .join(path);
 
-                copy_dir_all(local_path.clone(), saved_path).unwrap();
-                remove_dir_all(local_path).unwrap();
+                if local_path.exists() {
+                    copy_dir_all(local_path.clone(), saved_path).unwrap();
+                    remove_dir_all(local_path).unwrap();
+                }
             }
         }
     }
