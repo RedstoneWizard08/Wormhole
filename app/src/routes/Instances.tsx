@@ -35,7 +35,7 @@ export const Instances = () => {
 
     useEffect(() => {
         refreshInstances().then((r) => r);
-    }, []);
+    }, [adding, deleteing]);
 
     const addInstance = async () => {
         await invoke_proxy("add_instance", {

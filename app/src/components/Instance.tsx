@@ -39,9 +39,11 @@ export const Instance: FunctionalComponent<InstanceProps> = ({
         setDeleteing(!deleteing);
     };
 
+    console.log(data.game);
+
     return (
         <div className="instance-container" onClick={clicked}>
-            {data.game == KSPGame.KSP2 ? (
+            {data.game == KSPGame.KSP2 || data.game.toString() == "KSP2" ? (
                 <img src={ksp2logo} className="logo" alt={"background"} />
             ) : (
                 <img src={ksp1logo} className="logo" alt={"background"} />

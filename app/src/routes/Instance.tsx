@@ -34,7 +34,7 @@ export const Instance = () => {
             });
 
             setInstanceInfo(info);
-            setBackground(info.game == KSPGame.KSP1 ? ksp1logo : ksp2logo);
+            setBackground(info.game == KSPGame.KSP2 || info.game.toString() == "KSP2" ? ksp2logo : ksp1logo);
             setExecutable(info.install_path);
         })();
     }, [id]);
