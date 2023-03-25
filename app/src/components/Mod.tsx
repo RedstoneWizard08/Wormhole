@@ -32,16 +32,23 @@ export const Mod: FunctionalComponent<ModParams> = ({ mod }) => {
 
         setInstalling(true);
 
-        await invoke_proxy("install_mod", {
-            modId: mod.id,
+        const instance = await invoke_proxy("get_active_instance", {
             gameId: mod.game_id,
-            instanceId: await invoke_proxy("get_active_instance", {
-                gameId: mod.game_id,
-            }),
         });
 
+        if (instance) {
+            const instanceId = instance.id;
+
+            await invoke_proxy("install_mod", {
+                modId: mod.id,
+                gameId: mod.game_id,
+                instanceId,
+            });
+
+            setInstalled(!installed);
+        }
+
         setInstalling(false);
-        setInstalled(!installed);
 
         // TODO: add writing to mods.json when mod is installed
     };

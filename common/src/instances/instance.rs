@@ -83,20 +83,23 @@ impl Instance {
                     KSPGame::KSP1 => instance
                         .install_path
                         .join("KSP_x64_Data/Plugins/x86_64/steam_api64.dll"),
+
                     KSPGame::KSP2 => instance
                         .install_path
-                        .join("KSP2_x64_Data/Plugins/x86_64/steam_api64.dll`"),
+                        .join("KSP2_x64_Data/Plugins/x86_64/steam_api64.dll"),
                 };
 
-                let size = api_dll.metadata().unwrap().len();
+                if api_dll.exists() {
+                    let size = api_dll.metadata().unwrap().len();
 
-                let needed_size = match instance.game {
-                    KSPGame::KSP1 => KSP1_STEAM_API_SIZE,
-                    KSPGame::KSP2 => KSP2_STEAM_API_SIZE,
-                };
+                    let needed_size = match instance.game {
+                        KSPGame::KSP1 => KSP1_STEAM_API_SIZE,
+                        KSPGame::KSP2 => KSP2_STEAM_API_SIZE,
+                    };
 
-                if size == needed_size {
-                    final_instances.push(instance);
+                    if size == needed_size {
+                        final_instances.push(instance);
+                    }
                 }
             }
         }

@@ -176,14 +176,10 @@ fn read_mod_json() -> Mods {
 }
 
 #[tauri::command]
-fn get_active_instance(game_id: i32) -> i32 {
+fn get_active_instance(game_id: i32) -> Option<Instance> {
     let instance = Instance::get_active_instance(KSPGame::from_id(game_id).unwrap());
 
-    if let Some(instance) = instance {
-        return instance.id;
-    }
-
-    return -1;
+    return instance;
 }
 
 #[tauri::command]

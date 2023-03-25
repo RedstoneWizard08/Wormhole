@@ -71,7 +71,7 @@ export interface InvokeFunction {
     read_mod_json: [undefined, ModsIntegrity];
 
     update_description: [InstanceUpdateArgs, undefined];
-    get_active_instance: [GameArgs, number];
+    get_active_instance: [GameArgs, InstanceInfo | undefined];
     set_active_instance: [InstanceArgs, undefined];
 
     delete_instance: [InstanceArgs, undefined];

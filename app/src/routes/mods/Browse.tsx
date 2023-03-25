@@ -70,6 +70,9 @@ export const Browse = () => {
         setPages(0);
 
         (async () => {
+            setInstance(-1);
+            setInstanceText("Unknown");
+
             const data = await invoke_proxy("get_mods", {
                 gameId,
                 count: perPage,
@@ -80,6 +83,16 @@ export const Browse = () => {
             setPages(data.pages);
 
             if (page > data.pages) setPage(data.pages - 1);
+
+            const defaultInstance = await invoke_proxy(
+                "get_active_instance",
+                { gameId }
+            );
+
+            if (defaultInstance) {
+                setInstance(defaultInstance.id);
+                setInstanceText(defaultInstance.name);
+            }
 
             if (initialLoad) {
                 setInstances(

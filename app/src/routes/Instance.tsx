@@ -66,9 +66,10 @@ export const Instance = () => {
     };
 
     const launch = async () => {
-        await invoke_proxy("launch", {
-            instanceId: instanceInfo?.id || -1,
-        });
+        if (instanceInfo)
+            await invoke_proxy("launch", {
+                instanceId: instanceInfo.id,
+            });
     };
 
     return (
