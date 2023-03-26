@@ -50,6 +50,13 @@ export const App = () => {
                     />
 
                     <AsyncRoute
+                        path="/settings"
+                        getComponent={() =>
+                            import("./routes/Settings").then((m) => m.Settings)
+                        }
+                    />
+
+                    <AsyncRoute
                         path="/install"
                         getComponent={() =>
                             import("./routes/Install").then(

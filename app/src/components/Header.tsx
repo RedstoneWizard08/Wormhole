@@ -10,14 +10,15 @@ export const Header = () => {
     const [mods, setMods] = useState(false);
     const [manage, setManage] = useState(false);
     const [spacewarp, setSpacewarp] = useState(false);
+    const [settings, setSettings] = useState(false);
 
     useEffect(() => {
-        setInstances(/\/instances?(\/\d+)?/i.test(router.path!));
-
         setMods(/\/mods?(\/\d+)?/i.test(router.path!));
+        setInstances(/\/instances?(\/\d+)?/i.test(router.path!));
 
         setManage(router.path == "/manage");
         setSpacewarp(router.path == "/spacewarp" || router.path == "/install");
+        setSettings(router.path == "/settings");
     }, [router.path]);
 
     return (
@@ -48,8 +49,13 @@ export const Header = () => {
             </Link>
 
             <Link className={`link ${manage ? "active" : ""}`} href={"/manage"}>
-                <i className="icon fa-solid fa-cog" />
+                <i className="icon fa-solid fa-sliders" />
                 Manage Mods
+            </Link>
+
+            <Link className={`link ${settings ? "active" : ""}`} href={"/settings"}>
+                <i className="icon fa-solid fa-gear" />
+                Settings
             </Link>
         </div>
     );
