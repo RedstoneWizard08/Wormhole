@@ -1,11 +1,10 @@
-import path from "path";
-import preactRefresh from "@prefresh/vite";
+import { sveltekit } from "@sveltejs/kit/vite";
 import { defineConfig } from "vite";
 
 export default defineConfig({
     clearScreen: false,
 
-    plugins: [preactRefresh()],
+    plugins: [sveltekit()],
 
     server: {
         port: process.env.TAURI_WEB_DEV ? 4000 : 1420,
@@ -30,7 +29,6 @@ export default defineConfig({
             : {},
     },
 
-    root: path.join(__dirname, "app"),
     envPrefix: ["VITE_", "TAURI_"],
 
     resolve: {
@@ -40,8 +38,7 @@ export default defineConfig({
     },
 
     build: {
-        target:
-            process.env.TAURI_PLATFORM == "windows" ? "chrome105" : "safari13",
+        target: process.env.TAURI_PLATFORM == "windows" ? "chrome105" : "safari13",
 
         minify: !process.env.TAURI_DEBUG ? "esbuild" : false,
         sourcemap: !!process.env.TAURI_DEBUG,

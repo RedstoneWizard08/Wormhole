@@ -1,26 +1,28 @@
 {
+    "extends": "./.svelte-kit/tsconfig.json",
+
     "compilerOptions": {
         "allowJs": true,
+        "checkJs": true,
         "alwaysStrict": true,
         "declaration": true,
+        "esModuleInterop": true,
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
-        "lib": ["esnext", "dom"],
+        "forceConsistentCasingInFileNames": true,
+        "resolveJsonModule": true,
+        "lib": ["esnext", "DOM", "DOM.Iterable"],
         "module": "esnext",
         "moduleResolution": "node",
         "strict": true,
         "target": "esnext",
         "noEmit": true,
         "skipLibCheck": true,
-        "jsx": "react-jsx",
-        "jsxImportSource": "preact",
+        "sourceMap": true,
         "allowSyntheticDefaultImports": true,
-        "paths": {
-            "react": ["./node_modules/preact/compat"],
-            "react-dom": ["./node_modules/preact/compat"]
-        }
+        "preserveValueImports": false
     },
-    "include": ["app"],
+
     "ts-node": {
         "esm": true
     }

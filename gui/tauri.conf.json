@@ -4,7 +4,7 @@
         "beforeDevCommand": "pnpm app:dev",
         "beforeBuildCommand": "pnpm app:build",
         "devPath": "http://localhost:1420",
-        "distDir": "../app/dist",
+        "distDir": "../build",
         "withGlobalTauri": true
     },
     "package": {
