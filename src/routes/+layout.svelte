@@ -18,6 +18,10 @@
     });
 </script>
 
+<svelte:head>
+    <title>Wormhole</title>
+</svelte:head>
+
 {#if loading}
     <LoadingPage />
 {:else}
