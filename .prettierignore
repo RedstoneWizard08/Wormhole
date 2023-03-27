@@ -9,6 +9,7 @@ node_modules
 
 # Svelte
 .svelte-kit
+build
 
 # Prettier can mess this up
 *.md

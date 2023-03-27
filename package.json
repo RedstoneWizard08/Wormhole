@@ -40,7 +40,8 @@
         "console": "ts-node app/scripts/console.ts",
         "check": "svelte-kit sync && svelte-check",
         "check:watch": "svelte-kit sync && svelte-check --watch",
-        "postinstall": "svelte-kit sync"
+        "postinstall": "svelte-kit sync",
+        "serve": "serve -p 4000 build"
     },
     "repository": {
         "type": "git",
@@ -48,7 +49,7 @@
     },
     "devDependencies": {
         "@babel/core": "^7.21.3",
-        "@sveltejs/adapter-auto": "^2.0.0",
+        "@sveltejs/adapter-static": "^2.0.1",
         "@sveltejs/kit": "^1.14.0",
         "@tauri-apps/cli": "^1.2.3",
         "@types/cookie": "^0.5.1",
@@ -69,6 +70,7 @@
         "prettier-plugin-svelte": "^2.10.0",
         "puppeteer": "^19.7.5",
         "sass": "^1.59.3",
+        "serve": "^14.2.0",
         "stylelint": "^15.3.0",
         "stylelint-config-standard-scss": "^7.0.1",
         "stylelint-scss": "^4.5.0",

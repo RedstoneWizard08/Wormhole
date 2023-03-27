@@ -9,6 +9,7 @@ node_modules
 
 # Svelte
 .svelte-kit
+build
 
 # Why would I lint these?
 *.md
