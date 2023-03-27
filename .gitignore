@@ -15,7 +15,7 @@ dist-ssr
 testing
 
 # Svelte
-# .svelte-kit
+.svelte-kit
 build
 
 # Editor directories and files
