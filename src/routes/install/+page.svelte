@@ -1,5 +1,5 @@
 <script lang="ts">
-    import banner from "../assets/background_banner.png";
+    import banner from "../../assets/background_banner.png";
     import { invoke_proxy } from "../../api/invoke";
     import { KSPGame } from "../../api/instance";
     import { listen_proxy } from "../../api/listen";

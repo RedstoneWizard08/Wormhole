@@ -1,8 +1,8 @@
 <script lang="ts">
-    import { InstanceInfo, KSPGame } from "../../../api/instance";
+    import { type InstanceInfo, KSPGame } from "../../../api/instance";
     import { invoke_proxy } from "../../../api/invoke";
-    import ksp1logo from "../assets/ksp.png";
-    import ksp2logo from "../assets/ksp2.png";
+    import ksp1logo from "../../../assets/ksp.png";
+    import ksp2logo from "../../../assets/ksp2.png";
     import { marked } from "marked";
     import { page } from "$app/stores";
 
@@ -13,8 +13,8 @@
     let editing = false;
 
     let editor: HTMLTextAreaElement | undefined;
-    let description = instanceInfo?.description;
-
+    
+    $: description = instanceInfo?.description;
     $: instances = /\/instances?(\/\d+)?/i.test($page.url.pathname);
 
     const id = $page.params.instance;
@@ -63,6 +63,12 @@
                 instanceId: instanceInfo.id,
             });
     };
+
+    const updateDescription = (ev: Event) => {
+        const textarea = ev.target as HTMLTextAreaElement;
+
+        description = textarea.value;
+    };
 </script>
 
 <div class="full-instance-container">
@@ -105,7 +111,7 @@
         </div>
 
         {#if editing}
-            <textarea class="editor" bind:value={description} bind:this={editor} />
+            <textarea class="editor" value={description} on:input={updateDescription} on:keydown={updateDescription} on:change={updateDescription} bind:this={editor} />
         {:else}
             <p class="description">
                 {@html marked(instanceInfo?.description || "", {
