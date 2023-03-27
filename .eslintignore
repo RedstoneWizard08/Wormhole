@@ -7,6 +7,9 @@ out
 # Dependencies
 node_modules
 
+# Svelte
+.svelte-kit
+
 # Why would I lint these?
 *.md
 LICENSE
