@@ -11,6 +11,8 @@
         "color-hex-length": null,
         "shorthand-property-no-redundant-values": null,
         "color-function-notation": null,
-        "alpha-value-notation": null
+        "alpha-value-notation": null,
+        "scss/at-import-partial-extension": null,
+        "at-rule-empty-line-before": null
     }
 }

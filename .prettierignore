@@ -7,6 +7,9 @@ out
 # Dependencies
 node_modules
 
+# Svelte
+.svelte-kit
+
 # Prettier can mess this up
 *.md
 LICENSE
