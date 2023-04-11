@@ -185,7 +185,7 @@
 
         .mod {
             width: 100%;
-            height: 85%;
+            height: 92%;
 
             overflow-y: scroll;
 
@@ -258,7 +258,7 @@
 
         .actions {
             width: 100%;
-            height: auto;
+            height: 6%;
             margin: 0;
             padding: 1%;
 

@@ -23,44 +23,50 @@
         <img class="logo" src={logo} alt="insert wormhole logo here" />
     </a>
 
+    <hr class="divider" />
+
     <a class="link" class:active={spacewarp} href="/spacewarp">
         <i class="icon fa-solid fa-rocket" />
-        SpaceWarp
+        
+        <span class="tooltip">SpaceWarp</span>
     </a>
 
     <a class="link" class:active={instances} href="/instances">
         <i class="icon fa-solid fa-download" />
-        Instances
+        
+        <span class="tooltip">Instances</span>
     </a>
 
     <a class="link" class:active={mods} href="/mods">
         <i class="icon fa-solid fa-search" />
-        Browse Mods
+        
+        <span class="tooltip">Browse Mods</span>
     </a>
 
     <a class="link" class:active={manage} href="/manage">
         <i class="icon fa-solid fa-sliders" />
-        Manage Mods
+        
+        <span class="tooltip">Manage Mods</span>
     </a>
 
     <a class="link" class:active={settings} href="/settings">
         <i class="icon fa-solid fa-gear" />
-        Settings
+        
+        <span class="tooltip">Settings</span>
     </a>
 </div>
 
 <style lang="scss">
     .header {
-        width: 100%;
-        height: 2rem;
+        width: 2rem;
+        height: 100%;
 
         user-select: none;
 
-        padding: 1% 0;
-        position: fixed;
+        padding: 0 1%;
 
-        display: flex;
-        flex-direction: row;
+        display: inline-flex;
+        flex-direction: column;
         align-items: center;
         justify-content: flex-start;
 
@@ -68,19 +74,37 @@
 
         .logo {
             width: 64px;
-            object-fit: cover;
+            height: 64px;
+            padding: 0;
             margin: 0;
+
+            object-fit: cover;
+        }
+
+        .divider {
+            width: 90%;
+            margin: 0 5%;
+            height: 0;
+            border: 0;
+            padding: 0;
+
+            margin-bottom: 0.5rem;
+            border-bottom: 1px solid #aeaebe;
         }
 
         .link {
             color: #aeaebe;
-            margin: 0 1%;
-            width: 9rem;
-            padding: 0.5%;
+            margin: 10% 0;
+            height: 2.75rem;
+            padding: 0 30%;
             border: 1px solid transparent;
             border-radius: 6px;
+            font-size: 16pt;
+            outline: none;
 
-            display: flex;
+            position: relative;
+
+            display: inline-flex;
             flex-direction: row;
             align-items: center;
             justify-content: center;
@@ -100,6 +124,39 @@
 
             &:hover {
                 color: #dcdcec;
+            }
+
+            .tooltip {
+                opacity: 0;
+                background-color: #5f6160;
+                color: #dcdcec;
+                text-align: center;
+                padding: 10% 40%;
+                border-radius: 6px;
+                pointer-events: none;
+                width: 10rem;
+
+                position: absolute;
+                z-index: 1;
+
+                left: 200%;
+
+                transition: opacity 0.5s ease;
+
+                &::after {
+                    content: " ";
+                    position: absolute;
+                    top: 50%;
+                    right: 100%;
+                    margin-top: -10px;
+                    border-width: 10px;
+                    border-style: solid;
+                    border-color: transparent #5f6160 transparent transparent;
+                }
+            }
+
+            &:hover .tooltip {
+                opacity: 1;
             }
         }
     }

@@ -13,7 +13,7 @@
     let editing = false;
 
     let editor: HTMLTextAreaElement | undefined;
-    
+
     $: description = instanceInfo?.description;
     $: instances = /\/instances?(\/\d+)?/i.test($page.url.pathname);
 
@@ -111,7 +111,13 @@
         </div>
 
         {#if editing}
-            <textarea class="editor" value={description} on:input={updateDescription} on:keydown={updateDescription} on:change={updateDescription} bind:this={editor} />
+            <textarea
+                class="editor"
+                value={description}
+                on:input={updateDescription}
+                on:keydown={updateDescription}
+                on:change={updateDescription}
+                bind:this={editor} />
         {:else}
             <p class="description">
                 {@html marked(instanceInfo?.description || "", {
@@ -120,238 +126,235 @@
             </p>
         {/if}
     </div>
-</div>
 
-<div class="actions">
-    <button type="button" class="action" on:click={launch}>
-        <i class="icon fa-solid fa-rocket" />
-        &nbsp; Launch
-    </button>
+    <div class="actions">
+        <button type="button" class="action" on:click={launch}>
+            <i class="icon fa-solid fa-rocket" />
+            &nbsp; Launch
+        </button>
 
-    <p class="executable">{executable}</p>
+        <p class="executable">{executable}</p>
+    </div>
 </div>
 
 <style lang="scss">
     .full-instance-container {
-    width: 100%;
-    height: 100%;
-
-    background-color: #1f2120;
-
-    margin: 0;
-    padding: 0;
-
-    .return-container {
-        position: relative;
-
-        .return-button {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            user-select: none;
-            cursor: pointer;
-        }
-
-        .return-arrow {
-            position: absolute;
-            user-select: none;
-            top: 10px;
-            left: 10px;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border-radius: 50%;
-            background-color: green;
-            z-index: 2;
-            cursor: pointer;
-        }
-
-        .return-arrow i {
-            font-size: 24px;
-            color: white;
-        }
-
-        .return-circle {
-            position: absolute;
-            user-select: none;
-            top: 10px;
-            left: 10px;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: green;
-            z-index: 1;
-        }
-    }
-
-    .instance {
         width: 100%;
-        height: 90%;
+        height: 100%;
 
-        overflow-y: scroll;
+        background-color: #1f2120;
 
-        .background {
-            width: 90%;
-            height: 56%;
-            object-fit: contain;
-            object-position: center;
+        margin: 0;
+        padding: 0;
 
-            border-bottom: 1px solid white;
+        .return-container {
+            position: relative;
 
-            padding-bottom: 4%;
-            padding-left: 3.5%;
-            padding-right: 3.5%;
+            .return-button {
+                position: absolute;
+                top: 10px;
+                left: 10px;
+                user-select: none;
+                cursor: pointer;
+            }
 
-            margin: 0 1.5%;
+            .return-arrow {
+                position: absolute;
+                user-select: none;
+                top: 10px;
+                left: 10px;
+                width: 40px;
+                height: 40px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border-radius: 50%;
+                background-color: green;
+                z-index: 2;
+                cursor: pointer;
+            }
+
+            .return-arrow i {
+                font-size: 24px;
+                color: white;
+            }
+
+            .return-circle {
+                position: absolute;
+                user-select: none;
+                top: 10px;
+                left: 10px;
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                background-color: green;
+                z-index: 1;
+            }
         }
 
-        .infos {
-            width: 97%;
+        .instance {
+            width: 100%;
+            height: 90%;
+
+            overflow-y: scroll;
+
+            .background {
+                width: 90%;
+                height: 56%;
+                object-fit: contain;
+                object-position: center;
+
+                border-bottom: 1px solid white;
+
+                padding-bottom: 4%;
+                padding-left: 3.5%;
+                padding-right: 3.5%;
+
+                margin: 0 1.5%;
+            }
+
+            .infos {
+                width: 97%;
+
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+
+                padding: 0.25% 1.5%;
+
+                .left,
+                .right {
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                }
+
+                .left {
+                    width: 50%;
+                    justify-content: flex-start;
+
+                    .name {
+                        margin-right: 2%;
+                    }
+                }
+
+                .right {
+                    width: 50%;
+                    justify-content: flex-end;
+
+                    .time {
+                        color: lightgreen;
+                        margin-right: 4%;
+                    }
+
+                    .edit {
+                        color: lightskyblue;
+                        background-color: transparent;
+
+                        border: 1px solid lightskyblue;
+                        padding: 1% 1.5%;
+                        font-size: 12pt;
+                        font-family: "manteka", serif;
+
+                        border-radius: 8px;
+
+                        display: flex;
+                        flex-direction: row;
+                        align-items: center;
+                        justify-content: center;
+
+                        cursor: pointer;
+                        outline: none;
+
+                        transition: color 0.5s ease, background-color 0.5s ease;
+
+                        &:hover {
+                            color: black;
+                            background-color: lightskyblue;
+                        }
+                    }
+                }
+            }
+
+            .description {
+                width: 97%;
+                padding: 0 1.5%;
+                margin: 0;
+
+                font-family: "Ubuntu Mono", monospace;
+            }
+
+            .editor {
+                width: 97%;
+                height: 20rem;
+
+                margin: 0 1.5%;
+
+                font-family: "Ubuntu Mono", monospace;
+
+                background-color: transparent;
+                border: 1px solid white;
+                border-radius: 8px;
+
+                color: white;
+
+                font-size: 14pt;
+            }
+        }
+
+        .actions {
+            width: 98%;
+            height: 8%;
+
+            padding: 1%;
 
             display: flex;
             flex-direction: row;
             align-items: center;
-            justify-content: space-between;
+            justify-content: flex-start;
 
-            padding: 0.25% 1.5%;
+            .action {
+                height: 60%;
 
-            .left,
-            .right {
+                background-color: transparent;
+                color: lightgreen;
+                border: 1px solid lightgreen;
+                border-radius: 8px;
+                padding: 0.5% 1%;
+
+                font-family: "manteka", serif;
+                font-size: 12pt;
+                cursor: pointer;
+
                 display: flex;
                 flex-direction: row;
                 align-items: center;
-            }
+                justify-content: center;
 
-            .left {
-                width: 50%;
-                justify-content: flex-start;
+                transition: color 0.5s ease, background-color 0.5s ease;
 
-                .name {
-                    margin-right: 2%;
+                &:hover {
+                    background-color: lightgreen;
+                    color: black;
+                }
+
+                .icon {
+                    font-size: 14pt;
                 }
             }
 
-            .right {
-                width: 50%;
-                justify-content: flex-end;
+            .executable {
+                margin-left: 1.5%;
+                font-size: 12pt;
 
-                .time {
-                    color: lightgreen;
-                    margin-right: 4%;
-                }
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: center;
 
-                .edit {
-                    color: lightskyblue;
-                    background-color: transparent;
-
-                    border: 1px solid lightskyblue;
-                    padding: 1% 1.5%;
-                    font-size: 12pt;
-                    font-family: "manteka", serif;
-
-                    border-radius: 8px;
-
-                    display: flex;
-                    flex-direction: row;
-                    align-items: center;
-                    justify-content: center;
-
-                    cursor: pointer;
-                    outline: none;
-
-                    transition: color 0.5s ease, background-color 0.5s ease;
-
-                    &:hover {
-                        color: black;
-                        background-color: lightskyblue;
-                    }
-                }
+                height: 100%;
             }
         }
-
-        .description {
-            width: 97%;
-            padding: 0 1.5%;
-            margin: 0;
-
-            font-family: "Ubuntu Mono", monospace;
-        }
-
-        .editor {
-            width: 97%;
-            height: 20rem;
-
-            margin: 0 1.5%;
-
-            font-family: "Ubuntu Mono", monospace;
-
-            background-color: transparent;
-            border: 1px solid white;
-            border-radius: 8px;
-
-            color: white;
-
-            font-size: 14pt;
-        }
     }
-}
-
-.actions {
-    width: 98%;
-    height: 8%;
-
-    padding: 1%;
-
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-start;
-
-    position: fixed;
-    margin-top: -10%;
-
-    .action {
-        height: 60%;
-
-        background-color: transparent;
-        color: lightgreen;
-        border: 1px solid lightgreen;
-        border-radius: 8px;
-        padding: 0.5% 1%;
-
-        font-family: "manteka", serif;
-        font-size: 12pt;
-        cursor: pointer;
-
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
-
-        transition: color 0.5s ease, background-color 0.5s ease;
-
-        &:hover {
-            background-color: lightgreen;
-            color: black;
-        }
-
-        .icon {
-            font-size: 14pt;
-        }
-    }
-
-    .executable {
-        margin-left: 1.5%;
-        font-size: 12pt;
-
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
-
-        height: 100%;
-    }
-}
 </style>

@@ -1,9 +1,9 @@
 <script lang="ts">
     import "../styles/global.scss";
-    import Header from "../components/Header.svelte";
     import { browser } from "$app/environment";
     import { onMount } from "svelte";
     import LoadingPage from "../components/LoadingPage.svelte";
+    import Sidebar from "../components/Sidebar.svelte";
 
     let loading = true;
 
@@ -26,7 +26,8 @@
     <LoadingPage />
 {:else}
     <div class="app-container">
-        <Header />
+        <!-- <Header /> -->
+        <Sidebar />
 
         <div class="main">
             <slot />
@@ -46,15 +47,20 @@
         padding: 0;
 
         background-color: #1f2120;
+
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
     }
 
     .app-container {
         .main {
-            width: 100%;
+            width: calc(98% - 2rem);
             height: 100%;
 
             position: fixed;
-            margin-top: calc(2rem + 2%);
+            margin-left: calc(2rem + 2%);
         }
     }
 </style>
