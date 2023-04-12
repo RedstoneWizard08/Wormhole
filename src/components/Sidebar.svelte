@@ -1,12 +1,17 @@
 <script lang="ts">
     import { page } from "$app/stores";
+    import { KSPGame } from "../api/instance";
     import logo from "../assets/icon.png";
+    import ksp1_logo from "../assets/ksp-square.png";
+    import ksp2_logo from "../assets/ksp2-square.png";
 
     let instances = false;
     let mods = false;
     let manage = false;
     let spacewarp = false;
     let settings = false;
+    let ksp1 = false;
+    let ksp2 = false;
 
     $: {
         mods = /\/mods?(\/\d+)?/i.test($page.url.pathname);
@@ -15,6 +20,9 @@
         manage = $page.url.pathname == "/manage";
         spacewarp = $page.url.pathname == "/spacewarp" || $page.url.pathname == "/install";
         settings = $page.url.pathname == "/settings";
+
+        ksp1 = $page.url.pathname.startsWith(`/${KSPGame.KSP1}`);
+        ksp2 = $page.url.pathname.startsWith(`/${KSPGame.KSP2}`);
     }
 </script>
 
@@ -31,23 +39,53 @@
         <span class="tooltip">SpaceWarp</span>
     </a>
 
-    <a class="link" class:active={instances} href="/instances">
-        <i class="icon fa-solid fa-download" />
-        
-        <span class="tooltip">Instances</span>
+    <a class="link" class:active={ksp1} href="/{KSPGame.KSP1}">
+        <img src={ksp1_logo} alt="KSP 1" />
     </a>
 
-    <a class="link" class:active={mods} href="/mods">
-        <i class="icon fa-solid fa-search" />
-        
-        <span class="tooltip">Browse Mods</span>
+    <div class="group" class:active={ksp1}>
+        <a class="link" class:active={instances} href="/{KSPGame.KSP1}/instances">
+            <i class="icon fa-solid fa-download" />
+            
+            <span class="tooltip">Instances</span>
+        </a>
+    
+        <a class="link" class:active={mods} href="/{KSPGame.KSP1}/mods">
+            <i class="icon fa-solid fa-search" />
+            
+            <span class="tooltip">Browse Mods</span>
+        </a>
+    
+        <a class="link" class:active={manage} href="/{KSPGame.KSP1}/manage">
+            <i class="icon fa-solid fa-sliders" />
+            
+            <span class="tooltip">Manage Mods</span>
+        </a>
+    </div>
+
+    <a class="link" class:active={ksp2} href="/{KSPGame.KSP2}">
+        <img src={ksp2_logo} alt="KSP 2" />
     </a>
 
-    <a class="link" class:active={manage} href="/manage">
-        <i class="icon fa-solid fa-sliders" />
-        
-        <span class="tooltip">Manage Mods</span>
-    </a>
+    <div class="group" class:active={ksp2}>
+        <a class="link" class:active={instances} href="/{KSPGame.KSP2}/instances">
+            <i class="icon fa-solid fa-download" />
+            
+            <span class="tooltip">Instances</span>
+        </a>
+    
+        <a class="link" class:active={mods} href="/{KSPGame.KSP2}/mods">
+            <i class="icon fa-solid fa-search" />
+            
+            <span class="tooltip">Browse Mods</span>
+        </a>
+    
+        <a class="link" class:active={manage} href="/{KSPGame.KSP2}/manage">
+            <i class="icon fa-solid fa-sliders" />
+            
+            <span class="tooltip">Manage Mods</span>
+        </a>
+    </div>
 
     <a class="link" class:active={settings} href="/settings">
         <i class="icon fa-solid fa-gear" />
@@ -92,17 +130,49 @@
             border-bottom: 1px solid #aeaebe;
         }
 
+        .group {
+            width: 100%;
+            padding: 0 30%;
+            margin: 0;
+
+            max-height: 0;
+            overflow: hidden;
+
+            transition: max-height 0.5s ease;
+
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-evenly;
+
+            background-color: #3f3f3f;
+            border-radius: 8px;
+
+            .link {
+                &:hover, &.active {
+                    background-color: #5f5f5f;
+                }
+            }
+
+            &.active {
+                margin: 10% 0;
+                max-height: 100%;
+            }
+        }
+
         .link {
             color: #aeaebe;
             margin: 10% 0;
             height: 2.75rem;
-            padding: 0 30%;
+            padding: 0 20%;
             border: 1px solid transparent;
             border-radius: 6px;
             font-size: 16pt;
             outline: none;
+            width: 100%;
 
             position: relative;
+            background-color: transparent;
 
             display: inline-flex;
             flex-direction: row;
@@ -111,19 +181,24 @@
 
             text-decoration: none;
 
-            transition: color 0.5s ease, border 0.5s ease;
+            transition: color 0.5s ease, background-color 0.5s ease;
 
             &.active {
                 color: white;
-                border: 1px solid #dcdcec;
+                background-color: #4f4f4f;
             }
 
             .icon {
                 margin-right: 4%;
             }
 
+            img {
+                width: 100%;
+            }
+
             &:hover {
                 color: #dcdcec;
+                background-color: #4f4f4f;
             }
 
             .tooltip {

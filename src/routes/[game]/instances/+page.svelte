@@ -1,11 +1,12 @@
 <script lang="ts">
-    import { type InstanceInfo, KSPGame } from "../../api/instance";
-    import Instance from "../../components/Instance.svelte";
-    import { invoke_proxy } from "../../api/invoke";
-    import Dropdown from "../../components/Dropdown.svelte";
-    import { gameItems } from "../../api/browse";
+    import type { InstanceInfo } from "../../../api/instance";
+    import Instance from "../../../components/Instance.svelte";
+    import { invoke_proxy } from "../../../api/invoke";
+    import Dropdown from "../../../components/Dropdown.svelte";
+    import { gameItems } from "../../../api/browse";
     import { browser } from "$app/environment";
     import { onMount } from "svelte";
+    import { page } from "$app/stores";
 
     let adding = false;
     let deleteing = false;
@@ -13,8 +14,7 @@
     let instances: InstanceInfo[] = [];
     let instanceToDelete: InstanceInfo | null = null;
 
-    let gameId = KSPGame.KSP1;
-    let gameText = "KSP 1";
+    let gameId = parseInt($page.params.game);
 
     let path = "C:\\Fakepath";
     let name = "";
@@ -22,11 +22,9 @@
     $: instanceName = instanceToDelete?.name;
 
     onMount(async () => {
-        console.log("Fetching instances...");
         const data = await invoke_proxy("get_instances", undefined);
-        console.log("Instances: ", data);
 
-        instances = data;
+        instances = data.filter((instance) => instance.game == gameId);
     });
 
     const addInstance = async () => {
@@ -86,8 +84,6 @@
                 <!-- svelte-ignore a11y-click-events-have-key-events -->
                 <i class="fa-solid fa-times close" on:click={toggleAdding} />
             </div>
-
-            <Dropdown items={gameItems} bind:val={gameId} bind:valText={gameText} />
 
             <input type="text" placeholder="Instance name" class="name" bind:value={name} />
 
@@ -178,7 +174,7 @@
             outline: none;
 
             left: calc(100% - 3rem);
-            top: calc(100% - 7.5rem);
+            top: calc(100% - 3rem);
 
             z-index: 4;
 

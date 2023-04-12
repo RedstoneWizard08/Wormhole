@@ -1,8 +1,8 @@
 <script lang="ts">
-    import { type InstanceInfo, KSPGame } from "../../../api/instance";
-    import { invoke_proxy } from "../../../api/invoke";
-    import ksp1logo from "../../../assets/ksp.png";
-    import ksp2logo from "../../../assets/ksp2.png";
+    import { type InstanceInfo, KSPGame } from "../../../../api/instance";
+    import { invoke_proxy } from "../../../../api/invoke";
+    import ksp1logo from "../../../../assets/ksp.png";
+    import ksp2logo from "../../../../assets/ksp2.png";
     import { marked } from "marked";
     import { page } from "$app/stores";
 
@@ -72,7 +72,7 @@
 </script>
 
 <div class="full-instance-container">
-    <a class={`link ${instances ? "active" : ""}`} href="/instances">
+    <a class={`link ${instances ? "active" : ""}`} href="/{instanceInfo?.game}/instances">
         <div class="return-container">
             <div class="return-arrow">
                 <i class="fa-solid fa-long-arrow-left" />

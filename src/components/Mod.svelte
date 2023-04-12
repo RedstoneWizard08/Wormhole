@@ -47,7 +47,7 @@
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<div class="mod-tile" on:click={() => goto(`/mod/${mod.id}`)}>
+<div class="mod-tile" on:click={() => goto(`/${mod.game_id}/mod/${mod.id}`)}>
     <!-- svelte-ignore a11y-img-redundant-alt -->
     <img src={mod.background} class="image" alt="mod-background image" />
 

@@ -10,7 +10,7 @@
     export let deleteing: boolean;
 
     const clicked = () => {
-        goto(`/instance/${data.id}`);
+        goto(`/${data.game}/instance/${data.id}`);
     };
 
     const doLaunch = (e: MouseEvent) => {

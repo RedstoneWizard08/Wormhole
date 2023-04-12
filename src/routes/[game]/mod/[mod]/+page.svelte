@@ -1,11 +1,11 @@
 <script lang="ts">
     import { marked } from "marked";
-    import type { FullModInfo } from "../../../api/models/modinfo/full";
-    import { invoke_proxy } from "../../../api/invoke";
+    import type { FullModInfo } from "../../../../api/models/modinfo/full";
+    import { invoke_proxy } from "../../../../api/invoke";
     import DOMPurify from "dompurify";
-    import { KSPGame } from "../../../api/instance";
+    import { KSPGame } from "../../../../api/instance";
     import { page } from "$app/stores";
-    import LoadingPage from "../../../components/LoadingPage.svelte";
+    import LoadingPage from "../../../../components/LoadingPage.svelte";
 
     const modId = $page.params.mod;
 
@@ -79,7 +79,7 @@
     <LoadingPage />
 {:else}
     <div class="full-mod-container">
-        <a class={`link ${mods ? "active" : ""}`} href={`/mods?game=${modInfo?.game_id}`}>
+        <a class={`link ${mods ? "active" : ""}`} href={`/${modInfo?.game_id}/mods`}>
             <div class="return-container">
                 <div class="return-arrow">
                     <i class="fa-solid fa-long-arrow-left" />

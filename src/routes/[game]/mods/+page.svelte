@@ -1,14 +1,14 @@
 <script lang="ts">
-    import type { BrowseModInfo, ModWithDistance } from "../../api/models/modinfo/browse";
-    import { invoke_proxy } from "../../api/invoke";
-    import Dropdown from "../../components/Dropdown.svelte";
-    import SearchBar from "../../components/SearchBar.svelte";
-    import LoadingPage from "../../components/LoadingPage.svelte";
-    import Pagination from "../../components/Pagination.svelte";
-    import Mod from "../../components/Mod.svelte";
+    import type { BrowseModInfo, ModWithDistance } from "../../../api/models/modinfo/browse";
+    import { invoke_proxy } from "../../../api/invoke";
+    import Dropdown from "../../../components/Dropdown.svelte";
+    import SearchBar from "../../../components/SearchBar.svelte";
+    import LoadingPage from "../../../components/LoadingPage.svelte";
+    import Pagination from "../../../components/Pagination.svelte";
+    import Mod from "../../../components/Mod.svelte";
     import { page } from "$app/stores";
-    import type { DropdownItem } from "../../api/dropdown";
-    import { gameItems } from "../../api/browse";
+    import type { DropdownItem } from "../../../api/dropdown";
+    import { gameItems } from "../../../api/browse";
 
     let results: BrowseModInfo[] = [];
     let perPage = 30;
@@ -17,9 +17,7 @@
     let loading = true;
     let initialLoad = true;
 
-    let gameId = parseInt($page.url.searchParams.get("game") || "3102");
-
-    $: gameText = gameId == 3102 ? "KSP 1" : "KSP 2";
+    let gameId = parseInt($page.params.game);
 
     let instance = -1;
     let instanceText = "Unknown";
@@ -107,7 +105,7 @@
 
 <div class="browse-container">
     <div class="top">
-        <Dropdown left bind:val={gameId} bind:valText={gameText} items={gameItems} />
+        <span></span>
 
         <div class="search-bar">
             <SearchBar onSearch={handleSearch} />
