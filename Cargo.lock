@@ -450,6 +450,23 @@ dependencies = [
 ]
 
 [[package]]
+name = "ckandex"
+version = "0.6.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f8681ec4881a46617f4d4ebb66104b58c0aacee1c10e6a53dbfe554baeb1245e"
+dependencies = [
+ "async-trait",
+ "fancy-regex",
+ "git2",
+ "jenkins_api",
+ "reqwest 0.11.15",
+ "serde",
+ "serde_either",
+ "serde_json",
+ "serde_yaml",
+]
+
+[[package]]
 name = "clap"
 version = "4.1.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -4825,7 +4842,7 @@ name = "wormhole-common"
 version = "0.4.0"
 dependencies = [
  "async-trait",
- "ckandex",
+ "ckandex 0.6.2",
  "keyvalues-parser",
  "rand 0.8.5",
  "reqwest 0.11.15",
@@ -4841,7 +4858,7 @@ dependencies = [
 name = "wormhole-gui"
 version = "0.4.0"
 dependencies = [
- "ckandex",
+ "ckandex 0.4.2",
  "keyvalues-parser",
  "reqwest 0.11.15",
  "serde",
