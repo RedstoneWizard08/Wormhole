@@ -25,7 +25,7 @@ export const save = (url: string, name: string) => {
     a.remove();
 };
 
-export const downloadBepInEx = async () => {
+export const download = async () => {
     const url = "/_dev/BepInEx_x64_5.4.21.0.zip";
     const url2 = "/_dev/spacewarp-release-1.0.1.zip";
 

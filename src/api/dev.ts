@@ -2,7 +2,7 @@ import { mockIPC } from "@tauri-apps/api/mocks";
 import { type InstanceInfo, KSPGame } from "./instance";
 import { SpaceDockAPI } from "./SpaceDock";
 import type { InvokeFunction, ModsIntegrity } from "./invoke";
-import { downloadBepInEx } from "./mocks/download";
+import { download } from "./mocks/download";
 
 export const repeat = <T>(arr: T[], n: number): T[] => {
     const final: T[] = [];
@@ -40,11 +40,11 @@ export const createMockAPI = () => {
         args: InvokeFunction[K][0]
     ): Promise<InvokeFunction[K][1]> => {
         switch (cmd) {
-            case "download_bepinex":
-                await downloadBepInEx();
+            case "install_spacewarp":
+                await download();
                 return "Success";
 
-            case "uninstall_bepinex":
+            case "uninstall_spacewarp":
                 return "Success";
 
             case "get_install_dir":
