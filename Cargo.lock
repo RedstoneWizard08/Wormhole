@@ -5096,7 +5096,7 @@ dependencies = [
 
 [[package]]
 name = "wormhole-cli"
-version = "0.4.0"
+version = "1.0.0"
 dependencies = [
  "ckandex 0.6.3",
  "clap",
@@ -5106,7 +5106,7 @@ dependencies = [
 
 [[package]]
 name = "wormhole-common"
-version = "0.4.0"
+version = "1.0.0"
 dependencies = [
  "async-trait",
  "chrono",
@@ -5126,7 +5126,7 @@ dependencies = [
 
 [[package]]
 name = "wormhole-gui"
-version = "0.4.0"
+version = "1.0.0"
 dependencies = [
  "ckandex 0.4.2",
  "keyvalues-parser",

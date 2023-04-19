@@ -9,7 +9,7 @@
     },
     "package": {
         "productName": "Wormhole",
-        "version": "0.1.0"
+        "version": "1.0.0"
     },
     "tauri": {
         "allowlist": {
@@ -34,7 +34,7 @@
                 "icons/icon.icns",
                 "icons/icon.ico"
             ],
-            "identifier": "io.github.spacewarpdev.wormhole",
+            "identifier": "io.github.redstonewizard08.wormhole",
             "longDescription": "",
             "macOS": {
                 "entitlements": null,
@@ -44,7 +44,7 @@
                 "signingIdentity": null
             },
             "resources": [],
-            "shortDescription": "",
+            "shortDescription": "The (unofficial) successor to CKAN.",
             "targets": "all",
             "windows": {
                 "certificateThumbprint": null,

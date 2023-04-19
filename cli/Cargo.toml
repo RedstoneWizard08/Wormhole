@@ -1,6 +1,6 @@
 [package]
 name = "wormhole-cli"
-version = "0.4.0"
+version = "1.0.0"
 edition = "2021"
 description = "The Wormhole CLI."
 license = "MIT"
@@ -13,4 +13,4 @@ authors = ["RedstoneWizard08", "Rexicon226", "cheese3660", "Wormhole Contributor
 ckandex = "0.6.3"
 clap = { version = "4.1.8", features = ["derive", "env", "string"] }
 tokio = { version = "1.26.0", features = ["full"] }
-wormhole-common = { path = "../common", version = "0.4.0", features = ["clap"] }
+wormhole-common = { path = "../common", version = "1.0.0", features = ["clap"] }
