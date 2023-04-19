@@ -1,6 +1,7 @@
 use clap::{Parser, Subcommand};
+use wormhole_common::instances::KSPGame;
 
-#[derive(Parser, Debug, Clone, Copy)]
+#[derive(Parser, Debug, Clone)]
 #[command(author, version, about, long_about = None)]
 pub struct Cli {
     #[arg(short, long)]
@@ -10,9 +11,21 @@ pub struct Cli {
     pub command: Option<Commands>,
 }
 
-#[derive(Subcommand, Debug, Clone, Copy)]
+#[derive(Subcommand, Debug, Clone)]
 pub enum Commands {
-    Mod {
+    #[command(name = "spacedock")]
+    SpaceDock {
+        #[command(subcommand)]
+        command: Option<ModCommands>,
+    },
+
+    CKAN {
+        #[command(subcommand)]
+        command: Option<ModCommands>,
+    },
+
+    #[command(name = "curseforge")]
+    CurseForge {
         #[command(subcommand)]
         command: Option<ModCommands>,
     },
@@ -23,16 +36,37 @@ pub enum Commands {
     },
 }
 
-#[derive(Subcommand, Debug, Clone, Copy)]
+#[derive(Subcommand, Debug, Clone)]
 pub enum ModCommands {
-    Install { id: i32, instance_id: i32 },
+    Info {
+        #[arg(value_enum)]
+        game_id: KSPGame,
+        id: String,
+    },
 
-    Info { id: i32, instance_id: i32 },
+    Install {
+        #[arg(value_enum)]
+        game_id: KSPGame,
+        id: String,
+        instance_id: i32,
+    },
+    
+    Remove {
+        #[arg(value_enum)]
+        game_id: KSPGame,
+        id: String,
+        instance_id: i32,
+    },
 
-    Remove { id: i32, instance_id: i32 },
+    Browse {
+        #[arg(value_enum)]
+        game_id: KSPGame,
+
+        name_filter: Option<String>,
+    },
 }
 
-#[derive(Subcommand, Debug, Clone, Copy)]
+#[derive(Subcommand, Debug, Clone)]
 pub enum InstanceCommands {
     List {},
     Create {},

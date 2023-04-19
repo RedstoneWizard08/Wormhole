@@ -8,9 +8,9 @@ use crate::util::get_data_dir;
 pub mod query;
 
 lazy_static! {
-    static ref KSP1_CACHE_CLIENT: Mutex<Option<CacheClient>> = Mutex::new(None);
-    static ref KSP2_CACHE_CLIENT: Mutex<Option<CacheClient>> = Mutex::new(None);
-    static ref GLOBAL_TOKEN: Mutex<String> = Mutex::new(String::new());
+    pub static ref KSP1_CACHE_CLIENT: Mutex<Option<CacheClient>> = Mutex::new(None);
+    pub static ref KSP2_CACHE_CLIENT: Mutex<Option<CacheClient>> = Mutex::new(None);
+    pub static ref GLOBAL_TOKEN: Mutex<String> = Mutex::new(String::new());
 }
 
 pub async fn setup_ckan() {
@@ -27,6 +27,15 @@ pub async fn setup_ckan() {
 
     *KSP1_CACHE_CLIENT.lock().unwrap() = Some(CacheClient::new(ksp1_data_dir_str.to_string()));
     *KSP2_CACHE_CLIENT.lock().unwrap() = Some(CacheClient::new(ksp2_data_dir_str.to_string()));
+
+    let mut cache_ksp1 = KSP1_CACHE_CLIENT.lock().unwrap().clone().unwrap();
+    let mut cache_ksp2 = KSP2_CACHE_CLIENT.lock().unwrap().clone().unwrap();
+
+    cache_ksp1.update_cache().await.unwrap();
+    cache_ksp2.update_cache().await.unwrap();
+
+    *KSP1_CACHE_CLIENT.lock().unwrap() = Some(cache_ksp1);
+    *KSP2_CACHE_CLIENT.lock().unwrap() = Some(cache_ksp2);
 
     let token = env::var("GITHUB_TOKEN");
 

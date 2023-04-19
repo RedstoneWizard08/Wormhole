@@ -2,18 +2,22 @@
 
 use std::env;
 
-use clap::Parser;
+use clap::{Parser, CommandFactory};
+use commands::{ckan, curseforge, instance, spacedock};
 use tokio::main;
 
-use cli::{Cli, Commands, ModCommands};
-use commands::mods::install::install_mod;
-use wormhole_common::github::{DeviceFlow, WORMHOLE_CLIENT_ID};
+use cli::{Cli, Commands};
 
+pub mod auth;
 pub mod cli;
 pub mod commands;
 
 #[main]
 pub async fn main() {
+    if env::var("GITHUB_TOKEN").is_err() {
+        env::set_var("GITHUB_TOKEN", "");
+    }
+
     let cli = Cli::parse();
     let verbose = cli.verbose;
 
@@ -21,19 +25,39 @@ pub async fn main() {
         println!("Command: {:?}", cli.command);
     }
 
-    let mut flow = DeviceFlow::start(WORMHOLE_CLIENT_ID.to_string()).await.unwrap();
+    let mut ok: bool = false;
 
-    println!("Please go to: {} and enter code: {}", flow.clone().verification_uri.unwrap(), flow.clone().user_code.unwrap());
+    if let Some(command) = cli.command {
+        match command {
+            Commands::SpaceDock { command } => {
+                if let Some(command) = command {
+                    ok = spacedock::match_command(command).await;
+                }
+            }
 
-    let polled = flow.poll().await.unwrap();
-    let token = polled.token;
+            Commands::CKAN { command } => {
+                if let Some(command) = command {
+                    ok = ckan::match_command(command).await;
+                }
+            }
 
-    env::set_var("GITHUB_TOKEN", token);
+            Commands::CurseForge { command } => {
+                if let Some(command) = command {
+                    ok = curseforge::match_command(command).await;
+                }
+            }
 
-    if let Some(Commands::Mod {
-        command: Some(ModCommands::Install { id, instance_id }),
-    }) = cli.command
-    {
-        install_mod(id, instance_id, verbose).await;
+            Commands::Instance { command } => {
+                if let Some(command) = command {
+                    ok = instance::match_command(command).await;
+                }
+            }
+        };
+    }
+
+    if !ok {
+        let mut cmd = Cli::command();
+
+        cmd.print_help().unwrap();
     }
 }

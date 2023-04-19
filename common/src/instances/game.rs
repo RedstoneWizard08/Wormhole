@@ -1,6 +1,10 @@
+#[cfg(feature = "clap")]
+use clap::ValueEnum;
+
 use serde::{Deserialize, Serialize};
 
-#[derive(Serialize, Deserialize, Debug, Clone, Eq, PartialEq)]
+#[derive(Serialize, Deserialize, Debug, Clone, Eq, PartialEq, Copy)]
+#[cfg_attr(feature = "clap", derive(ValueEnum))]
 pub enum KSPGame {
     KSP1 = 3102,
     KSP2 = 22407,

@@ -10,6 +10,7 @@ readme = "../README.md"
 authors = ["RedstoneWizard08", "Rexicon226", "cheese3660", "Wormhole Contributors"]
 
 [dependencies]
-clap = { version = "4.1.8", features = ["derive", "env", "string", "debug"] }
+ckandex = "0.6.3"
+clap = { version = "4.1.8", features = ["derive", "env", "string"] }
 tokio = { version = "1.26.0", features = ["full"] }
-wormhole-common = { path = "../common", version = "0.4.0" }
+wormhole-common = { path = "../common", version = "0.4.0", features = ["clap"] }
