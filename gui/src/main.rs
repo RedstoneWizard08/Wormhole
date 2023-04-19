@@ -65,8 +65,12 @@ async fn launch(instance_id: i32) {
 }
 
 #[tauri::command]
-async fn get_instances() -> Vec<Instance> {
-    return Instance::load();
+async fn get_instances(game_id: i32) -> Vec<Instance> {
+    return Instance::load()
+        .iter()
+        .filter(|i| i.game == KSPGame::from_id(game_id).unwrap())
+        .cloned()
+        .collect();
 }
 
 #[tauri::command]
