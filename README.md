@@ -30,23 +30,23 @@ The (unofficial) successor to CKAN.
 - [x] Support for any steam library location
 - [x] Support for Private Division launcher
 - [x] Mod installation & browsing from SpaceDock
-- [ ] Mod installation & browsing from CKAN
-- [ ] Mod installation & browsing from CurseForge
 - [x] GUI app
-- [ ] CLI app
 - [x] Full instances support
+- [x] Friendly UI
+- [x] Fast UI
+- [x] 100% Open Source
+- [x] Automated SpaceWarp installation
+- [x] SvelteKit rewrite
+- [x] CLI app (WIP)
+
+## Long-term plans
+
+- [ ] Better settings
+- [ ] Installed mod discovery
 - [ ] Full modpack support
 - [ ] Mod configuration editor
 - [ ] Mod dependency resolution
 - [ ] Mod conflict resolution
 - [ ] Game version compatibility checking
-- [x] Friendly UI
-- [x] Fast UI
-- [x] 100% Open Source
-- [x] Automated SpaceWarp installation
-
-## Long-term plans
-
-- [ ] SvelteKit rewrite
-- [ ] Better settings
-- [ ] Installed mod discovery
+- [ ] Mod installation & browsing from CKAN
+- [ ] Mod installation & browsing from CurseForge

@@ -169,14 +169,20 @@
                 justify-content: center;
                 align-items: center;
                 border-radius: 50%;
-                background-color: green;
+                background-color: #008000;
                 z-index: 2;
                 cursor: pointer;
-            }
 
-            .return-arrow i {
-                font-size: 24px;
-                color: white;
+                transition: background-color 0.5s ease;
+
+                &:hover {
+                    background-color: #00a000;
+                }
+
+                i {
+                    font-size: 24px;
+                    color: white;
+                }
             }
 
             .return-circle {
