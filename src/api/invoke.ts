@@ -48,6 +48,10 @@ export interface AddInstanceArgs {
     installPath: string;
 }
 
+export interface GetInstances {
+    gameId: number;
+}
+
 export interface InvokeFunction {
     install_spacewarp: [undefined, string];
     uninstall_spacewarp: [undefined, string];
@@ -56,7 +60,7 @@ export interface InvokeFunction {
 
     launch: [InstanceArgs, undefined];
 
-    get_instances: [undefined, InstanceInfo[]];
+    get_instances: [GetInstances, InstanceInfo[]];
     get_instance_info: [InstanceArgs, InstanceInfo];
 
     get_mod: [ModArgs, FullModInfo];

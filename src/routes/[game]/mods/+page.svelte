@@ -58,7 +58,9 @@
         }
 
         if (initialLoad) {
-            instances = (await invoke_proxy("get_instances", undefined)).map((instance) => ({
+            instances = (await invoke_proxy("get_instances", {
+                gameId,
+            })).map((instance) => ({
                 id: instance.id,
                 text: instance.name,
             }));

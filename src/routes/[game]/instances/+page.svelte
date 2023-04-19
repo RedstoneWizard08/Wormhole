@@ -2,8 +2,6 @@
     import type { InstanceInfo } from "../../../api/instance";
     import Instance from "../../../components/Instance.svelte";
     import { invoke_proxy } from "../../../api/invoke";
-    import Dropdown from "../../../components/Dropdown.svelte";
-    import { gameItems } from "../../../api/browse";
     import { browser } from "$app/environment";
     import { onMount } from "svelte";
     import { page } from "$app/stores";
@@ -22,9 +20,7 @@
     $: instanceName = instanceToDelete?.name;
 
     onMount(async () => {
-        const data = await invoke_proxy("get_instances", undefined);
-
-        instances = data.filter((instance) => instance.game == gameId);
+        instances = await invoke_proxy("get_instances", { gameId });
     });
 
     const addInstance = async () => {

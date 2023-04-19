@@ -54,7 +54,7 @@ export const createMockAPI = () => {
                 return undefined;
 
             case "get_instances":
-                return DEV_Instances;
+                return DEV_Instances.filter((v) => v.game == (args as any | undefined)?.gameId);
 
             case "get_instance_info":
                 const id = (args as InvokeFunction["get_instance_info"][0]).instanceId;
