@@ -19,18 +19,26 @@ pub fn on_download_finish(size: u64, window: Window) {
 }
 
 pub async fn install_spacewarp(window: Window) {
-    let mut install_manager = SpaceWarpInstallManager::new(find_install_dir(KSPGame::KSP2));
+    let ksp2_dir = find_install_dir(KSPGame::KSP2);
 
-    install_manager.resolve().await.unwrap();
+    if let Some(dir) = ksp2_dir {
+        let mut install_manager = SpaceWarpInstallManager::new(dir);
 
-    install_manager
-        .download(on_download_progress, on_download_finish, window)
-        .await
-        .unwrap();
+        install_manager.resolve().await.unwrap();
+
+        install_manager
+            .download(on_download_progress, on_download_finish, window)
+            .await
+            .unwrap();
+    }
 }
 
 pub fn uninstall_spacewarp() {
-    let mut install_manager = SpaceWarpInstallManager::new(find_install_dir(KSPGame::KSP2));
+    let ksp2_dir = find_install_dir(KSPGame::KSP2);
 
-    install_manager.uninstall();
+    if let Some(dir) = ksp2_dir {
+        let mut install_manager = SpaceWarpInstallManager::new(dir);
+
+        install_manager.uninstall();
+    }
 }

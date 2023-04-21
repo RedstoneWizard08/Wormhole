@@ -50,26 +50,34 @@ impl Instance {
     }
 
     pub fn defaults() -> Vec<Self> {
-        let v = vec![
-            Instance {
+        let mut v = vec![];
+
+        let ksp1_dir = find_ksp1_install_dir();
+        let ksp2_dir = find_ksp2_install_dir();
+
+        if let Some(dir) = ksp2_dir {
+            v.push(Instance {
                 id: 0,
                 name: "KSP2 Default Instance".to_string(),
                 game: KSPGame::KSP2,
-                install_path: find_ksp2_install_dir(),
+                install_path: dir,
                 mods: Vec::new(),
                 description: None,
                 time_played: None,
-            },
-            Instance {
+            });
+        }
+
+        if let Some(dir) = ksp1_dir {
+            v.push(Instance {
                 id: 1,
                 name: "KSP1 Default Instance".to_string(),
                 game: KSPGame::KSP1,
-                install_path: find_ksp1_install_dir(),
+                install_path: dir,
                 mods: Vec::new(),
                 description: None,
                 time_played: None,
-            },
-        ];
+            });
+        }
 
         return Instance::validate_instances(v);
     }
@@ -148,37 +156,47 @@ impl Instance {
     }
 
     pub fn set_default_instances() {
-        let ksp1_instance_json_path = find_ksp1_install_dir().join("instance.json");
-        let ksp2_instance_json_path = find_ksp2_install_dir().join("instance.json");
+        let ksp1_dir = find_ksp1_install_dir();
+        let ksp2_dir = find_ksp2_install_dir();
 
         let instances = Instance::load_no_set();
 
-        if !ksp1_instance_json_path.exists() {
-            let ksp1_default = instances.iter().find(|i| i.game == KSPGame::KSP1).unwrap();
+        if let Some(dir) = ksp1_dir {
+            let ksp1_instance_json_path = dir.join("instance.json");
 
-            let ksp1_default_json = InstanceJson {
-                id: ksp1_default.id,
-            };
+            if !ksp1_instance_json_path.exists() {
+                let ksp1_default = instances.iter().find(|i| i.game == KSPGame::KSP1);
 
-            let ksp1_instance_json = serde_json::to_string(&ksp1_default_json).unwrap();
+                if let Some(ksp1_default) = ksp1_default {
+                    let ksp1_default_json = InstanceJson {
+                        id: ksp1_default.id,
+                    };
 
-            let mut file = File::create(ksp1_instance_json_path).unwrap();
+                    let ksp1_instance_json = serde_json::to_string(&ksp1_default_json).unwrap();
 
-            file.write_all(ksp1_instance_json.as_bytes()).unwrap();
+                    let mut file = File::create(ksp1_instance_json_path).unwrap();
+
+                    file.write_all(ksp1_instance_json.as_bytes()).unwrap();
+                }
+            }
         }
 
-        if !ksp2_instance_json_path.exists() {
-            let ksp2_default = instances.iter().find(|i| i.game == KSPGame::KSP2).unwrap();
+        if let Some(dir) = ksp2_dir {
+            let ksp2_instance_json_path = dir.join("instance.json");
 
-            let ksp2_default_json = InstanceJson {
-                id: ksp2_default.id,
-            };
+            if !ksp2_instance_json_path.exists() {
+                let ksp2_default = instances.iter().find(|i| i.game == KSPGame::KSP2).unwrap();
 
-            let ksp2_instance_json = serde_json::to_string(&ksp2_default_json).unwrap();
+                let ksp2_default_json = InstanceJson {
+                    id: ksp2_default.id,
+                };
 
-            let mut file = File::create(ksp2_instance_json_path).unwrap();
+                let ksp2_instance_json = serde_json::to_string(&ksp2_default_json).unwrap();
 
-            file.write_all(ksp2_instance_json.as_bytes()).unwrap();
+                let mut file = File::create(ksp2_instance_json_path).unwrap();
+
+                file.write_all(ksp2_instance_json.as_bytes()).unwrap();
+            }
         }
     }
 
@@ -253,27 +271,36 @@ impl Instance {
     }
 
     pub fn get_active_instance(game: KSPGame) -> Option<Instance> {
-        let instance_info_file = (match game {
-            KSPGame::KSP1 => find_ksp1_install_dir(),
-            KSPGame::KSP2 => find_ksp2_install_dir(),
-        })
-        .join("instance.json");
+        let ksp1_dir = find_ksp1_install_dir();
+        let ksp2_dir = find_ksp2_install_dir();
 
-        if instance_info_file.exists() {
-            let instance = Instance::load_from_file(instance_info_file);
+        if game == KSPGame::KSP1 {
+            if let Some(dir) = ksp1_dir {
+                let instance_info_file = dir.join("instance.json");
 
-            return instance;
+                if instance_info_file.exists() {
+                    let instance = Instance::load_from_file(instance_info_file);
+
+                    return instance;
+                }
+            }
+        } else if game == KSPGame::KSP2 {
+            if let Some(dir) = ksp2_dir {
+                let instance_info_file = dir.join("instance.json");
+
+                if instance_info_file.exists() {
+                    let instance = Instance::load_from_file(instance_info_file);
+
+                    return instance;
+                }
+            }
         }
 
         return None;
     }
 
     pub fn set_active_instance(instance: &Instance) {
-        let instance_info_file_path = (match instance.game {
-            KSPGame::KSP1 => find_ksp1_install_dir(),
-            KSPGame::KSP2 => find_ksp2_install_dir(),
-        })
-        .join("instance.json");
+        let instance_info_file_path = instance.install_path.join("instance.json");
 
         let mut instance_info_file = File::create(instance_info_file_path).unwrap();
 

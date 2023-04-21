@@ -22,7 +22,7 @@ use wormhole_common::{
 pub mod installer;
 
 #[tauri::command]
-fn get_install_dir(game_id: i32) -> PathBuf {
+fn get_install_dir(game_id: i32) -> Option<PathBuf> {
     return find_install_dir(KSPGame::from_id(game_id).unwrap());
 }
 
@@ -80,7 +80,7 @@ async fn get_instance_info(instance_id: i32) -> Option<Instance> {
     if let Some(info) = it {
         let mut infos = info;
 
-        infos.install_path = get_install_dir(infos.game.as_i32());
+        infos.install_path = get_install_dir(infos.game.as_i32()).unwrap();
 
         return Some(infos);
     }
