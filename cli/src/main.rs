@@ -2,7 +2,7 @@
 
 use std::env;
 
-use clap::{Parser, CommandFactory};
+use clap::{CommandFactory, Parser};
 use commands::{ckan, curseforge, instance, spacedock};
 use tokio::main;
 

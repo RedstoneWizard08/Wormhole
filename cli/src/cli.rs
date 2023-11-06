@@ -50,7 +50,7 @@ pub enum ModCommands {
         id: String,
         instance_id: i32,
     },
-    
+
     Remove {
         #[arg(value_enum)]
         game_id: KSPGame,

@@ -1,5 +1,5 @@
 use crate::cli::ModCommands;
-use ckandex::{Mod, ModType, QueryBuilder, IdFilter};
+use ckandex::{IdFilter, Mod, ModType, QueryBuilder};
 use wormhole_common::ckan::{query::get_mods, setup_ckan};
 
 pub mod install;
@@ -82,11 +82,19 @@ pub async fn match_command(command: ModCommands) -> bool {
             return true;
         }
 
-        ModCommands::Install { id, instance_id, game_id } => {
+        ModCommands::Install {
+            id,
+            instance_id,
+            game_id,
+        } => {
             return false;
         }
 
-        ModCommands::Remove { id, instance_id, game_id } => {
+        ModCommands::Remove {
+            id,
+            instance_id,
+            game_id,
+        } => {
             return false;
         }
     };
