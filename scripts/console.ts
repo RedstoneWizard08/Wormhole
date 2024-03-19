@@ -1,8 +1,17 @@
 import { blue, cyan, green, magenta, red, yellow } from "colorette";
 import puppeteer from "puppeteer";
+import which from "which";
+
+const logAllRequests = true;
 
 const main = async () => {
-    const browser = await puppeteer.launch();
+    console.log(`[${cyan("INFO")}] Starting browser...`);
+    
+    const browser = await puppeteer.launch({
+        product: "firefox",
+        executablePath: which.sync("firefox"),
+    });
+
     const page = await browser.newPage();
 
     page.on("console", (message) => {
@@ -26,9 +35,10 @@ const main = async () => {
     page.on(
         "response",
         (response) =>
-            !response.status().toString().startsWith("2") &&
-            !response.status().toString().startsWith("3") &&
-            console.log(green(`${response.status()} ${response.url()}`))
+            logAllRequests ||
+            (!response.status().toString().startsWith("2") &&
+                !response.status().toString().startsWith("3") &&
+                console.log(green(`${response.status()} ${response.url()}`)))
     );
 
     page.on("requestfailed", (request) =>

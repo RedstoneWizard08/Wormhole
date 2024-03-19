@@ -1,4 +1,4 @@
-import { finishVersions, ModVersion } from "../versions";
+import { finishVersions, type ModVersion } from "../versions";
 
 export interface BrowseModInfo {
     name: string;

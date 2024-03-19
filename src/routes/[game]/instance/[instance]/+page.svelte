@@ -5,17 +5,20 @@
     import ksp2logo from "../../../../assets/ksp2.png";
     import { marked } from "marked";
     import { page } from "$app/stores";
+    import { demoMods, type InstalledMod } from "../../../../api/models/mod";
+    import { formatBytes } from "../../../../api/util";
+    import Back from "../../../../components/Back.svelte";
+    import Delete from "../../../../components/Delete.svelte";
 
-    let instances = false;
     let instanceInfo: InstanceInfo | null = null as InstanceInfo | null;
     let background: string | null = null;
     let executable: string | null = null;
     let editing = false;
+    let mods: InstalledMod[] = demoMods;
 
     let editor: HTMLTextAreaElement | undefined;
 
     $: description = instanceInfo?.description;
-    $: instances = /\/instances?(\/\d+)?/i.test($page.url.pathname);
 
     const id = $page.params.instance;
 
@@ -72,14 +75,7 @@
 </script>
 
 <div class="full-instance-container">
-    <a class={`link ${instances ? "active" : ""}`} href="/{instanceInfo?.game}/instances">
-        <div class="return-container">
-            <div class="return-arrow">
-                <i class="fa-solid fa-long-arrow-left" />
-            </div>
-            <div class="return-circle" />
-        </div>
-    </a>
+    <Back to="/{instanceInfo?.game}/instances" />
 
     <div class="instance">
         <img src={background} class="background" alt="background" />
@@ -120,11 +116,36 @@
                 bind:this={editor} />
         {:else}
             <p class="description">
-                {@html marked(instanceInfo?.description || "", {
-                    sanitize: true,
-                })}
+                {@html marked(instanceInfo?.description || "")}
             </p>
         {/if}
+
+        <div class="mods">
+            <div class="head">
+                <p class="title">{mods.length} mods installed</p>
+            </div>
+
+            <table class="items">
+                <tr class="item head-item">
+                    <td class="name">Mod Name</td>
+                    <td class="file">File Name</td>
+                    <td class="size">File Size</td>
+                    <td class="actions" />
+                </tr>
+
+                {#each mods as mod}
+                    <tr class="item">
+                        <td class="name">{mod.name}</td>
+                        <td class="file">{mod.file}</td>
+                        <td class="size">{formatBytes(mod.size)}</td>
+
+                        <td class="actions">
+                            <Delete action={() => {}} clazz="__workaround__action" />
+                        </td>
+                    </tr>
+                {/each}
+            </table>
+        </div>
     </div>
 
     <div class="actions">
@@ -147,61 +168,11 @@
         margin: 0;
         padding: 0;
 
-        .return-container {
-            position: relative;
-
-            .return-button {
-                position: absolute;
-                top: 10px;
-                left: 10px;
-                user-select: none;
-                cursor: pointer;
-            }
-
-            .return-arrow {
-                position: absolute;
-                user-select: none;
-                top: 10px;
-                left: 10px;
-                width: 40px;
-                height: 40px;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                border-radius: 50%;
-                background-color: #008000;
-                z-index: 2;
-                cursor: pointer;
-
-                transition: background-color 0.5s ease;
-
-                &:hover {
-                    background-color: #00a000;
-                }
-
-                i {
-                    font-size: 24px;
-                    color: white;
-                }
-            }
-
-            .return-circle {
-                position: absolute;
-                user-select: none;
-                top: 10px;
-                left: 10px;
-                width: 40px;
-                height: 40px;
-                border-radius: 50%;
-                background-color: green;
-                z-index: 1;
-            }
-        }
-
         .instance {
             width: 100%;
             height: 90%;
 
+            overflow-x: hidden;
             overflow-y: scroll;
 
             .background {
@@ -210,9 +181,6 @@
                 object-fit: contain;
                 object-position: center;
 
-                border-bottom: 1px solid white;
-
-                padding-bottom: 4%;
                 padding-left: 3.5%;
                 padding-right: 3.5%;
 
@@ -228,6 +196,8 @@
                 justify-content: space-between;
 
                 padding: 0.25% 1.5%;
+                border-bottom: 1px solid white;
+                margin-bottom: 2%;
 
                 .left,
                 .right {
@@ -272,8 +242,9 @@
 
                         cursor: pointer;
                         outline: none;
-
-                        transition: color 0.5s ease, background-color 0.5s ease;
+                        transition:
+                            color 0.5s ease,
+                            background-color 0.5s ease;
 
                         &:hover {
                             color: black;
@@ -304,8 +275,69 @@
                 border-radius: 8px;
 
                 color: white;
-
                 font-size: 14pt;
+            }
+
+            .mods {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                justify-content: center;
+                width: calc(100% - 5.5rem);
+                margin: 0.25rem 2rem;
+                padding: 0.25rem 0.75rem;
+                border: 1px solid white;
+
+                .items {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: flex-start;
+                    justify-content: center;
+                    width: 100%;
+
+                    .item {
+                        display: flex;
+                        flex-direction: row;
+                        align-items: center;
+                        justify-content: flex-start;
+
+                        width: 100%;
+                        margin: 0.5rem 0;
+                        font-size: 12pt;
+
+                        &.head-item {
+                            padding-bottom: 0.75rem;
+                            border-bottom: 1px solid white;
+                        }
+
+                        td {
+                            margin: 0;
+                            padding: 0;
+                            text-align: left;
+
+                            display: flex;
+                            flex-direction: row;
+                            align-items: center;
+                            justify-content: flex-start;
+                        }
+
+                        .name {
+                            width: 35%;
+                        }
+
+                        .file {
+                            width: 50%;
+                        }
+
+                        .size {
+                            width: calc(15% - 2rem);
+                        }
+
+                        .actions {
+                            width: 2rem;
+                        }
+                    }
+                }
             }
         }
 
@@ -338,7 +370,9 @@
                 align-items: center;
                 justify-content: center;
 
-                transition: color 0.5s ease, background-color 0.5s ease;
+                transition:
+                    color 0.5s ease,
+                    background-color 0.5s ease;
 
                 &:hover {
                     background-color: lightgreen;

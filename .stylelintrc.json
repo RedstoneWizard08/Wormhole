@@ -13,6 +13,7 @@
         "color-function-notation": null,
         "alpha-value-notation": null,
         "scss/at-import-partial-extension": null,
-        "at-rule-empty-line-before": null
+        "at-rule-empty-line-before": null,
+        "selector-class-pattern": null
     }
 }

@@ -134,7 +134,9 @@
 
             cursor: pointer;
             outline: none;
-            transition: color 0.5s ease, background-color 0.5s ease;
+            transition:
+                color 0.5s ease,
+                background-color 0.5s ease;
 
             &:hover {
                 background-color: #3c3c3e;

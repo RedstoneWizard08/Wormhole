@@ -61,7 +61,7 @@
         const processes = [marked, DOMPurify.sanitize, linkFix, imageFix];
 
         html = processes.reduce((html, process) => process(html), html);
-        
+
         return html;
     };
 
@@ -278,7 +278,9 @@
                 align-items: center;
                 justify-content: center;
 
-                transition: color 0.5s ease, background-color 0.5s ease;
+                transition:
+                    color 0.5s ease,
+                    background-color 0.5s ease;
 
                 &:hover {
                     background-color: lightgreen;

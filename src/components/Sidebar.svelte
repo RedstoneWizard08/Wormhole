@@ -6,19 +6,15 @@
     import ksp2_logo from "../assets/ksp2-square.png";
 
     let instances = false;
-    let mods = false;
-    let manage = false;
-    let spacewarp = false;
+    let gameSettings = false;
     let settings = false;
     let ksp1 = false;
     let ksp2 = false;
 
     $: {
-        mods = /\/mods?(\/\d+)?/i.test($page.url.pathname);
+        gameSettings = /\/settings?(\/\d+)?/i.test($page.url.pathname);
         instances = /\/instances?(\/\d+)?/i.test($page.url.pathname);
-        manage = $page.url.pathname.endsWith("/manage");
 
-        spacewarp = $page.url.pathname == "/spacewarp" || $page.url.pathname == "/install";
         settings = $page.url.pathname == "/settings";
 
         ksp1 = $page.url.pathname.startsWith(`/${KSPGame.KSP1}`);
@@ -33,12 +29,6 @@
 
     <hr class="divider" />
 
-    <a class="link" class:active={spacewarp} href="/spacewarp">
-        <i class="icon fa-solid fa-rocket" />
-
-        <span class="tooltip">SpaceWarp</span>
-    </a>
-
     <a class="link" class:active={ksp1} href="/{KSPGame.KSP1}">
         <img src={ksp1_logo} alt="KSP 1" />
 
@@ -52,16 +42,10 @@
             <span class="tooltip">Instances</span>
         </a>
 
-        <a class="link" class:active={mods} href="/{KSPGame.KSP1}/mods">
-            <i class="icon fa-solid fa-search" />
+        <a class="link" class:active={gameSettings} href="/{KSPGame.KSP1}/settings">
+            <i class="icon fa-solid fa-gear" />
 
-            <span class="tooltip">Browse Mods</span>
-        </a>
-
-        <a class="link" class:active={manage} href="/{KSPGame.KSP1}/manage">
-            <i class="icon fa-solid fa-sliders" />
-
-            <span class="tooltip">Manage Mods</span>
+            <span class="tooltip">Settings</span>
         </a>
     </div>
 
@@ -78,18 +62,14 @@
             <span class="tooltip">Instances</span>
         </a>
 
-        <a class="link" class:active={mods} href="/{KSPGame.KSP2}/mods">
-            <i class="icon fa-solid fa-search" />
+        <a class="link" class:active={gameSettings} href="/{KSPGame.KSP2}/settings">
+            <i class="icon fa-solid fa-gear" />
 
-            <span class="tooltip">Browse Mods</span>
-        </a>
-
-        <a class="link" class:active={manage} href="/{KSPGame.KSP2}/manage">
-            <i class="icon fa-solid fa-sliders" />
-
-            <span class="tooltip">Manage Mods</span>
+            <span class="tooltip">Settings</span>
         </a>
     </div>
+
+    <hr class="divider" />
 
     <a class="link" class:active={settings} href="/settings">
         <i class="icon fa-solid fa-gear" />
@@ -160,6 +140,13 @@
             object-fit: cover;
         }
 
+        .logo-link {
+            width: 64px;
+            height: 64px;
+            padding: 0;
+            margin: 0;
+        }
+
         .divider {
             width: 90%;
             margin: 0 5%;
@@ -167,6 +154,7 @@
             border: 0;
             padding: 0;
 
+            margin-top: 0.5rem;
             margin-bottom: 0.5rem;
             border-bottom: 1px solid #aeaebe;
         }
@@ -192,7 +180,9 @@
 
             text-decoration: none;
 
-            transition: color 0.5s ease, background-color 0.5s ease;
+            transition:
+                color 0.5s ease,
+                background-color 0.5s ease;
 
             &.active {
                 color: white;
@@ -237,7 +227,10 @@
                 opacity: 0;
                 pointer-events: none;
 
-                transition: opacity 0.5s ease, color 0.5s ease, background-color 0.5s ease;
+                transition:
+                    opacity 0.5s ease,
+                    color 0.5s ease,
+                    background-color 0.5s ease;
 
                 &:hover,
                 &.active {

@@ -5,20 +5,25 @@ module.exports = {
         node: true,
     },
 
-    extends: ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
+    extends: ["eslint:recommended", "plugin:svelte/recommended"],
 
     parser: "@typescript-eslint/parser",
-    plugins: ["svelte3", "@typescript-eslint"],
+    plugins: ["svelte", "@typescript-eslint"],
     ignorePatterns: ["*.cjs"],
-    overrides: [{ files: ["*.svelte"], processor: "svelte3/svelte3" }],
-
-    settings: {
-        "svelte3/typescript": () => require("typescript"),
-    },
+    overrides: [
+        {
+            files: ["*.svelte"],
+            parser: "svelte-eslint-parser",
+            parserOptions: {
+                parser: "@typescript-eslint/parser",
+            },
+        },
+    ],
 
     parserOptions: {
-        ecmaVersion: 2020,
+        ecmaVersion: "next",
         sourceType: "module",
+        extraFileExtensions: [".svelte"],
     },
 
     rules: {
@@ -26,5 +31,8 @@ module.exports = {
         "@typescript-eslint/no-explicit-any": "off",
         "@typescript-eslint/triple-slash-reference": "off",
         "@typescript-eslint/no-non-null-assertion": "off",
+        "svelte/valid-compile": "off",
+        "svelte/no-at-html-tags": "off",
+        "no-unused-vars": "off",
     },
 };

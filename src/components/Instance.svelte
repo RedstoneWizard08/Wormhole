@@ -4,6 +4,7 @@
     import ksp1logo from "../assets/ksp.png";
     import ksp2logo from "../assets/ksp2.png";
     import { invoke_proxy } from "../api/invoke";
+    import Delete from "./Delete.svelte";
 
     export let data: InstanceInfo;
     export let instanceToDelete: InstanceInfo | null;
@@ -40,13 +41,11 @@
     <p class="name">{data.name}</p>
 
     <div class="buttons">
-        <button type="button" class="action" id="launch-button" on:click={doLaunch}>
+        <button type="button" class="__workaround__action launch" on:click={doLaunch}>
             <i class="icon fa-solid fa-play" />
         </button>
 
-        <button type="button" class="action" id="delete-button" on:click={doDelete}>
-            <i class="icon fa-solid fa-trash-can" />
-        </button>
+        <Delete action={doDelete} clazz="__workaround__action" />
     </div>
 </div>
 
@@ -83,23 +82,7 @@
 
             transition: opacity 0.5s ease;
 
-            button {
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                justify-content: center;
-
-                width: 1.5rem;
-                height: 1.5rem;
-
-                border-radius: 50%;
-                margin: 0 0.25rem;
-
-                cursor: pointer;
-                outline: none;
-            }
-
-            #launch-button {
+            .launch {
                 background-color: #2c8c2c;
                 border: none;
                 color: white;
@@ -108,18 +91,6 @@
 
                 &:hover {
                     background-color: #2cac2c;
-                }
-            }
-
-            #delete-button {
-                background-color: #ac2c2c;
-                border: none;
-                color: white;
-
-                transition: background-color 0.5s ease;
-
-                &:hover {
-                    background-color: #dc2c2c;
                 }
             }
         }

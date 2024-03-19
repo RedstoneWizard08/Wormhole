@@ -1,4 +1,4 @@
-import { BrowseModInfo, finishBrowseModInfo } from "./modinfo/browse";
+import { type BrowseModInfo, finishBrowseModInfo } from "./modinfo/browse";
 
 export interface BrowseResult {
     result: BrowseModInfo[];

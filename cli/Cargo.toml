@@ -1,16 +1,16 @@
 [package]
 name = "wormhole-cli"
-version = "1.0.0"
-edition = "2021"
 description = "The Wormhole CLI."
-license = "MIT"
-repository = "https://github.com/RedstoneWizard08/Wormhole"
-homepage = "https://github.com/RedstoneWizard08/Wormhole"
 readme = "../README.md"
-authors = ["RedstoneWizard08", "Rexicon226", "cheese3660", "Wormhole Contributors"]
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+authors.workspace = true
 
 [dependencies]
-ckandex = "0.6.3"
-clap = { version = "4.1.8", features = ["derive", "env", "string"] }
-tokio = { version = "1.26.0", features = ["full"] }
-wormhole-common = { path = "../common", version = "1.0.0", features = ["clap"] }
+ckandex.workspace = true
+clap.workspace = true
+tokio.workspace = true
+wormhole-common = { workspace = true, features = ["clap"] }

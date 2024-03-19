@@ -134,7 +134,7 @@
 </div>
 
 <!-- svelte-ignore css-unused-selector -->
-<style lang="scss">
+<style scoped lang="scss">
     .instances-wrapper {
         width: 100%;
         height: 100%;
@@ -164,7 +164,10 @@
             font-size: 16px;
             cursor: pointer;
 
-            transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease;
+            transition:
+                background-color 0.5s ease,
+                color 0.5s ease,
+                border-color 0.5s ease;
 
             border: 1px solid #4c4c4c;
             outline: none;
