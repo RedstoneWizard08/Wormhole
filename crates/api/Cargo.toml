@@ -1,0 +1,21 @@
+[package]
+name = "wormhole-api"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+authors.workspace = true
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[features]
+default = ["loading"]
+loading = ["dep:libloading", "dep:wasmtime", "dep:wasi-common"]
+
+[dependencies]
+anyhow.workspace = true
+libloading = { workspace = true, optional = true }
+wasmtime = { workspace = true, optional = true }
+wasi-common = { workspace = true, optional = true }

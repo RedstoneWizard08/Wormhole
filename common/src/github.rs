@@ -66,7 +66,7 @@ pub enum State {
 }
 
 pub fn calculate_expiry(expires_in: i64) -> String {
-    let expires_in = Duration::seconds(expires_in);
+    let expires_in = Duration::try_seconds(expires_in).unwrap();
     let mut expiry: DateTime<Utc> = Utc::now();
 
     expiry = expiry + expires_in;

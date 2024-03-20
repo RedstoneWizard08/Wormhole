@@ -8,6 +8,7 @@ authors = ["RedstoneWizard08", "Rexicon226", "cheese3660", "Wormhole Contributor
 
 [workspace.dependencies]
 wormhole-common = { path = "./common" }
+wormhole-api = { path = "./crates/api" }
 tokio = { version = "1.36.0", features = ["full"] }
 serde_json = "1.0.114"
 serde = { version = "1.0.197", features = ["derive"] }
@@ -26,6 +27,13 @@ zip = "0.6.6"
 async-trait = "0.1.78"
 lazy_static = "1.4.0"
 chrono = { version = "0.4.35", features = ["serde"] }
+libloading = "0.8.3"
+anyhow = "1.0.81"
+wasmtime = "19.0.0"
+wasmer = "4.2.6"
+wasmer-wasi = { version = "3.1.1", features = ["wasix"] }
+wasmer-wasix = "0.18.1"
+wasi-common = "19.0.0"
 
 [workspace]
 resolver = "2"
@@ -33,5 +41,7 @@ resolver = "2"
 members = [
     "cli",
     "common",
+    "crates/api",
+    "crates/example-plugin",
     "gui"
 ]
