@@ -78,6 +78,7 @@
                 <span class="title">Add Instance</span>
 
                 <!-- svelte-ignore a11y-click-events-have-key-events -->
+                <!-- svelte-ignore a11y-no-static-element-interactions -->
                 <i class="fa-solid fa-times close" on:click={toggleAdding} />
             </div>
 
@@ -103,6 +104,7 @@
                 <span class="title">Delete Instance</span>
 
                 <!-- svelte-ignore a11y-click-events-have-key-events -->
+                <!-- svelte-ignore a11y-no-static-element-interactions -->
                 <i class="fa-solid fa-times close" on:click={toggleDeleteing} />
             </div>
 

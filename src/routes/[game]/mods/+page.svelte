@@ -1,14 +1,11 @@
 <script lang="ts">
     import type { BrowseModInfo, ModWithDistance } from "../../../api/models/modinfo/browse";
     import { invoke_proxy } from "../../../api/invoke";
-    import Dropdown from "../../../components/Dropdown.svelte";
     import SearchBar from "../../../components/SearchBar.svelte";
     import LoadingPage from "../../../components/LoadingPage.svelte";
     import Pagination from "../../../components/Pagination.svelte";
     import Mod from "../../../components/Mod.svelte";
     import { page } from "$app/stores";
-    import type { DropdownItem } from "../../../api/dropdown";
-    import { gameItems } from "../../../api/browse";
 
     let results: BrowseModInfo[] = [];
     let perPage = 30;
@@ -19,21 +16,7 @@
 
     let gameId = parseInt($page.params.game);
 
-    let instance = -1;
-    let instanceText = "Unknown";
-
-    let instances: DropdownItem[] = [];
-
     $: (async () => {
-        await invoke_proxy("set_active_instance", {
-            instanceId: instance,
-        });
-    })();
-
-    $: (async () => {
-        instance = -1;
-        instanceText = "Unknown";
-
         loading = true;
         pages = 0;
 
@@ -47,28 +30,6 @@
         pages = data.pages;
 
         if (pageId > data.pages) pageId = data.pages - 1;
-
-        const defaultInstance = await invoke_proxy("get_active_instance", {
-            gameId,
-        });
-
-        if (defaultInstance) {
-            instance = defaultInstance.id;
-            instanceText = defaultInstance.name;
-        }
-
-        if (initialLoad) {
-            instances = (
-                await invoke_proxy("get_instances", {
-                    gameId,
-                })
-            ).map((instance) => ({
-                id: instance.id,
-                text: instance.name,
-            }));
-
-            initialLoad = false;
-        }
 
         loading = false;
     })();
@@ -114,8 +75,6 @@
         <div class="search-bar">
             <SearchBar onSearch={handleSearch} />
         </div>
-
-        <Dropdown bind:val={instance} bind:valText={instanceText} items={instances} right />
     </div>
 
     {#if loading}

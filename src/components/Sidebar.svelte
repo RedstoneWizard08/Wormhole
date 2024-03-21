@@ -1,24 +1,17 @@
 <script lang="ts">
     import { page } from "$app/stores";
-    import { KSPGame } from "../api/instance";
+    import { plugins } from "../api/stores";
     import logo from "../assets/icon.png";
-    import ksp1_logo from "../assets/ksp-square.png";
-    import ksp2_logo from "../assets/ksp2-square.png";
 
     let instances = false;
     let gameSettings = false;
     let settings = false;
-    let ksp1 = false;
-    let ksp2 = false;
 
     $: {
         gameSettings = /\/settings?(\/\d+)?/i.test($page.url.pathname);
         instances = /\/instances?(\/\d+)?/i.test($page.url.pathname);
 
         settings = $page.url.pathname == "/settings";
-
-        ksp1 = $page.url.pathname.startsWith(`/${KSPGame.KSP1}`);
-        ksp2 = $page.url.pathname.startsWith(`/${KSPGame.KSP2}`);
     }
 </script>
 
@@ -29,45 +22,30 @@
 
     <hr class="divider" />
 
-    <a class="link" class:active={ksp1} href="/{KSPGame.KSP1}">
-        <img src={ksp1_logo} alt="KSP 1" />
+    {#each Object.values($plugins) as plugin}
+        <a
+            class="link"
+            class:active={$page.url.pathname.startsWith(`/${plugin.id}`)}
+            href="/{plugin.id}">
+            <img src={plugin.icon} alt={plugin.display} />
 
-        <span class="tooltip">KSP 1</span>
-    </a>
-
-    <div class="group" class:active={ksp1}>
-        <a class="link" class:active={instances} href="/{KSPGame.KSP1}/instances">
-            <i class="icon fa-solid fa-rocket" />
-
-            <span class="tooltip">Instances</span>
+            <span class="tooltip">{plugin.display}</span>
         </a>
 
-        <a class="link" class:active={gameSettings} href="/{KSPGame.KSP1}/settings">
-            <i class="icon fa-solid fa-gear" />
+        <div class="group" class:active={$page.url.pathname.startsWith(`/${plugin.id}`)}>
+            <a class="link" class:active={instances} href="/{plugin.id}/instances">
+                <i class="icon fa-solid fa-rocket" />
 
-            <span class="tooltip">Settings</span>
-        </a>
-    </div>
+                <span class="tooltip">Instances</span>
+            </a>
 
-    <a class="link" class:active={ksp2} href="/{KSPGame.KSP2}">
-        <img src={ksp2_logo} alt="KSP 2" />
+            <a class="link" class:active={gameSettings} href="/{plugin.id}/settings">
+                <i class="icon fa-solid fa-gear" />
 
-        <span class="tooltip">KSP 2</span>
-    </a>
-
-    <div class="group" class:active={ksp2}>
-        <a class="link" class:active={instances} href="/{KSPGame.KSP2}/instances">
-            <i class="icon fa-solid fa-rocket" />
-
-            <span class="tooltip">Instances</span>
-        </a>
-
-        <a class="link" class:active={gameSettings} href="/{KSPGame.KSP2}/settings">
-            <i class="icon fa-solid fa-gear" />
-
-            <span class="tooltip">Settings</span>
-        </a>
-    </div>
+                <span class="tooltip">Settings</span>
+            </a>
+        </div>
+    {/each}
 
     <hr class="divider" />
 

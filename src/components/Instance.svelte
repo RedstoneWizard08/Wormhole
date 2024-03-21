@@ -5,6 +5,7 @@
     import ksp2logo from "../assets/ksp2.png";
     import { invoke_proxy } from "../api/invoke";
     import Delete from "./Delete.svelte";
+    import { plugins } from "../api/stores";
 
     export let data: InstanceInfo;
     export let instanceToDelete: InstanceInfo | null;
@@ -31,12 +32,9 @@
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
+<!-- svelte-ignore a11y-no-static-element-interactions -->
 <div class="instance-container" on:click={clicked}>
-    {#if data.game == KSPGame.KSP2 || data.game.toString() == "KSP2"}
-        <img src={ksp2logo} class="logo" alt={"background"} />
-    {:else}
-        <img src={ksp1logo} class="logo" alt={"background"} />
-    {/if}
+    <img src={$plugins[data.game].banner} class="banner" alt={"background"} />
 
     <p class="name">{data.name}</p>
 
@@ -103,7 +101,7 @@
             }
         }
 
-        .logo {
+        .banner {
             width: 100%;
             height: 50%;
             margin: 5% 0;

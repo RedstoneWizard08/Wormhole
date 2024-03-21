@@ -58,7 +58,12 @@
     };
 
     const handleHtml = (html: string) => {
-        const processes = [marked, DOMPurify.sanitize, linkFix, imageFix];
+        const processes = [
+            (html: string) => marked(html) as string,
+            DOMPurify.sanitize,
+            linkFix,
+            imageFix,
+        ];
 
         html = processes.reduce((html, process) => process(html), html);
 
@@ -250,7 +255,7 @@
 
                 font-family: "Ubuntu Mono", monospace;
 
-                a {
+                :global(a) {
                     color: inherit;
                 }
             }

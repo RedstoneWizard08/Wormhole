@@ -1,24 +1,23 @@
 <script lang="ts">
     import { type InstanceInfo, KSPGame } from "../../../../api/instance";
     import { invoke_proxy } from "../../../../api/invoke";
-    import ksp1logo from "../../../../assets/ksp.png";
-    import ksp2logo from "../../../../assets/ksp2.png";
     import { marked } from "marked";
     import { page } from "$app/stores";
     import { demoMods, type InstalledMod } from "../../../../api/models/mod";
     import { formatBytes } from "../../../../api/util";
     import Back from "../../../../components/Back.svelte";
     import Delete from "../../../../components/Delete.svelte";
+    import { goto } from "$app/navigation";
+    import { activeInstance, plugins } from "../../../../api/stores";
 
-    let instanceInfo: InstanceInfo | null = null as InstanceInfo | null;
-    let background: string | null = null;
-    let executable: string | null = null;
+    let instance: InstanceInfo | undefined = undefined;
+    let background: string | undefined = undefined;
+    let executable: string | undefined = undefined;
     let editing = false;
     let mods: InstalledMod[] = demoMods;
-
     let editor: HTMLTextAreaElement | undefined;
 
-    $: description = instanceInfo?.description;
+    $: description = instance?.description;
 
     const id = $page.params.instance;
 
@@ -27,25 +26,23 @@
             instanceId: parseInt(id || "-1", 10),
         });
 
-        instanceInfo = info;
+        instance = info;
 
-        background =
-            info.game == KSPGame.KSP2 || info.game.toString() == "KSP2" ? ksp2logo : ksp1logo;
-
+        background = $plugins[info.game].banner;
         executable = info.install_path;
     })();
 
     const save = async () => {
-        if (instanceInfo) {
-            instanceInfo = {
-                ...instanceInfo,
+        if (instance) {
+            instance = {
+                ...instance,
 
-                description: editor?.value || instanceInfo.description,
+                description: editor?.value || instance.description,
             };
 
             await invoke_proxy("update_description", {
-                instanceId: instanceInfo.id,
-                description: (editor?.value || instanceInfo.description)!,
+                instanceId: instance.id,
+                description: (editor?.value || instance.description)!,
             });
         }
 
@@ -61,9 +58,9 @@
     };
 
     const launch = async () => {
-        if (instanceInfo)
+        if (instance)
             await invoke_proxy("launch", {
-                instanceId: instanceInfo.id,
+                instanceId: instance.id,
             });
     };
 
@@ -72,24 +69,30 @@
 
         description = textarea.value;
     };
+
+    const gotoMods = () => {
+        $activeInstance = instance;
+
+        goto(`/${instance?.game}/mods`);
+    };
 </script>
 
 <div class="full-instance-container">
-    <Back to="/{instanceInfo?.game}/instances" />
+    <Back to="/{instance?.game}/instances" />
 
     <div class="instance">
         <img src={background} class="background" alt="background" />
 
         <div class="infos">
             <div class="left">
-                <p class="name">{instanceInfo?.name}</p>
+                <p class="name">{instance?.name}</p>
             </div>
 
             <div class="right">
                 <p class="time">
                     <i class="fa-solid fa-clock" />
                     &nbsp;&nbsp;
-                    {instanceInfo?.time_played || "0 minutes"}
+                    {instance?.time_played || "0 minutes"}
                 </p>
 
                 {#if editing}
@@ -103,6 +106,11 @@
                         &nbsp; Edit
                     </button>
                 {/if}
+
+                <button type="button" class="add" on:click={gotoMods}>
+                    <i class="fa-solid fa-plus" />
+                    &nbsp; Add Mods
+                </button>
             </div>
         </div>
 
@@ -116,7 +124,7 @@
                 bind:this={editor} />
         {:else}
             <p class="description">
-                {@html marked(instanceInfo?.description || "")}
+                {@html marked(instance?.description || "")}
             </p>
         {/if}
 
@@ -249,6 +257,35 @@
                         &:hover {
                             color: black;
                             background-color: lightskyblue;
+                        }
+                    }
+
+                    .add {
+                        color: lightsalmon;
+                        background-color: transparent;
+
+                        border: 1px solid lightsalmon;
+                        padding: 1% 1.5%;
+                        font-size: 12pt;
+                        font-family: "manteka", serif;
+                        margin-left: 3%;
+
+                        border-radius: 8px;
+
+                        display: flex;
+                        flex-direction: row;
+                        align-items: center;
+                        justify-content: center;
+
+                        cursor: pointer;
+                        outline: none;
+                        transition:
+                            color 0.5s ease,
+                            background-color 0.5s ease;
+
+                        &:hover {
+                            color: black;
+                            background-color: lightsalmon;
                         }
                     }
                 }

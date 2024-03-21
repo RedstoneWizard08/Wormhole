@@ -1,6 +1,7 @@
 import type { InstanceInfo } from "./instance";
 import type { BrowseResult } from "./models/browse";
 import type { FullModInfo } from "./models/modinfo/full";
+import type { Plugin } from "./models/plugin";
 
 export interface InstanceArgs {
     instanceId: number;
@@ -78,6 +79,7 @@ export interface InvokeFunction {
     set_active_instance: [InstanceArgs, undefined];
 
     delete_instance: [InstanceArgs, undefined];
+    get_plugins: [undefined, Record<number, Plugin>];
 }
 
 export const invoke_proxy = async <K extends keyof InvokeFunction>(
