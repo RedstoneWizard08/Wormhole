@@ -35,6 +35,10 @@ wasi-common = "19.0.0"
 const_format = "0.2.32"
 phf = { version = "0.11.2", features = ["macros"] }
 flate2 = "1.0.28"
+diesel = { version = "2.1.5", features = ["sqlite"] }
+dirs = "5.0.1"
+tracing = { version = "0.1.40", features = ["log", "async-await"] }
+tracing_subscriber = { version = "0.3.18", features = ["json", "chrono", "serde"] }
 
 wormhole-cli = { path = "./apps/cli" }
 wormhole-gui = { path = "./apps/gui" }

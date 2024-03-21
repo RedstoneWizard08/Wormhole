@@ -11,3 +11,4 @@ authors.workspace = true
 chrono.workspace = true
 anyhow.workspace = true
 query.workspace = true
+diesel.workspace = true

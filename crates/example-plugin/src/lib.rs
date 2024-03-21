@@ -1,4 +1,4 @@
-use api::PluginResult;
+use api::res::PluginResult;
 
 #[no_link]
 extern crate api;

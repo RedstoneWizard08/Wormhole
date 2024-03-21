@@ -4,6 +4,6 @@ use std::path::PathBuf;
 
 pub mod magic;
 
-pub fn install_mod(file: PathBuf, instance: Instance) -> Result<()> {
+pub fn install_mod(_file: PathBuf, _instance: Instance) -> Result<()> {
     todo!()
 }

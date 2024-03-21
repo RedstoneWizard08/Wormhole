@@ -8,3 +8,4 @@ homepage.workspace = true
 authors.workspace = true
 
 [dependencies]
+dirs.workspace = true

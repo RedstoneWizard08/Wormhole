@@ -1,14 +1,18 @@
-pub fn add(left: usize, right: usize) -> usize {
-    left + right
+pub mod messaging;
+
+use dirs::data_local_dir;
+use std::path::PathBuf;
+
+pub const WORMHOLE_DIR_NAME: &str = "Wormhole";
+
+pub fn get_wormhole_dir() -> PathBuf {
+    data_local_dir().unwrap().join(WORMHOLE_DIR_NAME)
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
+pub fn get_data_dir() -> PathBuf {
+    get_wormhole_dir().join("data")
+}
 
-    #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
-    }
+pub fn get_cache_dir() -> PathBuf {
+    get_wormhole_dir().join("cache")
 }

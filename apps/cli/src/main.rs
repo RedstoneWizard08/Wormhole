@@ -1,4 +1,4 @@
-#![allow(clippy::needless_return)]
+#![allow(unused)]
 
 use std::env;
 

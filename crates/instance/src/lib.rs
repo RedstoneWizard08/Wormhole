@@ -20,7 +20,7 @@ pub struct InstanceMeta {
     pub created: Instant,
 
     /// When the instance was last modified.
-    pub last_modified: Instant,
+    pub updated: Instant,
 }
 
 #[derive(Debug, Clone)]

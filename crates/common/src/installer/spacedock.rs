@@ -6,11 +6,11 @@ use std::{
 
 use crate::{
     instances::{Instance, InstanceMod, KSPGame},
-    mods::spacedock::SpaceDockAPI,
     util::{copy_dir_all, get_data_dir},
 };
 
 use async_trait::async_trait;
+use query::{source::Source, spacedock::SpaceDock};
 use rand::{distributions::Alphanumeric, thread_rng, Rng};
 use zip::ZipArchive;
 
@@ -27,8 +27,8 @@ impl ModInstaller for SpaceDockModInstaller {
     }
 
     async fn install(&self, id: i32, instance_id: i32) {
-        let api = SpaceDockAPI::new();
-        let url = api.get_mod_download(id).await;
+        let api = SpaceDock::new();
+        let url = api.get_download_url(format!("{}", id), None).await.unwrap();
 
         let tmp_name = thread_rng()
             .sample_iter(&Alphanumeric)
@@ -73,7 +73,7 @@ impl ModInstaller for SpaceDockModInstaller {
 
         fs::remove_file(out_path).expect("Could not delete the mod file!");
 
-        let mod_info = api.get_mod(id).await;
+        let mod_info = api.get_mod(format!("{}", id)).await.unwrap();
 
         if let Some(game_id) = mod_info.game_id {
             if let Some(game) = KSPGame::from_id(game_id) {

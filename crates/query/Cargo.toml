@@ -8,3 +8,14 @@ homepage.workspace = true
 authors.workspace = true
 
 [dependencies]
+diesel.workspace = true
+anyhow.workspace = true
+async-trait.workspace = true
+tracing.workspace = true
+reqwest.workspace = true
+tokio.workspace = true
+whcore.workspace = true
+data.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+const_format.workspace = true

@@ -8,6 +8,5 @@ pub mod github;
 pub mod installer;
 pub mod instances;
 pub mod models;
-pub mod mods;
 pub mod releases;
 pub mod util;

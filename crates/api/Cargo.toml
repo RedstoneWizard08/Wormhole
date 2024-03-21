@@ -10,8 +10,11 @@ authors.workspace = true
 [lib]
 crate-type = ["cdylib", "rlib"]
 
+[dependencies]
+whcore.workspace = true
+lazy_static.workspace = true
+
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
 anyhow.workspace = true
-libloading.workspace = true
 wasmtime.workspace = true
 wasi-common.workspace = true

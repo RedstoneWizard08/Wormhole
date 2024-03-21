@@ -1,0 +1,4 @@
+CREATE TABLE IF NOT EXISTS instances (
+    id INTEGER PRIMARY KEY,
+    name TEXT NOT NULL
+);

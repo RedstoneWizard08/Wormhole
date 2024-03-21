@@ -1,18 +1,4 @@
-#[repr(u8)]
-#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
-pub enum ModSource {
-    SpaceDock = 0,
-    Ckan = 1,
-    Wormhole = 2,
-    Local = 3,
-    CurseForge = 4,
-    Modrinth = 5,
-    Thunderstore = 6,
-    Nexus = 7,
-
-    #[default]
-    Unknown = 8,
-}
+use crate::source::ModSource;
 
 #[derive(Debug, Clone)]
 pub struct Mod {

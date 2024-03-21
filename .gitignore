@@ -32,3 +32,5 @@ build
 # Tauri generated files
 target
 wormhole.AppDir
+
+*sqlite

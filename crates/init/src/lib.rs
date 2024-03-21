@@ -1,14 +1,10 @@
-pub fn add(left: usize, right: usize) -> usize {
-    left + right
-}
+use anyhow::Result;
+use whcore::get_data_dir;
 
-#[cfg(test)]
-mod tests {
-    use super::*;
+pub mod db;
 
-    #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
-    }
+pub fn boot() -> Result<()> {
+    db::init_database(get_data_dir().join("data.db"))?;
+
+    Ok(())
 }

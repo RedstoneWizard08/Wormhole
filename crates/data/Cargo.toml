@@ -1,5 +1,5 @@
 [package]
-name = "cache"
+name = "data"
 version.workspace = true
 edition.workspace = true
 license.workspace = true
@@ -8,3 +8,5 @@ homepage.workspace = true
 authors.workspace = true
 
 [dependencies]
+anyhow.workspace = true
+diesel.workspace = true

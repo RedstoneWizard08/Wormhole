@@ -4,8 +4,13 @@ pub mod load;
 #[cfg(not(target_arch = "wasm32"))]
 pub use load::*;
 
+#[macro_use]
+extern crate lazy_static;
+pub extern crate whcore;
+
+pub mod plugin;
+pub mod register;
 pub mod res;
-pub use res::PluginResult;
 
 /// The name of the plugin initializer function.
 pub const INIT_FN_NAME: &str = "wormhole_plugin_init";

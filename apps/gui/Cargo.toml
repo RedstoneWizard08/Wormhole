@@ -26,6 +26,7 @@ reqwest.workspace = true
 tokio-util.workspace = true
 tokio-stream.workspace = true
 wormhole-common.workspace = true
+query.workspace = true
 
 [features]
 default = ["custom-protocol"]

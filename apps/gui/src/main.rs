@@ -1,43 +1,45 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 #![allow(clippy::needless_return)]
 
+use query::{
+    source::{QueryOptions, Source},
+    spacedock::{
+        schema::{browse::BrowseResult, info::ModInfo},
+        SpaceDock,
+    },
+};
 use std::{path::PathBuf, process::Command};
 use tauri::Window;
 
-use wormhole_common::boot::cache::update_cache;
-use wormhole_common::boot::integrity::{directory_integrity_check, read_mods_file, Mods};
-use wormhole_common::installer::mods::ModInstaller;
-use wormhole_common::instances::KSPGame;
-
 use wormhole_common::{
-    finder::find_install_dir,
-    installer::spacedock::SpaceDockModInstaller,
-    instances::Instance,
-    mods::{
-        schema::browse::{BrowseResult, ModInfo},
-        spacedock::SpaceDockAPI,
+    boot::{
+        cache::update_cache,
+        integrity::{directory_integrity_check, read_mods_file, Mods},
     },
+    finder::find_install_dir,
+    installer::{mods::ModInstaller, spacedock::SpaceDockModInstaller},
+    instances::{Instance, KSPGame},
 };
 
 pub mod installer;
 
 #[tauri::command]
 fn get_install_dir(game_id: i32) -> Option<PathBuf> {
-    return find_install_dir(KSPGame::from_id(game_id).unwrap());
+    find_install_dir(KSPGame::from_id(game_id).unwrap())
 }
 
 #[tauri::command]
 async fn install_spacewarp(window: Window) -> String {
     installer::install_spacewarp(window).await;
 
-    return "Success".to_string();
+    "Success".into()
 }
 
 #[tauri::command]
 async fn uninstall_spacewarp() -> String {
     installer::uninstall_spacewarp();
 
-    return "Success".to_string();
+    "Success".into()
 }
 
 #[tauri::command]
@@ -66,11 +68,11 @@ async fn launch(instance_id: i32) {
 
 #[tauri::command]
 async fn get_instances(game_id: i32) -> Vec<Instance> {
-    return Instance::load()
+    Instance::load()
         .iter()
         .filter(|i| i.game == KSPGame::from_id(game_id).unwrap())
         .cloned()
-        .collect();
+        .collect()
 }
 
 #[tauri::command]
@@ -85,19 +87,23 @@ async fn get_instance_info(instance_id: i32) -> Option<Instance> {
         return Some(infos);
     }
 
-    return it;
+    it
 }
 
 #[tauri::command]
 async fn get_mod(mod_id: i32) -> ModInfo {
-    return SpaceDockAPI::new().get_mod(mod_id).await;
+    SpaceDock::new()
+        .get_mod(format!("{}", mod_id))
+        .await
+        .unwrap()
 }
 
 #[tauri::command]
 async fn get_mods(game_id: i32, count: i32, page: i32) -> BrowseResult {
-    return SpaceDockAPI::new()
-        .get_mods_for_game(game_id, page, count)
-        .await;
+    SpaceDock::new()
+        .search(game_id, String::new(), Some(QueryOptions { page, count }))
+        .await
+        .unwrap()
 }
 
 #[tauri::command]
@@ -137,6 +143,7 @@ async fn levenshtein_distance(a: &str, b: &str) -> usize {
     if m == 0 {
         return n;
     }
+
     if n == 0 {
         return m;
     }
@@ -144,6 +151,7 @@ async fn levenshtein_distance(a: &str, b: &str) -> usize {
     for i in 0..=m {
         matrix[i][0] = i;
     }
+
     for j in 0..=n {
         matrix[0][j] = j;
     }
@@ -155,6 +163,7 @@ async fn levenshtein_distance(a: &str, b: &str) -> usize {
             } else {
                 1
             };
+
             matrix[i][j] = (matrix[i - 1][j] + 1)
                 .min(matrix[i][j - 1] + 1)
                 .min(matrix[i - 1][j - 1] + cost);
@@ -176,14 +185,12 @@ async fn backend_boot() {
 
 #[tauri::command]
 fn read_mod_json() -> Mods {
-    return read_mods_file();
+    read_mods_file()
 }
 
 #[tauri::command]
 fn get_active_instance(game_id: i32) -> Option<Instance> {
-    let instance = Instance::get_active_instance(KSPGame::from_id(game_id).unwrap());
-
-    return instance;
+    Instance::get_active_instance(KSPGame::from_id(game_id).unwrap())
 }
 
 #[tauri::command]
@@ -245,4 +252,3 @@ pub fn main() {
         .run(tauri::generate_context!())
         .expect("Error while starting Wormhole!");
 }
-// BIE KSP2 = 3255

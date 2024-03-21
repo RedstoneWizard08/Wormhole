@@ -1,4 +1,4 @@
-use crate::{PluginResult, INIT_FN_NAME};
+use crate::{res::PluginResult, INIT_FN_NAME};
 use anyhow::Result;
 use wasi_common::sync::{add_to_linker, WasiCtxBuilder};
 use wasmtime::{Engine, Linker, Module, Store};
