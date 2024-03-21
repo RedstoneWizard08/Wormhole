@@ -4,12 +4,12 @@
         "beforeDevCommand": "pnpm app:dev",
         "beforeBuildCommand": "pnpm app:build",
         "devPath": "http://localhost:1420",
-        "distDir": "../build",
+        "distDir": "<root>/build",
         "withGlobalTauri": true
     },
     "package": {
         "productName": "Wormhole",
-        "version": "1.0.0"
+        "version": "<version>"
     },
     "tauri": {
         "allowlist": {

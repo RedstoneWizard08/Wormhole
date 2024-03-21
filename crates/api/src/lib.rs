@@ -1,7 +1,7 @@
-#[cfg(feature = "loading")]
+#[cfg(not(target_arch = "wasm32"))]
 pub mod load;
 
-#[cfg(feature = "loading")]
+#[cfg(not(target_arch = "wasm32"))]
 pub use load::*;
 
 pub mod res;
@@ -13,4 +13,4 @@ pub const INIT_FN_NAME: &str = "wormhole_plugin_init";
 /// A plugin initializer.
 /// Since `anyhow`'s `Result` type doesn't support `#[repr(C)]`,
 /// this is a function with no arguments that returns a `PluginResult`.
-pub type PluginInitializer = unsafe extern fn() -> i32;
+pub type PluginInitializer = unsafe extern "C" fn() -> i32;

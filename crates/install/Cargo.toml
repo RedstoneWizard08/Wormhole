@@ -1,17 +1,13 @@
-cargo-features = ["per-package-target"]
-
 [package]
-name = "example-plugin"
+name = "install"
 version.workspace = true
 edition.workspace = true
 license.workspace = true
 repository.workspace = true
 homepage.workspace = true
 authors.workspace = true
-forced-target = "wasm32-wasi"
-
-[lib]
-crate-type = ["cdylib", "rlib"]
 
 [dependencies]
-api.workspace = true
+anyhow.workspace = true
+zip.workspace = true
+instance.workspace = true

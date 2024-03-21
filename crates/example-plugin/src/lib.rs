@@ -1,7 +1,7 @@
 use api::PluginResult;
 
 #[no_link]
-extern crate wormhole_api as api;
+extern crate api;
 
 #[no_mangle]
 pub fn wormhole_plugin_init() -> PluginResult {

@@ -7,8 +7,6 @@ homepage = "https://github.com/RedstoneWizard08/Wormhole"
 authors = ["RedstoneWizard08", "Rexicon226", "cheese3660", "Wormhole Contributors"]
 
 [workspace.dependencies]
-wormhole-common = { path = "./common" }
-wormhole-api = { path = "./crates/api" }
 tokio = { version = "1.36.0", features = ["full"] }
 serde_json = "1.0.114"
 serde = { version = "1.0.197", features = ["derive"] }
@@ -34,14 +32,35 @@ wasmer = "4.2.6"
 wasmer-wasi = { version = "3.1.1", features = ["wasix"] }
 wasmer-wasix = "0.18.1"
 wasi-common = "19.0.0"
+const_format = "0.2.32"
+phf = { version = "0.11.2", features = ["macros"] }
+flate2 = "1.0.28"
+
+wormhole-cli = { path = "./apps/cli" }
+wormhole-gui = { path = "./apps/gui" }
+wormhole-common = { path = "./crates/common" }
+
+api = { path = "./crates/api" }
+query = { path = "./crates/query" }
+data = { path = "./crates/data" }
+whcore = { path = "./crates/core" }
+init = { path = "./crates/init" }
+install = { path = "./crates/install" }
+instance = { path = "./crates/instance" }
 
 [workspace]
 resolver = "2"
 
 members = [
-    "cli",
-    "common",
+    "apps/cli",
+    "apps/gui",
+    "crates/common",
     "crates/api",
     "crates/example-plugin",
-    "gui"
+    "crates/query",
+    "crates/instance",
+    "crates/data",
+    "crates/core",
+    "crates/init",
+    "crates/install",
 ]
