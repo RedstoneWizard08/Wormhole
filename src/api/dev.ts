@@ -151,7 +151,7 @@ export const createMockAPI = () => {
                 };
 
                 return res;
-            
+
             case "get_plugins":
                 return DEV_Plugins;
         }

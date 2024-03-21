@@ -6,7 +6,7 @@ const logAllRequests = true;
 
 const main = async () => {
     console.log(`[${cyan("INFO")}] Starting browser...`);
-    
+
     const browser = await puppeteer.launch({
         product: "firefox",
         executablePath: which.sync("firefox"),

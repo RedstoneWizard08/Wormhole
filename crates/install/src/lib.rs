@@ -1,6 +1,6 @@
-use std::path::PathBuf;
 use anyhow::Result;
 use instance::Instance;
+use std::path::PathBuf;
 
 pub mod magic;
 
