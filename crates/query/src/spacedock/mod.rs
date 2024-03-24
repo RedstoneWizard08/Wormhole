@@ -1,7 +1,11 @@
-use crate::source::{QueryOptions, Source, WithToken};
-use anyhow::Result;
+use crate::{
+    mod_::{Mod, ModVersion as RealModVersion},
+    source::{Paginated, QueryOptions, Source, WithToken},
+    stub_source,
+};
 
 use self::schema::{browse::BrowseResult, info::ModInfo, version::ModVersion};
+use anyhow::Result;
 
 pub mod schema;
 
@@ -13,13 +17,11 @@ impl WithToken for SpaceDock {
     }
 }
 
-#[async_trait]
-impl Source for SpaceDock {
-    type QueryItem = ModInfo;
-    type QueryOutput = BrowseResult;
-    type VersionItem = ModVersion;
-    type VersionOutput = Vec<ModVersion>;
+stub_source!(SpaceDock);
 
+#[async_trait]
+#[cfg(not(target_arch = "wasm32"))]
+impl Source for SpaceDock {
     fn new() -> Self {
         Self
     }
@@ -37,7 +39,7 @@ impl Source for SpaceDock {
         game_id: i32,
         search: String,
         opts: Option<QueryOptions>,
-    ) -> Result<Self::QueryOutput> {
+    ) -> Result<Paginated<Mod>> {
         if search.is_empty() {
             let url = format!(
                 "{}/browse?page={}&count={}&game_id={}",
@@ -50,7 +52,7 @@ impl Source for SpaceDock {
             let data = self.client().get(url).send().await?;
             let text = data.text().await?;
 
-            Ok(serde_json::from_str(&text)?)
+            Ok(serde_json::from_str::<BrowseResult>(&text)?.into())
         } else {
             let url = format!(
                 "{}/api/search/mod?query={}&page={}&count={}&game_id={}",
@@ -64,27 +66,27 @@ impl Source for SpaceDock {
             let data = self.client().get(url).send().await?;
             let text = data.text().await?;
 
-            Ok(serde_json::from_str(&text)?)
+            Ok(serde_json::from_str::<BrowseResult>(&text)?.into())
         }
     }
 
-    async fn get_mod(&self, id: String) -> Result<Self::QueryItem> {
+    async fn get_mod(&self, id: String) -> Result<Mod> {
         let url = format!("{}/api/mod/{}", self.base(), id);
         let data = self.client().get(url).send().await?;
         let text = data.text().await?;
 
-        Ok(serde_json::from_str(&text)?)
+        Ok(serde_json::from_str::<ModInfo>(&text)?.into())
     }
 
-    async fn get_versions(&self, id: String) -> Result<Self::VersionOutput> {
-        Ok(self.get_mod(id).await?.versions.unwrap_or_default())
+    async fn get_versions(&self, id: String) -> Result<Vec<RealModVersion>> {
+        Ok(self.get_mod(id).await?.versions)
     }
 
-    async fn get_version(&self, id: String, version: String) -> Result<Self::VersionItem> {
+    async fn get_version(&self, id: String, version: String) -> Result<RealModVersion> {
         self.get_versions(id)
             .await?
             .iter()
-            .find(|v| format!("{}", v.id.unwrap()) == version)
+            .find(|v| v.id == version)
             .cloned()
             .ok_or(anyhow!("Could not find the specified version!"))
     }
@@ -93,10 +95,7 @@ impl Source for SpaceDock {
         if let Some(version) = version {
             Ok(format!(
                 "https://spacedock.info{}",
-                self.get_version(id, version)
-                    .await?
-                    .download_path
-                    .ok_or(anyhow!("Version has no download path!"))?
+                self.get_version(id, version).await?.url
             ))
         } else {
             let url = format!("{}/api/mod/{}/latest", self.base(), id);

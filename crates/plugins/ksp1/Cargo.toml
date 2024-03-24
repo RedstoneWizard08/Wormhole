@@ -1,5 +1,5 @@
 [package]
-name = "example-plugin"
+name = "plugin_ksp1"
 version.workspace = true
 edition.workspace = true
 license.workspace = true
@@ -12,3 +12,6 @@ crate-type = ["cdylib", "rlib"]
 
 [dependencies]
 api.workspace = true
+query.workspace = true
+base64.workspace = true
+const_format.workspace = true

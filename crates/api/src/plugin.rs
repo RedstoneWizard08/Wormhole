@@ -1,18 +1,34 @@
-use std::collections::HashMap;
+use query::source::Source;
 
-#[derive(Debug, Clone, PartialEq, Eq)]
-pub struct Plugin {
-    pub id: i32,
-    pub name: String,
-    pub display: String,
-    pub icon: String,
-    pub banner: String,
-    pub caps: PluginCaps,
-    pub settings: HashMap<String, ()>,
-}
+pub trait Plugin: Send + Sync {
+    /// Create a new instance.
+    fn new() -> Self
+    where
+        Self: Sized;
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
-pub struct PluginCaps {
-    pub multiple_instances: bool,
-    pub mods: bool,
+    /// Get the plugin's identifier.
+    fn id(&self) -> String;
+
+    /// Get the game ID.
+    fn game(&self) -> i32;
+
+    /// Get a query resolver.
+    fn resolvers(&self) -> Vec<Box<dyn Source>>;
+
+    /// Get the display name.
+    fn display(&self) -> String;
+
+    /// Get the icon.
+    fn icon(&self) -> String;
+
+    /// Get the banner.
+    fn banner(&self) -> String;
+
+    /// Get the fallback mod install directory.
+    /// If a mod fails all built-in conditions
+    /// (Minecraft & BepInEx-specific built in
+    /// at the time of writing), it will just
+    /// extract all included files to this
+    /// directory. This defaults to `BepInEx/plugins`.
+    fn fallback(&self) -> Option<&str>;
 }

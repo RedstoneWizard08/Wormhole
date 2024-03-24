@@ -1,3 +1,5 @@
+use crate::mod_::ModVersion as RealModVersion;
+
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct ModVersion {
     pub friendly_version: Option<String>,
@@ -36,5 +38,25 @@ impl ModVersion {
         };
 
         return out;
+    }
+}
+
+impl Into<RealModVersion> for ModVersion {
+    fn into(self) -> RealModVersion {
+        RealModVersion {
+            id: format!("{}", self.id.unwrap()),
+            name: self.friendly_version,
+            file_name: self
+                .download_path
+                .clone()
+                .unwrap()
+                .split("/")
+                .last()
+                .unwrap()
+                .to_string(),
+            hash: None,
+            size: None,
+            url: format!("https://spacedock.info{}", self.download_path.unwrap()),
+        }
     }
 }

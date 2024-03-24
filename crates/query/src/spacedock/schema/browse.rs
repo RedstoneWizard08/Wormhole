@@ -1,3 +1,5 @@
+use crate::{mod_::Mod, source::Paginated};
+
 use super::info::ModInfo;
 
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
@@ -34,5 +36,21 @@ impl BrowseResult {
         out.page = Some(self.page.unwrap_or(0));
 
         return out;
+    }
+}
+
+impl Into<Paginated<Mod>> for BrowseResult {
+    fn into(self) -> Paginated<Mod> {
+        Paginated {
+            data: self
+                .result
+                .unwrap_or_default()
+                .iter()
+                .cloned()
+                .map(|v| v.into())
+                .collect::<Vec<_>>(),
+            page: self.page,
+            per_page: self.count,
+        }
     }
 }

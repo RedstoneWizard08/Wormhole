@@ -1,3 +1,5 @@
+use crate::{mod_::Mod, source::ModSource};
+
 use super::version::ModVersion;
 
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
@@ -93,4 +95,22 @@ impl ModInfo {
 pub struct SharedAuthor {
     pub mod_id: i32,
     pub user_id: i32,
+}
+
+impl Into<Mod> for ModInfo {
+    fn into(self) -> Mod {
+        Mod {
+            id: format!("{}", self.id.unwrap()),
+            name: self.name.unwrap(),
+            source: ModSource::SpaceDock,
+            game_id: self.game_id,
+            versions: self
+                .versions
+                .unwrap_or_default()
+                .iter()
+                .cloned()
+                .map(|v| v.into())
+                .collect::<Vec<_>>(),
+        }
+    }
 }

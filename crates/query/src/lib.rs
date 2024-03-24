@@ -1,10 +1,11 @@
 #![feature(associated_type_defaults)]
+#![allow(unused_imports)]
 
 #[macro_use]
 extern crate async_trait;
 
 #[macro_use]
-extern crate anyhow;
+pub extern crate anyhow;
 
 #[macro_use]
 extern crate serde;
@@ -21,9 +22,9 @@ pub mod modrinth;
 /// This backend is currently not implemented.
 pub mod nexus;
 
-/// This backend is currently not implemented.
-pub mod thunderstore;
-
+pub mod macros;
 pub mod mod_;
 pub mod source;
 pub mod spacedock;
+/// This backend is currently not implemented.
+pub mod thunderstore;

@@ -1,16 +1,19 @@
 use anyhow::Result;
 use const_format::formatcp;
+
 use reqwest::{
     header::{HeaderMap, HeaderValue, AUTHORIZATION},
     Client,
 };
 
-use crate::mod_::Mod;
+use crate::mod_::{Mod, ModVersion};
 
 pub const USER_AGENT: &str = formatcp!("Wormhole/{}", env!("CARGO_PKG_VERSION"));
 
 #[repr(u8)]
-#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
+#[derive(
+    Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default, Serialize, Deserialize,
+)]
 pub enum ModSource {
     SpaceDock = 0,
     Ckan = 1,
@@ -37,6 +40,7 @@ impl Default for QueryOptions {
     }
 }
 
+#[allow(unused)]
 pub(crate) trait WithToken {
     fn get_token(&self) -> Option<String>;
 
@@ -57,21 +61,26 @@ pub(crate) trait WithToken {
     }
 }
 
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, PartialOrd, Ord, Hash)]
+pub struct Paginated<T> {
+    pub data: Vec<T>,
+    pub page: Option<i32>,
+    pub per_page: Option<i32>,
+}
+
 /// A mod source.
 #[async_trait]
 #[allow(private_bounds)]
 pub trait Source: WithToken {
-    type QueryItem = Mod;
-    type QueryOutput = Vec<Self::QueryItem>;
-
-    type VersionItem;
-    type VersionOutput = Vec<Self::VersionItem>;
-
     /// Create a new instance of this source with no token.
-    fn new() -> Self;
+    fn new() -> Self
+    where
+        Self: Sized;
 
     /// Create a new instance of this source with a token.
-    fn new_with_token(token: String) -> Self;
+    fn new_with_token(token: String) -> Self
+    where
+        Self: Sized;
 
     /// Get the API base url.
     fn base(&self) -> String;
@@ -82,16 +91,16 @@ pub trait Source: WithToken {
         game_id: i32,
         search: String,
         options: Option<QueryOptions>,
-    ) -> Result<Self::QueryOutput>;
+    ) -> Result<Paginated<Mod>>;
 
     /// Get a mod by its ID.
-    async fn get_mod(&self, id: String) -> Result<Self::QueryItem>;
+    async fn get_mod(&self, id: String) -> Result<Mod>;
 
     /// Get a mod's versions.
-    async fn get_versions(&self, id: String) -> Result<Self::VersionOutput>;
+    async fn get_versions(&self, id: String) -> Result<Vec<ModVersion>>;
 
     /// Get a mod version by its ID.
-    async fn get_version(&self, id: String, version: String) -> Result<Self::VersionItem>;
+    async fn get_version(&self, id: String, version: String) -> Result<ModVersion>;
 
     /// Get a mod's direct download URL.
     /// This will default to using the latest version if it isn't specified.

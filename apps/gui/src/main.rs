@@ -2,11 +2,9 @@
 #![allow(clippy::needless_return)]
 
 use query::{
-    source::{QueryOptions, Source},
-    spacedock::{
-        schema::{browse::BrowseResult, info::ModInfo},
-        SpaceDock,
-    },
+    mod_::Mod,
+    source::{Paginated, QueryOptions, Source},
+    spacedock::SpaceDock,
 };
 use std::{path::PathBuf, process::Command};
 use tauri::Window;
@@ -91,7 +89,7 @@ async fn get_instance_info(instance_id: i32) -> Option<Instance> {
 }
 
 #[tauri::command]
-async fn get_mod(mod_id: i32) -> ModInfo {
+async fn get_mod(mod_id: i32) -> Mod {
     SpaceDock::new()
         .get_mod(format!("{}", mod_id))
         .await
@@ -99,7 +97,7 @@ async fn get_mod(mod_id: i32) -> ModInfo {
 }
 
 #[tauri::command]
-async fn get_mods(game_id: i32, count: i32, page: i32) -> BrowseResult {
+async fn get_mods(game_id: i32, count: i32, page: i32) -> Paginated<Mod> {
     SpaceDock::new()
         .search(game_id, String::new(), Some(QueryOptions { page, count }))
         .await

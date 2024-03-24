@@ -103,8 +103,7 @@ These can then be uploaded to Wormhole's custom registry and shared publicly.
 
 ## Plugins
 
-Plugins will be implemented by using a runtime WASI plugin loader and will be written in Rust. These will have full access
-to Wormhole's API and system details. BE CAREFUL!
+Plugins will be implemented by using a runtime WASI plugin loader and will be written in Rust. These will have full access to Wormhole's API and system details. BE CAREFUL!
 
 The implementation will be like this.
 

@@ -9,3 +9,4 @@ authors.workspace = true
 
 [dependencies]
 dirs.workspace = true
+rand.workspace = true

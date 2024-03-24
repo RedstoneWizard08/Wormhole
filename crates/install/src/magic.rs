@@ -17,6 +17,42 @@ pub const COMMON_JAR_FILES: &[&str] = &[
     "mcmod.info",
 ];
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
+pub enum FileType {
+    Zip,
+    Rar,
+    Gzip,
+    Tar,
+    Xz,
+    Jar,
+    ResourcePack,
+
+    #[default]
+    Unknown,
+}
+
+pub fn detect_file_type(file: impl AsRef<[u8]>) -> Result<FileType> {
+    let file = file.as_ref();
+
+    if check_jar_file(file)? {
+        Ok(FileType::Jar)
+    } else if check_resourcepack_file(file)? {
+        Ok(FileType::ResourcePack)
+    } else if file[0..2] == ZIP_MAGIC {
+        Ok(FileType::Zip)
+    } else if file[0..6] == RAR_MAGIC {
+        Ok(FileType::Rar)
+    } else if file[0..2] == GZIP_MAGIC {
+        Ok(FileType::Gzip)
+    } else if file[0..6] == XZ_MAGIC {
+        Ok(FileType::Xz)
+    } else if file[0..5] == TAR_MAGIC {
+        Ok(FileType::Tar)
+    } else {
+        Err(anyhow!("Unknown file type!"))
+    }
+}
+
 pub fn check_jar_file(file: impl AsRef<[u8]>) -> Result<bool> {
     let file = file.as_ref();
 
@@ -39,4 +75,21 @@ pub fn check_jar_file(file: impl AsRef<[u8]>) -> Result<bool> {
     }
 
     Ok(false)
+}
+
+pub fn check_resourcepack_file(file: impl AsRef<[u8]>) -> Result<bool> {
+    let file = file.as_ref();
+
+    if file[0..2] == ZIP_MAGIC {
+        let zip = ZipArchive::new(Cursor::new(file.to_vec()))?;
+
+        let names = zip
+            .file_names()
+            .map(|v| v.to_lowercase())
+            .collect::<Vec<_>>();
+
+        Ok(names.contains(&"pack.mcmeta".to_string()))
+    } else {
+        Ok(false)
+    }
 }

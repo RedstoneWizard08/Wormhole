@@ -81,8 +81,8 @@ impl ModInstaller for SpaceDockModInstaller {
 
                 if let Some(mut instance) = instance {
                     let mut instance_mod = InstanceMod {
-                        id: mod_info.id.unwrap(),
-                        name: mod_info.name.unwrap(),
+                        id: mod_info.id.parse().unwrap(),
+                        name: mod_info.name,
                         paths: Vec::new(),
                     };
 
