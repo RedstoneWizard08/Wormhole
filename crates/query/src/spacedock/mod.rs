@@ -1,11 +1,11 @@
 use crate::{
     mod_::{Mod, ModVersion as RealModVersion},
-    source::{Paginated, QueryOptions, Source, WithToken},
-    stub_source,
+    source::{Paginated, QueryOptions, Resolver, WithToken},
 };
 
 use self::schema::{browse::BrowseResult, info::ModInfo, version::ModVersion};
 use anyhow::Result;
+use data::source::{Source, Sources};
 
 pub mod schema;
 
@@ -17,20 +17,17 @@ impl WithToken for SpaceDock {
     }
 }
 
-stub_source!(SpaceDock);
-
 #[async_trait]
-#[cfg(not(target_arch = "wasm32"))]
-impl Source for SpaceDock {
-    fn new() -> Self {
+impl Resolver for SpaceDock {
+    async fn new() -> Self {
         Self
     }
 
-    fn new_with_token(_token: String) -> Self {
+    async fn new_with_token(_token: String) -> Self {
         Self
     }
 
-    fn base(&self) -> String {
+    async fn base(&self) -> String {
         String::from("https://spacedock.info/api")
     }
 
@@ -43,7 +40,7 @@ impl Source for SpaceDock {
         if search.is_empty() {
             let url = format!(
                 "{}/browse?page={}&count={}&game_id={}",
-                self.base(),
+                self.base().await,
                 opts.unwrap_or_default().page,
                 opts.unwrap_or_default().count,
                 game_id
@@ -56,7 +53,7 @@ impl Source for SpaceDock {
         } else {
             let url = format!(
                 "{}/api/search/mod?query={}&page={}&count={}&game_id={}",
-                self.base(),
+                self.base().await,
                 search,
                 opts.unwrap_or_default().page,
                 opts.unwrap_or_default().count,
@@ -71,7 +68,7 @@ impl Source for SpaceDock {
     }
 
     async fn get_mod(&self, id: String) -> Result<Mod> {
-        let url = format!("{}/api/mod/{}", self.base(), id);
+        let url = format!("{}/api/mod/{}", self.base().await, id);
         let data = self.client().get(url).send().await?;
         let text = data.text().await?;
 
@@ -95,10 +92,10 @@ impl Source for SpaceDock {
         if let Some(version) = version {
             Ok(format!(
                 "https://spacedock.info{}",
-                self.get_version(id, version).await?.url
+                self.get_version(id, version).await?.url.unwrap()
             ))
         } else {
-            let url = format!("{}/api/mod/{}/latest", self.base(), id);
+            let url = format!("{}/api/mod/{}/latest", self.base().await, id);
             let data = self.client().get(url).send().await?;
             let text = data.text().await?;
             let ver = serde_json::from_str::<ModVersion>(&text)?;
@@ -109,5 +106,9 @@ impl Source for SpaceDock {
                     .ok_or(anyhow!("Version has no download path!"))?
             ))
         }
+    }
+
+    fn source(&self) -> Source {
+        Sources::SpaceDock.source()
     }
 }

@@ -6,8 +6,15 @@ use std::{
 
 use crate::magic::{detect_file_type, FileType};
 use anyhow::Result;
+
+use data::{
+    instance::{Instance, InstanceMeta},
+    schema::instance_meta::dsl::{instance_id, instance_meta},
+    Conn,
+};
+
+use diesel::{ExpressionMethods, QueryDsl, RunQueryDsl, SelectableHelper};
 use flate2::read::GzDecoder;
-use instance::Instance;
 use rar::Archive as Rar;
 use tar::Archive;
 use walkdir::WalkDir;
@@ -16,31 +23,33 @@ use xz::read::XzDecoder;
 use zip::{write::FileOptions, CompressionMethod, ZipArchive, ZipWriter};
 
 pub fn extract_file(
+    db: &mut Conn,
     path: PathBuf,
     kind: FileType,
     instance: Instance,
     fallback: Option<&str>,
 ) -> Result<()> {
+    let meta = instance_meta
+        .filter(instance_id.eq(instance.id.unwrap()))
+        .select(InstanceMeta::as_select())
+        .get_result(db)?;
+
     match kind {
         FileType::Jar => Ok(rename(
             path.clone(),
-            instance
-                .meta
-                .data_dir
+            meta.data_dir()
                 .join("mods")
                 .join(path.file_name().unwrap().to_str().unwrap()),
         )?),
 
         FileType::ResourcePack => Ok(rename(
             path.clone(),
-            instance
-                .meta
-                .data_dir
+            meta.data_dir()
                 .join("resourcepacks")
                 .join(path.file_name().unwrap().to_str().unwrap()),
         )?),
 
-        it => reprocess_zip(path, it, instance, fallback),
+        it => reprocess_zip(path, it, instance, meta, fallback),
     }
 }
 
@@ -48,37 +57,37 @@ pub fn reprocess_zip(
     path: PathBuf,
     kind: FileType,
     instance: Instance,
+    meta: InstanceMeta,
     fallback: Option<&str>,
 ) -> Result<()> {
     match kind {
         FileType::Gzip => {
-            let (p, k, i) = extract_gzip(path, instance)?;
+            let (p, k, i) = extract_gzip(path, instance, &meta)?;
 
-            reprocess_zip(p, k, i, fallback)
+            reprocess_zip(p, k, i, meta, fallback)
         }
 
         FileType::Xz => {
-            let (p, k, i) = extract_xz(path, instance)?;
+            let (p, k, i) = extract_xz(path, instance, &meta)?;
 
-            reprocess_zip(p, k, i, fallback)
+            reprocess_zip(p, k, i, meta, fallback)
         }
 
         FileType::Rar => {
-            let (p, i) = extract_rar(path, instance)?;
+            let (p, i) = extract_rar(path, instance, &meta)?;
 
-            reprocess_zip(p, FileType::Zip, i, fallback)
+            reprocess_zip(p, FileType::Zip, i, meta, fallback)
         }
 
         FileType::Tar => {
-            let (p, i) = extract_tar(path, instance)?;
+            let (p, i) = extract_tar(path, instance, &meta)?;
 
-            reprocess_zip(p, FileType::Zip, i, fallback)
+            reprocess_zip(p, FileType::Zip, i, meta, fallback)
         }
 
         FileType::Zip => {
-            let tmp_dir = instance
-                .meta
-                .cache_dir
+            let tmp_dir = meta
+                .cache_dir()
                 .join(format!("zip_process_{}.d", random_string(8)));
 
             let mut archive = ZipArchive::new(Cursor::new(fs::read(path)?))?;
@@ -95,20 +104,17 @@ pub fn reprocess_zip(
 
             if names.contains(&"BepInEx") {
                 for name in dir_names {
-                    rename_dir_all(name, &instance.meta.data_dir)?;
+                    rename_dir_all(name, &meta.data_dir)?;
                 }
             } else if names.contains(&"plugins") || names.contains(&"patchers") {
                 for name in dir_names {
-                    rename_dir_all(name, &instance.meta.data_dir.join("BepInEx"))?;
+                    rename_dir_all(name, &meta.data_dir().join("BepInEx"))?;
                 }
             } else if names.iter().any(|v| v.ends_with(".dll")) {
                 for name in dir_names {
                     rename_dir_all(
                         name,
-                        &instance
-                            .meta
-                            .data_dir
-                            .join(fallback.unwrap_or("BepInEx/plugins")),
+                        &meta.data_dir().join(fallback.unwrap_or("BepInEx/plugins")),
                     )?;
                 }
             }
@@ -120,10 +126,13 @@ pub fn reprocess_zip(
     }
 }
 
-pub fn extract_gzip(path: PathBuf, instance: Instance) -> Result<(PathBuf, FileType, Instance)> {
-    let new_path = instance
-        .meta
-        .cache_dir
+pub fn extract_gzip(
+    path: PathBuf,
+    instance: Instance,
+    meta: &InstanceMeta,
+) -> Result<(PathBuf, FileType, Instance)> {
+    let new_path = meta
+        .cache_dir()
         .join(format!("gzip_convert_{}.bin", random_string(8)));
 
     let data = fs::read(path)?;
@@ -137,10 +146,13 @@ pub fn extract_gzip(path: PathBuf, instance: Instance) -> Result<(PathBuf, FileT
     Ok((new_path, kind, instance))
 }
 
-pub fn extract_xz(path: PathBuf, instance: Instance) -> Result<(PathBuf, FileType, Instance)> {
-    let new_path = instance
-        .meta
-        .cache_dir
+pub fn extract_xz(
+    path: PathBuf,
+    instance: Instance,
+    meta: &InstanceMeta,
+) -> Result<(PathBuf, FileType, Instance)> {
+    let new_path = meta
+        .cache_dir()
         .join(format!("xz_convert_{}.bin", random_string(8)));
 
     let data = fs::read(path)?;
@@ -154,18 +166,20 @@ pub fn extract_xz(path: PathBuf, instance: Instance) -> Result<(PathBuf, FileTyp
     Ok((new_path, kind, instance))
 }
 
-pub fn extract_rar(path: PathBuf, instance: Instance) -> Result<(PathBuf, Instance)> {
-    let new_path = instance
-        .meta
-        .cache_dir
+pub fn extract_rar(
+    path: PathBuf,
+    instance: Instance,
+    meta: &InstanceMeta,
+) -> Result<(PathBuf, Instance)> {
+    let new_path = meta
+        .cache_dir()
         .join(format!("rar_convert_{}.zip", random_string(8)));
 
-    let tmp_dir = instance
-        .meta
-        .cache_dir
+    let tmp_dir = meta
+        .cache_dir()
         .join(format!("rar_convert_{}.d", random_string(8)));
 
-    Rar::extract_all(path.to_str().unwrap(), tmp_dir.to_str().unwrap(), "")
+    Rar::extract_all(path.to_str().unwrap(), tmp_dir.to_str().unwrap(), None)
         .map_err(|v| anyhow!(v))?;
 
     zip_directory(&new_path, &tmp_dir)?;
@@ -174,15 +188,17 @@ pub fn extract_rar(path: PathBuf, instance: Instance) -> Result<(PathBuf, Instan
     Ok((new_path, instance))
 }
 
-pub fn extract_tar(path: PathBuf, instance: Instance) -> Result<(PathBuf, Instance)> {
-    let new_path = instance
-        .meta
-        .cache_dir
+pub fn extract_tar(
+    path: PathBuf,
+    instance: Instance,
+    meta: &InstanceMeta,
+) -> Result<(PathBuf, Instance)> {
+    let new_path = meta
+        .cache_dir()
         .join(format!("tar_convert_{}.zip", random_string(8)));
 
-    let tmp_dir = instance
-        .meta
-        .cache_dir
+    let tmp_dir = meta
+        .cache_dir()
         .join(format!("tar_convert_{}.d", random_string(8)));
 
     Archive::new(File::open(path)?).unpack(&tmp_dir)?;
@@ -206,7 +222,7 @@ pub fn zip_directory(path: impl AsRef<Path>, dir: impl AsRef<Path>) -> Result<()
             FileOptions::default().compression_method(CompressionMethod::DEFLATE),
         )?;
 
-        zip.write_all(&*fs::read(entry.path())?.into_boxed_slice())?;
+        zip.write_all(&fs::read(entry.path())?.into_boxed_slice())?;
     }
 
     zip.finish()?;

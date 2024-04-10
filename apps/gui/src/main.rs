@@ -1,135 +1,74 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
-#![allow(clippy::needless_return)]
 
-use query::{
-    mod_::Mod,
-    source::{Paginated, QueryOptions, Source},
-    spacedock::SpaceDock,
-};
-use std::{path::PathBuf, process::Command};
-use tauri::Window;
+#[cfg(test)]
+pub mod export;
 
-use wormhole_common::{
-    boot::{
-        cache::update_cache,
-        integrity::{directory_integrity_check, read_mods_file, Mods},
+use anyhow::Result;
+
+use data::{
+    diesel::{
+        r2d2::{ConnectionManager, Pool},
+        ExpressionMethods, QueryDsl, RunQueryDsl, SelectableHelper, SqliteConnection,
     },
-    finder::find_install_dir,
-    installer::{mods::ModInstaller, spacedock::SpaceDockModInstaller},
-    instances::{Instance, KSPGame},
+    instance::{Instance, InstanceMeta},
+    schema::{
+        instance_meta::dsl::{game_id as gid, instance_id as iid, instance_meta},
+        instances::dsl::{id, instances},
+    },
 };
 
-pub mod installer;
+#[cfg(test)]
+use specta::{functions::FunctionDataType, ExportError, TypeDefs};
+use tauri::State;
+
+pub type DbState<'a> = State<'a, Pool<ConnectionManager<SqliteConnection>>>;
 
 #[tauri::command]
-fn get_install_dir(game_id: i32) -> Option<PathBuf> {
-    find_install_dir(KSPGame::from_id(game_id).unwrap())
+#[specta::specta]
+async fn launch(_instance_id: i32) {
+    todo!()
 }
 
 #[tauri::command]
-async fn install_spacewarp(window: Window) -> String {
-    installer::install_spacewarp(window).await;
+#[specta::specta]
+fn get_instances(game_id: i32, pool: DbState<'_>) -> Result<Vec<Instance>> {
+    let mut db = pool.get()?;
 
-    "Success".into()
-}
+    let meta = instance_meta
+        .filter(gid.eq(game_id))
+        .select(InstanceMeta::as_select())
+        .load(&mut db)?;
 
-#[tauri::command]
-async fn uninstall_spacewarp() -> String {
-    installer::uninstall_spacewarp();
+    let mut items = Vec::new();
 
-    "Success".into()
-}
-
-#[tauri::command]
-async fn launch(instance_id: i32) {
-    println!("[Pre-launch] Launching instance: {:?}", instance_id);
-
-    let instance = Instance::from_id(instance_id).unwrap();
-
-    let executable = match instance.game {
-        KSPGame::KSP2 => instance.install_path.join("KSP2_x64.exe"),
-        KSPGame::KSP1 => instance.install_path.join("KSP_x64.exe"),
-    };
-
-    if let Some(active) = Instance::get_active_instance(instance.clone().game) {
-        if active.id != instance.id {
-            instance.enable();
-        }
+    for item in meta {
+        items.push(
+            instances
+                .filter(id.eq(item.instance_id))
+                .select(Instance::as_select())
+                .get_result(&mut db)?,
+        );
     }
 
-    println!("[Launch] Launching game executable: {:?}", executable);
-
-    Command::new(executable)
-        .spawn()
-        .expect("Failed to launch the instance!");
+    Ok(items)
 }
 
 #[tauri::command]
-async fn get_instances(game_id: i32) -> Vec<Instance> {
-    Instance::load()
-        .iter()
-        .filter(|i| i.game == KSPGame::from_id(game_id).unwrap())
-        .cloned()
-        .collect()
+#[specta::specta]
+async fn get_instance(instance_id: i32, pool: DbState<'_>) -> Result<Instance> {
+    Ok(instances
+        .filter(id.eq(instance_id))
+        .select(Instance::as_select())
+        .get_result(&mut pool.get()?)?)
 }
 
 #[tauri::command]
-async fn get_instance_info(instance_id: i32) -> Option<Instance> {
-    let it = Instance::from_id(instance_id);
-
-    if let Some(info) = it {
-        let mut infos = info;
-
-        infos.install_path = get_install_dir(infos.game.as_i32()).unwrap();
-
-        return Some(infos);
-    }
-
-    it
-}
-
-#[tauri::command]
-async fn get_mod(mod_id: i32) -> Mod {
-    SpaceDock::new()
-        .get_mod(format!("{}", mod_id))
-        .await
-        .unwrap()
-}
-
-#[tauri::command]
-async fn get_mods(game_id: i32, count: i32, page: i32) -> Paginated<Mod> {
-    SpaceDock::new()
-        .search(game_id, String::new(), Some(QueryOptions { page, count }))
-        .await
-        .unwrap()
-}
-
-#[tauri::command]
-async fn install_mod(mod_id: i32, instance_id: i32) {
-    let instance = Instance::from_id(instance_id).unwrap();
-    let installer = SpaceDockModInstaller::new(instance.install_path);
-
-    installer.install(mod_id, instance_id).await;
-}
-
-#[tauri::command]
-async fn update_description(instance_id: i32, description: String) {
-    let instances = Instance::load();
-    let mut infos = get_instance_info(instance_id).await.unwrap();
-
-    infos.description = Some(description);
-
-    let mut new_instances = Vec::new();
-
-    for instance in instances {
-        if instance.id == instance_id {
-            new_instances.push(infos.clone());
-        } else {
-            new_instances.push(instance);
-        }
-    }
-
-    Instance::save_all(&new_instances);
+#[specta::specta]
+async fn get_instance_meta(instance_id: i32, pool: DbState<'_>) -> Result<InstanceMeta> {
+    Ok(instance_meta
+        .filter(iid.eq(instance_id))
+        .select(InstanceMeta::as_select())
+        .get_result(&mut pool.get()?)?)
 }
 
 #[allow(clippy::needless_range_loop)]
@@ -171,82 +110,37 @@ async fn levenshtein_distance(a: &str, b: &str) -> usize {
 }
 
 #[tauri::command]
+#[specta::specta]
 async fn get_distance(mod_name: &str, query: &str) -> Result<usize, String> {
     Ok(levenshtein_distance(query, mod_name).await)
 }
 
-#[tauri::command]
-async fn backend_boot() {
-    directory_integrity_check();
-    update_cache();
-}
-
-#[tauri::command]
-fn read_mod_json() -> Mods {
-    read_mods_file()
-}
-
-#[tauri::command]
-fn get_active_instance(game_id: i32) -> Option<Instance> {
-    Instance::get_active_instance(KSPGame::from_id(game_id).unwrap())
-}
-
-#[tauri::command]
-fn set_active_instance(instance_id: i32) {
-    let instance = Instance::from_id(instance_id);
-
-    if let Some(instance) = instance {
-        instance.enable();
-    }
-}
-
-#[tauri::command]
-fn add_instance(game_id: i32, name: String, install_path: String) {
-    let id = Instance::new_id();
-
-    let instance = Instance {
-        id,
-        name,
-        game: KSPGame::from_id(game_id).unwrap(),
-        description: None,
-        mods: Vec::new(),
-        install_path: PathBuf::from(install_path),
-        time_played: None,
-    };
-
-    instance.save();
-}
-
-#[tauri::command]
-fn delete_instance(instance_id: i32) {
-    let instance = Instance::from_id(instance_id);
-
-    if let Some(instance) = instance {
-        instance.remove();
-    }
-}
-
-pub fn main() {
-    tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![
-            install_spacewarp,
-            uninstall_spacewarp,
-            get_install_dir,
+#[macro_export]
+macro_rules! funcs {
+    ($ns: ident::$fn: ident) => {
+        $ns::$fn![
             launch,
-            get_instance_info,
             get_instances,
-            get_mod,
-            get_mods,
-            install_mod,
+            get_instance,
             get_distance,
-            backend_boot,
-            read_mod_json,
-            update_description,
-            get_active_instance,
-            set_active_instance,
-            add_instance,
-            delete_instance
-        ])
+            get_instance_meta,
+        ]
+    }
+}
+
+#[cfg(test)]
+pub(crate) fn get_funcs() -> Result<(Vec<FunctionDataType>, TypeDefs), ExportError> {
+    funcs!(specta::collect_types)
+}
+
+pub fn main() -> Result<()> {
+    let db = init::boot()?;
+
+    tauri::Builder::default()
+        .manage(db)
+        .invoke_handler(funcs!(tauri::generate_handler))
         .run(tauri::generate_context!())
         .expect("Error while starting Wormhole!");
+
+    Ok(())
 }

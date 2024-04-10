@@ -15,10 +15,13 @@ serde.workspace = true
 const_format.workspace = true
 reqwest.workspace = true
 serde_json.workspace = true
-
-[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
+ckandex.workspace = true
 diesel.workspace = true
 tracing.workspace = true
 tokio.workspace = true
 whcore.workspace = true
 data.workspace = true
+ferinth.workspace = true
+furse.workspace = true
+envcrypt.workspace = true
+specta.workspace = true

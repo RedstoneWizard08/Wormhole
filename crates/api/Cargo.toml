@@ -14,10 +14,6 @@ crate-type = ["cdylib", "rlib"]
 whcore.workspace = true
 lazy_static.workspace = true
 query.workspace = true
-
-[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
 anyhow.workspace = true
-wasmtime.workspace = true
-wasmtime-wasi.workspace = true
-wasi-common.workspace = true
-wasi-experimental-http-wasmtime.workspace = true
+base64.workspace = true
+async-trait.workspace = true

@@ -1,6 +1,4 @@
-use crate::source::ModSource;
-
-#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize, Type)]
 pub struct Mod {
     /// The mod's ID in its source.
     /// This could be an integer or a string,
@@ -18,10 +16,11 @@ pub struct Mod {
     pub name: String,
 
     /// Where the mod came from.
-    pub source: ModSource,
+    /// This is a reference to a source in the database.
+    pub source: i32,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize, Type)]
 pub struct ModVersion {
     /// The version ID.
     pub id: String,
@@ -30,7 +29,7 @@ pub struct ModVersion {
     pub name: Option<String>,
 
     /// The file name.
-    pub file_name: String,
+    pub file_name: Option<String>,
 
     /// The size in bytes of the file.
     pub size: Option<String>,
@@ -39,5 +38,19 @@ pub struct ModVersion {
     pub hash: Option<String>,
 
     /// The download URL.
-    pub url: String,
+    pub url: Option<String>,
+}
+
+impl ModVersion {
+    pub fn file_name(&self) -> String {
+        self.file_name.clone().unwrap_or_else(|| {
+            self.url
+                .clone()
+                .unwrap()
+                .split('/')
+                .last()
+                .unwrap()
+                .to_string()
+        })
+    }
 }

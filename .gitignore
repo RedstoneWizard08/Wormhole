@@ -34,3 +34,4 @@ target
 wormhole.AppDir
 
 *sqlite
+wit/deps

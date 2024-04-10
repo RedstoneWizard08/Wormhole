@@ -3,14 +3,12 @@
 use std::env;
 
 use clap::{CommandFactory, Parser};
-use commands::{ckan, curseforge, instance, spacedock};
 use tokio::main;
 
 use cli::{Cli, Commands};
 
 pub mod auth;
 pub mod cli;
-pub mod commands;
 
 #[main]
 pub async fn main() {
@@ -28,31 +26,7 @@ pub async fn main() {
     let mut ok: bool = false;
 
     if let Some(command) = cli.command {
-        match command {
-            Commands::SpaceDock { command } => {
-                if let Some(command) = command {
-                    ok = spacedock::match_command(command).await;
-                }
-            }
-
-            Commands::CKAN { command } => {
-                if let Some(command) = command {
-                    ok = ckan::match_command(command).await;
-                }
-            }
-
-            Commands::CurseForge { command } => {
-                if let Some(command) = command {
-                    ok = curseforge::match_command(command).await;
-                }
-            }
-
-            Commands::Instance { command } => {
-                if let Some(command) = command {
-                    ok = instance::match_command(command).await;
-                }
-            }
-        };
+        todo!()
     }
 
     if !ok {

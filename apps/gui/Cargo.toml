@@ -1,7 +1,7 @@
 [package]
 name = "wormhole-gui"
 description = "An installer for the SpaceWarp mod Lloader."
-readme = "../README.md"
+readme = "../../README.md"
 version.workspace = true
 edition.workspace = true
 license.workspace = true
@@ -14,6 +14,9 @@ tauri-build.workspace = true
 const_format.workspace = true
 anyhow.workspace = true
 
+[dev-dependencies]
+const_format.workspace = true
+
 [dependencies]
 serde_json.workspace = true
 serde.workspace = true
@@ -25,8 +28,16 @@ tokio.workspace = true
 reqwest.workspace = true
 tokio-util.workspace = true
 tokio-stream.workspace = true
-wormhole-common.workspace = true
 query.workspace = true
+init.workspace = true
+data.workspace = true
+api.workspace = true
+auth.workspace = true
+whcore.workspace = true
+install.workspace = true
+anyhow.workspace = true
+specta.workspace = true
+tauri-specta.workspace = true
 
 [features]
 default = ["custom-protocol"]

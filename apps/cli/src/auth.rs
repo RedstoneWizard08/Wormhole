@@ -1,6 +1,6 @@
 use std::env;
 
-use wormhole_common::github::{Credential, DeviceFlow, WORMHOLE_CLIENT_ID};
+use auth::github::{Credential, DeviceFlow, WORMHOLE_CLIENT_ID};
 
 pub async fn setup_github_token() -> Credential {
     let mut flow = DeviceFlow::start(WORMHOLE_CLIENT_ID.to_string())
@@ -18,5 +18,5 @@ pub async fn setup_github_token() -> Credential {
 
     env::set_var("GITHUB_TOKEN", token);
 
-    return polled;
+    polled
 }

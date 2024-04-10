@@ -1,3 +1,4 @@
+pub mod finder;
 pub mod messaging;
 
 use dirs::data_local_dir;

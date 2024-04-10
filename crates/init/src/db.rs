@@ -1,10 +1,17 @@
 use anyhow::{anyhow, Result};
-use diesel::{Connection, SqliteConnection};
+use diesel::{
+    r2d2::{ConnectionManager, Pool},
+    SqliteConnection,
+};
 use std::path::PathBuf;
 
-pub fn init_database(path: PathBuf) -> Result<SqliteConnection> {
+pub fn connect(path: PathBuf) -> Result<Pool<ConnectionManager<SqliteConnection>>> {
     let path = path.to_str().unwrap();
     let url = format!("sqlite://{}", path);
+    let mgr = ConnectionManager::new(url);
 
-    SqliteConnection::establish(&url).map_err(|v| anyhow!(v))
+    Pool::builder()
+        .test_on_check_out(true)
+        .build(mgr)
+        .map_err(|v| anyhow!(v))
 }

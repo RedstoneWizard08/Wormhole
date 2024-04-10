@@ -1,0 +1,6 @@
+[submodule "external/ckandex"]
+	path = external/ckandex
+	url = https://github.com/RedstoneWizard08/CKANDex
+[submodule "external/rar"]
+	path = external/rar
+	url = https://github.com/RedstoneWizard08/RAR

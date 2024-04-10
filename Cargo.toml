@@ -13,8 +13,7 @@ serde = { version = "1.0.197", features = ["derive"] }
 tauri = { version = "1.6.1", features = ["api-all"] }
 zip-extensions = "0.6.2"
 keyvalues-parser = "0.2.0"
-ckandex = "0.6.3"
-reqwest = { version = "0.11.26", features = ["stream", "gzip"] }
+reqwest = { version = "0.12.2", features = ["json", "stream", "gzip"] }
 tokio-util = { version = "0.7.10", features = ["full"] }
 tokio-stream = { version = "0.1.15", features = ["tokio-util", "fs", "net", "sync"] }
 tauri-build = "1.5.1"
@@ -26,37 +25,39 @@ async-trait = "0.1.78"
 lazy_static = "1.4.0"
 chrono = { version = "0.4.35", features = ["serde"] }
 libloading = "0.8.3"
-anyhow = "1.0.81"
+anyhow = { path = "./external/anyhow" }
 const_format = "0.2.32"
 phf = { version = "0.11.2", features = ["macros"] }
 flate2 = "1.0.28"
-diesel = { version = "2.1.5", features = ["sqlite"] }
+diesel = { version = "2.1.5", features = ["sqlite", "returning_clauses_for_sqlite_3_35", "r2d2"] }
 dirs = "5.0.1"
 tracing = { version = "0.1.40", features = ["log", "async-await"] }
 tracing-subscriber = { version = "0.3.18", features = ["json", "chrono", "serde"] }
 cfg-if = "1.0.0"
-rar = "0.2.0"
+rar = { path = "./external/rar" }
 tar = "0.4.40"
 xz = "0.1.0"
 walkdir = "2.5.0"
 base64 = "0.22.0"
-
-wasmtime = "14.0.0"
-wasmtime-wasi = "14.0.0"
-wasi-common = "14.0.0"
-wasi-experimental-http-wasmtime = { git = "https://github.com/RedstoneWizard08/wasi-experimental-http" }
+ferinth = "2.10.0"
+furse = "1.5.13"
+envcrypt = "0.5.0"
+tempfile = "3.10.1"
+specta = { version = "1.0.5", features = ["typescript"] }
+tauri-specta = { version = "1.0.2", features = ["javascript", "typescript"] }
 
 wormhole-cli = { path = "./apps/cli" }
 wormhole-gui = { path = "./apps/gui" }
-wormhole-common = { path = "./crates/common" }
+
+ckandex = { path = "./external/ckandex/ckandex" }
 
 api = { path = "./crates/api" }
+auth = { path = "./crates/auth" }
 query = { path = "./crates/query" }
 data = { path = "./crates/data" }
 whcore = { path = "./crates/core" }
 init = { path = "./crates/init" }
 install = { path = "./crates/install" }
-instance = { path = "./crates/instance" }
 
 [workspace]
 resolver = "2"
@@ -64,16 +65,13 @@ resolver = "2"
 members = [
     "apps/cli",
     "apps/gui",
-    "crates/common",
     "crates/api",
-    "crates/example-plugin",
     "crates/query",
-    "crates/instance",
     "crates/data",
     "crates/core",
     "crates/init",
     "crates/install",
-    "crates/plugins/ksp1",
-    "crates/plugins/ksp2",
-    "crates/plugins/minecraft", "crates/plugin-tester",
+    "crates/auth",
+    "external/anyhow",
+    "external/rar",
 ]

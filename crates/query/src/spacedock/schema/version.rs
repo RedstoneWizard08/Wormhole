@@ -1,6 +1,6 @@
 use crate::mod_::ModVersion as RealModVersion;
 
-#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
 pub struct ModVersion {
     pub friendly_version: Option<String>,
     pub game_version: Option<String>,
@@ -11,23 +11,9 @@ pub struct ModVersion {
     pub downloads: Option<i32>,
 }
 
-impl Default for ModVersion {
-    fn default() -> Self {
-        return Self {
-            friendly_version: None,
-            game_version: None,
-            id: None,
-            created: None,
-            download_path: None,
-            changelog: None,
-            downloads: None,
-        };
-    }
-}
-
 impl ModVersion {
     pub fn finish(&self) -> Self {
-        let out = ModVersion {
+        ModVersion {
             friendly_version: Some(self.friendly_version.clone().unwrap_or("".to_string())),
             game_version: Some(self.friendly_version.clone().unwrap_or("".to_string())),
             id: Some(self.id.unwrap_or(0)),
@@ -35,28 +21,30 @@ impl ModVersion {
             download_path: Some(self.download_path.clone().unwrap_or("".to_string())),
             changelog: Some(self.changelog.clone().unwrap_or("".to_string())),
             downloads: Some(self.downloads.unwrap_or(0)),
-        };
-
-        return out;
+        }
     }
 }
 
-impl Into<RealModVersion> for ModVersion {
-    fn into(self) -> RealModVersion {
-        RealModVersion {
-            id: format!("{}", self.id.unwrap()),
-            name: self.friendly_version,
-            file_name: self
-                .download_path
-                .clone()
-                .unwrap()
-                .split("/")
-                .last()
-                .unwrap()
-                .to_string(),
+impl From<ModVersion> for RealModVersion {
+    fn from(val: ModVersion) -> Self {
+        Self {
+            id: format!("{}", val.id.unwrap()),
+            name: val.friendly_version,
+            file_name: Some(
+                val.download_path
+                    .clone()
+                    .unwrap()
+                    .split('/')
+                    .last()
+                    .unwrap()
+                    .to_string(),
+            ),
             hash: None,
             size: None,
-            url: format!("https://spacedock.info{}", self.download_path.unwrap()),
+            url: Some(format!(
+                "https://spacedock.info{}",
+                val.download_path.unwrap()
+            )),
         }
     }
 }

@@ -1,6 +1,7 @@
 use anyhow::Result;
 use const_format::formatcp;
 
+use data::source::Source;
 use reqwest::{
     header::{HeaderMap, HeaderValue, AUTHORIZATION},
     Client,
@@ -10,25 +11,7 @@ use crate::mod_::{Mod, ModVersion};
 
 pub const USER_AGENT: &str = formatcp!("Wormhole/{}", env!("CARGO_PKG_VERSION"));
 
-#[repr(u8)]
-#[derive(
-    Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default, Serialize, Deserialize,
-)]
-pub enum ModSource {
-    SpaceDock = 0,
-    Ckan = 1,
-    Wormhole = 2,
-    Local = 3,
-    CurseForge = 4,
-    Modrinth = 5,
-    Thunderstore = 6,
-    Nexus = 7,
-
-    #[default]
-    Unknown = 8,
-}
-
-#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Type)]
 pub struct QueryOptions {
     pub page: i32,
     pub count: i32,
@@ -61,7 +44,7 @@ pub(crate) trait WithToken {
     }
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, PartialOrd, Ord, Hash, Type)]
 pub struct Paginated<T> {
     pub data: Vec<T>,
     pub page: Option<i32>,
@@ -71,19 +54,19 @@ pub struct Paginated<T> {
 /// A mod source.
 #[async_trait]
 #[allow(private_bounds)]
-pub trait Source: WithToken {
+pub trait Resolver: WithToken + Send + Sync {
     /// Create a new instance of this source with no token.
-    fn new() -> Self
+    async fn new() -> Self
     where
         Self: Sized;
 
     /// Create a new instance of this source with a token.
-    fn new_with_token(token: String) -> Self
+    async fn new_with_token(token: String) -> Self
     where
         Self: Sized;
 
     /// Get the API base url.
-    fn base(&self) -> String;
+    async fn base(&self) -> String;
 
     /// Search for mods.
     async fn search(
@@ -105,4 +88,16 @@ pub trait Source: WithToken {
     /// Get a mod's direct download URL.
     /// This will default to using the latest version if it isn't specified.
     async fn get_download_url(&self, id: String, version: Option<String>) -> Result<String>;
+
+    /// Get the source's id (type).
+    fn source(&self) -> Source;
+
+    /// Get the latest version.
+    async fn get_latest_version(&self, id: String) -> Result<ModVersion> {
+        self.get_versions(id)
+            .await?
+            .first()
+            .cloned()
+            .ok_or(anyhow!("Cannot get a latest version!"))
+    }
 }

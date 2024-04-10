@@ -1,5 +1,6 @@
-use query::source::Source;
+use query::source::Resolver;
 
+#[async_trait]
 pub trait Plugin: Send + Sync {
     /// Create a new instance.
     fn new() -> Self
@@ -13,7 +14,7 @@ pub trait Plugin: Send + Sync {
     fn game(&self) -> i32;
 
     /// Get a query resolver.
-    fn resolvers(&self) -> Vec<Box<dyn Source>>;
+    async fn resolvers(&self) -> Vec<Box<dyn Resolver + Send + Sync>>;
 
     /// Get the display name.
     fn display(&self) -> String;
@@ -31,4 +32,15 @@ pub trait Plugin: Send + Sync {
     /// extract all included files to this
     /// directory. This defaults to `BepInEx/plugins`.
     fn fallback(&self) -> Option<&str>;
+
+    /// Get a source based on its ID.
+    async fn get_source(&self, source: i32) -> Option<Box<dyn Resolver + Send + Sync>> {
+        for src in self.resolvers().await {
+            if src.source().id.unwrap() == source {
+                return Some(src);
+            }
+        }
+
+        None
+    }
 }

@@ -13,4 +13,11 @@ authors.workspace = true
 ckandex.workspace = true
 clap.workspace = true
 tokio.workspace = true
-wormhole-common = { workspace = true, features = ["clap"] }
+query.workspace = true
+init.workspace = true
+data.workspace = true
+api.workspace = true
+auth.workspace = true
+whcore.workspace = true
+install.workspace = true
+anyhow.workspace = true

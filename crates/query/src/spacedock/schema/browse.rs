@@ -2,23 +2,12 @@ use crate::{mod_::Mod, source::Paginated};
 
 use super::info::ModInfo;
 
-#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
 pub struct BrowseResult {
     pub result: Option<Vec<ModInfo>>,
     pub count: Option<i32>,
     pub pages: Option<i32>,
     pub page: Option<i32>,
-}
-
-impl Default for BrowseResult {
-    fn default() -> Self {
-        return Self {
-            result: None,
-            count: None,
-            pages: None,
-            page: None,
-        };
-    }
 }
 
 impl BrowseResult {
@@ -35,22 +24,22 @@ impl BrowseResult {
         out.pages = Some(self.pages.unwrap_or(0));
         out.page = Some(self.page.unwrap_or(0));
 
-        return out;
+        out
     }
 }
 
-impl Into<Paginated<Mod>> for BrowseResult {
-    fn into(self) -> Paginated<Mod> {
-        Paginated {
-            data: self
+impl From<BrowseResult> for Paginated<Mod> {
+    fn from(val: BrowseResult) -> Self {
+        Self {
+            data: val
                 .result
                 .unwrap_or_default()
                 .iter()
                 .cloned()
                 .map(|v| v.into())
                 .collect::<Vec<_>>(),
-            page: self.page,
-            per_page: self.count,
+            page: val.page,
+            per_page: val.count,
         }
     }
 }

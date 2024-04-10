@@ -5,6 +5,7 @@ CREATE TABLE IF NOT EXISTS mods (
     name TEXT NOT NULL,
     file_name TEXT NOT NULL,
     source_id INTEGER REFERENCES sources(id),
-    size INT NOT NULL,
-    hash TEXT NOT NULL
+    instance_id INTEGER REFERENCES instances(id),
+    size INT,
+    hash TEXT
 );

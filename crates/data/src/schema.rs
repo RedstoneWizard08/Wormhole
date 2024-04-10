@@ -35,8 +35,9 @@ diesel::table! {
         name -> Text,
         file_name -> Text,
         source_id -> Nullable<Integer>,
-        size -> Integer,
-        hash -> Text,
+        instance_id -> Nullable<Integer>,
+        size -> Nullable<Integer>,
+        hash -> Nullable<Text>,
     }
 }
 
@@ -59,6 +60,7 @@ diesel::table! {
 
 diesel::joinable!(instance_meta -> games (game_id));
 diesel::joinable!(instance_meta -> instances (instance_id));
+diesel::joinable!(mods -> instances (instance_id));
 diesel::joinable!(mods -> sources (source_id));
 diesel::joinable!(supported_sources -> games (game_id));
 diesel::joinable!(supported_sources -> sources (source_id));

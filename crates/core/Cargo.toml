@@ -8,5 +8,7 @@ homepage.workspace = true
 authors.workspace = true
 
 [dependencies]
+anyhow.workspace = true
 dirs.workspace = true
 rand.workspace = true
+keyvalues-parser.workspace = true

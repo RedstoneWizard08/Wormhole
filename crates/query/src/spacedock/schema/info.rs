@@ -1,8 +1,9 @@
-use crate::{mod_::Mod, source::ModSource};
+use data::source::Sources;
 
 use super::version::ModVersion;
+use crate::mod_::Mod;
 
-#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
 pub struct ModInfo {
     pub name: Option<String>,
     pub id: Option<i32>,
@@ -23,32 +24,6 @@ pub struct ModInfo {
     pub url: Option<String>,
     pub versions: Option<Vec<ModVersion>>,
     pub description: Option<String>,
-}
-
-impl Default for ModInfo {
-    fn default() -> Self {
-        return Self {
-            name: None,
-            id: None,
-            game: None,
-            game_id: None,
-            short_description: None,
-            downloads: None,
-            followers: None,
-            author: None,
-            default_version_id: None,
-            shared_authors: None,
-            background: None,
-            bg_offset_y: None,
-            license: None,
-            website: None,
-            donations: None,
-            source_code: None,
-            url: None,
-            versions: None,
-            description: None,
-        };
-    }
 }
 
 impl ModInfo {
@@ -74,7 +49,7 @@ impl ModInfo {
         out.followers = Some(self.followers.unwrap_or(0));
         out.author = Some(self.author.clone().unwrap_or("".to_string()));
         out.default_version_id = Some(self.default_version_id.unwrap_or(0));
-        out.shared_authors = Some(self.shared_authors.clone().unwrap_or(Vec::new()));
+        out.shared_authors = Some(self.shared_authors.clone().unwrap_or_default());
 
         out.background = Some(self.background.clone().unwrap_or(bg_img));
 
@@ -87,7 +62,7 @@ impl ModInfo {
         out.versions = Some(_versions);
         out.description = Some(self.description.clone().unwrap_or("".to_string()));
 
-        return out;
+        out
     }
 }
 
@@ -97,14 +72,14 @@ pub struct SharedAuthor {
     pub user_id: i32,
 }
 
-impl Into<Mod> for ModInfo {
-    fn into(self) -> Mod {
-        Mod {
-            id: format!("{}", self.id.unwrap()),
-            name: self.name.unwrap(),
-            source: ModSource::SpaceDock,
-            game_id: self.game_id,
-            versions: self
+impl From<ModInfo> for Mod {
+    fn from(val: ModInfo) -> Self {
+        Self {
+            id: format!("{}", val.id.unwrap()),
+            name: val.name.unwrap(),
+            source: Sources::SpaceDock.id(),
+            game_id: val.game_id,
+            versions: val
                 .versions
                 .unwrap_or_default()
                 .iter()
