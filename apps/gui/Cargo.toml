@@ -38,6 +38,7 @@ install.workspace = true
 anyhow.workspace = true
 specta.workspace = true
 tauri-specta.workspace = true
+futures.workspace = true
 
 [features]
 default = ["custom-protocol"]

@@ -6,6 +6,12 @@ extern crate lazy_static;
 #[macro_use]
 extern crate async_trait;
 
+#[macro_use]
+extern crate serde;
+
+#[macro_use]
+extern crate specta;
+
 pub extern crate whcore;
 
 pub mod plugin;

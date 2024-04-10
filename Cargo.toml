@@ -45,6 +45,7 @@ envcrypt = "0.5.0"
 tempfile = "3.10.1"
 specta = { version = "1.0.5", features = ["typescript"] }
 tauri-specta = { version = "1.0.2", features = ["javascript", "typescript"] }
+futures = { version = "0.3.30", features = ["executor"] }
 
 wormhole-cli = { path = "./apps/cli" }
 wormhole-gui = { path = "./apps/gui" }

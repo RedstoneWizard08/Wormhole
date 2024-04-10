@@ -34,7 +34,7 @@ pub async fn install_mod<T: Plugin>(
     let mut file = NamedTempFile::new()?;
 
     let _ = file.write(&data.into_boxed_slice())?;
-    
+
     extract_file(
         db,
         file.path().into(),

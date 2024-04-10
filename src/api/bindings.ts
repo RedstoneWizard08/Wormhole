@@ -30,5 +30,11 @@ export function getInstanceMeta(instanceId: number) {
     return invoke()<InstanceMeta>("get_instance_meta", { instanceId })
 }
 
+export function getPlugins() {
+    return invoke()<PluginInfo[]>("get_plugins")
+}
+
+export type PluginInfo = { id: string; game: number; display_name: string; icon_url: string; banner_url: string; fallback_dir: string | null; resolvers: SourceMapping[] }
 export type Instance = { id: number | null; name: string }
 export type InstanceMeta = { id: number | null; instance_id: number; game_id: number; data_dir: string; cache_dir: string; description: string; created: BigInt; updated: BigInt }
+export type SourceMapping = "SpaceDock" | "Ckan" | "Wormhole" | "Local" | "CurseForge" | "Modrinth" | "Thunderstore" | "Nexus" | "Unknown"

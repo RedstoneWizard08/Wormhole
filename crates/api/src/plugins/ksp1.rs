@@ -43,7 +43,7 @@ impl Plugin for Kerbal1Plugin {
         "Kerbal Space Program".into()
     }
 
-    fn fallback(&self) -> Option<&str> {
+    fn fallback(&self) -> Option<&'static str> {
         Some("GameData")
     }
 

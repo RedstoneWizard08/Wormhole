@@ -37,7 +37,7 @@ impl Plugin for MinecraftPlugin {
         "Minecraft".into()
     }
 
-    fn fallback(&self) -> Option<&str> {
+    fn fallback(&self) -> Option<&'static str> {
         Some("mods")
     }
 

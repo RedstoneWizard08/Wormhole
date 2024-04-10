@@ -58,12 +58,12 @@ pub fn check_jar_file(file: impl AsRef<[u8]>) -> Result<bool> {
 
     if file[0..2] == ZIP_MAGIC {
         let zip = ZipArchive::new(Cursor::new(file.to_vec()))?;
-        
+
         let names = zip
             .file_names()
             .map(|v| v.to_lowercase())
             .collect::<Vec<_>>();
-        
+
         let common = COMMON_JAR_FILES
             .iter()
             .map(|v| v.to_lowercase())

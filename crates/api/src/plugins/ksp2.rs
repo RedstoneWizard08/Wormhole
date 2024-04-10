@@ -43,7 +43,7 @@ impl Plugin for Kerbal2Plugin {
         "Kerbal Space Program 2".into()
     }
 
-    fn fallback(&self) -> Option<&str> {
+    fn fallback(&self) -> Option<&'static str> {
         Some("BepInEx/plugins")
     }
 

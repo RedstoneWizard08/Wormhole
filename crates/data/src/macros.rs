@@ -42,5 +42,37 @@ macro_rules! sources {
                 val.source()
             }
         }
+
+        impl From<$crate::source::Source> for $enum {
+            fn from(val: $crate::source::Source) -> Self {
+                match val.id.unwrap_or_default() {
+                    $($id => $enum::$var,)*
+
+                    _ => panic!("Unknown source!"),
+                }
+            }
+        }
+
+        #[repr(i32)]
+        #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize, Type)]
+        pub enum SourceMapping {
+            $($var = $id,)*
+        }
+
+        impl From<$enum> for SourceMapping {
+            fn from(val: $enum) -> SourceMapping {
+                match val {
+                    $($enum::$var => SourceMapping::$var,)*
+                }
+            }
+        }
+
+        impl From<SourceMapping> for $enum {
+            fn from(val: SourceMapping) -> $enum {
+                match val {
+                    $(SourceMapping::$var => $enum::$var,)*
+                }
+            }
+        }
     }
 }

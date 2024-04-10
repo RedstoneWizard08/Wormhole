@@ -1,4 +1,16 @@
+use data::source::{SourceMapping, Sources};
 use query::source::Resolver;
+
+#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize, Type)]
+pub struct PluginInfo {
+    pub id: String,
+    pub game: i32,
+    pub display_name: String,
+    pub icon_url: String,
+    pub banner_url: String,
+    pub fallback_dir: Option<&'static str>,
+    pub resolvers: Vec<SourceMapping>,
+}
 
 #[async_trait]
 pub trait Plugin: Send + Sync {
@@ -25,13 +37,14 @@ pub trait Plugin: Send + Sync {
     /// Get the banner.
     fn banner(&self) -> String;
 
-    /// Get the fallback mod install directory.
+    /// Get the fallback mod install directory,
+    /// relative to the game directory.
     /// If a mod fails all built-in conditions
     /// (Minecraft & BepInEx-specific built in
     /// at the time of writing), it will just
     /// extract all included files to this
     /// directory. This defaults to `BepInEx/plugins`.
-    fn fallback(&self) -> Option<&str>;
+    fn fallback(&self) -> Option<&'static str>;
 
     /// Get a source based on its ID.
     async fn get_source(&self, source: i32) -> Option<Box<dyn Resolver + Send + Sync>> {
@@ -42,5 +55,23 @@ pub trait Plugin: Send + Sync {
         }
 
         None
+    }
+
+    async fn as_info(&self) -> PluginInfo {
+        PluginInfo {
+            id: self.id(),
+            game: self.game(),
+            banner_url: self.banner(),
+            display_name: self.display(),
+            icon_url: self.icon(),
+            fallback_dir: self.fallback(),
+
+            resolvers: self
+                .resolvers()
+                .await
+                .iter()
+                .map(|v| Sources::from(v.source()).into())
+                .collect::<Vec<_>>(),
+        }
     }
 }

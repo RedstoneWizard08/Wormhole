@@ -5,6 +5,8 @@ pub mod export;
 
 use anyhow::Result;
 
+use api::{plugin::PluginInfo, register::PLUGINS};
+
 use data::{
     diesel::{
         r2d2::{ConnectionManager, Pool},
@@ -115,6 +117,24 @@ async fn get_distance(mod_name: &str, query: &str) -> Result<usize, String> {
     Ok(levenshtein_distance(query, mod_name).await)
 }
 
+#[tauri::command]
+#[specta::specta]
+async fn get_plugins() -> Vec<PluginInfo> {
+    let mut res = Vec::new();
+
+    for plugin in PLUGINS.lock().unwrap().values() {
+        // For some reason, this doesn't implement Send or Sync,
+        // even though the trait requires it and it's a bound on
+        // the HashMap. So we have to use futures' block_on
+        // function, which adds more dependencies to compile.
+        // WTF, RUST
+
+        res.push(futures::executor::block_on(plugin.as_info()));
+    }
+
+    res
+}
+
 #[macro_export]
 macro_rules! funcs {
     ($ns: ident::$fn: ident) => {
@@ -124,8 +144,9 @@ macro_rules! funcs {
             get_instance,
             get_distance,
             get_instance_meta,
+            get_plugins,
         ]
-    }
+    };
 }
 
 #[cfg(test)]
