@@ -15,6 +15,7 @@ impl From<Mod> for RealMod {
                 .collect::<Vec<ModVersion>>(),
             name: val.name,
             source: Sources::CurseForge.id(),
+            icon: val.logo.map(|v| v.url.to_string()),
         }
     }
 }

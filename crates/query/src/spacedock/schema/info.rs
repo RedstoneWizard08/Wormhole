@@ -3,7 +3,9 @@ use data::source::Sources;
 use super::version::ModVersion;
 use crate::mod_::Mod;
 
-#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
+#[derive(
+    Serialize, Deserialize, Type, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Default,
+)]
 pub struct ModInfo {
     pub name: Option<String>,
     pub id: Option<i32>,
@@ -66,7 +68,9 @@ impl ModInfo {
     }
 }
 
-#[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[derive(
+    Serialize, Deserialize, Type, Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash,
+)]
 pub struct SharedAuthor {
     pub mod_id: i32,
     pub user_id: i32,
@@ -79,6 +83,7 @@ impl From<ModInfo> for Mod {
             name: val.name.unwrap(),
             source: Sources::SpaceDock.id(),
             game_id: val.game_id,
+            icon: val.background,
             versions: val
                 .versions
                 .unwrap_or_default()

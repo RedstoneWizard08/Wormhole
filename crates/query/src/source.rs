@@ -11,7 +11,9 @@ use crate::mod_::{Mod, ModVersion};
 
 pub const USER_AGENT: &str = formatcp!("Wormhole/{}", env!("CARGO_PKG_VERSION"));
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Type)]
+#[derive(
+    Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize, Type,
+)]
 pub struct QueryOptions {
     pub page: i32,
     pub count: i32,
@@ -71,7 +73,7 @@ pub trait Resolver: WithToken + Send + Sync {
     /// Search for mods.
     async fn search(
         &self,
-        game_id: i32,
+        game_id: String,
         search: String,
         options: Option<QueryOptions>,
     ) -> Result<Paginated<Mod>>;

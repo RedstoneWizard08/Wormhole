@@ -18,6 +18,7 @@ impl From<Project> for Mod {
             versions: Vec::new(),
             name: val.title,
             source: Sources::Modrinth.id(),
+            icon: val.icon_url.map(|v| v.to_string()),
         }
     }
 }
@@ -30,6 +31,7 @@ impl From<SearchHit> for Mod {
             versions: Vec::new(),
             name: val.title,
             source: Sources::Modrinth.id(),
+            icon: val.icon_url.map(|v| v.to_string()),
         }
     }
 }

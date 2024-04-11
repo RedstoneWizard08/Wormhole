@@ -64,7 +64,7 @@ impl Resolver for Modrinth {
 
     async fn search(
         &self,
-        _game_id: i32,
+        _game_id: String,
         search: String,
         opts: Option<QueryOptions>,
     ) -> Result<Paginated<Mod>> {

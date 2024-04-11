@@ -8,22 +8,16 @@ diesel::table! {
 }
 
 diesel::table! {
-    instance_meta (id) {
+    instances (id) {
         id -> Nullable<Integer>,
-        instance_id -> Integer,
+        name -> Text,
         game_id -> Integer,
         data_dir -> Text,
         cache_dir -> Text,
         description -> Text,
         created -> BigInt,
         updated -> BigInt,
-    }
-}
-
-diesel::table! {
-    instances (id) {
-        id -> Nullable<Integer>,
-        name -> Text,
+        install_dir -> Text,
     }
 }
 
@@ -58,18 +52,10 @@ diesel::table! {
     }
 }
 
-diesel::joinable!(instance_meta -> games (game_id));
-diesel::joinable!(instance_meta -> instances (instance_id));
+diesel::joinable!(instances -> games (game_id));
 diesel::joinable!(mods -> instances (instance_id));
 diesel::joinable!(mods -> sources (source_id));
 diesel::joinable!(supported_sources -> games (game_id));
 diesel::joinable!(supported_sources -> sources (source_id));
 
-diesel::allow_tables_to_appear_in_same_query!(
-    games,
-    instance_meta,
-    instances,
-    mods,
-    sources,
-    supported_sources,
-);
+diesel::allow_tables_to_appear_in_same_query!(games, instances, mods, sources, supported_sources,);

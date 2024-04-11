@@ -3,7 +3,7 @@ use query::source::Resolver;
 
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize, Type)]
 pub struct PluginInfo {
-    pub id: String,
+    pub id: &'static str,
     pub game: i32,
     pub display_name: String,
     pub icon_url: String,
@@ -20,7 +20,7 @@ pub trait Plugin: Send + Sync {
         Self: Sized;
 
     /// Get the plugin's identifier.
-    fn id(&self) -> String;
+    fn id(&self) -> &'static str;
 
     /// Get the game ID.
     fn game(&self) -> i32;

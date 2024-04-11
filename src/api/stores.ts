@@ -1,6 +1,4 @@
 import { writable } from "svelte/store";
-import type { Plugin } from "./models/plugin";
-import type { InstanceInfo } from "./instance";
+import type { PluginInfo } from "./bindings/app";
 
-export const plugins = writable<Record<number, Plugin>>({});
-export const activeInstance = writable<InstanceInfo | undefined>();
+export const plugins = writable<PluginInfo[]>([]);

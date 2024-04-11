@@ -76,3 +76,13 @@ pub fn random_string(len: usize) -> String {
         .map(char::from)
         .collect()
 }
+
+pub trait Boolify<T> {
+    fn bool(self) -> std::result::Result<T, bool>;
+}
+
+impl<T, E> Boolify<T> for std::result::Result<T, E> {
+    fn bool(self) -> std::result::Result<T, bool> {
+        self.map_err(|_| false)
+    }
+}

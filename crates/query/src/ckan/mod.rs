@@ -54,7 +54,7 @@ impl Resolver for Ckan {
 
     async fn search(
         &self,
-        _game_id: i32,
+        _game_id: String,
         search: String,
         _opts: Option<QueryOptions>,
     ) -> Result<Paginated<Mod>> {

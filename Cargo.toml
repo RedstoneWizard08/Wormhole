@@ -25,7 +25,6 @@ async-trait = "0.1.78"
 lazy_static = "1.4.0"
 chrono = { version = "0.4.35", features = ["serde"] }
 libloading = "0.8.3"
-anyhow = { path = "./external/anyhow" }
 const_format = "0.2.32"
 phf = { version = "0.11.2", features = ["macros"] }
 flate2 = "1.0.28"
@@ -34,7 +33,6 @@ dirs = "5.0.1"
 tracing = { version = "0.1.40", features = ["log", "async-await"] }
 tracing-subscriber = { version = "0.3.18", features = ["json", "chrono", "serde"] }
 cfg-if = "1.0.0"
-rar = { path = "./external/rar" }
 tar = "0.4.40"
 xz = "0.1.0"
 walkdir = "2.5.0"
@@ -43,14 +41,36 @@ ferinth = "2.10.0"
 furse = "1.5.13"
 envcrypt = "0.5.0"
 tempfile = "3.10.1"
-specta = { version = "1.0.5", features = ["typescript"] }
-tauri-specta = { version = "1.0.2", features = ["javascript", "typescript"] }
+specta = { version = "=2.0.0-rc.7", features = ["functions", "tauri", "serde"] }
 futures = { version = "0.3.30", features = ["executor"] }
+axum = { version = "0.7.5", features = ["macros", "ws"] }
+mime_guess = "2.0.4"
+once_cell = "1.19.0"
+regex = "1.10.4"
+tokio-tungstenite = { version = "0.21.0", features = ["rustls"] }
+url = "2.5.0"
+ctrlc = { version = "3.4.4", features = ["termination"] }
+include_dir = "0.7.3"
+axum-core = "0.4.3"
+bytes = "1.6.0"
+futures-util = { version = "0.3.30", default-features = false, features = ["alloc"] }
+hyper = "1.2.0"
+hyper-util = { version = "0.1.3", features = ["tokio"] }
+sha-1 = "0.10.1"
+http = "1.1.0"
+http-body = "1.0.0"
+http-body-util = "0.1.1"
+derive_builder = "0.20.0"
+
+tauri-specta = { git = "https://github.com/oscartbeaumont/tauri-specta", features = ["typescript"] }
+tungstenite = { features = ["rustls"], git = "https://github.com/snapview/tungstenite-rs", version = "0.20.1", rev = "fc17f73" }
 
 wormhole-cli = { path = "./apps/cli" }
 wormhole-gui = { path = "./apps/gui" }
 
+anyhow = { path = "./external/anyhow" }
 ckandex = { path = "./external/ckandex/ckandex" }
+rar = { path = "./external/rar" }
 
 api = { path = "./crates/api" }
 auth = { path = "./crates/auth" }
@@ -59,6 +79,8 @@ data = { path = "./crates/data" }
 whcore = { path = "./crates/core" }
 init = { path = "./crates/init" }
 install = { path = "./crates/install" }
+axumite = { path = "./crates/axumite" }
+glue = { path = "./crates/glue" }
 
 [workspace]
 resolver = "2"
@@ -66,6 +88,8 @@ resolver = "2"
 members = [
     "apps/cli",
     "apps/gui",
+    "apps/bindings",
+    "apps/webui",
     "crates/api",
     "crates/query",
     "crates/data",
@@ -73,6 +97,8 @@ members = [
     "crates/init",
     "crates/install",
     "crates/auth",
+    "crates/axumite",
+    "crates/glue",
     "external/anyhow",
     "external/rar",
 ]

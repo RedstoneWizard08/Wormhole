@@ -30,8 +30,6 @@ pub mod mod_;
 pub mod modrinth;
 pub mod source;
 pub mod spacedock;
-
-/// This backend is currently not implemented.
 pub mod thunderstore;
 
 #[async_trait]

@@ -56,6 +56,12 @@ pub struct SupportedSource {
     pub game_id: i32,
 }
 
+impl Source {
+    pub fn mapping(&self) -> SourceMapping {
+        Sources::from(self.clone()).into()
+    }
+}
+
 sources!(
     Sources:
         SpaceDock = (0, "SpaceDock", "https://spacedock.info/api");

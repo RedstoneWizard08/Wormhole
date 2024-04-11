@@ -1,0 +1,18 @@
+[package]
+name = "bindings"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+authors.workspace = true
+
+[dependencies]
+api.workspace = true
+wormhole-gui.workspace = true
+const_format.workspace = true
+specta.workspace = true
+tauri.workspace = true
+tauri-specta.workspace = true
+tokio.workspace = true
+anyhow.workspace = true

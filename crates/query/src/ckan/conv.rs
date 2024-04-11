@@ -14,6 +14,7 @@ impl IntoAsync<RealMod> for Mod {
             id: self.id,
             name: self.name,
             source: Sources::Ckan.id(),
+            icon: None,
             versions: vec![ModVersion {
                 url: Some(url.clone()),
                 name: None,

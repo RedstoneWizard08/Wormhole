@@ -33,7 +33,7 @@ impl Resolver for SpaceDock {
 
     async fn search(
         &self,
-        game_id: i32,
+        game_id: String,
         search: String,
         opts: Option<QueryOptions>,
     ) -> Result<Paginated<Mod>> {

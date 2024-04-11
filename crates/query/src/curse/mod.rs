@@ -47,7 +47,7 @@ impl Resolver for CurseForge {
 
     async fn search(
         &self,
-        game_id: i32,
+        game_id: String,
         search: String,
         opts: Option<QueryOptions>,
     ) -> Result<Paginated<Mod>> {
@@ -57,7 +57,7 @@ impl Resolver for CurseForge {
             .client()
             .get(format!("{}/mods/search", self.base().await))
             .query(&[
-                ("gameId", game_id.to_string()),
+                ("gameId", game_id),
                 ("searchFilter", search),
                 ("pageSize", opts.count.to_string()),
                 ("index", opts.page.to_string()),

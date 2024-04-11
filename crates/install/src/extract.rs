@@ -8,8 +8,8 @@ use crate::magic::{detect_file_type, FileType};
 use anyhow::Result;
 
 use data::{
-    instance::{Instance, InstanceMeta},
-    schema::instance_meta::dsl::{instance_id, instance_meta},
+    instance::Instance,
+    schema::instances::dsl::{id as iid, instances},
     Conn,
 };
 
@@ -29,9 +29,9 @@ pub fn extract_file(
     instance: Instance,
     fallback: Option<&str>,
 ) -> Result<()> {
-    let meta = instance_meta
-        .filter(instance_id.eq(instance.id.unwrap()))
-        .select(InstanceMeta::as_select())
+    let meta = instances
+        .filter(iid.eq(instance.id.unwrap()))
+        .select(Instance::as_select())
         .get_result(db)?;
 
     match kind {
@@ -57,7 +57,7 @@ pub fn reprocess_zip(
     path: PathBuf,
     kind: FileType,
     instance: Instance,
-    meta: InstanceMeta,
+    meta: Instance,
     fallback: Option<&str>,
 ) -> Result<()> {
     match kind {
@@ -129,7 +129,7 @@ pub fn reprocess_zip(
 pub fn extract_gzip(
     path: PathBuf,
     instance: Instance,
-    meta: &InstanceMeta,
+    meta: &Instance,
 ) -> Result<(PathBuf, FileType, Instance)> {
     let new_path = meta
         .cache_dir()
@@ -149,7 +149,7 @@ pub fn extract_gzip(
 pub fn extract_xz(
     path: PathBuf,
     instance: Instance,
-    meta: &InstanceMeta,
+    meta: &Instance,
 ) -> Result<(PathBuf, FileType, Instance)> {
     let new_path = meta
         .cache_dir()
@@ -169,7 +169,7 @@ pub fn extract_xz(
 pub fn extract_rar(
     path: PathBuf,
     instance: Instance,
-    meta: &InstanceMeta,
+    meta: &Instance,
 ) -> Result<(PathBuf, Instance)> {
     let new_path = meta
         .cache_dir()
@@ -191,7 +191,7 @@ pub fn extract_rar(
 pub fn extract_tar(
     path: PathBuf,
     instance: Instance,
-    meta: &InstanceMeta,
+    meta: &Instance,
 ) -> Result<(PathBuf, Instance)> {
     let new_path = meta
         .cache_dir()

@@ -1,15 +1,13 @@
 import { mockIPC } from "@tauri-apps/api/mocks";
-import { type InstanceInfo, KSPGame } from "./instance";
 import { SpaceDockAPI } from "./SpaceDock";
-import type { InvokeFunction, ModsIntegrity } from "./invoke";
 import { download } from "./mocks/download";
-import type { Plugin } from "./models/plugin";
 import ksp1_logo from "../assets/ksp-square.png";
 import ksp2_logo from "../assets/ksp2-square.png";
 import mc_logo from "../assets/minecraft.svg";
 import ksp1_banner from "../assets/ksp.png";
 import ksp2_banner from "../assets/ksp2.png";
 import mc_banner from "../assets/minecraft_banner.jpg";
+import type { Instance, PluginInfo } from "./bindings";
 
 export const repeat = <T>(arr: T[], n: number): T[] => {
     const final: T[] = [];
@@ -21,78 +19,75 @@ export const repeat = <T>(arr: T[], n: number): T[] => {
     return final;
 };
 
-export const DEV_Instances: InstanceInfo[] = [
+export const DEV_Instances: Instance[] = [
     {
         id: 0,
         name: "KSP2 Default Instance",
-        game: KSPGame.KSP2,
-        install_path: "/home/user/.steam/root/steamapps/common/Kerbal Space Program 2",
-        mods: [],
+        game_id: 22407,
+        install_dir: "/home/user/.steam/root/steamapps/common/Kerbal Space Program 2",
+        cache_dir: "",
+        created: BigInt(new Date().getUTCMilliseconds()),
+        data_dir: "",
+        description: "",
+        updated: BigInt(new Date().getUTCMilliseconds()),
     },
 
     {
         id: 1,
         name: "KSP1 Default Instance",
-        game: KSPGame.KSP1,
-        install_path: "/home/user/.steam/root/steamapps/common/Kerbal Space Program",
-        mods: [],
+        game_id: 4102,
+        install_dir: "/home/user/.steam/root/steamapps/common/Kerbal Space Program",
+        cache_dir: "",
+        created: BigInt(new Date().getUTCMilliseconds()),
+        data_dir: "",
+        description: "",
+        updated: BigInt(new Date().getUTCMilliseconds()),
     },
 
     {
         id: 2,
         name: "Minecraft Default Instance",
-        game: 432,
-        install_path: "/home/user/.minecraft",
-        mods: [],
+        game_id: 432,
+        install_dir: "/home/user/.minecraft",
+        cache_dir: "",
+        created: BigInt(new Date().getUTCMilliseconds()),
+        data_dir: "",
+        description: "",
+        updated: BigInt(new Date().getUTCMilliseconds()),
     },
 ];
 
-export const DEV_Plugins: Record<number, Plugin> = {
-    3102: {
-        id: 3102,
-        name: "KSP1",
-        display: "Kerbal Space Program",
-        icon: ksp1_logo,
-        banner: ksp1_banner,
-
-        caps: {
-            mods: true,
-            multiple_instances: true,
-        },
-
-        settings: {},
+export const DEV_Plugins: PluginInfo[] = [
+    {
+        id: "KSP",
+        display_name: "Kerbal Space Program",
+        icon_url: ksp1_logo,
+        banner_url: ksp1_banner,
+        fallback_dir: "GameData",
+        game: 3102,
+        resolvers: ["SpaceDock", "Ckan"],
     },
 
-    22407: {
-        id: 22407,
-        name: "KSP2",
-        display: "Kerbal Space Program 2",
-        icon: ksp2_logo,
-        banner: ksp2_banner,
-
-        caps: {
-            mods: true,
-            multiple_instances: true,
-        },
-
-        settings: {},
+    {
+        id: "KSP2",
+        display_name: "Kerbal Space Program 2",
+        icon_url: ksp2_logo,
+        banner_url: ksp2_banner,
+        fallback_dir: "BepInEx/plugins",
+        game: 22407,
+        resolvers: ["SpaceDock", "Ckan"],
     },
 
-    432: {
-        id: 432,
-        name: "Minecraft",
-        display: "Minecraft",
-        icon: mc_logo,
-        banner: mc_banner,
-
-        caps: {
-            mods: true,
-            multiple_instances: true,
-        },
-
-        settings: {},
+    {
+        id: "MC",
+        display_name: "Minecraft",
+        icon_url: mc_logo,
+        banner_url: mc_banner,
+        fallback_dir: "mods",
+        game: 432,
+        resolvers: ["CurseForge", "Modrinth"],
     },
-};
+];
 
 export const createMockAPI = () => {
     mockIPC((async <K extends keyof InvokeFunction>(

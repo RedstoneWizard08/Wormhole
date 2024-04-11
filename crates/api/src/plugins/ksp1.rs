@@ -23,8 +23,8 @@ impl Plugin for Kerbal1Plugin {
         Self
     }
 
-    fn id(&self) -> String {
-        "Kerbal Space Program".into()
+    fn id(&self) -> &'static str {
+        "KSP1".into()
     }
 
     fn game(&self) -> i32 {

@@ -20,3 +20,7 @@ async-trait.workspace = true
 serde.workspace = true
 specta.workspace = true
 data.workspace = true
+tauri.workspace = true
+tauri-specta.workspace = true
+const_format.workspace = true
+serde_json.workspace = true

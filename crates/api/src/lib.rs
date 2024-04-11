@@ -14,10 +14,12 @@ extern crate specta;
 
 pub extern crate whcore;
 
+pub mod macros;
 pub mod plugin;
 pub mod plugins;
 pub mod register;
 pub mod res;
+pub mod tauri;
 
 pub fn init() {
     register_defaults();

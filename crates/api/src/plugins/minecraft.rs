@@ -17,8 +17,8 @@ impl Plugin for MinecraftPlugin {
         Self
     }
 
-    fn id(&self) -> String {
-        "Minecraft".into()
+    fn id(&self) -> &'static str {
+        "MC".into()
     }
 
     fn game(&self) -> i32 {

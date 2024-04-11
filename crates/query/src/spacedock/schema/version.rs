@@ -1,6 +1,8 @@
 use crate::mod_::ModVersion as RealModVersion;
 
-#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
+#[derive(
+    Serialize, Deserialize, Type, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Default,
+)]
 pub struct ModVersion {
     pub friendly_version: Option<String>,
     pub game_version: Option<String>,

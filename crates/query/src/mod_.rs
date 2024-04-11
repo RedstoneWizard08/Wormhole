@@ -18,6 +18,9 @@ pub struct Mod {
     /// Where the mod came from.
     /// This is a reference to a source in the database.
     pub source: i32,
+
+    /// The mod's icon.
+    pub icon: Option<String>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize, Type)]

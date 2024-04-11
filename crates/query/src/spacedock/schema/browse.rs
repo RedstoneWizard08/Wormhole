@@ -2,7 +2,9 @@ use crate::{mod_::Mod, source::Paginated};
 
 use super::info::ModInfo;
 
-#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
+#[derive(
+    Serialize, Deserialize, Type, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Default,
+)]
 pub struct BrowseResult {
     pub result: Option<Vec<ModInfo>>,
     pub count: Option<i32>,
