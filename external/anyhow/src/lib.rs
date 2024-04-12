@@ -262,6 +262,9 @@ mod macros;
 mod ptr;
 mod wrapper;
 
+#[cfg(all(feature = "axum", feature = "std"))]
+mod axum;
+
 #[cfg(feature = "std")]
 mod serde;
 

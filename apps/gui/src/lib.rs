@@ -11,7 +11,7 @@ use data::{
 };
 
 use specta::functions::CollectFunctionsResult;
-use tauri::{Invoke, Runtime, State};
+use tauri::{utils::assets::EmbeddedAssets, Context, Invoke, Runtime, State};
 use whcore::Boolify;
 
 pub type DbState<'a> = State<'a, Pool<ConnectionManager<SqliteConnection>>>;
@@ -134,4 +134,8 @@ pub fn cmds<R: Runtime>() -> (
     Box<dyn Fn(Invoke<R>) + Send + Sync + 'static>,
 ) {
     (funcs(), invoker())
+}
+
+pub fn ctx() -> Context<EmbeddedAssets> {
+    tauri::generate_context!()
 }

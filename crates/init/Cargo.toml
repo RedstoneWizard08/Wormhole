@@ -11,3 +11,4 @@ authors.workspace = true
 anyhow.workspace = true
 diesel.workspace = true
 whcore.workspace = true
+data.workspace = true

@@ -6,10 +6,10 @@ use api::{
     plugins::{Kerbal1Plugin, Kerbal2Plugin, MinecraftPlugin},
     tauri::TauriPlugin,
 };
-use wormhole_gui::invoker;
+use wormhole_gui::{ctx, invoker};
 
 pub fn main() -> Result<()> {
-    let db = init::boot()?;
+    let db = init::boot(None)?;
 
     tauri::Builder::default()
         .plugin(TauriPlugin::new(Kerbal1Plugin::new())?)
@@ -17,8 +17,7 @@ pub fn main() -> Result<()> {
         .plugin(TauriPlugin::new(MinecraftPlugin::new())?)
         .manage(db)
         .invoke_handler(invoker())
-        .run(tauri::generate_context!())
-        .expect("Error while starting Wormhole!");
+        .run(ctx())?;
 
     Ok(())
 }

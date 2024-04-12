@@ -31,7 +31,7 @@ flate2 = "1.0.28"
 diesel = { version = "2.1.5", features = ["sqlite", "returning_clauses_for_sqlite_3_35", "r2d2"] }
 dirs = "5.0.1"
 tracing = { version = "0.1.40", features = ["log", "async-await"] }
-tracing-subscriber = { version = "0.3.18", features = ["json", "chrono", "serde"] }
+tracing-subscriber = { version = "0.3.18", features = ["tracing", "env-filter", "json", "chrono", "serde"] }
 cfg-if = "1.0.0"
 tar = "0.4.40"
 xz = "0.1.0"
@@ -61,6 +61,12 @@ http = "1.1.0"
 http-body = "1.0.0"
 http-body-util = "0.1.1"
 derive_builder = "0.20.0"
+tracing-appender = "0.2.3"
+log = "0.4.21"
+clap-verbosity-flag = "2.2.0"
+colored = "2.1.0"
+diesel_migrations = "2.1.0"
+uuid = { version = "1.8.0", features = ["v4", "fast-rng"] }
 
 tauri-specta = { git = "https://github.com/oscartbeaumont/tauri-specta", features = ["typescript"] }
 tungstenite = { features = ["rustls"], git = "https://github.com/snapview/tungstenite-rs", version = "0.20.1", rev = "fc17f73" }
@@ -81,6 +87,7 @@ init = { path = "./crates/init" }
 install = { path = "./crates/install" }
 axumite = { path = "./crates/axumite" }
 glue = { path = "./crates/glue" }
+midlog = { path = "./crates/midlog" }
 
 [workspace]
 resolver = "2"
@@ -100,5 +107,5 @@ members = [
     "crates/axumite",
     "crates/glue",
     "external/anyhow",
-    "external/rar",
+    "external/rar", "crates/midlog",
 ]

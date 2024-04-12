@@ -12,6 +12,7 @@ pub mod conv;
 pub mod game;
 pub mod instance;
 pub mod macros;
+pub mod migrate;
 pub mod mod_;
 pub mod schema;
 pub mod source;

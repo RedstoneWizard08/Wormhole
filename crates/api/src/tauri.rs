@@ -26,9 +26,9 @@ use crate::{
 pub type Invoker<R> = Box<dyn Fn(Invoke<R>) + Send + Sync + 'static>;
 
 pub struct TauriPlugin<R: Runtime> {
-    handler: Invoker<R>,
     plugin: Arc<Box<dyn TauriPluginTrait + Send + Sync + 'static>>,
 
+    pub handler: Arc<Invoker<R>>,
     pub name: &'static str,
     pub cmds: (CollectFunctionsResult, Invoker<R>),
 }
@@ -46,7 +46,7 @@ impl<R: Runtime> TauriPlugin<R> {
             .build_plugin_utils(plugin.id())?;
 
         Ok(Self {
-            handler,
+            handler: Arc::new(handler),
             name: plugin.id(),
             plugin: Arc::new(plugin),
             cmds: cmds!(),
