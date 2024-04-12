@@ -17,8 +17,8 @@ fn main() -> Result<()> {
     fs::write(CONFIG_PATH_OUT, data)?;
     tauri_build::build();
 
-    println!("cargo::rerun-if-env-changed=CARGO_PKG_VERSION");
-    println!("cargo::rerun-if-env-changed=CARGO_MANIFEST_DIR");
+    println!("cargo:rerun-if-env-changed=CARGO_PKG_VERSION");
+    println!("cargo:rerun-if-env-changed=CARGO_MANIFEST_DIR");
 
     Ok(())
 }
