@@ -31,12 +31,12 @@ Epic Games, and the Private Division launcher.
 - [ ] Support for other suggested games.
 - [x] Support for Windows, Linux, and MacOS
 - [x] Support for any Steam library location
-- [ ] Support for any Epic Games library location
+- [x] Support for any Epic Games library location
 - [x] Support for Private Division launcher
 - [x] Mod installation & browsing from SpaceDock
-- [ ] Mod installation & browsing from CKAN
-- [ ] Mod installation & browsing from CurseForge
-- [ ] Mod installation & browsing from Modrinth
+- [x] Mod installation & browsing from CKAN
+- [x] Mod installation & browsing from CurseForge
+- [x] Mod installation & browsing from Modrinth
 - [ ] Modpack installation & browsing from SpaceDock
 - [ ] Modpack installation & browsing from CKAN
 - [ ] Modpack installation & browsing from CurseForge
