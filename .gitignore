@@ -35,3 +35,4 @@ wormhole.AppDir
 
 *sqlite
 wit/deps
+/.env
