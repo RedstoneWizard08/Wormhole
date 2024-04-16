@@ -58,7 +58,9 @@ impl Framework {
         match self {
             Framework::None => "",
             Framework::Next | Framework::Custom(_, _) => "ready in ",
-            Framework::Nuxt | Framework::SvelteKit | Framework::Vite(_) => "press h to show help",
+            Framework::Nuxt | Framework::SvelteKit | Framework::Vite(_) => {
+                "press h + enter to show help"
+            }
         }
     }
 

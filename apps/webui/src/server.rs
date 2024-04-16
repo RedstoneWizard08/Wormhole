@@ -22,7 +22,7 @@ pub async fn run_server(pool: Pool<ConnectionManager<Conn>>, cli: Cli) -> Result
 
     info!("Creating state...");
 
-    let state = AppState::new(cli.clone(), pool, cli.init_script()).await?;
+    let state = AppState::new(cli.clone(), pool).await?;
 
     info!("Creating router...");
 
@@ -47,10 +47,15 @@ pub async fn run_server(pool: Pool<ConnectionManager<Conn>>, cli: Cli) -> Result
         info!("Starting client...");
 
         let client = glue.spawn().await;
-        let (_, res) = join!(client, server);
+        let (a, b) = join!(client, server);
 
-        return res?.map_err(|v| v.into());
+        a?;
+        b??;
+
+        return Ok(());
     }
 
-    server.await?.map_err(|v| v.into())
+    server.await??;
+
+    Ok(())
 }

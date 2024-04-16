@@ -11,13 +11,10 @@ pub extern crate anyhow;
 extern crate serde;
 
 #[macro_use]
-extern crate envcrypt;
-
-#[macro_use]
 extern crate specta;
 
-pub(crate) const CURSEFORGE_KEY: Option<&str> = option_envc!("CURSEFORGE_KEY");
-pub(crate) const MODRINTH_KEY: Option<&str> = option_envc!("MODRINTH_KEY");
+pub(crate) const CURSEFORGE_KEY: &str = env!("CURSEFORGE_KEY");
+pub(crate) const MODRINTH_KEY: Option<&str> = option_env!("MODRINTH_KEY");
 
 /// This backend is currently not implemented.
 pub mod nexus;

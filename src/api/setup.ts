@@ -1,4 +1,4 @@
-import { backend_boot } from "./boot";
+import { boot } from "./boot";
 import { createMockAPI } from "./dev";
 
 export const setup = async () => {
@@ -11,5 +11,5 @@ export const setup = async () => {
         createMockAPI();
     }
 
-    await backend_boot();
+    await boot();
 };

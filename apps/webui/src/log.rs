@@ -28,12 +28,14 @@ pub fn init_file_logger(file: impl AsRef<str>, verbosity: LevelFilter) -> Result
     let (appender, _guard) = non_blocking(file);
     let mut filter = EnvFilter::from_default_env().add_directive(verbosity.into());
 
-    if verbosity == LevelFilter::DEBUG {
-        filter = filter.add_directive("tokio_postgres::connection=warn".parse().unwrap());
-        filter = filter.add_directive("tokio_postgres::query=warn".parse().unwrap());
-        filter = filter.add_directive("diesel_async_migrations=warn".parse().unwrap());
-        filter = filter.add_directive("tokio_util::codec::framed_impl=warn".parse().unwrap());
-    }
+    filter = filter.add_directive("tokio_postgres::connection=warn".parse().unwrap());
+    filter = filter.add_directive("tokio_postgres::query=warn".parse().unwrap());
+    filter = filter.add_directive("diesel_async_migrations=warn".parse().unwrap());
+    filter = filter.add_directive("tokio_util::codec::framed_impl=warn".parse().unwrap());
+    filter = filter.add_directive("tokio_tungstenite=warn".parse().unwrap());
+    filter = filter.add_directive("want=warn".parse().unwrap());
+    filter = filter.add_directive("tungstenite=warn".parse().unwrap());
+    filter = filter.add_directive("arboard=warn".parse().unwrap());
 
     let layer = fmt::layer()
         .pretty()

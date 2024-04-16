@@ -1,9 +1,11 @@
 pub mod conv;
 
+use std::env;
+
 use crate::{
     mod_::{Mod, ModVersion},
     source::{Paginated, QueryOptions, Resolver, WithToken},
-    IntoAsync, CURSEFORGE_KEY, MODRINTH_KEY,
+    IntoAsync, MODRINTH_KEY,
 };
 
 use anyhow::Result;

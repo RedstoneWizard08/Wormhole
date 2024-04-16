@@ -11,7 +11,7 @@ pub fn make_glue() -> Result<Glue> {
             .project(format!("{}/../..", env!("CARGO_MANIFEST_DIR")))
             .cmd("pnpm")
             .arg("run")
-            .arg("dev")
+            .arg("web:dev")
             .framework(Framework::Vite("/vite-hmr"))
             .build()?,
     ))

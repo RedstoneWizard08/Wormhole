@@ -23,5 +23,7 @@ whcore.workspace = true
 data.workspace = true
 ferinth.workspace = true
 furse.workspace = true
-envcrypt.workspace = true
 specta.workspace = true
+
+[build-dependencies]
+dotenvy.workspace = true

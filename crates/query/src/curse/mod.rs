@@ -1,6 +1,8 @@
 pub mod conv;
 pub mod query;
 
+use std::env;
+
 use crate::{
     mod_::{Mod, ModVersion},
     source::{Paginated, QueryOptions, Resolver, WithToken},
@@ -29,7 +31,7 @@ impl WithToken for CurseForge {
 impl Resolver for CurseForge {
     async fn new() -> Self {
         Self {
-            client: Furse::new(CURSEFORGE_KEY.unwrap()),
+            client: Furse::new(CURSEFORGE_KEY),
             token: None,
         }
     }

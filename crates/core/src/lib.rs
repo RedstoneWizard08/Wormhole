@@ -1,5 +1,6 @@
 pub mod finder;
 pub mod messaging;
+pub mod state;
 
 use dirs::data_local_dir;
 use rand::{distributions::Alphanumeric, thread_rng, Rng};

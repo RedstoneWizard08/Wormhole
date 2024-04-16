@@ -61,30 +61,31 @@ impl Cli {
         run_server(pool, self.clone()).await
     }
 
-    pub fn init_script(&self) -> String {
-        format!(
-            "
-              Object.defineProperty(window, '__TAURI_POST_MESSAGE__', {{
+    pub const fn init_script(&self) -> &str {
+        "
+            Object.defineProperty(window, '__TAURI_POST_MESSAGE__', {{
                 value: (message) => {{
-                  const request = new XMLHttpRequest();
-                  request.addEventListener('load', function () {{
-                    let arg
-                    let success = this.status === 200
-                    try {{
-                      arg = JSON.parse(this.response)
-                    }} catch (e) {{
-                      arg = e
-                      success = false
-                    }}
-                    window[`_${{success ? message.callback : message.error}}`](arg)
-                  }})
-                  request.open('POST', 'http://localhost:{}/' + window.__TAURI_METADATA__.__currentWindow.label, true)
-                  request.setRequestHeader('Content-Type', 'application/json')
-                  request.send(JSON.stringify(message))
-                }}
-              }})
-          ",
-            self.port
-          )
+                    const request = new XMLHttpRequest();
+                    
+                    request.addEventListener('load', function () {{
+                        let arg;
+                        let success = this.status === 200;
+
+                        try {{
+                          arg = JSON.parse(this.response);
+                        }} catch (e) {{
+                          arg = e;
+                          success = false;
+                        }}
+
+                        window[`_${{success ? message.callback : message.error}}`](arg);
+                    }});
+
+                    request.open('POST', '/_tauri/invoke/?window=' + window.__TAURI_METADATA__.__currentWindow.label, true);
+                    request.setRequestHeader('Content-Type', 'application/json');
+                    request.send(JSON.stringify(message));
+                }},
+            }});
+        "
     }
 }

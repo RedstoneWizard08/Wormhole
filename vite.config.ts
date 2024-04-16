@@ -3,11 +3,10 @@ import { defineConfig } from "vite";
 
 export default defineConfig({
     clearScreen: false,
-
     plugins: [sveltekit()],
 
     server: {
-        port: process.env.TAURI_WEB_DEV ? 4000 : 1420,
+        port: process.env.TAURI_WEB_DEV ? 4001 : 1420,
         strictPort: true,
         cors: true,
 
@@ -23,8 +22,9 @@ export default defineConfig({
         hmr: process.env.TAURI_WEB_DEV
             ? {
                   clientPort: 443,
-                  port: 4000,
+                  port: 4001,
                   protocol: "wss",
+                  path: "/vite-hmr",
               }
             : {},
     },
