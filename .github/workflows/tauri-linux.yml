@@ -32,6 +32,9 @@ jobs:
               id: short-sha
               with:
                   length: 7
+            
+            - name: Run conf
+              run: ./apps/gui/genconf.sh
 
             - uses: tauri-apps/tauri-action@v0
               env:
@@ -45,6 +48,7 @@ jobs:
                   releaseDraft: false
                   prerelease: true
                   tauriScript: pnpm tauri
+                  projectPath: apps/gui
 
     # publish-tauri-arm64:
     #     permissions:
@@ -80,6 +84,9 @@ jobs:
     #           id: short-sha
     #           with:
     #               length: 7
+            
+    #         - name: Run conf
+    #           run: ./apps/gui/genconf.sh
 
     #         - name: Install cross
     #           run: |
@@ -99,3 +106,4 @@ jobs:
     #               prerelease: true
     #               tauriScript: pnpm tauri
     #               args: --target aarch64-unknown-linux-gnu --runner cross
+    #               projectPath: apps/gui
