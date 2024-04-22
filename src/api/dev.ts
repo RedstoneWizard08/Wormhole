@@ -13,22 +13,26 @@ export const createMockAPI = () => {
             },
         }).then((res) => res.json());
 
+        let output = data;
+
         if ("Ok" in data) {
-            return data.Ok;
+            output = data.Ok;
         }
 
         if ("Err" in data) {
-            return data.Err;
+            output = data.Err;
         }
 
         if ("Some" in data) {
-            return data.Some;
+            output = data.Some;
         }
 
         if ("None" in data || data == "None") {
-            return null;
+            output = null;
         }
 
-        return data;
+        console.log(`Tauri invoke: ${cmd}\n`, args, output);
+
+        return output;
     });
 };

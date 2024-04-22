@@ -1,4 +1,6 @@
+use plugin::PluginInfo;
 use plugins::register_defaults;
+use specta::{NamedType, TypeMap};
 
 #[macro_use]
 extern crate lazy_static;
@@ -23,4 +25,13 @@ pub mod tauri;
 
 pub fn init() {
     register_defaults();
+}
+
+pub fn type_map() -> TypeMap {
+    let mut map = TypeMap::default();
+
+    let ty = PluginInfo::named_data_type(&mut map, &[]);
+    map.insert(PluginInfo::SID, ty);
+
+    map
 }

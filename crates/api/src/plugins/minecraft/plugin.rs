@@ -3,8 +3,8 @@ use query::{curse::CurseForge, modrinth::Modrinth, source::Resolver};
 
 use crate::plugin::Plugin;
 
-pub const ICON_BYTES: &[u8] = include_bytes!("../assets/minecraft/icon.svg");
-pub const BANNER_BYTES: &[u8] = include_bytes!("../assets/minecraft/banner.jpg");
+pub const ICON_BYTES: &[u8] = include_bytes!("../../assets/minecraft/icon.svg");
+pub const BANNER_BYTES: &[u8] = include_bytes!("../../assets/minecraft/banner.jpg");
 
 pub struct MinecraftPlugin;
 

@@ -1,34 +1,30 @@
 <script lang="ts">
-    import type { InstanceInfo } from "../../../api/instance";
-    import Instance from "../../../components/Instance.svelte";
-    import { invoke_proxy } from "../../../api/invoke";
+    import InstanceCard from "../../../components/InstanceCard.svelte";
     import { browser } from "$app/environment";
     import { onMount } from "svelte";
     import { page } from "$app/stores";
+    import { commands, type Instance } from "../../../api/bindings/app";
+    import { unwrap } from "../../../api/util";
 
     let adding = false;
     let deleteing = false;
 
-    let instances: InstanceInfo[] = [];
-    let instanceToDelete: InstanceInfo | null = null;
+    let instances: Instance[] = [];
+    let current: Instance | null = null;
 
     let gameId = parseInt($page.params.game);
 
     let path = "C:\\Fakepath";
     let name = "";
 
-    $: instanceName = instanceToDelete?.name;
-
     onMount(async () => {
-        instances = await invoke_proxy("get_instances", { gameId });
+        instances = unwrap(await commands.getInstances(gameId, null));
     });
 
     const addInstance = async () => {
-        await invoke_proxy("add_instance", {
-            gameId,
-            name,
-            installPath: path,
-        });
+        // commands.addInstance({
+        //     id: null,
+        // }, null);
 
         adding = false;
     };
@@ -42,7 +38,7 @@
             path = handle.name;
         } else {
             const open = (await import("@tauri-apps/api/dialog")).open;
-            const appDir = (await import("@tauri-apps/api/path")).appDir;
+            const appDir = (await import("@tauri-apps/api/path")).appDataDir;
 
             const dir = await open({
                 directory: true,
@@ -54,10 +50,7 @@
     };
 
     const deleteInstance = async () => {
-        if (instanceToDelete)
-            await invoke_proxy("delete_instance", {
-                instanceId: instanceToDelete.id,
-            });
+        commands.deleteInstance(current?.id!, null);
 
         deleteing = !deleteing;
     };
@@ -109,7 +102,7 @@
             </div>
 
             <p class="delete-text">
-                Are you sure you want to delete the instance "{instanceName}"?
+                Are you sure you want to delete the instance "{current?.name}"?
             </p>
 
             <button type="button" class="yes-button" on:click={deleteInstance}> Yes </button>
@@ -129,7 +122,7 @@
     <div class="instances-container">
         {#if Array.isArray(instances)}
             {#each instances as info}
-                <Instance data={info} bind:deleteing bind:instanceToDelete />
+                <InstanceCard data={info} bind:deleteing bind:current />
             {/each}
         {/if}
     </div>

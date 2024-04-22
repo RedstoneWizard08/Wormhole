@@ -22,24 +22,23 @@
 
     <hr class="divider" />
 
-    {#each Object.values($plugins) as plugin}
-        <a
-            class="link"
-            class:active={$page.url.pathname.startsWith(`/${plugin.id}`)}
-            href="/{plugin.id}">
-            <img src={plugin.icon} alt={plugin.display} />
+    {#each $plugins as plugin}
+        {@const isCurrent = $page.url.pathname.startsWith(`/${plugin.game}`)}
 
-            <span class="tooltip">{plugin.display}</span>
+        <a class="link" class:active={isCurrent} href="/{plugin.game}">
+            <img src={plugin.icon_url} alt={plugin.display_name} />
+
+            <span class="tooltip">{plugin.display_name}</span>
         </a>
 
-        <div class="group" class:active={$page.url.pathname.startsWith(`/${plugin.id}`)}>
-            <a class="link" class:active={instances} href="/{plugin.id}/instances">
+        <div class="group" class:active={isCurrent}>
+            <a class="link" class:active={instances && isCurrent} href="/{plugin.game}/instances">
                 <i class="icon fa-solid fa-rocket" />
 
                 <span class="tooltip">Instances</span>
             </a>
 
-            <a class="link" class:active={gameSettings} href="/{plugin.id}/settings">
+            <a class="link" class:active={gameSettings && isCurrent} href="/{plugin.game}/settings">
                 <i class="icon fa-solid fa-gear" />
 
                 <span class="tooltip">Settings</span>

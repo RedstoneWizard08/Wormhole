@@ -4,6 +4,7 @@ pub mod state;
 
 use dirs::data_local_dir;
 use rand::{distributions::Alphanumeric, thread_rng, Rng};
+use specta::TypeMap;
 use std::{
     fs::{copy, create_dir_all, read_dir, rename},
     io::Result,
@@ -86,4 +87,16 @@ impl<T, E> Boolify<T> for std::result::Result<T, E> {
     fn bool(self) -> std::result::Result<T, bool> {
         self.map_err(|_| false)
     }
+}
+
+pub fn merge_type_maps(maps: Vec<TypeMap>) -> TypeMap {
+    let mut map = TypeMap::default();
+
+    for ty_map in maps {
+        for (id, ty) in ty_map.iter() {
+            map.insert(id, ty.clone());
+        }
+    }
+
+    map
 }

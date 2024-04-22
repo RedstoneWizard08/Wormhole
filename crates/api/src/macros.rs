@@ -74,24 +74,29 @@ mod _private {
 
     macro_rules! cmds {
         () => {
-            (
-                collect_functions![
-                    info,
-                    search_mods,
-                    get_mod,
-                    get_mod_versions,
-                    get_mod_version,
-                    get_download_url,
-                ],
-                Box::new(generate_handler![
-                    info,
-                    search_mods,
-                    get_mod,
-                    get_mod_versions,
-                    get_mod_version,
-                    get_download_url,
-                ]),
-            )
+            {
+                let map = whcore::merge_type_maps(vec![data::type_map(), crate::type_map()]);
+
+                (
+                    collect_functions![
+                        map;
+                        info,
+                        search_mods,
+                        get_mod,
+                        get_mod_versions,
+                        get_mod_version,
+                        get_download_url,
+                    ],
+                    Box::new(generate_handler![
+                        info,
+                        search_mods,
+                        get_mod,
+                        get_mod_versions,
+                        get_mod_version,
+                        get_download_url,
+                    ]),
+                )
+            }
         };
     }
 

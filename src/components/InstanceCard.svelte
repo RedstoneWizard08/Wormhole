@@ -1,14 +1,13 @@
 <script lang="ts">
     import { goto } from "$app/navigation";
-    import { type InstanceInfo, KSPGame } from "../api/instance";
     import ksp1logo from "../assets/ksp.png";
     import ksp2logo from "../assets/ksp2.png";
-    import { invoke_proxy } from "../api/invoke";
     import Delete from "./Delete.svelte";
     import { plugins } from "../api/stores";
 
     export let data: InstanceInfo;
-    export let instanceToDelete: InstanceInfo | null;
+    // This is just the current instance in the parent
+    export let current: InstanceInfo | null;
     export let deleteing: boolean;
 
     const clicked = () => {
@@ -18,15 +17,13 @@
     const doLaunch = (e: MouseEvent) => {
         e.stopPropagation();
 
-        invoke_proxy("launch", {
-            instanceId: data.id,
-        });
+        // TODO: Launch
     };
 
     const doDelete = (e: MouseEvent) => {
         e.stopPropagation();
 
-        instanceToDelete = data;
+        current = data;
         deleteing = !deleteing;
     };
 </script>
@@ -34,7 +31,7 @@
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <div class="instance-container" on:click={clicked}>
-    <img src={$plugins[data.game].banner} class="banner" alt={"background"} />
+    <img src={$plugins[data.game].banner_url} class="banner" alt={"background"} />
 
     <p class="name">{data.name}</p>
 

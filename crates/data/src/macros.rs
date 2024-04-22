@@ -1,7 +1,7 @@
 #[macro_export]
 macro_rules! sources {
     ($enum: ident: $($var: ident = ($id: expr, $name: expr, $url: expr);)*) => {
-        #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
+        #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Type)]
         pub enum $enum {
             $($var,)*
         }

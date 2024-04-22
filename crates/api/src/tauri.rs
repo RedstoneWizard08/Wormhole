@@ -7,7 +7,7 @@ use query::{
 };
 
 use serde_json::Value;
-use specta::functions::CollectFunctionsResult;
+use specta::{functions::CollectFunctionsResult, ts::{BigIntExportBehavior, ExportConfig}};
 use std::sync::Arc;
 use tauri_specta::ts;
 
@@ -42,6 +42,7 @@ impl<R: Runtime> TauriPlugin<R> {
         tauri_aliases!();
 
         let handler = ts::builder()
+            .config(ExportConfig::default().bigint(BigIntExportBehavior::Number))
             .commands::<Invoker<R>>(cmds!())
             .build_plugin_utils(plugin.id())?;
 

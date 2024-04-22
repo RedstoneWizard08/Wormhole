@@ -24,6 +24,8 @@ data.workspace = true
 ferinth.workspace = true
 furse.workspace = true
 specta.workspace = true
+envcrypt.workspace = true
+once_cell.workspace = true
 
 [build-dependencies]
 dotenvy.workspace = true

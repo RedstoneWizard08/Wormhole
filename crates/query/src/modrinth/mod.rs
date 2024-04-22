@@ -40,7 +40,7 @@ impl Resolver for Modrinth {
                 env!("CARGO_CRATE_NAME"),
                 Some(env!("CARGO_PKG_VERSION")),
                 None,
-                MODRINTH_KEY,
+                MODRINTH_KEY.clone(),
             )
             .unwrap(),
             token: MODRINTH_KEY.map(|v| v.to_string()),

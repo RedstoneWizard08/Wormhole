@@ -1,6 +1,8 @@
 #![feature(associated_type_defaults)]
 #![allow(unused_imports)]
 
+use once_cell::sync::Lazy;
+
 #[macro_use]
 extern crate async_trait;
 
@@ -13,8 +15,14 @@ extern crate serde;
 #[macro_use]
 extern crate specta;
 
-pub(crate) const CURSEFORGE_KEY: &str = env!("CURSEFORGE_KEY");
-pub(crate) const MODRINTH_KEY: Option<&str> = option_env!("MODRINTH_KEY");
+#[macro_use]
+extern crate envcrypt;
+
+pub(crate) const CURSEFORGE_KEY: Lazy<&str> = Lazy::new(|| envc!("CURSEFORGE_KEY"));
+pub(crate) const MODRINTH_KEY: Lazy<Option<&str>> = Lazy::new(|| option_envc!("MODRINTH_KEY"));
+
+#[allow(unused)]
+pub(crate) const NEXUS_API_KEY: Lazy<&str> = Lazy::new(|| envc!("NEXUS_API_KEY"));
 
 /// This backend is currently not implemented.
 pub mod nexus;

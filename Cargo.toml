@@ -70,6 +70,11 @@ quote = "1.0.36"
 syn = { version = "2.0.59", features = ["full"] }
 proc-macro2 = "1.0.80"
 dotenvy = "0.15.7"
+tiny_http = "0.12.0"
+open = "5.1.2"
+envcrypt = "0.5.0"
+strum = "0.26.2"
+strum_macros = "0.26.2"
 
 tauri-specta = { git = "https://github.com/oscartbeaumont/tauri-specta", features = ["typescript"] }
 tungstenite = { features = ["rustls"], git = "https://github.com/snapview/tungstenite-rs", version = "0.20.1", rev = "fc17f73" }
@@ -92,6 +97,7 @@ axumite = { path = "./crates/axumite" }
 glue = { path = "./crates/glue" }
 midlog = { path = "./crates/midlog" }
 macros = { path = "./crates/macros" }
+msa = { path = "./crates/msa" }
 
 [workspace]
 resolver = "2"
@@ -111,5 +117,5 @@ members = [
     "crates/axumite",
     "crates/glue",
     "external/anyhow",
-    "external/rar", "crates/midlog", "crates/macros", "crates/macro-test",
+    "external/rar", "crates/midlog", "crates/macros", "crates/macro-test", "crates/msa", "crates/java",
 ]

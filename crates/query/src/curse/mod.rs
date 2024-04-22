@@ -31,7 +31,7 @@ impl WithToken for CurseForge {
 impl Resolver for CurseForge {
     async fn new() -> Self {
         Self {
-            client: Furse::new(CURSEFORGE_KEY),
+            client: Furse::new(CURSEFORGE_KEY.clone()),
             token: None,
         }
     }

@@ -43,6 +43,7 @@ pub fn serde_call(_attrs: TokenStream, item: TokenStream) -> TokenStream {
     let obj = quote! {
         #[allow(non_camel_case_types)]
         #[derive(serde::Serialize, serde::Deserialize)]
+        #[serde(rename_all = "camelCase")]
         pub struct #holder {
             #(pub #fields,)*
         }
@@ -70,8 +71,8 @@ pub fn serde_funcs(item: TokenStream) -> TokenStream {
 }
 
 #[proc_macro_attribute]
-pub fn serde_impl(attrs: TokenStream, item: TokenStream) -> TokenStream {
-    let impl_ = parse_macro_input!(item as ItemImpl);
+pub fn serde_impl(_attrs: TokenStream, item: TokenStream) -> TokenStream {
+    let _impl_ = parse_macro_input!(item as ItemImpl);
 
     todo!()
 }
