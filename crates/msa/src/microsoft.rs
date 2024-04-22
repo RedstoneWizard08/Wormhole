@@ -1,4 +1,7 @@
-use std::{collections::HashMap, env, io::Cursor, process::Command, str::FromStr, sync::Arc, thread, time::Duration};
+use std::{
+    collections::HashMap, env, io::Cursor, process::Command, str::FromStr, sync::Arc, thread,
+    time::Duration,
+};
 
 use anyhow::{anyhow, Result};
 use envcrypt::envc;

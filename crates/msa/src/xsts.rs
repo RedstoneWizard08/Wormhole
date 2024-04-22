@@ -42,7 +42,7 @@ impl XstsTokenProperties {
     pub fn new(token: impl AsRef<str>) -> Self {
         Self {
             sandbox_id: XSTS_SANDBOX_ID.into(),
-            user_tokens: vec![token.as_ref().to_string()]
+            user_tokens: vec![token.as_ref().to_string()],
         }
     }
 }

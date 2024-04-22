@@ -10,7 +10,11 @@ use diesel::sqlite::SqliteConnection;
 use instance::Instance;
 use specta::{NamedType, TypeMap};
 
-use crate::{game::Game, mod_::Mod, source::{Source, Sources, SupportedSource}};
+use crate::{
+    game::Game,
+    mod_::Mod,
+    source::{Source, Sources, SupportedSource},
+};
 
 pub mod conv;
 pub mod game;

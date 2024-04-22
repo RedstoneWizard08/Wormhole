@@ -7,7 +7,10 @@ use query::{
 };
 
 use serde_json::Value;
-use specta::{functions::CollectFunctionsResult, ts::{BigIntExportBehavior, ExportConfig}};
+use specta::{
+    functions::CollectFunctionsResult,
+    ts::{BigIntExportBehavior, ExportConfig},
+};
 use std::sync::Arc;
 use tauri_specta::ts;
 
