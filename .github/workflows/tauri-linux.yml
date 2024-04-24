@@ -48,6 +48,7 @@ jobs:
                   releaseDraft: false
                   prerelease: true
                   tauriScript: pnpm tauri
+                  projectPath: apps/gui
 
     # publish-tauri-arm64:
     #     permissions:
