@@ -9,12 +9,12 @@ pub async fn setup_github_token() -> Credential {
 
     println!(
         "Please go to: {} and enter code: {}",
-        flow.clone().verification_uri.unwrap(),
-        flow.clone().user_code.unwrap()
+        flow.verification_uri.as_ref().unwrap(),
+        flow.user_code.as_ref().unwrap()
     );
 
     let polled = flow.poll().await.unwrap();
-    let token = polled.clone().token;
+    let token = &polled.token;
 
     env::set_var("GITHUB_TOKEN", token);
 

@@ -1,0 +1,30 @@
+[package]
+name = "mcmeta"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+authors.workspace = true
+
+[dependencies]
+tokio.workspace = true
+tokio-stream.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+reqwest.workspace = true
+anyhow.workspace = true
+serde_either.workspace = true
+sha-1.workspace = true
+base64.workspace = true
+lazy_static.workspace = true
+quick-xml.workspace = true
+zip.workspace = true
+proguard.workspace = true
+
+[dev-dependencies]
+indicatif.workspace = true
+rayon.workspace = true
+futures.workspace = true
+serial_test.workspace = true
+which.workspace = true

@@ -23,6 +23,8 @@
         "preserveValueImports": false
     },
 
+    "exclude": ["src/api/bindings"],
+
     "ts-node": {
         "esm": true
     }

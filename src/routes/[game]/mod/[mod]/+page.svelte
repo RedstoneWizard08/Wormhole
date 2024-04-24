@@ -1,9 +1,7 @@
 <script lang="ts">
     import { marked } from "marked";
     import type { FullModInfo } from "../../../../api/models/modinfo/full";
-    import { invoke_proxy } from "../../../../api/invoke";
     import DOMPurify from "dompurify";
-    import { KSPGame } from "../../../../api/instance";
     import { page } from "$app/stores";
     import LoadingPage from "../../../../components/LoadingPage.svelte";
 
@@ -18,10 +16,8 @@
             mods = /\/mods?(\/\d+)?/i.test($page.url.pathname);
 
             (async () => {
-                const mod = await invoke_proxy("get_mod", {
-                    modId: parseInt(modId || "-1", 10),
-                    gameId: modInfo?.game_id || KSPGame.KSP1,
-                });
+                // TODO
+                const mod = null!;
 
                 modInfo = mod;
                 isLoading = false;
@@ -71,12 +67,7 @@
     };
 
     const install = async () => {
-        const downloadUrl = await invoke_proxy("get_mod_download", {
-            modId: parseInt(modId || "-1", 10),
-            gameId: modInfo?.game_id || KSPGame.KSP1,
-        });
-
-        void downloadUrl;
+        // TODO
     };
 </script>
 

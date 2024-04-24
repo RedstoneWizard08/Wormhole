@@ -1,6 +1,5 @@
 <script lang="ts">
     import type { BrowseModInfo } from "../api/models/modinfo/browse";
-    import { invoke_proxy } from "../api/invoke";
     import { goto } from "$app/navigation";
 
     export let mod: BrowseModInfo;
@@ -20,25 +19,9 @@
 
         installing = true;
 
-        const instance = await invoke_proxy("get_active_instance", {
-            gameId: mod.game_id,
-        });
-
-        if (instance) {
-            const instanceId = instance.id;
-
-            await invoke_proxy("install_mod", {
-                modId: mod.id,
-                gameId: mod.game_id,
-                instanceId,
-            });
-
-            installed = !installed;
-        }
+        // TODO: Install mod
 
         installing = false;
-
-        // TODO: add writing to mods.json when mod is installed
     };
 
     const isInstalled = () => {
@@ -47,6 +30,7 @@
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
+<!-- svelte-ignore a11y-no-static-element-interactions -->
 <div class="mod-tile" on:click={() => goto(`/${mod.game_id}/mod/${mod.id}`)}>
     <!-- svelte-ignore a11y-img-redundant-alt -->
     <img src={mod.background} class="image" alt="mod-background image" />

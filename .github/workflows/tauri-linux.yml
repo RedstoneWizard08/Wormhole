@@ -32,7 +32,7 @@ jobs:
               id: short-sha
               with:
                   length: 7
-            
+
             - name: Run conf
               run: ./apps/gui/genconf.sh
 
@@ -84,7 +84,7 @@ jobs:
     #           id: short-sha
     #           with:
     #               length: 7
-            
+
     #         - name: Run conf
     #           run: ./apps/gui/genconf.sh
 

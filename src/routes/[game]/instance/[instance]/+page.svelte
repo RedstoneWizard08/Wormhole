@@ -1,16 +1,15 @@
 <script lang="ts">
-    import { type InstanceInfo, KSPGame } from "../../../../api/instance";
-    import { invoke_proxy } from "../../../../api/invoke";
     import { marked } from "marked";
     import { page } from "$app/stores";
     import { demoMods, type InstalledMod } from "../../../../api/models/mod";
-    import { formatBytes } from "../../../../api/util";
+    import { formatBytes, unwrap } from "../../../../api/util";
     import Back from "../../../../components/Back.svelte";
     import Delete from "../../../../components/Delete.svelte";
     import { goto } from "$app/navigation";
-    import { activeInstance, plugins } from "../../../../api/stores";
+    import { plugins } from "../../../../api/stores";
+    import { commands, type Instance } from "../../../../api/bindings/app";
 
-    let instance: InstanceInfo | undefined = undefined;
+    let instance: Instance | undefined = undefined;
     let background: string | undefined = undefined;
     let executable: string | undefined = undefined;
     let editing = false;
@@ -22,14 +21,12 @@
     const id = $page.params.instance;
 
     $: (async () => {
-        const info = await invoke_proxy("get_instance_info", {
-            instanceId: parseInt(id || "-1", 10),
-        });
+        const info = unwrap(await commands.getInstance(parseInt(id || "-1", 10), null));
 
         instance = info;
 
-        background = $plugins[info.game].banner;
-        executable = info.install_path;
+        background = $plugins[info.game_id].banner_url;
+        executable = info.install_dir;
     })();
 
     const save = async () => {
@@ -40,10 +37,7 @@
                 description: editor?.value || instance.description,
             };
 
-            await invoke_proxy("update_description", {
-                instanceId: instance.id,
-                description: (editor?.value || instance.description)!,
-            });
+            // TODO: updateInstance function
         }
 
         editing = false;
@@ -58,10 +52,8 @@
     };
 
     const launch = async () => {
-        if (instance)
-            await invoke_proxy("launch", {
-                instanceId: instance.id,
-            });
+        if (instance) null;
+        // TODO
     };
 
     const updateDescription = (ev: Event) => {
@@ -71,14 +63,14 @@
     };
 
     const gotoMods = () => {
-        $activeInstance = instance;
+        // TODO
 
-        goto(`/${instance?.game}/mods`);
+        goto(`/${instance?.game_id}/mods`);
     };
 </script>
 
 <div class="full-instance-container">
-    <Back to="/{instance?.game}/instances" />
+    <Back to="/{instance?.game_id}/instances" />
 
     <div class="instance">
         <img src={background} class="background" alt="background" />
@@ -89,12 +81,6 @@
             </div>
 
             <div class="right">
-                <p class="time">
-                    <i class="fa-solid fa-clock" />
-                    &nbsp;&nbsp;
-                    {instance?.time_played || "0 minutes"}
-                </p>
-
                 {#if editing}
                     <button type="button" class="edit" on:click={save}>
                         <i class="fa-solid fa-save" />
@@ -226,11 +212,6 @@
                 .right {
                     width: 50%;
                     justify-content: flex-end;
-
-                    .time {
-                        color: lightgreen;
-                        margin-right: 4%;
-                    }
 
                     .edit {
                         color: lightskyblue;

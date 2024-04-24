@@ -1,6 +1,5 @@
 <script lang="ts">
     import type { BrowseModInfo, ModWithDistance } from "../../../api/models/modinfo/browse";
-    import { invoke_proxy } from "../../../api/invoke";
     import SearchBar from "../../../components/SearchBar.svelte";
     import LoadingPage from "../../../components/LoadingPage.svelte";
     import Pagination from "../../../components/Pagination.svelte";
@@ -20,11 +19,8 @@
         loading = true;
         pages = 0;
 
-        const data = await invoke_proxy("get_mods", {
-            gameId,
-            count: perPage,
-            page: pageId,
-        });
+        // TODO
+        const data = { result: [], pages: 0 };
 
         results = data.result;
         pages = data.pages;
@@ -44,10 +40,9 @@
             if (mod.name.toLowerCase() === query.toLowerCase() || regex.test(mod.name)) {
                 exactMatches.push(mod);
             } else {
-                const dist = await invoke_proxy("get_distance", {
-                    query,
-                    modName: mod.name,
-                });
+                // TODO
+                const dist = undefined;
+
                 closeMatches.push({ mod, dist });
             }
         }

@@ -75,6 +75,13 @@ open = "5.1.2"
 envcrypt = "0.5.0"
 strum = "0.26.2"
 strum_macros = "0.26.2"
+serde_either = "0.2.1"
+indicatif = { version = "0.17.8", features = ["rayon"] }
+rayon = "1.10.0"
+serial_test = "3.1.0"
+quick-xml = { version = "0.31.0", features = ["serialize", "serde-types"] }
+proguard = "5.4.1"
+which = "6.0.1"
 
 tauri-specta = { git = "https://github.com/oscartbeaumont/tauri-specta", features = ["typescript"] }
 tungstenite = { features = ["rustls"], git = "https://github.com/snapview/tungstenite-rs", version = "0.20.1", rev = "fc17f73" }
@@ -117,5 +124,5 @@ members = [
     "crates/axumite",
     "crates/glue",
     "external/anyhow",
-    "external/rar", "crates/midlog", "crates/macros", "crates/macro-test", "crates/msa", "crates/java",
+    "external/rar", "crates/midlog", "crates/macros", "crates/macro-test", "crates/msa", "crates/java", "crates/mcmeta",
 ]
