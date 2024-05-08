@@ -8,7 +8,7 @@ pub struct Skin {
     pub url: String,
     pub variant: String,
     pub alias: Option<String>,
-    pub texture_key: String,
+    pub texture_key: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

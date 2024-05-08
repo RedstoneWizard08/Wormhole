@@ -27,11 +27,11 @@ pub struct LaunchOptions {
 
     /// The memory to launch with.
     /// Ex: 4096 (MB) for 4 GB
-    pub memory: u32,
+    pub memory: u64,
 }
 
 impl LaunchOptions {
-    pub fn new(auth: &MsaState, memory: u32) -> Self {
+    pub fn new(auth: &MsaState, memory: u64) -> Self {
         Self {
             launcher_name: "Wormhole".into(),
             launcher_version: env!("CARGO_PKG_VERSION").into(),

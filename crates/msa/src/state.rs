@@ -1,3 +1,9 @@
+use anyhow::Result;
+
+use crate::flow::do_auth;
+
+static mut MSA_STATE: MsaState = MsaState::const_default();
+
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct MsaState {
     /// The player's username.
@@ -14,4 +20,30 @@ pub struct MsaState {
 
     /// The player's XUID (Xbox User ID).
     pub xuid: String,
+}
+
+impl MsaState {
+    pub const fn const_default() -> Self {
+        Self {
+            player_name: String::new(),
+            uuid: String::new(),
+            access_token: String::new(),
+            xuid: String::new(),
+        }
+    }
+
+    pub fn get() -> Self {
+        unsafe { MSA_STATE.clone() }
+    }
+
+    pub fn set(new: MsaState) -> MsaState {
+        unsafe {
+            MSA_STATE = new;
+            MSA_STATE.clone()
+        }
+    }
+
+    pub async fn init() -> Result<MsaState> {
+        Ok(Self::set(do_auth().await?))
+    }
 }

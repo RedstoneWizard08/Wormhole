@@ -1,9 +1,13 @@
 use anyhow::Result;
 use base64::{engine::general_purpose::STANDARD, Engine};
 use data::instance::Instance;
+use msa::state::MsaState;
 use query::{curse::CurseForge, modrinth::Modrinth, source::Resolver};
+use tokio::process::Child;
 
 use crate::plugin::Plugin;
+
+use super::manager::MinecraftManager;
 
 pub const ICON_BYTES: &[u8] = include_bytes!("../../assets/minecraft/icon.svg");
 pub const BANNER_BYTES: &[u8] = include_bytes!("../../assets/minecraft/banner.jpg");
@@ -50,7 +54,9 @@ impl Plugin for MinecraftPlugin {
         ]
     }
 
-    async fn launch(&self, instance: Instance) -> Result<i32> {
-        Ok(-1)
+    async fn launch(&self, instance: Instance) -> Result<Child> {
+        let manager = MinecraftManager::load(instance.data_dir())?;
+
+        manager.launch(&MsaState::get(), &instance).await
     }
 }

@@ -23,6 +23,9 @@ pub mod register;
 pub mod res;
 pub mod tauri;
 
+#[cfg(test)]
+pub mod test_util;
+
 pub fn init() {
     register_defaults();
 }

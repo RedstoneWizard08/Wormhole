@@ -1,8 +1,8 @@
-use std::{env::consts::OS, path::PathBuf};
+use std::{env::consts::OS, fs, path::PathBuf};
 
 use anyhow::Result;
 use java::install::install_java;
-use whcore::{async_trait::async_trait, async_traits::AsyncDefault, manager::CORE_MANAGER};
+use whcore::{async_trait::async_trait, manager::CoreManager, traits::AsyncDefault};
 
 use crate::{
     download::DownloadCallbackFn,
@@ -43,9 +43,8 @@ impl ModLoader {
     }
 
     pub async fn forge_latest() -> Result<Self> {
-        let vers = get_forge_versions().await?;
-        let ver = vers.first().unwrap();
-        let (mc, ver) = parse_forge_version(ver.to_string());
+        let ver = get_forge_versions().await?.versioning.latest;
+        let (mc, _) = parse_forge_version(ver.to_string());
 
         Ok(Self::Forge(mc, ver))
     }
@@ -58,8 +57,7 @@ impl ModLoader {
     }
 
     pub async fn neo_latest() -> Result<Self> {
-        let vers = get_neoforge_versions().await?;
-        let ver = vers.first().unwrap();
+        let (_, ver) = get_neoforge_versions().await?;
         let (mc, ver) = parse_neoforge_version(ver.to_string());
 
         Ok(Self::NeoForge(mc, ver))
@@ -111,36 +109,95 @@ impl ModLoader {
         callback: &Option<DownloadCallbackFn>,
     ) -> Result<()> {
         self.install(
-            dir.join("libraries"),
-            dir.join("tmp"),
-            dir.join("assets"),
+            &dir.join("libraries"),
+            &dir.join("natives"),
+            &dir.join("tmp"),
+            &dir.join("assets"),
             callback,
         )
         .await
     }
 
+    pub fn id(&self) -> String {
+        match self {
+            Self::Vanilla(v) => format!("vanilla+{}", v),
+            Self::Fabric(mc, ver) => format!("fabric+{}+{}", mc, ver),
+            Self::Quilt(mc, ver) => format!("quilt+{}+{}", mc, ver),
+            Self::Forge(mc, ver) => format!("forge+{}+{}", mc, ver),
+            Self::NeoForge(mc, ver) => format!("neoforge+{}+{}", mc, ver),
+        }
+    }
+
+    fn get_installed_versions() -> Result<Vec<String>> {
+        Ok(serde_json::from_str(&fs::read_to_string(
+            CoreManager::get()
+                .game_data_dir("minecraft")
+                .join("installed_versions.json"),
+        )?)?)
+    }
+
+    fn get_or_create_installed_versions() -> Result<Vec<String>> {
+        if CoreManager::get()
+            .game_data_dir("minecraft")
+            .join("installed_versions.json")
+            .exists()
+        {
+            Self::get_installed_versions()
+        } else {
+            Self::write_installed_versions(Vec::new())
+        }
+    }
+
+    fn write_installed_versions(data: Vec<String>) -> Result<Vec<String>> {
+        fs::write(
+            CoreManager::get()
+                .game_data_dir("minecraft")
+                .join("installed_versions.json"),
+            serde_json::to_string(&data)?,
+        )?;
+
+        Ok(data)
+    }
+
     pub async fn install(
         &self,
-        lib_dir: PathBuf,
-        tmp_dir: PathBuf,
-        assets_dir: PathBuf,
+        lib_dir: &PathBuf,
+        natives_dir: &PathBuf,
+        tmp_dir: &PathBuf,
+        assets_dir: &PathBuf,
         callback: &Option<DownloadCallbackFn>,
     ) -> Result<()> {
+        let mut vers = Self::get_or_create_installed_versions()?;
+
+        if vers.contains(&self.id()) {
+            return Ok(());
+        }
+
         let java = self.install_java().await?;
 
-        install_minecraft(&lib_dir, &assets_dir, self.mc_version(), callback).await?;
+        install_minecraft(
+            &lib_dir,
+            &natives_dir,
+            &assets_dir,
+            self.mc_version(),
+            callback,
+        )
+        .await?;
 
         match self.clone() {
             ModLoader::Forge(_, ver) => {
-                install_forge(java, lib_dir, tmp_dir, ver, callback).await?
+                install_forge(&java, lib_dir, tmp_dir, ver, callback).await?
             }
 
             ModLoader::NeoForge(_, ver) => {
-                install_neoforge(java, lib_dir, tmp_dir, ver, callback).await?
+                install_neoforge(&java, lib_dir, tmp_dir, ver, callback).await?
             }
 
-            _ => download_libs(lib_dir, self.get_manifest().await?, callback).await?,
+            _ => download_libs(lib_dir, &self.get_manifest().await?, callback).await?,
         };
+
+        vers.push(self.id());
+        Self::write_installed_versions(vers)?;
 
         Ok(())
     }
@@ -151,7 +208,10 @@ impl ModLoader {
 
     pub async fn install_java(&self) -> Result<PathBuf> {
         let java = self.get_java_version().await?;
-        let dir = CORE_MANAGER.game_data_dir("java").join(java.to_string());
+
+        let dir = CoreManager::get()
+            .game_data_dir("java")
+            .join(java.to_string());
 
         install_java(&dir, java).await?;
 
@@ -162,7 +222,7 @@ impl ModLoader {
     }
 
     pub async fn cmd(&self, root: PathBuf, opts: LaunchOptions) -> Result<Vec<String>> {
-        Ok(build_launch_command(self.install_java().await?, root, self, opts).await?)
+        Ok(build_launch_command(&self.install_java().await?, &root, self, opts).await?)
     }
 }
 

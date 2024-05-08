@@ -57,9 +57,9 @@ pub struct Sided<T> {
 }
 
 pub async fn install_forge(
-    java: PathBuf,
-    lib_dir: PathBuf,
-    tmp_dir: PathBuf,
+    java: &PathBuf,
+    lib_dir: &PathBuf,
+    tmp_dir: &PathBuf,
     version: impl AsRef<str>,
     callback: &Option<DownloadCallbackFn>,
 ) -> Result<()> {
@@ -68,7 +68,7 @@ pub async fn install_forge(
     let profile = get_forge_install_profile(&version).await?;
 
     extract_forge_installer(&tmp_dir, &version).await?;
-    download_libs(&lib_dir, manifest.resolve().await?, &callback).await?;
+    download_libs(&lib_dir, &manifest.resolve().await?, &callback).await?;
     download_lib_refs(&lib_dir, profile.libraries.clone(), &callback).await?;
 
     for proc in profile.processors.clone() {

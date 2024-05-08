@@ -16,3 +16,4 @@ tauri.workspace = true
 specta.workspace = true
 serde.workspace = true
 async-trait.workspace = true
+sysinfo.workspace = true

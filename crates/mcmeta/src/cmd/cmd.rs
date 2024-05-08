@@ -7,8 +7,8 @@ use crate::piston::get_features;
 use super::{args::fix_args, modded::ModLoader, options::LaunchOptions};
 
 pub async fn build_launch_command(
-    java: PathBuf,
-    root: PathBuf,
+    java: &PathBuf,
+    root: &PathBuf,
     loader: &ModLoader,
     opts: LaunchOptions,
 ) -> Result<Vec<String>> {

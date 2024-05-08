@@ -1,7 +1,13 @@
 use anyhow::{anyhow, Result};
 
 use crate::{
-    mc::do_mc_auth, microsoft::{get_auth_token, msa_code}, profile::get_profile, state::MsaState, verify::has_ownership, xbox::do_xbox_auth, xsts::do_xsts_auth
+    mc::do_mc_auth,
+    microsoft::{get_auth_token, msa_code},
+    profile::get_profile,
+    state::MsaState,
+    verify::has_ownership,
+    xbox::do_xbox_auth,
+    xsts::do_xsts_auth,
 };
 
 pub async fn do_auth() -> Result<MsaState> {

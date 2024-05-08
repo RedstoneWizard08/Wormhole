@@ -9,7 +9,7 @@ use api::{
 use wormhole_gui::{ctx, invoker};
 
 pub fn main() -> Result<()> {
-    let db = init::boot(None)?;
+    let db = init::boot(&None)?;
 
     tauri::Builder::default()
         .plugin(TauriPlugin::new(Kerbal1Plugin::new())?)

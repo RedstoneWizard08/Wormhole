@@ -5,6 +5,8 @@ use super::cond::ConditionalValue;
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GameArgs {
     pub game: Vec<StringOrStruct<ConditionalValue>>,
+
+    #[serde(default)]
     pub jvm: Vec<StringOrStruct<ConditionalValue>>,
 }
 

@@ -30,14 +30,14 @@ pub async fn test_lib_dl() -> Result<()> {
 
     download_libs(
         &root,
-        get_game_manifest(all.find("1.20.4").unwrap().url).await?,
+        &get_game_manifest(all.find("1.20.4").unwrap().url).await?,
         &Some(Box::new(library_download_callback)),
     )
     .await?;
 
     download_libs(
         root,
-        get_game_manifest(all.find("rd-132211").unwrap().url).await?,
+        &get_game_manifest(all.find("rd-132211").unwrap().url).await?,
         &Some(Box::new(library_download_callback)),
     )
     .await?;
@@ -87,7 +87,7 @@ pub async fn test_inherited_manifest() -> Result<()> {
 
     download_libs(
         &lib_root,
-        serde_json::from_str::<InheritedGameManifest>(include_str!(
+        &serde_json::from_str::<InheritedGameManifest>(include_str!(
             "./test_data/inherited_manifest.json"
         ))?
         .resolve()
@@ -98,7 +98,7 @@ pub async fn test_inherited_manifest() -> Result<()> {
 
     download_libs(
         &lib_root,
-        serde_json::from_str::<InheritedGameManifest>(include_str!(
+        &serde_json::from_str::<InheritedGameManifest>(include_str!(
             "./test_data/inherited_manifest_neo.json"
         ))?
         .resolve()
@@ -109,7 +109,7 @@ pub async fn test_inherited_manifest() -> Result<()> {
 
     download_libs(
         &lib_root,
-        serde_json::from_str::<InheritedGameManifest>(include_str!(
+        &serde_json::from_str::<InheritedGameManifest>(include_str!(
             "./test_data/inherited_manifest_neo_new.json"
         ))?
         .resolve()

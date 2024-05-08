@@ -2,6 +2,7 @@ use anyhow::Result;
 use base64::{engine::general_purpose::STANDARD, Engine};
 use data::instance::Instance;
 use query::{ckan::Ckan, source::Resolver, spacedock::SpaceDock};
+use tokio::process::Child;
 
 use crate::plugin::Plugin;
 
@@ -56,7 +57,7 @@ impl Plugin for Kerbal2Plugin {
         ]
     }
 
-    async fn launch(&self, instance: Instance) -> Result<i32> {
-        Ok(-1)
+    async fn launch(&self, instance: Instance) -> Result<Child> {
+        todo!()
     }
 }

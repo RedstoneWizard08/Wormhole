@@ -26,4 +26,8 @@ const_format.workspace = true
 serde_json.workspace = true
 mcmeta.workspace = true
 msa.workspace = true
+tokio.workspace = true
+java.workspace = true
 
+[dev-dependencies]
+indicatif.workspace = true

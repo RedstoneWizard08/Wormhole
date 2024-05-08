@@ -42,7 +42,7 @@ pub async fn test_forge_processor_cmd_works() -> Result<()> {
 
     download_libs(
         &lib_dir,
-        manifest.resolve().await?,
+        &manifest.resolve().await?,
         &Some(Box::new(library_download_callback)),
     )
     .await?;

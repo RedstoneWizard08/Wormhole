@@ -1,15 +1,19 @@
 use std::{fs, path::PathBuf};
 
 use dirs::data_local_dir;
+use sysinfo::System;
 
 pub const WORMHOLE_DIR_NAME: &str = "Wormhole";
-pub const CORE_MANAGER: CoreManager = CoreManager::new();
+pub static mut CORE_MANAGER: CoreManager = CoreManager::new();
 
-pub struct CoreManager;
+#[derive(Debug, Clone, Copy)]
+pub struct CoreManager {
+    mem: u64,
+}
 
 impl CoreManager {
     pub const fn new() -> Self {
-        Self
+        Self { mem: 0 }
     }
 
     pub fn init(&self) {
@@ -55,5 +59,30 @@ impl CoreManager {
 
     pub fn game_temp_dir(&self, game: impl AsRef<str>) -> PathBuf {
         self.temp_dir().join(game.as_ref())
+    }
+
+    fn mem_(&mut self) -> u64 {
+        if self.mem == 0 {
+            self.mem = (System::new_all().total_memory() / 8).max(4096).min(8192);
+        }
+
+        self.mem
+    }
+
+    fn set_mem_(&mut self, mem: u64) -> u64 {
+        self.mem = mem;
+        self.mem
+    }
+
+    pub fn mem() -> u64 {
+        unsafe { CORE_MANAGER.mem_() }
+    }
+
+    pub fn set_mem(mem: u64) -> u64 {
+        unsafe { CORE_MANAGER.set_mem_(mem) }
+    }
+
+    pub fn get() -> Self {
+        unsafe { CORE_MANAGER }
     }
 }

@@ -3,7 +3,7 @@ pub mod finder;
 pub mod manager;
 pub mod messaging;
 pub mod state;
-pub mod async_traits;
+pub mod traits;
 
 #[macro_use]
 extern crate serde;

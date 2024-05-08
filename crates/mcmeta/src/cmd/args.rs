@@ -1,8 +1,11 @@
 use std::{collections::HashSet, path::PathBuf};
 
+use whcore::manager::CoreManager;
+
 use crate::{
     cmd_string_fix,
     forge::processor::resolve_jar,
+    maven::coord::MavenCoordinate,
     piston::{game::manifest::GameManifest, get_features},
 };
 
@@ -12,16 +15,27 @@ pub fn fix_argument(
     arg: impl AsRef<str>,
     game_dir: &PathBuf,
     profile: &GameManifest,
-    _loader: &ModLoader,
+    loader: &ModLoader,
     opts: &LaunchOptions,
 ) -> String {
     let mut arg = arg.as_ref().to_string();
 
-    let libs_dir = game_dir.join("libraries");
-    let assets_dir = game_dir.join("assets");
-    let natives_dir = game_dir.join("natives");
-
+    let mc_dir = CoreManager::get().game_data_dir("minecraft");
+    let libs_dir = mc_dir.join("libraries");
+    let assets_dir = mc_dir.join("assets").join(loader.mc_version());
+    let natives_dir = mc_dir.join("natives");
     let mut classpath = Vec::new();
+
+    classpath.push(
+        libs_dir
+            .join(
+                MavenCoordinate::from(format!("net.minecraft:client:{}", loader.mc_version()))
+                    .path(),
+            )
+            .to_str()
+            .unwrap()
+            .to_string(),
+    );
 
     for lib in &profile.libraries {
         if !lib.should_download(&get_features()) {

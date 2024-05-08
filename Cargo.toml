@@ -82,6 +82,7 @@ serial_test = "3.1.0"
 quick-xml = { version = "0.31.0", features = ["serialize", "serde-types"] }
 proguard = "5.4.1"
 which = "6.0.1"
+sysinfo = "0.30.12"
 
 tauri-specta = { git = "https://github.com/oscartbeaumont/tauri-specta", features = ["typescript"] }
 tungstenite = { features = ["rustls"], git = "https://github.com/snapview/tungstenite-rs", version = "0.20.1", rev = "fc17f73" }

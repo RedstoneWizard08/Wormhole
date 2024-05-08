@@ -38,7 +38,7 @@ pub fn parse_neoforge_version(ver: String) -> (String, String) {
     }
 }
 
-pub async fn get_neoforge_versions() -> Result<Vec<String>> {
+pub async fn get_neoforge_versions() -> Result<(Vec<String>, String)> {
     let forge = get_metadata(NEOFORGE_MAVEN, "net.neoforged:neoforge").await?;
     let neo = get_metadata(NEOFORGE_MAVEN, "net.neoforged:neoforge").await?;
     let mut all = Vec::new();
@@ -46,7 +46,7 @@ pub async fn get_neoforge_versions() -> Result<Vec<String>> {
     all.extend(forge.versioning.versions);
     all.extend(neo.versioning.versions);
 
-    Ok(all)
+    Ok((all, neo.versioning.latest))
 }
 
 pub fn get_neoforge_installer(version: impl AsRef<str>) -> MavenArtifact {

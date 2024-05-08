@@ -13,7 +13,7 @@ use anyhow::Result;
 use zip::ZipArchive;
 
 use crate::{
-    maven::{artifact::MavenArtifact, get_metadata},
+    maven::{artifact::MavenArtifact, get_metadata, metadata::MavenMetadata},
     piston::game::inherit::InheritedGameManifest,
 };
 
@@ -29,8 +29,8 @@ pub fn parse_forge_version(ver: impl AsRef<str>) -> (String, String) {
     (mc, forge)
 }
 
-pub async fn get_forge_versions() -> Result<Vec<String>> {
-    Ok(get_metadata(FORGE_MAVEN, "net.minecraftforge:forge").await?.versioning.versions)
+pub async fn get_forge_versions() -> Result<MavenMetadata> {
+    Ok(get_metadata(FORGE_MAVEN, "net.minecraftforge:forge").await?)
 }
 
 pub fn get_forge_installer(version: impl AsRef<str>) -> MavenArtifact {

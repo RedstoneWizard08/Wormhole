@@ -12,12 +12,12 @@ use zip::ZipArchive;
 
 use crate::{get_release_url, Arch, OperatingSystem};
 
-pub async fn install_java(dir: &PathBuf, version: i32) -> Result<()> {
+pub async fn install_java(dir: &PathBuf, version: i32) -> Result<PathBuf> {
     let ext = if OS == "windows" { ".exe" } else { "" };
     let bin = dir.join("bin").join(format!("java{}", ext));
 
     if bin.exists() {
-        return Ok(());
+        return Ok(bin);
     }
 
     let url = get_release_url(version, OperatingSystem::detect(), Arch::detect()).await?;
@@ -74,5 +74,5 @@ pub async fn install_java(dir: &PathBuf, version: i32) -> Result<()> {
         }
     }
 
-    Ok(())
+    Ok(bin)
 }

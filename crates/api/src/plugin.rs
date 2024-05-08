@@ -4,6 +4,7 @@ use data::{
     source::{SourceMapping, Sources},
 };
 use query::source::Resolver;
+use tokio::process::Child;
 
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize, Type)]
 pub struct PluginInfo {
@@ -79,5 +80,5 @@ pub trait Plugin: Send + Sync {
         }
     }
 
-    async fn launch(&self, instance: Instance) -> Result<i32>;
+    async fn launch(&self, instance: Instance) -> Result<Child>;
 }
