@@ -16,13 +16,6 @@ jobs:
 
             - name: install Rust nightly
               uses: dtolnay/rust-toolchain@nightly
-            
-            - name: Install cargo-binstall
-              uses: cargo-bins/cargo-binstall@main
-            
-            - name: Install cargo-tauri
-              run: |
-                cargo install tauri-cli
 
             - name: Install system dependencies
               run: |
@@ -54,7 +47,7 @@ jobs:
                       See the assets to download this version and install.
                   releaseDraft: false
                   prerelease: true
-                  tauriScript: cargo tauri
+                  tauriScript: pnpm -C apps/gui tauri
                   projectPath: apps/gui
 
     # publish-tauri-arm64:
