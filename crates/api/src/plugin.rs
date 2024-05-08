@@ -1,4 +1,8 @@
-use data::source::{SourceMapping, Sources};
+use anyhow::Result;
+use data::{
+    instance::Instance,
+    source::{SourceMapping, Sources},
+};
 use query::source::Resolver;
 
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize, Type)]
@@ -74,4 +78,6 @@ pub trait Plugin: Send + Sync {
                 .collect::<Vec<_>>(),
         }
     }
+
+    async fn launch(&self, instance: Instance) -> Result<i32>;
 }

@@ -103,8 +103,10 @@ install = { path = "./crates/install" }
 axumite = { path = "./crates/axumite" }
 glue = { path = "./crates/glue" }
 midlog = { path = "./crates/midlog" }
+java = { path = "./crates/java" }
 macros = { path = "./crates/macros" }
 msa = { path = "./crates/msa" }
+mcmeta = { path = "./crates/mcmeta" }
 
 [workspace]
 resolver = "2"

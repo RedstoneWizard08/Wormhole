@@ -8,6 +8,7 @@ use crate::{
     maven::{
         artifact::MavenArtifact, coord::MavenCoordinate, get_metadata, metadata::MavenMetadata,
     },
+    piston::game::inherit::InheritedGameManifest,
 };
 
 pub const FABRIC_MAVEN: &str = "https://maven.fabricmc.net";
@@ -43,4 +44,18 @@ pub async fn get_fabric_launchwrapper(version: impl AsRef<str>) -> Result<Launch
     let url = coord.url(FABRIC_MAVEN);
 
     Ok(reqwest::get(url).await?.json().await?)
+}
+
+pub async fn get_fabric_profile(
+    mc_version: impl AsRef<str>,
+    fabric_version: impl AsRef<str>,
+) -> Result<InheritedGameManifest> {
+    Ok(reqwest::get(format!(
+        "https://meta.fabricmc.net/v2/versions/loader/{}/{}/profile/json",
+        mc_version.as_ref(),
+        fabric_version.as_ref()
+    ))
+    .await?
+    .json()
+    .await?)
 }

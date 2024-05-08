@@ -12,7 +12,6 @@ use crate::{
 use anyhow::Result;
 use data::source::{Source, Sources};
 use furse::Furse;
-use whcore::get_cache_dir;
 
 use self::query::QueryResult;
 

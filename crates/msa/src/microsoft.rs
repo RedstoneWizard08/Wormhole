@@ -14,7 +14,9 @@ use crate::msa_token::MsaTokenResponse;
 /// The port for MSA auth redirect.
 /// This will be for the local server at http://localhost:[port]/callback
 /// This was determined by combining the ASCII codes for W (87) and H (72)
-pub const MSA_REDIRECT_PORT: u32 = 8772;
+// pub const MSA_REDIRECT_PORT: u32 = 8772;
+// Used for testing.
+pub const MSA_REDIRECT_PORT: u32 = 4000;
 
 /// Wormhole's client ID for MSA.
 pub const MSA_CLIENT_ID: &str = "61f104b9-3b1c-49bb-b0b8-2bb1f42f581c";
@@ -35,7 +37,8 @@ pub fn msa_code() -> Result<String> {
         ("client_id", MSA_CLIENT_ID),
         (
             "redirect_uri",
-            &format!("http://localhost:{}/callback", MSA_REDIRECT_PORT),
+            // &format!("http://localhost:{}/callback", MSA_REDIRECT_PORT),
+            "https://dev.kadaroja.com/callback",
         ),
         ("response_type", "code"),
         ("response_mode", "query"),
@@ -139,7 +142,8 @@ pub async fn get_auth_token(code: impl AsRef<str>) -> Result<String> {
             ("scope", "XboxLive.signin"),
             (
                 "redirect_uri",
-                &format!("http://localhost:{}/callback", MSA_REDIRECT_PORT),
+                // &format!("http://localhost:{}/callback", MSA_REDIRECT_PORT),
+                "https://dev.kadaroja.com/callback",
             ),
         ]))
         .send()

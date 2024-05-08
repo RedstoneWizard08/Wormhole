@@ -14,3 +14,5 @@ rand.workspace = true
 keyvalues-parser.workspace = true
 tauri.workspace = true
 specta.workspace = true
+serde.workspace = true
+async-trait.workspace = true

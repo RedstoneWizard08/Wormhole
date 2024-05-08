@@ -9,6 +9,7 @@ pub async fn extract_neoforge_installer(tmp_dir: &PathBuf, version: impl AsRef<s
     let url = get_neoforge_installer(version)
         .coordinate()
         .url(NEOFORGE_MAVEN);
+
     let bytes = reqwest::get(url).await?.bytes().await?;
     let cursor = Cursor::new(bytes);
     let mut zip = ZipArchive::new(cursor)?;

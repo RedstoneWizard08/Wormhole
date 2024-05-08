@@ -21,6 +21,6 @@ impl Asset {
     }
 }
 
-pub async fn get_asset_index(url: String) -> Result<AssetIndex> {
-    Ok(reqwest::get(url).await?.json().await?)
+pub async fn get_asset_index(url: impl AsRef<str>) -> Result<AssetIndex> {
+    Ok(reqwest::get(url.as_ref()).await?.json().await?)
 }

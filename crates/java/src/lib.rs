@@ -1,3 +1,7 @@
+pub mod install;
+
+use std::env::consts::{ARCH, OS};
+
 use anyhow::Result;
 use reqwest::Client;
 use serde_json::Value;
@@ -15,6 +19,18 @@ pub enum OperatingSystem {
     Mac,
 }
 
+impl OperatingSystem {
+    pub fn detect() -> Self {
+        match OS {
+            "linux" => Self::Linux,
+            "macos" => Self::Mac,
+            "windows" => Self::Windows,
+
+            _ => unimplemented!(),
+        }
+    }
+}
+
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, EnumString, Display)]
 pub enum Arch {
     #[strum(serialize = "x64")]
@@ -28,6 +44,19 @@ pub enum Arch {
 
     #[strum(serialize = "arm")]
     Arm,
+}
+
+impl Arch {
+    pub fn detect() -> Self {
+        match ARCH {
+            "x86_64" => Self::Amd64,
+            "x86" => Self::I686,
+            "arm" => Self::Arm,
+            "aarch64" => Self::Arm64,
+
+            _ => unimplemented!(),
+        }
+    }
 }
 
 pub async fn get_release_name(java: i32, os: OperatingSystem, arch: Arch) -> Result<String> {

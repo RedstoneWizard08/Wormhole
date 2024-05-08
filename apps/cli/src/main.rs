@@ -1,14 +1,9 @@
 #![allow(unused)]
 
-use std::env;
-
 use clap::{CommandFactory, Parser};
+use std::env;
 use tokio::main;
-
-use cli::{Cli, Commands};
-
-pub mod auth;
-pub mod cli;
+use wormhole_cli::cli::{Cli, Commands};
 
 #[main]
 pub async fn main() {

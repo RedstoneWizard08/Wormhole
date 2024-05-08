@@ -31,14 +31,14 @@ pub async fn test_lib_dl() -> Result<()> {
     download_libs(
         &root,
         get_game_manifest(all.find("1.20.4").unwrap().url).await?,
-        Some(Box::new(library_download_callback)),
+        &Some(Box::new(library_download_callback)),
     )
     .await?;
 
     download_libs(
         root,
         get_game_manifest(all.find("rd-132211").unwrap().url).await?,
-        Some(Box::new(library_download_callback)),
+        &Some(Box::new(library_download_callback)),
     )
     .await?;
 
@@ -60,7 +60,7 @@ pub async fn test_assets_dl() -> Result<()> {
                 .url,
         )
         .await?,
-        Some(Box::new(asset_download_callback)),
+        &Some(Box::new(asset_download_callback)),
     )
     .await?;
 
@@ -73,7 +73,7 @@ pub async fn test_assets_dl() -> Result<()> {
                 .url,
         )
         .await?,
-        Some(Box::new(asset_download_callback)),
+        &Some(Box::new(asset_download_callback)),
     )
     .await?;
 
@@ -92,7 +92,7 @@ pub async fn test_inherited_manifest() -> Result<()> {
         ))?
         .resolve()
         .await?,
-        Some(Box::new(library_download_callback)),
+        &Some(Box::new(library_download_callback)),
     )
     .await?;
 
@@ -103,7 +103,7 @@ pub async fn test_inherited_manifest() -> Result<()> {
         ))?
         .resolve()
         .await?,
-        Some(Box::new(library_download_callback)),
+        &Some(Box::new(library_download_callback)),
     )
     .await?;
 
@@ -114,7 +114,7 @@ pub async fn test_inherited_manifest() -> Result<()> {
         ))?
         .resolve()
         .await?,
-        Some(Box::new(library_download_callback)),
+        &Some(Box::new(library_download_callback)),
     )
     .await?;
 

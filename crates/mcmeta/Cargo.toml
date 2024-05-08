@@ -21,10 +21,13 @@ lazy_static.workspace = true
 quick-xml.workspace = true
 zip.workspace = true
 proguard.workspace = true
+which.workspace = true
+whcore.workspace = true
+java.workspace = true
+msa.workspace = true
 
 [dev-dependencies]
 indicatif.workspace = true
 rayon.workspace = true
 futures.workspace = true
 serial_test.workspace = true
-which.workspace = true

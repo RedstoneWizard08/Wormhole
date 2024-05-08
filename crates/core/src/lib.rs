@@ -1,29 +1,22 @@
+pub mod config;
 pub mod finder;
+pub mod manager;
 pub mod messaging;
 pub mod state;
+pub mod async_traits;
 
-use dirs::data_local_dir;
+#[macro_use]
+extern crate serde;
+
+pub extern crate async_trait;
+
 use rand::{distributions::Alphanumeric, thread_rng, Rng};
 use specta::TypeMap;
 use std::{
     fs::{copy, create_dir_all, read_dir, rename},
     io::Result,
-    path::{Path, PathBuf},
+    path::Path,
 };
-
-pub const WORMHOLE_DIR_NAME: &str = "Wormhole";
-
-pub fn get_wormhole_dir() -> PathBuf {
-    data_local_dir().unwrap().join(WORMHOLE_DIR_NAME)
-}
-
-pub fn get_data_dir() -> PathBuf {
-    get_wormhole_dir().join("data")
-}
-
-pub fn get_cache_dir() -> PathBuf {
-    get_wormhole_dir().join("cache")
-}
 
 pub fn copy_dir_all(src: impl AsRef<Path>, dst: impl AsRef<Path>) -> Result<()> {
     create_dir_all(&dst)?;

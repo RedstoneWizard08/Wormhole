@@ -188,6 +188,8 @@ dependencies = [
  "const_format",
  "data",
  "lazy_static",
+ "mcmeta",
+ "msa",
  "query",
  "serde",
  "serde_json",
@@ -3086,12 +3088,15 @@ name = "java"
 version = "2.0.0"
 dependencies = [
  "anyhow 1.0.81",
+ "flate2",
  "reqwest 0.12.4",
  "serde",
  "serde_json",
  "strum 0.26.2",
  "strum_macros 0.26.2",
+ "tar",
  "tokio 1.37.0",
+ "zip",
 ]
 
 [[package]]
@@ -3472,7 +3477,9 @@ dependencies = [
  "base64 0.22.0",
  "futures",
  "indicatif",
+ "java",
  "lazy_static",
+ "msa",
  "proguard",
  "quick-xml 0.31.0",
  "rayon",
@@ -3484,6 +3491,7 @@ dependencies = [
  "sha-1",
  "tokio 1.37.0",
  "tokio-stream",
+ "whcore",
  "which",
  "zip",
 ]
@@ -7299,9 +7307,11 @@ name = "whcore"
 version = "2.0.0"
 dependencies = [
  "anyhow 1.0.81",
+ "async-trait",
  "dirs",
  "keyvalues-parser",
  "rand 0.8.5",
+ "serde",
  "specta",
  "tauri",
 ]

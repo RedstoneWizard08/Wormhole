@@ -1,4 +1,6 @@
+use anyhow::Result;
 use base64::{engine::general_purpose::STANDARD, Engine};
+use data::instance::Instance;
 use query::{curse::CurseForge, modrinth::Modrinth, source::Resolver};
 
 use crate::plugin::Plugin;
@@ -46,5 +48,9 @@ impl Plugin for MinecraftPlugin {
             Box::new(CurseForge::new().await),
             Box::new(Modrinth::new().await),
         ]
+    }
+
+    async fn launch(&self, instance: Instance) -> Result<i32> {
+        Ok(-1)
     }
 }

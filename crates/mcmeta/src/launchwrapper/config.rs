@@ -11,6 +11,8 @@ pub struct LaunchWrapperConfig {
     pub min_java_version: u32,
     pub libraries: LaunchWrapperLibs,
     pub arguments: Option<LaunchWrapperArgs>,
+
+    // Tweakers. Lovely.
     pub launchwrapper: Option<TweakerConfig>,
 
     // Why is this camelCase and everything else isn't? Excuse me, consistency?

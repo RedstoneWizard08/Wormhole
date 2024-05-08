@@ -19,7 +19,6 @@ use ferinth::{
     Ferinth,
 };
 use furse::Furse;
-use whcore::get_cache_dir;
 
 pub struct Modrinth {
     client: Ferinth,

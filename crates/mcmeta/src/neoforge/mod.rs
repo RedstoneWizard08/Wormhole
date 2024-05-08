@@ -11,6 +11,7 @@ use crate::{
 pub const NEOFORGE_MAVEN: &str = "https://maven.neoforged.net";
 
 pub mod extract;
+pub mod install;
 pub mod profile;
 pub mod util;
 
@@ -68,6 +69,7 @@ pub async fn get_neoforge_manifest(version: impl AsRef<str>) -> Result<Inherited
     let url = get_neoforge_installer(version)
         .coordinate()
         .url(NEOFORGE_MAVEN);
+
     let bytes = reqwest::get(url).await?.bytes().await?;
     let cursor = Cursor::new(bytes);
     let mut zip = ZipArchive::new(cursor)?;

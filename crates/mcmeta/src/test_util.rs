@@ -26,9 +26,9 @@ pub fn library_download_callback(
         .parent()
         .unwrap()
         .file_name()
-        .unwrap()
+        .unwrap_or_default()
         .to_str()
-        .unwrap()
+        .unwrap_or_default()
         .to_string();
 
     if start {

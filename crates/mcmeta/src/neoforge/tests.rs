@@ -41,7 +41,7 @@ pub async fn test_neoforge_processor_cmd_works() -> Result<()> {
     download_libs(
         &lib_dir,
         manifest.resolve().await?,
-        Some(Box::new(library_download_callback)),
+        &Some(Box::new(library_download_callback)),
     )
     .await?;
 
@@ -51,7 +51,7 @@ pub async fn test_neoforge_processor_cmd_works() -> Result<()> {
     download_lib_refs(
         &lib_dir,
         profile.libraries.clone(),
-        Some(Box::new(library_download_callback)),
+        &Some(Box::new(library_download_callback)),
     )
     .await?;
 

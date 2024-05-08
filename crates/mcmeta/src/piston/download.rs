@@ -38,7 +38,7 @@ pub async fn download_minecraft_jar(path: PathBuf, version: impl AsRef<str>) -> 
 pub async fn download_libs(
     root: impl Into<PathBuf>,
     game: GameManifest,
-    callback: Option<DownloadCallbackFn>,
+    callback: &Option<DownloadCallbackFn>,
 ) -> Result<()> {
     let root = root.into();
 
@@ -53,7 +53,7 @@ pub async fn download_libs(
                 artifact.url,
                 artifact.path,
                 Some(artifact.sha1),
-                &callback,
+                callback,
             )
             .await?;
         }
@@ -66,11 +66,24 @@ pub async fn download_libs(
                         artifact.url,
                         artifact.path,
                         Some(artifact.sha1),
-                        &callback,
+                        callback,
                     )
                     .await?;
                 }
             }
+        }
+    }
+
+    if let Some(config) = &game.logging {
+        if let Some(client) = &config.client {
+            download_file(
+                &root,
+                &client.file.url,
+                &client.file.id,
+                Some(&client.file.sha1),
+                callback,
+            )
+            .await?;
         }
     }
 
@@ -80,7 +93,7 @@ pub async fn download_libs(
 pub async fn download_lib_refs(
     root: impl Into<PathBuf>,
     libs: Vec<LibraryRef>,
-    callback: Option<DownloadCallbackFn>,
+    callback: &Option<DownloadCallbackFn>,
 ) -> Result<()> {
     let root = root.into();
 
@@ -95,7 +108,7 @@ pub async fn download_lib_refs(
                 artifact.url,
                 artifact.path,
                 Some(artifact.sha1),
-                &callback,
+                callback,
             )
             .await?;
         }
@@ -108,7 +121,7 @@ pub async fn download_lib_refs(
                         artifact.url,
                         artifact.path,
                         Some(artifact.sha1),
-                        &callback,
+                        callback,
                     )
                     .await?;
                 }
@@ -122,7 +135,7 @@ pub async fn download_lib_refs(
 pub async fn download_assets(
     root: impl Into<PathBuf>,
     index: AssetIndex,
-    callback: Option<DownloadCallbackFn>,
+    callback: &Option<DownloadCallbackFn>,
 ) -> Result<()> {
     let root = root.into();
     let len = index.objects.len() as u64;
@@ -134,6 +147,7 @@ pub async fn download_assets(
 
     for (path, asset) in index.objects {
         download_file(&root, asset.url(), path, Option::<String>::None, &None).await?;
+
         count += 1;
 
         if let Some(callback) = &callback {

@@ -9,7 +9,7 @@ use crate::{
 use anyhow::Result;
 use ckandex::{kref::KrefResolver, refresh_data, CacheClient, IdFilter, NameFilter, Query, KSP};
 use data::source::{Source, Sources};
-use whcore::get_cache_dir;
+use whcore::manager::CORE_MANAGER;
 
 pub struct Ckan {
     client: CacheClient,
@@ -25,7 +25,7 @@ impl WithToken for Ckan {
 #[async_trait]
 impl Resolver for Ckan {
     async fn new() -> Self {
-        let mut client = CacheClient::new(get_cache_dir().join("ckandex"));
+        let mut client = CacheClient::new(CORE_MANAGER.game_cache_dir("ckandex"));
 
         client.refresh().await;
         client.update_cache().await.unwrap();
@@ -37,7 +37,7 @@ impl Resolver for Ckan {
     }
 
     async fn new_with_token(token: String) -> Self {
-        let mut client = CacheClient::new(get_cache_dir().join("ckandex"));
+        let mut client = CacheClient::new(CORE_MANAGER.game_cache_dir("ckandex"));
 
         client.refresh().await;
         client.update_cache().await.unwrap();

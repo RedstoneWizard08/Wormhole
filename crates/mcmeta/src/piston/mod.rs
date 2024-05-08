@@ -4,6 +4,7 @@ pub mod assets;
 pub mod classpath;
 pub mod download;
 pub mod game;
+pub mod install;
 pub mod manifest;
 
 #[cfg(test)]
