@@ -22,7 +22,7 @@ jobs:
             
             - name: Install cargo-tauri
               run: |
-                cargo binstall cargo-tauri -y
+                cargo install tauri-cli
 
             - name: Install system dependencies
               run: |
