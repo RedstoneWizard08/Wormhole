@@ -40,6 +40,7 @@ jobs:
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
               with:
+                  working-directory: apps/gui
                   tagName: wormhole-dev-${{ steps.short-sha.outputs.sha }}
                   releaseName: "Wormhole (Dev) ${{ steps.short-sha.outputs.sha }}"
                   releaseBody: |
