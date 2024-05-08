@@ -39,7 +39,7 @@ pub async fn test_it_works() -> anyhow::Result<()> {
             .await?;
 
     mgr.install_loader(
-        &ModLoader::quilt_latest().await?,
+        &ModLoader::fabric_latest().await?,
         &Some(Box::new(library_download_callback)),
     )
     .await?;

@@ -2,7 +2,7 @@ use anyhow::Result;
 use base64::{engine::general_purpose::STANDARD, Engine};
 use data::instance::Instance;
 use query::{ckan::Ckan, source::Resolver, spacedock::SpaceDock};
-use tokio::process::Child;
+use tokio::process::{Child, Command};
 
 use crate::plugin::Plugin;
 
@@ -58,6 +58,6 @@ impl Plugin for Kerbal2Plugin {
     }
 
     async fn launch(&self, instance: Instance) -> Result<Child> {
-        todo!()
+        Ok(Command::new(instance.install_dir().join("KSP2_x64.exe")).spawn()?)
     }
 }

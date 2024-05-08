@@ -1,3 +1,5 @@
+pub mod intermediary;
+
 #[cfg(test)]
 pub mod tests;
 

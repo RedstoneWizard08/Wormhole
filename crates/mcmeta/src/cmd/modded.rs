@@ -18,7 +18,7 @@ use crate::{
         install::install_minecraft,
         manifest::get_manifest,
     },
-    quilt::{get_quilt_profile, get_quilt_versions},
+    quilt::{get_quilt_profile, get_quilt_versions, intermediary::download_intermediary},
 };
 
 use super::{cmd::build_launch_command, options::LaunchOptions};
@@ -191,6 +191,11 @@ impl ModLoader {
 
             ModLoader::NeoForge(_, ver) => {
                 install_neoforge(&java, lib_dir, tmp_dir, ver, callback).await?
+            }
+
+            ModLoader::Quilt(mc, _) => {
+                download_libs(lib_dir, &self.get_manifest().await?, callback).await?;
+                download_intermediary(lib_dir, mc, callback).await?
             }
 
             _ => download_libs(lib_dir, &self.get_manifest().await?, callback).await?,

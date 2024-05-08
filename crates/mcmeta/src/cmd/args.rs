@@ -1,5 +1,6 @@
 use std::{collections::HashSet, path::PathBuf};
 
+use anyhow::Result;
 use whcore::manager::CoreManager;
 
 use crate::{
@@ -7,17 +8,18 @@ use crate::{
     forge::processor::resolve_jar,
     maven::coord::MavenCoordinate,
     piston::{game::manifest::GameManifest, get_features},
+    quilt::intermediary::get_intermediary,
 };
 
 use super::{modded::ModLoader, options::LaunchOptions};
 
-pub fn fix_argument(
+pub async fn fix_argument(
     arg: impl AsRef<str>,
     game_dir: &PathBuf,
     profile: &GameManifest,
     loader: &ModLoader,
     opts: &LaunchOptions,
-) -> String {
+) -> Result<String> {
     let mut arg = arg.as_ref().to_string();
 
     let mc_dir = CoreManager::get().game_data_dir("minecraft");
@@ -26,16 +28,37 @@ pub fn fix_argument(
     let natives_dir = mc_dir.join("natives");
     let mut classpath = Vec::new();
 
-    classpath.push(
-        libs_dir
-            .join(
-                MavenCoordinate::from(format!("net.minecraft:client:{}", loader.mc_version()))
-                    .path(),
-            )
-            .to_str()
-            .unwrap()
-            .to_string(),
-    );
+    match loader.clone() {
+        ModLoader::Quilt(_, _) | ModLoader::Fabric(_, _) => {
+            classpath.push(
+                libs_dir
+                    .join(
+                        MavenCoordinate::from(format!(
+                            "net.minecraft:client:{}",
+                            loader.mc_version()
+                        ))
+                        .path(),
+                    )
+                    .to_str()
+                    .unwrap()
+                    .to_string(),
+            );
+        }
+
+        _ => {}
+    };
+
+    if let ModLoader::Quilt(_, _) = loader {
+        let it = get_intermediary(loader.mc_version()).await?;
+
+            classpath.push(
+                libs_dir
+                    .join(it.coordinate().path())
+                    .to_str()
+                    .unwrap()
+                    .to_string(),
+            );
+    }
 
     for lib in &profile.libraries {
         if !lib.should_download(&get_features()) {
@@ -96,17 +119,21 @@ pub fn fix_argument(
         }
     }
 
-    arg
+    Ok(arg)
 }
 
-pub fn fix_args(
+pub async fn fix_args(
     args: Vec<impl AsRef<str>>,
     root: &PathBuf,
     profile: &GameManifest,
     loader: &ModLoader,
     opts: &LaunchOptions,
-) -> Vec<String> {
-    args.iter()
-        .map(|v| fix_argument(v, root, profile, loader, opts))
-        .collect::<Vec<_>>()
+) -> Result<Vec<String>> {
+    let mut out = Vec::new();
+
+    for arg in args {
+        out.push(fix_argument(arg, root, profile, loader, opts).await?);
+    }
+
+    Ok(out)
 }

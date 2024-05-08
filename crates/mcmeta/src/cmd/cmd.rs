@@ -23,7 +23,7 @@ pub async fn build_launch_command(
         &profile,
         loader,
         &opts,
-    ));
+    ).await?);
 
     args.push(profile.main_class.clone());
 
@@ -33,7 +33,7 @@ pub async fn build_launch_command(
         &profile,
         loader,
         &opts,
-    ));
+    ).await?);
 
     Ok(args)
 }
