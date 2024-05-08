@@ -47,7 +47,7 @@ jobs:
                       See the assets to download this version and install.
                   releaseDraft: false
                   prerelease: true
-                  tauriScript: pnpm -C apps/gui tauri
+                  tauriScript: ./tauriw
 
     # publish-tauri-arm64:
     #     permissions:
