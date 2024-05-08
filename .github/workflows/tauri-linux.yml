@@ -16,6 +16,13 @@ jobs:
 
             - name: install Rust nightly
               uses: dtolnay/rust-toolchain@nightly
+            
+            - name: Install cargo-binstall
+              uses: cargo-bins/cargo-binstall@main
+            
+            - name: Install cargo-tauri
+              run: |
+                cargo binstall cargo-tauri -y
 
             - name: Install system dependencies
               run: |
@@ -40,7 +47,6 @@ jobs:
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
               with:
-                  working-directory: apps/gui
                   tagName: wormhole-dev-${{ steps.short-sha.outputs.sha }}
                   releaseName: "Wormhole (Dev) ${{ steps.short-sha.outputs.sha }}"
                   releaseBody: |
@@ -48,7 +54,7 @@ jobs:
                       See the assets to download this version and install.
                   releaseDraft: false
                   prerelease: true
-                  tauriScript: pnpm tauri
+                  tauriScript: cargo tauri
                   projectPath: apps/gui
 
     # publish-tauri-arm64:
