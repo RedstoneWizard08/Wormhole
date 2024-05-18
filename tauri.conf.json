@@ -1,0 +1,75 @@
+{
+    "$schema": "https://raw.githubusercontent.com/tauri-apps/tauri/dev/tooling/cli/schema.json",
+    "build": {
+        "beforeDevCommand": "pnpm app:dev",
+        "beforeBuildCommand": "pnpm app:build",
+        "devPath": "http://localhost:1420",
+        "distDir": "/mnt/vol/Wormhole/apps/gui/../../build",
+        "withGlobalTauri": true
+    },
+    "package": {
+        "productName": "Wormhole",
+        "version": "2.0.0"
+    },
+    "tauri": {
+        "allowlist": {
+            "all": true,
+            "shell": {
+                "all": false,
+                "open": true
+            }
+        },
+        "bundle": {
+            "active": true,
+            "category": "DeveloperTool",
+            "copyright": "",
+            "deb": {
+                "depends": []
+            },
+            "externalBin": [],
+            "icon": [
+                "icons/32x32.png",
+                "icons/128x128.png",
+                "icons/128x128@2x.png",
+                "icons/icon.icns",
+                "icons/icon.ico"
+            ],
+            "identifier": "io.github.redstonewizard08.wormhole",
+            "longDescription": "",
+            "macOS": {
+                "entitlements": null,
+                "exceptionDomain": "",
+                "frameworks": [],
+                "providerShortName": null,
+                "signingIdentity": null
+            },
+            "resources": [],
+            "shortDescription": "The (unofficial) successor to CKAN.",
+            "targets": "all",
+            "windows": {
+                "certificateThumbprint": null,
+                "digestAlgorithm": "sha256",
+                "timestampUrl": ""
+            }
+        },
+        "security": {
+            "csp": null
+        },
+        "updater": {
+            "active": false
+        },
+        "windows": [
+            {
+                "fullscreen": false,
+                "height": 800,
+                "width": 1200,
+                "resizable": true,
+                "title": "Wormhole",
+                "minHeight": 400,
+                "minWidth": 600,
+                "maximized": true,
+                "theme": "Dark"
+            }
+        ]
+    }
+}
