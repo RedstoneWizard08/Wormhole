@@ -1,0 +1,72 @@
+excludes:
+  - \.gitignore
+  - .*lock
+  - \.git/.*
+  - \.licensure\.yml
+  - README.*
+  - LICENSE.*
+  - .*\.(md|rst|txt|json|sh|json.in)
+  - target
+  - node_modules
+  - static
+  - pnpm-lock.yaml
+  - .*\.(png|jpg|jpeg|gif|svg|ico|icns|stderr|stdout|otf|ttf)
+  - .prettierrc
+  - .eslintrc
+  - .gitkeep
+  - external
+
+licenses:
+  - files: any
+    ident: MIT
+    authors:
+      - name: Jacob Sapoznikow
+        email: jacob1coder@gmail.com
+    auto_template: true
+
+comments:
+  - extensions:
+      - js
+      - rs
+      - go
+      - ts
+      - cjs
+      - mjs
+      - jsx
+      - tsx
+      - cts
+      - mts
+    commenter:
+      type: line
+      comment_char: "//"
+      trailing_lines: 1
+  - extensions:
+      - css
+      - cpp
+      - c
+    commenter:
+      type: block
+      start_block_char: "/*\n"
+      end_block_char: "*/"
+      per_line_char: "*"
+      trailing_lines: 1
+  - extensions:
+      - html
+      - svelte
+    commenter:
+      type: block
+      start_block_char: "<!--\n"
+      end_block_char: "-->"
+  - extensions:
+      - el
+      - lisp
+    commenter:
+      type: line
+      comment_char: ";;;"
+      trailing_lines: 1
+  - extension: any
+    commenter:
+      type: line
+      comment_char: '#'
+      trailing_lines: 1
+    
