@@ -1,6 +1,7 @@
 use anyhow::Result;
 use base64::{engine::general_purpose::STANDARD, Engine};
 use data::instance::Instance;
+use mcmeta::cmd::modded::ModLoader;
 use msa::state::MsaState;
 use query::{curse::CurseForge, modrinth::Modrinth, source::Resolver};
 use tokio::process::Child;
@@ -56,7 +57,9 @@ impl Plugin for MinecraftPlugin {
     }
 
     async fn launch(&self, instance: Instance) -> Result<Child> {
-        let manager = MinecraftManager::load(instance.data_dir())?;
+        MsaState::init().await?;
+        
+        let manager = MinecraftManager::load_or_create(instance.data_dir(), &ModLoader::vanilla_latest().await?).await?;
 
         manager.launch(&MsaState::get(), &instance).await
     }

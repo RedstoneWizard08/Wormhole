@@ -20,6 +20,8 @@ pub async fn install_java(dir: &PathBuf, version: i32) -> Result<PathBuf> {
         return Ok(bin);
     }
 
+    println!("Installing Java version {}", version);
+
     let url = get_release_url(version, OperatingSystem::detect(), Arch::detect()).await?;
     let data = reqwest::get(url).await?.bytes().await?;
     let magic = &data[0..2];

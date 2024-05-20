@@ -31,6 +31,8 @@ impl MinecraftManager {
         if dir.join("instance-metadata.json").exists() {
             Self::load(dir)
         } else {
+            println!("Creating a new manager!");
+
             let dirs = MinecraftDirs::collect();
             let java = loader.get_java_version().await?;
 

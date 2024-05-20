@@ -4,7 +4,7 @@ use crate::flow::do_auth;
 
 static mut MSA_STATE: MsaState = MsaState::const_default();
 
-#[derive(Debug, Clone, Serialize, Deserialize, Default)]
+#[derive(Debug, Clone, Serialize, Deserialize, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct MsaState {
     /// The player's username.
     /// Ex: "Notch"
@@ -44,6 +44,14 @@ impl MsaState {
     }
 
     pub async fn init() -> Result<MsaState> {
-        Ok(Self::set(do_auth().await?))
+        println!("Starting MSA flow...");
+
+        if Self::get() == Self::const_default() {
+            let res = do_auth().await.unwrap();
+            
+            Self::set(res);
+        }
+
+        Ok(Self::get())
     }
 }
