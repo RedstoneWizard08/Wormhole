@@ -54,6 +54,8 @@ impl Resolver for CurseForge {
     ) -> Result<Paginated<Mod>> {
         let opts = opts.unwrap_or_default();
 
+        println!("Searching for {} in {}", search, game_id);
+
         let res = self
             .client()
             .get(format!("{}/mods/search", self.base().await))
@@ -66,6 +68,8 @@ impl Resolver for CurseForge {
             .send()
             .await?;
 
+        println!("{:?}", res);
+
         let res = serde_json::from_str::<QueryResult>(&res.text().await?)?;
 
         Ok(Paginated {
@@ -76,6 +80,7 @@ impl Resolver for CurseForge {
                 .collect::<Vec<_>>(),
             page: Some(res.pagination.index),
             per_page: Some(res.pagination.page_size),
+            pages: Some((res.pagination.total_count / res.pagination.page_size) as i32),
         })
     }
 

@@ -1,8 +1,9 @@
 <script lang="ts">
-    import type { BrowseModInfo } from "../api/models/modinfo/browse";
     import { goto } from "$app/navigation";
+    import type { Mod } from "../api/wrap";
 
-    export let mod: BrowseModInfo;
+    export let mod: Mod;
+    export let game: number;
 
     let installed = false;
     let installing = false;
@@ -31,9 +32,9 @@
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
-<div class="mod-tile" on:click={() => goto(`/${mod.game_id}/mod/${mod.id}`)}>
+<div class="mod-tile" on:click={() => goto(`/${game}/mod/${mod.id}`)}>
     <!-- svelte-ignore a11y-img-redundant-alt -->
-    <img src={mod.background} class="image" alt="mod-background image" />
+    <!-- <img src={mod.background} class="image" alt="mod-background image" /> -->
 
     <div class="info">
         <p class="title">{capText(mod.name, 22)}</p>

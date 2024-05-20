@@ -23,6 +23,9 @@ pub struct Mod {
     pub icon: Option<String>,
 }
 
+unsafe impl Send for Mod {}
+unsafe impl Sync for Mod {}
+
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize, Type)]
 pub struct ModVersion {
     /// The version ID.
@@ -43,6 +46,9 @@ pub struct ModVersion {
     /// The download URL.
     pub url: Option<String>,
 }
+
+unsafe impl Send for ModVersion {}
+unsafe impl Sync for ModVersion {}
 
 impl ModVersion {
     pub fn file_name(&self) -> String {

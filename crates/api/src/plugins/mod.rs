@@ -6,9 +6,9 @@ pub use ksp1::Kerbal1Plugin;
 pub use ksp2::Kerbal2Plugin;
 pub use minecraft::MinecraftPlugin;
 
-use crate::{plugin::Plugin, register::register_plugin};
+use crate::{plugin::Plugin, register::register_plugin, tauri::TauriPluginTrait};
 
-pub fn default_plugins() -> Vec<Box<dyn Plugin>> {
+pub fn default_plugins() -> Vec<Box<dyn TauriPluginTrait>> {
     vec![
         Box::new(Kerbal1Plugin::new()),
         Box::new(Kerbal2Plugin::new()),

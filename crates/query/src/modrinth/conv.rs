@@ -56,6 +56,7 @@ impl From<Response> for Paginated<Mod> {
         Self {
             page: Some((val.offset / val.limit) as i32),
             per_page: Some(val.limit as i32),
+            pages: Some((val.total_hits / val.limit) as i32),
             data: val
                 .hits
                 .iter()

@@ -42,6 +42,7 @@ impl From<BrowseResult> for Paginated<Mod> {
                 .collect::<Vec<_>>(),
             page: val.page,
             per_page: val.count,
+            pages: val.pages,
         }
     }
 }

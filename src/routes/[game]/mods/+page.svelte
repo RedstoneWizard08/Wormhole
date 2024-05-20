@@ -1,65 +1,63 @@
 <script lang="ts">
-    import type { BrowseModInfo, ModWithDistance } from "../../../api/models/modinfo/browse";
     import SearchBar from "../../../components/SearchBar.svelte";
     import LoadingPage from "../../../components/LoadingPage.svelte";
     import Pagination from "../../../components/Pagination.svelte";
     import Mod from "../../../components/Mod.svelte";
     import { page } from "$app/stores";
+    import { commands, type PluginInfo, type SourceMapping } from "../../../api/bindings/app";
+    import { unwrap } from "../../../api/util";
+    import Dropdown from "../../../components/Dropdown.svelte";
+    import { onMount } from "svelte";
+    import type { Mod as ModItem } from "../../../api/wrap";
 
-    let results: BrowseModInfo[] = [];
+    let results: ModItem[] = [];
     let perPage = 30;
     let pages = 1;
     let pageId = 1;
     let loading = true;
     let initialLoad = true;
-
     let gameId = parseInt($page.params.game);
+    let plugin: PluginInfo | null = null;
+    let sources: SourceMapping[] = [];
+    let source = sources[0];
+    let last: string | null = null;
 
-    $: (async () => {
+    onMount(async () => {
         loading = true;
         pages = 0;
 
-        // TODO
-        const data = { result: [], pages: 0 };
+        plugin = unwrap(await commands.info(gameId, null));
+        sources = unwrap(await commands.sources(gameId, null)) as SourceMapping[];
+        source = source || sources[0];
 
-        results = data.result;
-        pages = data.pages;
-
-        if (pageId > data.pages) pageId = data.pages - 1;
+        handleSearch("");
 
         loading = false;
-    })();
-
-    async function searchMods(mods: BrowseModInfo[], query: string): Promise<BrowseModInfo[]> {
-        const exactMatches: BrowseModInfo[] = [];
-        const closeMatches: ModWithDistance[] = [];
-
-        const regex = new RegExp(`^${query}`, "i");
-
-        for (const mod of mods) {
-            if (mod.name.toLowerCase() === query.toLowerCase() || regex.test(mod.name)) {
-                exactMatches.push(mod);
-            } else {
-                // TODO
-                const dist = undefined;
-
-                closeMatches.push({ mod, dist });
-            }
-        }
-
-        closeMatches.sort((a, b) => a.dist! - b.dist!);
-
-        return exactMatches.concat(closeMatches.map((m) => m.mod));
-    }
+    });
 
     const handleSearch = async (query: string) => {
+        if (last == query) return;
+
         console.log("Searching for:", query);
 
-        const matches = await searchMods(results, query);
+        try {
+            const data = unwrap(
+                await commands.searchMods(gameId, source, query, { page: pageId, count: perPage }, null)
+            );
 
-        console.log(matches);
+            console.log("Got data:", data);
 
-        results = matches;
+            results = data.data;
+            pageId = data.page || pageId;
+            perPage = data.per_page || perPage;
+            pages = data.pages || pages;
+
+            if (pageId > pages) pageId = pages - 1;
+        } catch (e) {
+            console.log(e);
+        }
+
+        last = query;
     };
 </script>
 
@@ -70,6 +68,11 @@
         <div class="search-bar">
             <SearchBar onSearch={handleSearch} />
         </div>
+
+        <Dropdown
+            bind:val={source}
+            valText={source}
+            items={sources.map((v) => ({ id: v, text: v }))} />
     </div>
 
     {#if loading}
@@ -77,7 +80,7 @@
     {:else}
         <div class="grid">
             {#each results as mod}
-                <Mod {mod} />
+                <Mod {mod} game={gameId} />
             {/each}
         </div>
     {/if}

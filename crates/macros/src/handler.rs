@@ -67,7 +67,6 @@ impl From<Handler> for proc_macro::TokenStream {
                     })).unwrap(),
                 }
             }
-        }
-        .into()
+        }.into()
     }
 }

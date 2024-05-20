@@ -59,6 +59,14 @@ macro_rules! sources {
             $($var = $id,)*
         }
 
+        impl SourceMapping {
+            pub fn as_str(&self) -> &'static str {
+                match self {
+                    $(Self::$var => $name,)*
+                }
+            }
+        }
+
         impl From<$enum> for SourceMapping {
             fn from(val: $enum) -> SourceMapping {
                 match val {

@@ -28,6 +28,7 @@ mcmeta.workspace = true
 msa.workspace = true
 tokio.workspace = true
 java.workspace = true
+macros.workspace = true
 
 [dev-dependencies]
 indicatif.workspace = true

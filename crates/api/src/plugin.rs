@@ -17,6 +17,9 @@ pub struct PluginInfo {
     pub resolvers: Vec<SourceMapping>,
 }
 
+unsafe impl Send for PluginInfo {}
+unsafe impl Sync for PluginInfo {}
+
 #[async_trait]
 pub trait Plugin: Send + Sync {
     /// Create a new instance.

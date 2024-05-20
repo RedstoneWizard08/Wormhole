@@ -3,13 +3,13 @@ use std::{
     sync::{Arc, Mutex},
 };
 
-use crate::plugin::Plugin;
+use crate::tauri::TauriPluginTrait;
 
 lazy_static! {
-    pub static ref PLUGINS: Arc<Mutex<HashMap<i32, Box<dyn Plugin + Send + Sync>>>> =
+    pub static ref PLUGINS: Arc<Mutex<HashMap<i32, Box<dyn TauriPluginTrait + Send + Sync>>>> =
         Arc::new(Mutex::new(HashMap::new()));
 }
 
-pub fn register_plugin(plugin: Box<dyn Plugin + Send + Sync>) {
+pub fn register_plugin(plugin: Box<dyn TauriPluginTrait + Send + Sync>) {
     PLUGINS.lock().unwrap().insert(plugin.game(), plugin);
 }

@@ -11,7 +11,19 @@ use whcore::manager::CoreManager;
 
 pub mod db;
 
+pub static mut INIT: bool = false;
+
 pub fn boot(path: &Option<PathBuf>) -> Result<Pool<ConnectionManager<SqliteConnection>>> {
+    unsafe {
+        if INIT {
+            return Err(anyhow::anyhow!("Already initialized"));
+        }
+
+        INIT = true;
+    }
+
+    CoreManager::get().init();
+    
     let db = db::connect(
         path.clone()
             .unwrap_or(CoreManager::get().data_dir().join("data.db")),

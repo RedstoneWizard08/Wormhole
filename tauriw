@@ -1,4 +1,0 @@
-#!/bin/bash
-
-cd apps/gui
-pnpm tauri $*

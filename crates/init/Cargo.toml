@@ -10,6 +10,7 @@ authors.workspace = true
 [dependencies]
 anyhow.workspace = true
 diesel.workspace = true
+libsqlite3-sys.workspace = true
 whcore.workspace = true
 data.workspace = true
 api.workspace = true

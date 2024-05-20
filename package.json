@@ -31,8 +31,8 @@
         "build": "tauri build",
         "tauri": "tauri",
         "fmt": "prettier --write . && cargo fmt",
-        "web:dev": "TAURI_WEB_DEV=1 vite",
-        "web:build": "TAURI_WEB_DEV=1 vite build",
+        "web:dev": "cross-env TAURI_WEB_DEV=1 vite",
+        "web:build": "cross-env TAURI_WEB_DEV=1 vite build",
         "lint:eslint": "eslint --ext .ts,.tsx,.svelte .",
         "lint:stylelint": "stylelint **/*.scss **/*.css",
         "lint:clippy": "cargo clippy",
@@ -41,7 +41,8 @@
         "check": "svelte-kit sync && svelte-check",
         "check:watch": "svelte-kit sync && svelte-check --watch",
         "postinstall": "svelte-kit sync",
-        "serve": "serve -p 4000 build"
+        "serve": "serve -p 4000 build",
+        "bindgen": "cargo run --bin bindings"
     },
     "repository": {
         "type": "git",
@@ -63,6 +64,7 @@
         "@typescript-eslint/eslint-plugin": "^7.3.1",
         "@typescript-eslint/parser": "^7.3.1",
         "colorette": "^2.0.20",
+        "cross-env": "^7.0.3",
         "eslint": "^8.57.0",
         "eslint-plugin-svelte": "^2.35.1",
         "jest": "^29.7.0",

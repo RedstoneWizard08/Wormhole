@@ -1,37 +1,43 @@
 <script lang="ts">
     import { goto } from "$app/navigation";
-    import ksp1logo from "../assets/ksp.png";
-    import ksp2logo from "../assets/ksp2.png";
     import Delete from "./Delete.svelte";
     import { plugins } from "../api/stores";
+    import { commands, type Instance } from "../api/bindings/app";
+    import { unwrap } from "../api/util";
 
-    export let data: InstanceInfo;
+    export let data: Instance;
     // This is just the current instance in the parent
-    export let current: InstanceInfo | null;
+    export let current: Instance | null;
     export let deleteing: boolean;
 
     const clicked = () => {
-        goto(`/${data.game}/instance/${data.id}`);
+        goto(`/${data.game_id}/instance/${data.id}`);
     };
 
-    const doLaunch = (e: MouseEvent) => {
+    const doLaunch = async (e: MouseEvent) => {
         e.stopPropagation();
-
-        // TODO: Launch
+        
+        unwrap(await commands.launchGame(data.game_id, data, null));
     };
 
-    const doDelete = (e: MouseEvent) => {
+    const doDelete = async (e: MouseEvent) => {
         e.stopPropagation();
+
+        if (deleteing) return;
 
         current = data;
-        deleteing = !deleteing;
+        deleteing = true;
+
+        unwrap(await commands.deleteInstance(data.id!, null));
+
+        deleteing = false;
     };
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <div class="instance-container" on:click={clicked}>
-    <img src={$plugins[data.game].banner_url} class="banner" alt={"background"} />
+    <img src={$plugins.find((v) => v.game == data.game_id)?.banner_url} class="banner" alt={"background"} />
 
     <p class="name">{data.name}</p>
 

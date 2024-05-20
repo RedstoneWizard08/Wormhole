@@ -22,3 +22,4 @@ query.workspace = true
 tempfile.workspace = true
 data.workspace = true
 diesel.workspace = true
+libsqlite3-sys.workspace = true

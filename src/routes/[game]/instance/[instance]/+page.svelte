@@ -25,8 +25,8 @@
 
         instance = info;
 
-        background = $plugins[info.game_id].banner_url;
-        executable = info.install_dir;
+        background = $plugins.find((v) => v.game == info.game_id)?.banner_url;
+        executable = info.data_dir;
     })();
 
     const save = async () => {
@@ -52,8 +52,9 @@
     };
 
     const launch = async () => {
-        if (instance) null;
-        // TODO
+        if (instance == null) return;
+
+        unwrap(await commands.launchGame(instance.game_id, instance, null));
     };
 
     const updateDescription = (ev: Event) => {

@@ -72,6 +72,7 @@ impl From<Vec<PackageListing>> for Paginated<Mod> {
             per_page: Some(data.len() as i32),
             data,
             page: None,
+            pages: None,
         }
     }
 }

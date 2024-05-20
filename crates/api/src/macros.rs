@@ -36,6 +36,8 @@ mod _private {
             type VersionsResult = Result<Vec<ModVersion>, bool>;
             type VersionResult = Result<ModVersion, bool>;
             type StringResult = Result<String, bool>;
+            type VoidResult = Result<(), bool>;
+            type StringVecResult = Result<Vec<String>, bool>;
 
             type StringOpt = Option<String>;
             type OptionsOpt = Option<QueryOptions>;
@@ -69,6 +71,16 @@ mod _private {
                 dyn TauriPluginTrait::get_download_url => get_download_url:
                 async (resolver: SourceMapping, project: String, version: StringOpt) -> StringResult
             );
+
+            fn_alias!(
+                dyn TauriPluginTrait::launch_game => launch_game:
+                async (instance: Instance) -> VoidResult
+            );
+
+            fn_alias!(
+                dyn TauriPluginTrait::sources => sources:
+                async () -> StringVecResult
+            );
         }
     }
 
@@ -86,6 +98,8 @@ mod _private {
                         get_mod_versions,
                         get_mod_version,
                         get_download_url,
+                        launch_game,
+                        sources,
                     ],
                     Box::new(generate_handler![
                         info,
@@ -94,6 +108,8 @@ mod _private {
                         get_mod_versions,
                         get_mod_version,
                         get_download_url,
+                        launch_game,
+                        sources,
                     ]),
                 )
             }

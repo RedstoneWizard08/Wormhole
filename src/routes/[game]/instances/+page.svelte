@@ -1,9 +1,8 @@
 <script lang="ts">
     import InstanceCard from "../../../components/InstanceCard.svelte";
-    import { browser } from "$app/environment";
     import { onMount } from "svelte";
     import { page } from "$app/stores";
-    import { commands, type Instance } from "../../../api/bindings/app";
+    import { commands, type Dirs, type Instance, type PluginInfo } from "../../../api/bindings/app";
     import { unwrap } from "../../../api/util";
 
     let adding = false;
@@ -11,42 +10,36 @@
 
     let instances: Instance[] = [];
     let current: Instance | null = null;
+    let dirs: Dirs | null = null;
+    let info: PluginInfo | null = null;
 
     let gameId = parseInt($page.params.game);
 
-    let path = "C:\\Fakepath";
     let name = "";
+    $: path = dirs?.data + "/" + info?.display_name + "/" + name;
 
     onMount(async () => {
         instances = unwrap(await commands.getInstances(gameId, null));
+        dirs = unwrap(await commands.getDirs(null));
+        info = unwrap(await commands.info(gameId, null));
     });
 
     const addInstance = async () => {
-        // commands.addInstance({
-        //     id: null,
-        // }, null);
+        unwrap(await commands.addInstance({
+            id: null,
+            name: name,
+            cache_dir: dirs?.cache + "/" + info?.display_name,
+            game_id: gameId,
+            created: new Date().getUTCDate(),
+            data_dir: path,
+            description: "",
+            install_dir: dirs?.data + "/" + info?.display_name,
+            updated: new Date().getUTCDate(),
+        }, null));
 
         adding = false;
-    };
 
-    const selectFolder = async () => {
-        if (import.meta.env.TAURI_WEB_DEV && browser) {
-            const handle = await window.showDirectoryPicker({
-                mode: "read",
-            });
-
-            path = handle.name;
-        } else {
-            const open = (await import("@tauri-apps/api/dialog")).open;
-            const appDir = (await import("@tauri-apps/api/path")).appDataDir;
-
-            const dir = await open({
-                directory: true,
-                defaultPath: await appDir(),
-            });
-
-            path = dir as string;
-        }
+        instances = unwrap(await commands.getInstances(gameId, null));
     };
 
     const deleteInstance = async () => {
@@ -77,13 +70,7 @@
 
             <input type="text" placeholder="Instance name" class="name" bind:value={name} />
 
-            <div class="select-dir">
-                <button type="button" class="select-dir-button" on:click={selectFolder}>
-                    Choose a folder...
-                </button>
-
-                <p class="select-dir-text">{path}</p>
-            </div>
+            <p>Will be created in: {path}</p>
 
             <button type="button" class="submit-button" on:click={addInstance}> Continue </button>
         </div>

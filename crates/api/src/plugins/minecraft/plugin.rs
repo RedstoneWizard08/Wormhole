@@ -12,6 +12,7 @@ use super::manager::MinecraftManager;
 pub const ICON_BYTES: &[u8] = include_bytes!("../../assets/minecraft/icon.svg");
 pub const BANNER_BYTES: &[u8] = include_bytes!("../../assets/minecraft/banner.jpg");
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct MinecraftPlugin;
 
 #[async_trait]

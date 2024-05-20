@@ -17,6 +17,7 @@ reqwest.workspace = true
 serde_json.workspace = true
 ckandex.workspace = true
 diesel.workspace = true
+libsqlite3-sys.workspace = true
 tracing.workspace = true
 tokio.workspace = true
 whcore.workspace = true

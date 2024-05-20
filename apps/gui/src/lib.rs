@@ -1,3 +1,12 @@
+pub mod macros;
+
+pub extern crate api;
+pub extern crate futures;
+pub extern crate macros as whmacros;
+pub extern crate specta;
+pub extern crate tauri;
+pub extern crate whcore;
+
 use anyhow::Result;
 
 use api::{plugin::PluginInfo, register::PLUGINS};
@@ -9,15 +18,20 @@ use data::{
     },
     instance::Instance,
     schema::instances::dsl::{game_id as gid, id, instances},
+    source::SourceMapping,
 };
 
+use query::{
+    mod_::{Mod, ModVersion},
+    source::{Paginated, QueryOptions},
+};
 use specta::functions::CollectFunctionsResult;
 use tauri::{utils::assets::EmbeddedAssets, Context, Invoke, Runtime};
-use whcore::{merge_type_maps, state::TState, Boolify};
+use whcore::{dirs::Dirs, manager::CoreManager, merge_type_maps, state::TState, Boolify};
 
 pub type AppState<'a> = TState<'a, Pool<ConnectionManager<SqliteConnection>>>;
 
-#[macros::serde_call]
+#[whmacros::serde_call]
 #[tauri::command]
 #[specta::specta]
 async fn get_instances(game_id: i32, pool: AppState<'_>) -> Result<Vec<Instance>, bool> {
@@ -32,7 +46,7 @@ async fn get_instances(game_id: i32, pool: AppState<'_>) -> Result<Vec<Instance>
     Ok(items)
 }
 
-#[macros::serde_call]
+#[whmacros::serde_call]
 #[tauri::command]
 #[specta::specta]
 async fn delete_instance(instance_id: i32, pool: AppState<'_>) -> Result<(), bool> {
@@ -45,7 +59,7 @@ async fn delete_instance(instance_id: i32, pool: AppState<'_>) -> Result<(), boo
     Ok(())
 }
 
-#[macros::serde_call]
+#[whmacros::serde_call]
 #[tauri::command]
 #[specta::specta]
 async fn add_instance(instance: Instance, pool: AppState<'_>) -> Result<Instance, bool> {
@@ -56,7 +70,7 @@ async fn add_instance(instance: Instance, pool: AppState<'_>) -> Result<Instance
         .bool()?)
 }
 
-#[macros::serde_call]
+#[whmacros::serde_call]
 #[tauri::command]
 #[specta::specta]
 async fn get_instance(instance_id: i32, pool: AppState<'_>) -> Result<Instance, bool> {
@@ -67,7 +81,7 @@ async fn get_instance(instance_id: i32, pool: AppState<'_>) -> Result<Instance, 
         .bool()?)
 }
 
-#[macros::serde_call]
+#[whmacros::serde_call]
 #[tauri::command]
 #[specta::specta]
 async fn get_plugins(_pool: AppState<'_>) -> Result<Vec<PluginInfo>, bool> {
@@ -86,6 +100,22 @@ async fn get_plugins(_pool: AppState<'_>) -> Result<Vec<PluginInfo>, bool> {
     Ok(res)
 }
 
+#[whmacros::serde_call]
+#[tauri::command]
+#[specta::specta]
+async fn get_dirs(_pool: AppState<'_>) -> Result<Dirs, bool> {
+    Ok(CoreManager::get().dirs())
+}
+
+plugin_fn_proxy!(async info => info: () -> [opt] PluginInfo);
+plugin_fn_proxy!(async search_mods => search_mods: (resolver: SourceMapping, query: Option<String>, opts: Option<QueryOptions>) -> [opt] Paginated<Mod>);
+plugin_fn_proxy!(async get_mod => get_mod: (resolver: SourceMapping, mid: String) -> [opt] Mod);
+plugin_fn_proxy!(async get_mod_versions => get_mod_versions: (resolver: SourceMapping, mid: String) -> [opt] Vec<ModVersion>);
+plugin_fn_proxy!(async get_mod_version => get_mod_version: (resolver: SourceMapping, mid: String, version: String) -> [opt] ModVersion);
+plugin_fn_proxy!(async get_download_url => get_download_url: (resolver: SourceMapping, project: String, version: Option<String>) -> [opt] String);
+plugin_fn_proxy!(async launch_game => launch_game: (instance: Instance) -> ());
+plugin_fn_proxy!(async sources => sources: () -> [opt] Vec<String>);
+
 #[macro_export]
 macro_rules! funcs {
     ($ns: ident::$fn: ident) => {
@@ -95,6 +125,15 @@ macro_rules! funcs {
             get_plugins,
             add_instance,
             delete_instance,
+            get_dirs,
+            info,
+            search_mods,
+            get_mod,
+            get_mod_versions,
+            get_mod_version,
+            get_download_url,
+            launch_game,
+            sources
         ]
     };
 
@@ -104,17 +143,42 @@ macro_rules! funcs {
             get_instance,
             get_plugins,
             add_instance,
-            delete_instance
+            delete_instance,
+            get_dirs,
+            info,
+            search_mods,
+            get_mod,
+            get_mod_versions,
+            get_mod_version,
+            get_download_url,
+            launch_game,
+            sources
         ];
     };
 }
 
-funcs!(macros::serde_funcs;);
+funcs!(whmacros::serde_funcs;);
 
 pub fn funcs() -> CollectFunctionsResult {
-    let map = merge_type_maps(vec![data::type_map(), api::type_map()]);
+    let map = merge_type_maps(vec![data::type_map(), api::type_map(), whcore::type_map()]);
 
-    specta::functions::collect_functions![map; get_instances, get_instance, get_plugins, add_instance, delete_instance]
+    specta::functions::collect_functions![
+        map;
+        get_instances,
+        get_instance,
+        get_plugins,
+        add_instance,
+        delete_instance,
+        get_dirs,
+        info,
+        search_mods,
+        get_mod,
+        get_mod_versions,
+        get_mod_version,
+        get_download_url,
+        launch_game,
+        sources
+    ]
 }
 
 pub fn invoker<R: Runtime>() -> Box<dyn Fn(Invoke<R>) + Send + Sync + 'static> {

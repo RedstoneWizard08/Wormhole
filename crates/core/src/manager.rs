@@ -3,6 +3,8 @@ use std::{fs, path::PathBuf};
 use dirs::data_local_dir;
 use sysinfo::System;
 
+use crate::dirs::Dirs;
+
 pub const WORMHOLE_DIR_NAME: &str = "Wormhole";
 pub static mut CORE_MANAGER: CoreManager = CoreManager::new();
 
@@ -20,11 +22,22 @@ impl CoreManager {
         self.create_dirs();
     }
 
+    pub fn dirs(&self) -> Dirs {
+        Dirs {
+            root: self.dir(),
+            data: self.data_dir(),
+            cache: self.cache_dir(),
+            temp: self.temp_dir(),
+        }
+    }
+
     fn create_dirs(&self) {
         self.create_dir(self.dir());
         self.create_dir(self.data_dir());
         self.create_dir(self.cache_dir());
         self.create_dir(self.temp_dir());
+
+        self.create_dir(self.cache_dir().join("ckandex"));
     }
 
     fn create_dir(&self, path: PathBuf) {

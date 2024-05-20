@@ -4,14 +4,16 @@ pub mod manager;
 pub mod messaging;
 pub mod state;
 pub mod traits;
+pub mod dirs;
 
 #[macro_use]
 extern crate serde;
 
 pub extern crate async_trait;
 
+use dirs::Dirs;
 use rand::{distributions::Alphanumeric, thread_rng, Rng};
-use specta::TypeMap;
+use specta::{NamedType, TypeMap};
 use std::{
     fs::{copy, create_dir_all, read_dir, rename},
     io::Result,
@@ -82,6 +84,12 @@ impl<T, E> Boolify<T> for std::result::Result<T, E> {
     }
 }
 
+impl<T> Boolify<T> for Option<T> {
+    fn bool(self) -> std::result::Result<T, bool> {
+        self.ok_or(false)
+    }
+}
+
 pub fn merge_type_maps(maps: Vec<TypeMap>) -> TypeMap {
     let mut map = TypeMap::default();
 
@@ -90,6 +98,15 @@ pub fn merge_type_maps(maps: Vec<TypeMap>) -> TypeMap {
             map.insert(id, ty.clone());
         }
     }
+
+    map
+}
+
+pub fn type_map() -> TypeMap {
+    let mut map = TypeMap::default();
+
+    let ty = Dirs::named_data_type(&mut map, &[]);
+    map.insert(Dirs::SID, ty);
 
     map
 }

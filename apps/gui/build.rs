@@ -12,7 +12,7 @@ fn main() -> Result<()> {
     let mut data = fs::read_to_string(CONFIG_PATH)?;
 
     data = data.replace("<version>", VERSION);
-    data = data.replace("<root>", ROOT);
+    data = data.replace("<root>", &ROOT.replace("\\", "/")); // windows sucks
 
     fs::write(CONFIG_PATH_OUT, data)?;
     tauri_build::build();

@@ -3,7 +3,7 @@ use const_format::formatcp;
 
 use data::source::Source;
 use reqwest::{
-    header::{HeaderMap, HeaderValue, AUTHORIZATION},
+    header::{HeaderMap, HeaderName, HeaderValue, AUTHORIZATION},
     Client,
 };
 
@@ -34,8 +34,8 @@ pub(crate) trait WithToken {
         if let Some(token) = self.get_token() {
             Client::builder()
                 .default_headers(HeaderMap::from_iter(vec![(
-                    AUTHORIZATION,
-                    HeaderValue::from_str(&format!("Bearer {}", token)).unwrap(),
+                    HeaderName::from_static("x-api-key"),
+                    HeaderValue::from_str(&token).unwrap(),
                 )]))
                 .user_agent(USER_AGENT)
                 .build()
@@ -51,7 +51,11 @@ pub struct Paginated<T> {
     pub data: Vec<T>,
     pub page: Option<i32>,
     pub per_page: Option<i32>,
+    pub pages: Option<i32>,
 }
+
+unsafe impl<T> Send for Paginated<T> {}
+unsafe impl<T> Sync for Paginated<T> {}
 
 /// A mod source.
 #[async_trait]
@@ -61,6 +65,13 @@ pub trait Resolver: WithToken + Send + Sync {
     async fn new() -> Self
     where
         Self: Sized;
+
+    /// Initialize the resolver.
+    /// This has a default implementation that does nothing.
+    /// TODO: Actually use this method somewhere.
+    async fn init(&mut self) -> Result<()> {
+        Ok(())
+    }
 
     /// Create a new instance of this source with a token.
     async fn new_with_token(token: String) -> Self

@@ -190,6 +190,7 @@ dependencies = [
  "indicatif",
  "java",
  "lazy_static",
+ "macros",
  "mcmeta",
  "msa",
  "query",
@@ -946,6 +947,7 @@ dependencies = [
  "serde_json",
  "serde_yaml",
  "sha256",
+ "tokio 1.37.0",
 ]
 
 [[package]]
@@ -1197,11 +1199,10 @@ dependencies = [
 
 [[package]]
 name = "crossbeam-channel"
-version = "0.5.8"
+version = "0.5.13"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a33c2bf77f2df06183c3aa30d1e96c0695a313d4f9c453cc3762a6db39f99200"
+checksum = "33480d6946193aa8033910124896ca395333cae7e2d1113d1fef6c3272217df2"
 dependencies = [
- "cfg-if 1.0.0",
  "crossbeam-utils",
 ]
 
@@ -1375,6 +1376,7 @@ dependencies = [
  "async-trait",
  "diesel",
  "diesel_migrations",
+ "libsqlite3-sys",
  "serde",
  "specta",
 ]
@@ -2988,6 +2990,7 @@ dependencies = [
  "api",
  "data",
  "diesel",
+ "libsqlite3-sys",
  "whcore",
 ]
 
@@ -3009,6 +3012,7 @@ dependencies = [
  "data",
  "diesel",
  "flate2",
+ "libsqlite3-sys",
  "query",
  "rar",
  "reqwest 0.12.4",
@@ -3288,6 +3292,7 @@ version = "0.28.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0c10584274047cb335c23d3e61bcef8e323adae7c5c8c760540f73610177fc3f"
 dependencies = [
+ "cc",
  "pkg-config",
  "vcpkg",
 ]
@@ -4104,9 +4109,9 @@ checksum = "bb813b8af86854136c6922af0598d719255ecb2179515e6e7730d468f05c9cae"
 
 [[package]]
 name = "parking_lot"
-version = "0.12.1"
+version = "0.12.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3742b2c103b9f06bc9fff0a37ff4912935851bee6d36f3c02bcc755bcfec228f"
+checksum = "7e4af0ca4f6caed20e900d564c242b8e5d4903fdacf31d3daf527b66fe6f42fb"
 dependencies = [
  "lock_api",
  "parking_lot_core",
@@ -4576,6 +4581,7 @@ dependencies = [
  "envcrypt",
  "ferinth",
  "furse",
+ "libsqlite3-sys",
  "once_cell",
  "reqwest 0.12.4",
  "serde",

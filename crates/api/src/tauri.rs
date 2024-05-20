@@ -1,5 +1,5 @@
 use anyhow::Result;
-use data::source::SourceMapping;
+use data::{instance::Instance, source::SourceMapping};
 
 use query::{
     mod_::{Mod, ModVersion},
@@ -75,7 +75,7 @@ impl<R: Runtime> Plugin<R> for TauriPlugin<R> {
 }
 
 #[async_trait]
-pub trait TauriPluginTrait: CPlugin {
+pub trait TauriPluginTrait: CPlugin + Send + Sync {
     async fn info(&self) -> Option<PluginInfo>;
 
     async fn search_mods(
@@ -106,6 +106,10 @@ pub trait TauriPluginTrait: CPlugin {
         project: String,
         version: Option<String>,
     ) -> Option<String>;
+
+    async fn launch_game(&self, instance: Instance) -> Option<()>;
+
+    async fn sources(&self) -> Option<Vec<String>>;
 }
 
 #[async_trait]
@@ -189,5 +193,15 @@ impl<T: CPlugin + Send + Sync> TauriPluginTrait for T {
         } else {
             None
         }
+    }
+
+    async fn launch_game(&self, instance: Instance) -> Option<()> {
+        let _ = self.launch(instance).await.ok()?;
+
+        Some(())
+    }
+
+    async fn sources(&self) -> Option<Vec<String>> {
+        Some(self.resolvers().await.iter().map(|v| v.source().mapping().as_str().to_string()).collect())
     }
 }

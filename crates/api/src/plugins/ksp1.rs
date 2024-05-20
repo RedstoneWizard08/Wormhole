@@ -15,6 +15,7 @@ pub const BANNER_BYTES: &[u8] = include_bytes!("../assets/ksp1/banner.png");
 // Information from: SteamDB, DepotDownloader, KSP1 Installed Files
 pub const KSP1_STEAM_API_SIZE: u64 = 249120;
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct Kerbal1Plugin;
 
 #[async_trait]

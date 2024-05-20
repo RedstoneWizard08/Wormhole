@@ -1,4 +1,4 @@
 [toolchain]
 channel = "nightly"
-components = [ "cargo", "rustfmt", "clippy", "rustc-codegen-cranelift-preview" ]
+components = [ "cargo", "rustfmt", "clippy" ]
 targets = [ "wasm32-wasi" ]

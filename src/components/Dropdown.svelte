@@ -25,6 +25,7 @@
 
 <div class="dropdown" class:active={shown} class:left class:right>
     <!-- svelte-ignore a11y-click-events-have-key-events -->
+    <!-- svelte-ignore a11y-no-static-element-interactions -->
     <div class="selected" class:active={shown} on:click={onClick}>
         {valText}
     </div>
@@ -32,6 +33,7 @@
     <div class="items" class:hide={!shown}>
         {#each items as item}
             <!-- svelte-ignore a11y-click-events-have-key-events -->
+            <!-- svelte-ignore a11y-no-static-element-interactions -->
             <div class:same={val == item.id} on:click={makeOnSelected(item.id, item.text)}>
                 {item.text}
             </div>

@@ -25,10 +25,7 @@ impl WithToken for Ckan {
 #[async_trait]
 impl Resolver for Ckan {
     async fn new() -> Self {
-        let mut client = CacheClient::new(CoreManager::get().game_cache_dir("ckandex"));
-
-        client.refresh().await;
-        client.update_cache().await.unwrap();
+        let client = CacheClient::new(CoreManager::get().game_cache_dir("ckandex"));
 
         Self {
             client,
@@ -37,15 +34,19 @@ impl Resolver for Ckan {
     }
 
     async fn new_with_token(token: String) -> Self {
-        let mut client = CacheClient::new(CoreManager::get().game_cache_dir("ckandex"));
-
-        client.refresh().await;
-        client.update_cache().await.unwrap();
+        let client = CacheClient::new(CoreManager::get().game_cache_dir("ckandex"));
 
         Self {
             client,
             kref: KrefResolver::new(token),
         }
+    }
+
+    async fn init(&mut self) -> Result<()> {
+        self.client.refresh().await.unwrap();
+        self.client.update_cache().await.unwrap();
+
+        Ok(())
     }
 
     async fn base(&self) -> String {
@@ -75,6 +76,7 @@ impl Resolver for Ckan {
             data: out.clone(),
             page: Some(0),
             per_page: Some(out.len() as i32),
+            pages: Some(1),
         })
     }
 
