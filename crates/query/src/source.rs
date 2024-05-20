@@ -3,7 +3,7 @@ use const_format::formatcp;
 
 use data::source::Source;
 use reqwest::{
-    header::{HeaderMap, HeaderName, HeaderValue, AUTHORIZATION},
+    header::{HeaderMap, HeaderValue, AUTHORIZATION},
     Client,
 };
 
@@ -34,7 +34,7 @@ pub(crate) trait WithToken {
         if let Some(token) = self.get_token() {
             Client::builder()
                 .default_headers(HeaderMap::from_iter(vec![(
-                    HeaderName::from_static("x-api-key"),
+                    AUTHORIZATION,
                     HeaderValue::from_str(&token).unwrap(),
                 )]))
                 .user_agent(USER_AGENT)

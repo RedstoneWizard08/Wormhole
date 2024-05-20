@@ -5,13 +5,14 @@ use std::env;
 
 use crate::{
     mod_::{Mod, ModVersion},
-    source::{Paginated, QueryOptions, Resolver, WithToken},
+    source::{Paginated, QueryOptions, Resolver, WithToken, USER_AGENT},
     IntoAsync, CURSEFORGE_KEY,
 };
 
 use anyhow::Result;
 use data::source::{Source, Sources};
 use furse::Furse;
+use reqwest::{header::{HeaderMap, HeaderName, HeaderValue}, Client};
 
 use self::query::QueryResult;
 
@@ -23,6 +24,21 @@ pub struct CurseForge {
 impl WithToken for CurseForge {
     fn get_token(&self) -> Option<String> {
         self.token.clone()
+    }
+
+    fn client(&self) -> Client {
+        if let Some(token) = self.get_token() {
+            Client::builder()
+                .default_headers(HeaderMap::from_iter(vec![(
+                    HeaderName::from_static("x-api-key"),
+                    HeaderValue::from_str(&token).unwrap(),
+                )]))
+                .user_agent(USER_AGENT)
+                .build()
+                .unwrap()
+        } else {
+            Client::builder().user_agent(USER_AGENT).build().unwrap()
+        }
     }
 }
 
