@@ -20,7 +20,7 @@ use tar::Archive;
 use walkdir::WalkDir;
 use whcore::{random_string, rename_dir_all};
 use xz::read::XzDecoder;
-use zip::{write::FileOptions, CompressionMethod, ZipArchive, ZipWriter};
+use zip::{write::SimpleFileOptions, CompressionMethod, ZipArchive, ZipWriter};
 
 pub fn extract_file(
     db: &mut Conn,
@@ -219,7 +219,7 @@ pub fn zip_directory(path: impl AsRef<Path>, dir: impl AsRef<Path>) -> Result<()
                 .to_str()
                 .unwrap()
                 .replace(dir.as_ref().to_str().unwrap(), ""),
-            FileOptions::default().compression_method(CompressionMethod::DEFLATE),
+            SimpleFileOptions::default().compression_method(CompressionMethod::Deflated),
         )?;
 
         zip.write_all(&fs::read(entry.path())?.into_boxed_slice())?;

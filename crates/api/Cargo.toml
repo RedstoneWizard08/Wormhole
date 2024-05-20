@@ -29,6 +29,7 @@ msa.workspace = true
 tokio.workspace = true
 java.workspace = true
 macros.workspace = true
+tracing.workspace = true
 
 [dev-dependencies]
 indicatif.workspace = true

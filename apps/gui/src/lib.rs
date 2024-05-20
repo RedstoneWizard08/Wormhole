@@ -1,7 +1,7 @@
 pub mod macros;
 
 pub extern crate api;
-pub extern crate futures;
+pub extern crate tokio;
 pub extern crate macros as whmacros;
 pub extern crate specta;
 pub extern crate tauri;
@@ -27,6 +27,7 @@ use query::{
 };
 use specta::functions::CollectFunctionsResult;
 use tauri::{utils::assets::EmbeddedAssets, Context, Invoke, Runtime};
+use tokio::runtime::Handle;
 use whcore::{dirs::Dirs, manager::CoreManager, merge_type_maps, state::TState, Boolify};
 
 pub type AppState<'a> = TState<'a, Pool<ConnectionManager<SqliteConnection>>>;
@@ -94,7 +95,9 @@ async fn get_plugins(_pool: AppState<'_>) -> Result<Vec<PluginInfo>, bool> {
         // function, which adds more dependencies to compile.
         // WTF, RUST
 
-        res.push(futures::executor::block_on(plugin.as_info()));
+        res.push(tokio::task::block_in_place(move || {
+            Handle::current().block_on(plugin.as_info())
+        }));
     }
 
     Ok(res)
@@ -105,6 +108,13 @@ async fn get_plugins(_pool: AppState<'_>) -> Result<Vec<PluginInfo>, bool> {
 #[specta::specta]
 async fn get_dirs(_pool: AppState<'_>) -> Result<Dirs, bool> {
     Ok(CoreManager::get().dirs())
+}
+
+#[whmacros::serde_call]
+#[tauri::command]
+#[specta::specta]
+async fn get_source_id(sid: i32, _pool: AppState<'_>) -> Result<String, bool> {
+    Ok(SourceMapping::from(sid).as_str().to_string())
 }
 
 plugin_fn_proxy!(async info => info: () -> [opt] PluginInfo);
@@ -133,7 +143,8 @@ macro_rules! funcs {
             get_mod_version,
             get_download_url,
             launch_game,
-            sources
+            sources,
+            get_source_id
         ]
     };
 
@@ -152,7 +163,8 @@ macro_rules! funcs {
             get_mod_version,
             get_download_url,
             launch_game,
-            sources
+            sources,
+            get_source_id
         ];
     };
 }
@@ -177,7 +189,8 @@ pub fn funcs() -> CollectFunctionsResult {
         get_mod_version,
         get_download_url,
         launch_game,
-        sources
+        sources,
+        get_source_id
     ]
 }
 

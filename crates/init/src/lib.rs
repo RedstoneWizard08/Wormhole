@@ -7,13 +7,14 @@ use diesel::{
     r2d2::{ConnectionManager, Pool},
     SqliteConnection,
 };
+use msa::state::MsaState;
 use whcore::manager::CoreManager;
 
 pub mod db;
 
 pub static mut INIT: bool = false;
 
-pub fn boot(path: &Option<PathBuf>) -> Result<Pool<ConnectionManager<SqliteConnection>>> {
+pub async fn boot(path: &Option<PathBuf>) -> Result<Pool<ConnectionManager<SqliteConnection>>> {
     unsafe {
         if INIT {
             return Err(anyhow::anyhow!("Already initialized"));
@@ -31,6 +32,10 @@ pub fn boot(path: &Option<PathBuf>) -> Result<Pool<ConnectionManager<SqliteConne
 
     migrate(&mut db.get()?)?;
     register_defaults();
+
+    tokio::spawn(async move {
+        MsaState::init().await.unwrap();
+    }).await?;
 
     Ok(db)
 }

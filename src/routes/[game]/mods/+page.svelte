@@ -35,14 +35,22 @@
         loading = false;
     });
 
-    const handleSearch = async (query: string) => {
-        if (last == query) return;
+    const handleSearch = async (query: string, force = false) => {
+        if (last == query && !force) return;
 
         console.log("Searching for:", query);
 
         try {
+            loading = true;
+
             const data = unwrap(
-                await commands.searchMods(gameId, source, query, { page: pageId, count: perPage }, null)
+                await commands.searchMods(
+                    gameId,
+                    source,
+                    query,
+                    { page: pageId, count: perPage },
+                    null
+                )
             );
 
             console.log("Got data:", data);
@@ -52,12 +60,17 @@
             perPage = data.per_page || perPage;
             pages = data.pages || pages;
 
-            if (pageId > pages) pageId = pages - 1;
+            if (pageId > pages) pageId = Math.max(pages - 1, 0);
         } catch (e) {
             console.log(e);
         }
 
         last = query;
+        loading = false;
+    };
+
+    const onChange = async () => {
+        await handleSearch(last || "", true);
     };
 </script>
 
@@ -70,6 +83,7 @@
         </div>
 
         <Dropdown
+            on:change={onChange}
             bind:val={source}
             valText={source}
             items={sources.map((v) => ({ id: v, text: v }))} />
@@ -79,9 +93,11 @@
         <LoadingPage />
     {:else}
         <div class="grid">
-            {#each results as mod}
-                <Mod {mod} game={gameId} />
-            {/each}
+            {#if results}
+                {#each results as mod}
+                    <Mod {mod} game={gameId} />
+                {/each}
+            {/if}
         </div>
     {/if}
 

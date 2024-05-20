@@ -46,7 +46,12 @@ impl From<PackageListing> for Mod {
                 .collect::<Vec<_>>(),
             name: value.name,
             source: Sources::Thunderstore.id(),
+            author: Some(value.owner),
+            desc: None,
+            downloads: 0,
+            followers: 0,
             icon: Some(value.versions.first().unwrap().icon.clone()),
+            banner: Some(value.versions.first().unwrap().icon.clone()),
         }
     }
 }
@@ -60,6 +65,11 @@ impl From<Package> for Mod {
             name: value.name,
             source: Sources::Thunderstore.id(),
             icon: Some(value.latest.icon.clone()),
+            banner: Some(value.latest.icon.clone()),
+            author: Some(value.owner),
+            desc: None,
+            downloads: value.total_downloads as u64,
+            followers: value.rating_score as u64,
         }
     }
 }

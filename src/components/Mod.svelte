@@ -1,12 +1,20 @@
 <script lang="ts">
     import { goto } from "$app/navigation";
+    import { onMount } from "svelte";
+    import { commands, type SourceMapping } from "../api/bindings/app";
     import type { Mod } from "../api/wrap";
+    import { unwrap } from "../api/util";
 
     export let mod: Mod;
     export let game: number;
 
+    let source: SourceMapping | null = null;
     let installed = false;
     let installing = false;
+
+    onMount(async () => {
+        source = unwrap(await commands.getSourceId(mod.source, null)) as SourceMapping;
+    });
 
     const capText = (text: string, size: number) => {
         if (text.length > size) return `${text.substring(0, size - 3)}...`;
@@ -32,9 +40,11 @@
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
-<div class="mod-tile" on:click={() => goto(`/${game}/mod/${mod.id}`)}>
-    <!-- svelte-ignore a11y-img-redundant-alt -->
-    <!-- <img src={mod.background} class="image" alt="mod-background image" /> -->
+<div class="mod-tile" on:click={() => goto(`/${game}/mod/${source}/${mod.id}`)}>
+    {#if mod.banner}
+        <!-- svelte-ignore a11y-img-redundant-alt -->
+        <img src={mod.banner} class="image" alt="mod background image" />
+    {/if}
 
     <div class="info">
         <p class="title">{capText(mod.name, 22)}</p>

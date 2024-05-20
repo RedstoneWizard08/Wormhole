@@ -77,13 +77,20 @@ pub struct SharedAuthor {
 }
 
 impl From<ModInfo> for Mod {
-    fn from(val: ModInfo) -> Self {
+    fn from(mut val: ModInfo) -> Self {
+        val = val.finish(false);
+        
         Self {
             id: format!("{}", val.id.unwrap()),
             name: val.name.unwrap(),
             source: Sources::SpaceDock.id(),
             game_id: val.game_id,
-            icon: val.background,
+            icon: val.background.clone(),
+            banner: val.background,
+            author: val.author,
+            desc: val.description,
+            downloads: val.downloads.unwrap_or(0) as u64,
+            followers: val.followers.unwrap_or(0) as u64,
             versions: val
                 .versions
                 .unwrap_or_default()

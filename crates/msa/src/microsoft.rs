@@ -1,10 +1,11 @@
 use std::{
-    collections::HashMap, env, io::Cursor, process::Command, str::FromStr, sync::Arc, thread,
+    collections::HashMap, env, io::Cursor, process::Command, str::FromStr, sync::Arc,
     time::Duration,
 };
 
 use anyhow::{anyhow, Result};
 use envcrypt::envc;
+use once_cell::sync::Lazy;
 use reqwest::Client;
 use tiny_http::{Header, Response, Server, StatusCode};
 use url::Url;
@@ -14,10 +15,18 @@ use crate::msa_token::MsaTokenResponse;
 /// The port for MSA auth redirect.
 /// This will be for the local server at http://localhost:[port]/callback
 /// This was determined by combining the ASCII codes for W (87) and H (72)
-pub const MSA_REDIRECT_PORT: u32 = 8772;
+// pub const MSA_REDIRECT_PORT: u32 = 8772;
+pub const MSA_REDIRECT_PORT: u32 = 4002;
 
 /// Wormhole's client ID for MSA.
 pub const MSA_CLIENT_ID: &str = "61f104b9-3b1c-49bb-b0b8-2bb1f42f581c";
+
+/// Wormhole's client secret for MSA.
+const MSA_CLIENT_SECRET: Lazy<&str> = Lazy::new(|| envc!("MSA_CLIENT_SECRET"));
+
+/// The auth callback URL.
+// pub const CALLBACK_URL: &str = const_format::formatcp!("http://localhost:{}/callback", MSA_REDIRECT_PORT);
+pub const CALLBACK_URL: &str = "https://dev-websocket.kadaroja.com/callback";
 
 /// How much time the user has to complete an authentication flow.
 /// This is 2 minutes (2 * 60 * 1000 ms).
@@ -33,10 +42,7 @@ pub fn msa_code() -> Result<String> {
 
     let params = &[
         ("client_id", MSA_CLIENT_ID),
-        (
-            "redirect_uri",
-            &format!("http://localhost:{}/callback", MSA_REDIRECT_PORT),
-        ),
+        ("redirect_uri", CALLBACK_URL),
         ("response_type", "code"),
         ("response_mode", "query"),
         ("scope", "XboxLive.signin"),
@@ -47,6 +53,7 @@ pub fn msa_code() -> Result<String> {
 
     let server = Arc::new(Server::http(format!("0.0.0.0:{}", MSA_REDIRECT_PORT)).unwrap());
     let server_clone = Arc::clone(&server);
+
     static mut STOP: bool = false;
 
     if let Ok(path) = env::var("BROWSER") {
@@ -55,11 +62,13 @@ pub fn msa_code() -> Result<String> {
         open::that(url.as_str())?;
     }
 
-    thread::spawn(move || {
-        thread::sleep(Duration::from_millis(AUTH_TIMEOUT));
+    let thread = tokio::spawn(async move {
+        tokio::time::sleep(Duration::from_millis(AUTH_TIMEOUT)).await;
 
         unsafe { STOP = true };
+
         server_clone.unblock();
+        drop(server_clone);
     });
 
     loop {
@@ -99,6 +108,10 @@ pub fn msa_code() -> Result<String> {
                         None,
                     ))?;
 
+                    unsafe { STOP = true };
+                    thread.abort();
+                    server.unblock();
+
                     return Ok(code);
                 }
 
@@ -121,33 +134,37 @@ pub fn msa_code() -> Result<String> {
         }
     }
 
+    unsafe { STOP = true };
+    thread.abort();
+    server.unblock();
+
     Err(anyhow!("Could not authenticate!"))
 }
 
 pub async fn get_auth_token(code: impl AsRef<str>) -> Result<String> {
-    let secret: &str = envc!("MSA_CLIENT_SECRET");
-    let client = Client::new();
-
-    let res = client
+    let res = Client::new()
         .post("https://login.microsoftonline.com/consumers/oauth2/v2.0/token")
-        .header("Content-Type", "application/x-www-form-urlencoded")
         .form::<HashMap<&str, &str>>(&HashMap::from_iter(vec![
             ("code", code.as_ref()),
             ("grant_type", "authorization_code"),
-            ("client_secret", secret),
+            ("client_secret", &MSA_CLIENT_SECRET.clone()),
             ("client_id", MSA_CLIENT_ID),
             ("scope", "XboxLive.signin"),
-            (
-                "redirect_uri",
-                &format!("http://localhost:{}/callback", MSA_REDIRECT_PORT),
-            ),
+            ("redirect_uri", CALLBACK_URL),
         ]))
         .send()
         .await?
-        .text()
+        .json::<MsaTokenResponse>()
         .await?;
 
-    let res = serde_json::from_str::<MsaTokenResponse>(&res)?;
-
     Ok(res.access_token)
+}
+
+#[tokio::test]
+pub async fn test() -> Result<()> {
+    let tkn = get_auth_token(msa_code()?).await?;
+
+    dbg!(tkn);
+
+    Ok(())
 }

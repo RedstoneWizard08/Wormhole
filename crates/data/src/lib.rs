@@ -12,7 +12,7 @@ use specta::{NamedType, TypeMap};
 
 use crate::{
     game::Game,
-    mod_::Mod,
+    // mod_::Mod,
     source::{Source, Sources, SupportedSource},
 };
 
@@ -45,8 +45,8 @@ pub fn type_map() -> TypeMap {
     let ty = SupportedSource::named_data_type(&mut map, &[]);
     map.insert(SupportedSource::SID, ty);
 
-    let ty = Mod::named_data_type(&mut map, &[]);
-    map.insert(Mod::SID, ty);
+    // let ty = Mod::named_data_type(&mut map, &[]);
+    // map.insert(Mod::SID, ty);
 
     map
 }

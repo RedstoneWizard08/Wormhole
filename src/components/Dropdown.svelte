@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { createEventDispatcher } from "svelte";
     import type { DropdownItem } from "../api/dropdown";
 
     export let val: string | number;
@@ -8,6 +9,7 @@
     export let items: DropdownItem[];
 
     let shown = false;
+    const dispatch = createEventDispatcher();
 
     const makeOnSelected = (value: string | number, txt: string) => {
         return () => {
@@ -15,6 +17,7 @@
             valText = txt;
 
             shown = false;
+            dispatch("change");
         };
     };
 

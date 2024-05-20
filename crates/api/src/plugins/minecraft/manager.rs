@@ -31,19 +31,29 @@ impl MinecraftManager {
         if dir.join("instance-metadata.json").exists() {
             Self::load(dir)
         } else {
-            println!("Creating a new manager!");
+            info!("Creating a new manager...");
 
             let dirs = MinecraftDirs::collect();
             let java = loader.get_java_version().await?;
 
+            info!("Installing Java...");
+
+            let java = install_java(&dirs.java.join(java.to_string()), java).await?;
+
+            info!("Creating manager struct...");
+
             let me = Self {
                 dir,
-                java: install_java(&dirs.java.join(java.to_string()), java).await?,
+                java,
                 dirs,
                 loader: loader.clone(),
             };
 
+            info!("Saving...");
+
             me.save()?;
+
+            info!("Done!");
 
             Ok(me)
         }

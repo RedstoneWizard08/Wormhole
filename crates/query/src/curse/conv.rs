@@ -15,7 +15,12 @@ impl From<Mod> for RealMod {
                 .collect::<Vec<ModVersion>>(),
             name: val.name,
             source: Sources::CurseForge.id(),
-            icon: val.logo.map(|v| v.url.to_string()),
+            icon: val.logo.clone().map(|v| v.url.to_string()),
+            banner: val.logo.map(|v| v.url.to_string()),
+            author: Some(val.authors.first().unwrap().name.clone()),
+            desc: Some(val.summary),
+            downloads: val.download_count as u64,
+            followers: 0,
         }
     }
 }

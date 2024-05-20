@@ -18,7 +18,18 @@ impl From<Project> for Mod {
             versions: Vec::new(),
             name: val.title,
             source: Sources::Modrinth.id(),
-            icon: val.icon_url.map(|v| v.to_string()),
+            icon: val.icon_url.clone().map(|v| v.to_string()),
+            author: Some(val.team),
+            desc: Some(val.description),
+            downloads: val.downloads as u64,
+            followers: val.followers as u64,
+            banner: val
+                .gallery
+                .iter()
+                .find(|v| v.featured)
+                .map(|v| Some(v.url.clone()))
+                .unwrap_or(val.icon_url)
+                .map(|v| v.to_string()),
         }
     }
 }
@@ -31,7 +42,16 @@ impl From<SearchHit> for Mod {
             versions: Vec::new(),
             name: val.title,
             source: Sources::Modrinth.id(),
-            icon: val.icon_url.map(|v| v.to_string()),
+            icon: val.icon_url.clone().map(|v| v.to_string()),
+            author: Some(val.author),
+            desc: Some(val.description),
+            downloads: val.downloads as u64,
+            followers: val.follows as u64,
+            banner: val
+                .featured_gallery
+                .map(|v| Some(v))
+                .unwrap_or(val.icon_url)
+                .map(|v| v.to_string()),
         }
     }
 }

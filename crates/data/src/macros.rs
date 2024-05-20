@@ -82,5 +82,15 @@ macro_rules! sources {
                 }
             }
         }
+
+        impl From<i32> for SourceMapping {
+            fn from(val: i32) -> SourceMapping {
+                match val {
+                    $($id => SourceMapping::$var,)*
+
+                    _ => panic!("Unsupported value for SourceMapping: {}", val),
+                }
+            }
+        }
     }
 }

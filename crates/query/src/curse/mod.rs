@@ -12,33 +12,32 @@ use crate::{
 use anyhow::Result;
 use data::source::{Source, Sources};
 use furse::Furse;
-use reqwest::{header::{HeaderMap, HeaderName, HeaderValue}, Client};
+use reqwest::{
+    header::{HeaderMap, HeaderName, HeaderValue},
+    Client,
+};
 
 use self::query::QueryResult;
 
 pub struct CurseForge {
     client: Furse,
-    token: Option<String>,
+    token: String,
 }
 
 impl WithToken for CurseForge {
     fn get_token(&self) -> Option<String> {
-        self.token.clone()
+        Some(self.token.clone())
     }
 
     fn client(&self) -> Client {
-        if let Some(token) = self.get_token() {
-            Client::builder()
-                .default_headers(HeaderMap::from_iter(vec![(
-                    HeaderName::from_static("x-api-key"),
-                    HeaderValue::from_str(&token).unwrap(),
-                )]))
-                .user_agent(USER_AGENT)
-                .build()
-                .unwrap()
-        } else {
-            Client::builder().user_agent(USER_AGENT).build().unwrap()
-        }
+        Client::builder()
+            .default_headers(HeaderMap::from_iter(vec![(
+                HeaderName::from_static("x-api-key"),
+                HeaderValue::from_str(&self.token).unwrap(),
+            )]))
+            .user_agent(USER_AGENT)
+            .build()
+            .unwrap()
     }
 }
 
@@ -47,14 +46,14 @@ impl Resolver for CurseForge {
     async fn new() -> Self {
         Self {
             client: Furse::new(CURSEFORGE_KEY.clone()),
-            token: None,
+            token: CURSEFORGE_KEY.clone().into(),
         }
     }
 
     async fn new_with_token(token: String) -> Self {
         Self {
             client: Furse::new(&token),
-            token: Some(token),
+            token,
         }
     }
 
@@ -70,8 +69,6 @@ impl Resolver for CurseForge {
     ) -> Result<Paginated<Mod>> {
         let opts = opts.unwrap_or_default();
 
-        println!("Searching for {} in {}", search, game_id);
-
         let res = self
             .client()
             .get(format!("{}/mods/search", self.base().await))
@@ -82,11 +79,9 @@ impl Resolver for CurseForge {
                 ("index", opts.page.to_string()),
             ])
             .send()
+            .await?
+            .json::<QueryResult>()
             .await?;
-
-        println!("{:?}", res);
-
-        let res = serde_json::from_str::<QueryResult>(&res.text().await?)?;
 
         Ok(Paginated {
             data: res

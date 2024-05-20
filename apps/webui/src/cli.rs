@@ -49,7 +49,7 @@ impl Cli {
 
         info!("Setting up the database...");
 
-        let pool = boot(&self.db_path)?;
+        let pool = boot(&self.db_path).await?;
 
         info!("Creating route filters...");
 

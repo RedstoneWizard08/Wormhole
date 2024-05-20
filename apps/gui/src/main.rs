@@ -8,8 +8,9 @@ use api::{
 };
 use wormhole_gui::{ctx, invoker};
 
-pub fn main() -> Result<()> {
-    let db = init::boot(&None)?;
+#[tokio::main]
+pub async fn main() -> Result<()> {
+    let db = init::boot(&None).await?;
 
     tauri::Builder::default()
         .plugin(TauriPlugin::new(Kerbal1Plugin::new())?)

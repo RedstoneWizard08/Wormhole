@@ -43,8 +43,8 @@ impl Resolver for Ckan {
     }
 
     async fn init(&mut self) -> Result<()> {
-        self.client.refresh().await.unwrap();
-        self.client.update_cache().await.unwrap();
+        self.client.refresh().await?;
+        self.client.update_cache().await?;
 
         Ok(())
     }

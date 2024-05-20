@@ -1,13 +1,17 @@
 <script lang="ts">
-    import { marked } from "marked";
-    import type { FullModInfo } from "../../../../api/models/modinfo/full";
     import DOMPurify from "dompurify";
     import { page } from "$app/stores";
-    import LoadingPage from "../../../../components/LoadingPage.svelte";
+    import LoadingPage from "../../../../../components/LoadingPage.svelte";
+    import { unwrap } from "../../../../../api/util";
+    import { commands } from "../../../../../api/bindings/app";
+    import type { SourceMapping, Mod } from "../../../../../api/wrap";
+    import { marked } from "marked";
 
     const modId = $page.params.mod;
+    const source = $page.params.source;
+    const gameId = parseInt($page.params.game);
 
-    let modInfo: FullModInfo | null = null as FullModInfo | null;
+    let modInfo: Mod | null = null;
     let isLoading = true;
     let mods = false;
 
@@ -16,10 +20,10 @@
             mods = /\/mods?(\/\d+)?/i.test($page.url.pathname);
 
             (async () => {
-                // TODO
-                const mod = null!;
+                modInfo = unwrap(
+                    await commands.getMod(gameId, source as SourceMapping, modId, null)
+                );
 
-                modInfo = mod;
                 isLoading = false;
             })();
         }
@@ -75,7 +79,7 @@
     <LoadingPage />
 {:else}
     <div class="full-mod-container">
-        <a class={`link ${mods ? "active" : ""}`} href={`/${modInfo?.game_id}/mods`}>
+        <a class={`link ${mods ? "active" : ""}`} href={`/${gameId}/mods`}>
             <div class="return-container">
                 <div class="return-arrow">
                     <i class="fa-solid fa-long-arrow-left" />
@@ -85,33 +89,42 @@
         </a>
 
         <div class="mod">
-            <!-- svelte-ignore a11y-img-redundant-alt -->
-            <img src={modInfo?.background} class="background" alt="mod-background-image" />
+            {#if modInfo?.banner}
+                <!-- svelte-ignore a11y-img-redundant-alt -->
+                <img src={modInfo?.banner} class="background" alt="mod-background-image" />
+            {/if}
 
             <div class="infos">
                 <div class="left">
                     <p class="name">{modInfo?.name}</p>
-                    &bull;
-                    <p class="author">{modInfo?.author}</p>
+
+                    {#if modInfo?.author}
+                        &bull;
+                        <p class="author">{modInfo?.author}</p>
+                    {/if}
                 </div>
 
                 <div class="right">
-                    <p class="downloads">
-                        <i class="fa-solid fa-circle-down" />
-                        &nbsp;&nbsp;
-                        {modInfo?.downloads}
-                    </p>
+                    {#if modInfo?.downloads}
+                        <p class="downloads">
+                            <i class="fa-solid fa-circle-down" />
+                            &nbsp;&nbsp;
+                            {modInfo?.downloads}
+                        </p>
+                    {/if}
 
-                    <p class="followers">
-                        <i class="fa-solid fa-eye" />
-                        &nbsp;&nbsp;
-                        {modInfo?.followers}
-                    </p>
+                    {#if modInfo?.followers}
+                        <p class="followers">
+                            <i class="fa-solid fa-eye" />
+                            &nbsp;&nbsp;
+                            {modInfo?.followers}
+                        </p>
+                    {/if}
                 </div>
             </div>
 
             <p class="description">
-                {@html handleHtml(modInfo?.description || "Loading description...")}
+                {@html handleHtml(modInfo?.desc || "Loading description...")}
             </p>
         </div>
 

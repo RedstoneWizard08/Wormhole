@@ -57,9 +57,15 @@ impl Plugin for MinecraftPlugin {
     }
 
     async fn launch(&self, instance: Instance) -> Result<Child> {
-        MsaState::init().await?;
+        info!("Fetching mod loader...");
+
+        let loader = ModLoader::vanilla_latest().await?;
         
-        let manager = MinecraftManager::load_or_create(instance.data_dir(), &ModLoader::vanilla_latest().await?).await?;
+        info!("Creating manager...");
+
+        let manager = MinecraftManager::load_or_create(instance.data_dir(), &loader).await?;
+
+        info!("Launching...");
 
         manager.launch(&MsaState::get(), &instance).await
     }

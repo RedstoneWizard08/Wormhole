@@ -11,32 +11,45 @@ use crate::{
 };
 
 pub async fn do_auth() -> Result<MsaState> {
+    info!("Getting MSA code...");
+
     let code = msa_code()?;
-    dbg!(&code);
+
+    info!("Getting auth token...");
+
     let token = get_auth_token(&code).await?;
-    dbg!(&token);
+
+    info!("Getting Xbox token...");
+
     let xbox = do_xbox_auth(token).await?;
-    dbg!(&xbox);
+
+    info!("Getting XSTS token...");
+
     let xsts = do_xsts_auth(&xbox.0).await?;
-    dbg!(&xsts);
+
+    info!("Checking integrity...");
+
     let integrity = xbox.1 == xsts.1;
-    dbg!(&integrity);
 
     if !integrity {
         return Err(anyhow!("Token integrity not valid!"));
     }
 
+    info!("Getting Minecraft token...");
+
     let token = do_mc_auth(xsts).await?;
-    dbg!(&token);
+
+    info!("Checking ownership...");
 
     if !has_ownership(&token).await? {
         return Err(anyhow!("User does not own Minecraft!"));
     }
 
-    let profile = get_profile(&token).await?;
-    dbg!(&profile);
+    info!("Getting profile...");
 
-    println!("Authenticated as: {}", profile.name);
+    let profile = get_profile(&token).await?;
+
+    info!("Authenticated as: {}", profile.name);
 
     Ok(MsaState {
         access_token: token,

@@ -2,6 +2,8 @@ import { mockIPC } from "@tauri-apps/api/mocks";
 
 export const createMockAPI = () => {
     mockIPC(async (cmd, args) => {
+        console.log(`Tauri invoke: ${cmd}\n`, args);
+
         const data = await fetch("/_tauri/invoke", {
             method: "POST",
             body: JSON.stringify({
@@ -31,7 +33,7 @@ export const createMockAPI = () => {
             output = null;
         }
 
-        console.log(`Tauri invoke: ${cmd}\n`, args, output);
+        console.log(`Invoke result (${cmd}):`, output);
 
         return output;
     });

@@ -1,4 +1,7 @@
-use anyhow::Result;
+use std::fs;
+
+use anyhow::{anyhow, Result};
+use whcore::manager::CoreManager;
 
 use crate::flow::do_auth;
 
@@ -44,14 +47,44 @@ impl MsaState {
     }
 
     pub async fn init() -> Result<MsaState> {
-        println!("Starting MSA flow...");
+        if let Ok(me) = Self::load() {
+            return Ok(me);
+        }
+
+        info!("Starting MSA flow...");
 
         if Self::get() == Self::const_default() {
-            let res = do_auth().await.unwrap();
+            let res = do_auth().await?;
             
             Self::set(res);
         }
 
+        Self::get().save()?;
+
         Ok(Self::get())
+    }
+
+    pub fn save(&self) -> Result<()> {
+        let mgr = CoreManager::get();
+        let dir = mgr.game_data_dir("minecraft");
+        let file = dir.join("auth.json");
+
+        mgr.create_dir(dir);
+
+        fs::write(file, serde_json::to_string(&self)?)?;
+
+        Ok(())
+    }
+
+    pub fn load() -> Result<Self> {
+        let mgr = CoreManager::get();
+        let dir = mgr.game_data_dir("minecraft");
+        let file = dir.join("auth.json");
+
+        if file.exists() {
+            return Ok(serde_json::from_str(&fs::read_to_string(file)?)?);
+        }
+
+        Err(anyhow!("No MSA auth file found!"))
     }
 }

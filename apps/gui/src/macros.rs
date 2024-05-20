@@ -10,7 +10,7 @@ macro_rules! plugin_fn_proxy {
             let it = $crate::api::register::PLUGINS.lock().unwrap();
             let plugin = it.get(&game_id).bool()?;
 
-            $crate::futures::executor::block_on(plugin.$fn()).bool()
+            $crate::tokio::task::block_in_place(move || $crate::tokio::runtime::Handle::current().block_on(plugin.$fn()).bool())
         }
     };
 
@@ -24,10 +24,10 @@ macro_rules! plugin_fn_proxy {
             let it = $crate::api::register::PLUGINS.lock().unwrap();
             let plugin = it.get(&game_id).bool()?;
 
-            $crate::futures::executor::block_on(plugin.$fn()).ok_or(false)
+            $crate::tokio::task::block_in_place(move || $crate::tokio::runtime::Handle::current().block_on(plugin.$fn()).ok_or(false))
         }
     };
-    
+
     (async $name: ident => $fn: ident: ($($arg: ident: $arg_ty: ty),*) -> $ret: ty) => {
         #[whmacros::serde_call]
         #[tauri::command]
@@ -38,7 +38,7 @@ macro_rules! plugin_fn_proxy {
             let it = $crate::api::register::PLUGINS.lock().unwrap();
             let plugin = it.get(&game_id).bool()?;
 
-            $crate::futures::executor::block_on(plugin.$fn($($arg),*)).bool()
+            $crate::tokio::task::block_in_place(move || $crate::tokio::runtime::Handle::current().block_on(plugin.$fn($($arg),*)).bool())
         }
     };
 
@@ -52,7 +52,7 @@ macro_rules! plugin_fn_proxy {
             let it = $crate::api::register::PLUGINS.lock().unwrap();
             let plugin = it.get(&game_id).bool()?;
 
-            $crate::futures::executor::block_on(plugin.$fn($($arg),*)).ok_or(false)
+            $crate::tokio::task::block_in_place(move || $crate::tokio::runtime::Handle::current().block_on(plugin.$fn($($arg),*)).ok_or(false))
         }
     };
 

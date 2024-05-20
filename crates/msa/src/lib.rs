@@ -1,6 +1,9 @@
 #[macro_use]
 extern crate serde;
 
+#[macro_use]
+extern crate tracing;
+
 pub mod flow;
 pub mod mc;
 pub mod microsoft;

@@ -14,6 +14,9 @@ extern crate serde;
 #[macro_use]
 extern crate specta;
 
+#[macro_use]
+extern crate tracing;
+
 pub extern crate whcore;
 
 pub mod macros;

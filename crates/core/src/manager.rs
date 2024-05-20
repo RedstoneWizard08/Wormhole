@@ -31,7 +31,7 @@ impl CoreManager {
         }
     }
 
-    fn create_dirs(&self) {
+    pub fn create_dirs(&self) {
         self.create_dir(self.dir());
         self.create_dir(self.data_dir());
         self.create_dir(self.cache_dir());
@@ -40,7 +40,7 @@ impl CoreManager {
         self.create_dir(self.cache_dir().join("ckandex"));
     }
 
-    fn create_dir(&self, path: PathBuf) {
+    pub fn create_dir(&self, path: PathBuf) {
         if !path.exists() {
             fs::create_dir_all(path).unwrap();
         }

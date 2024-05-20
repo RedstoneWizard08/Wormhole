@@ -8,6 +8,7 @@
     import { goto } from "$app/navigation";
     import { plugins } from "../../../../api/stores";
     import { commands, type Instance } from "../../../../api/bindings/app";
+    import { onMount } from "svelte";
 
     let instance: Instance | undefined = undefined;
     let background: string | undefined = undefined;
@@ -20,14 +21,14 @@
 
     const id = $page.params.instance;
 
-    $: (async () => {
+    onMount(async () => {
         const info = unwrap(await commands.getInstance(parseInt(id || "-1", 10), null));
 
         instance = info;
 
         background = $plugins.find((v) => v.game == info.game_id)?.banner_url;
         executable = info.data_dir;
-    })();
+    });
 
     const save = async () => {
         if (instance) {
@@ -54,7 +55,7 @@
     const launch = async () => {
         if (instance == null) return;
 
-        unwrap(await commands.launchGame(instance.game_id, instance, null));
+        console.log(unwrap(await commands.launchGame(instance.game_id, instance, null)));
     };
 
     const updateDescription = (ev: Event) => {

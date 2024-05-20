@@ -14,6 +14,9 @@ pub struct AppState {
 
 impl AppState {
     pub async fn new(options: Cli, pool: Pool<ConnectionManager<Conn>>) -> Result<Self> {
-        Ok(Self { options, pool })
+        Ok(Self {
+            options,
+            pool,
+        })
     }
 }

@@ -1,4 +1,4 @@
-#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize, Type)]
+#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize, Type, Default)]
 pub struct Mod {
     /// The mod's ID in its source.
     /// This could be an integer or a string,
@@ -21,6 +21,21 @@ pub struct Mod {
 
     /// The mod's icon.
     pub icon: Option<String>,
+
+    /// The mod's banner.
+    pub banner: Option<String>,
+
+    /// The mod's description.
+    pub desc: Option<String>,
+
+    /// The mod's author.
+    pub author: Option<String>,
+
+    /// The mod's downloads.
+    pub downloads: u64,
+
+    /// The mod's followers.
+    pub followers: u64,
 }
 
 unsafe impl Send for Mod {}
