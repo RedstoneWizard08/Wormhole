@@ -1,10 +1,10 @@
 pub mod macros;
 
 pub extern crate api;
-pub extern crate tokio;
 pub extern crate macros as whmacros;
 pub extern crate specta;
 pub extern crate tauri;
+pub extern crate tokio;
 pub extern crate whcore;
 
 use anyhow::Result;
@@ -27,7 +27,6 @@ use query::{
 };
 use specta::functions::CollectFunctionsResult;
 use tauri::{utils::assets::EmbeddedAssets, Context, Invoke, Runtime};
-use tokio::runtime::Handle;
 use whcore::{dirs::Dirs, manager::CoreManager, merge_type_maps, state::TState, Boolify};
 
 pub type AppState<'a> = TState<'a, Pool<ConnectionManager<SqliteConnection>>>;
@@ -87,17 +86,10 @@ async fn get_instance(instance_id: i32, pool: AppState<'_>) -> Result<Instance, 
 #[specta::specta]
 async fn get_plugins(_pool: AppState<'_>) -> Result<Vec<PluginInfo>, bool> {
     let mut res = Vec::new();
+    let lock = PLUGINS.lock().await;
 
-    for plugin in PLUGINS.lock().unwrap().values() {
-        // For some reason, this doesn't implement Send or Sync,
-        // even though the trait requires it and it's a bound on
-        // the HashMap. So we have to use futures' block_on
-        // function, which adds more dependencies to compile.
-        // WTF, RUST
-
-        res.push(tokio::task::block_in_place(move || {
-            Handle::current().block_on(plugin.as_info())
-        }));
+    for plugin in lock.values() {
+        res.push(plugin.as_info().await.ok_or(false)?);
     }
 
     Ok(res)

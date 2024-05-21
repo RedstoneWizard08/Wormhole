@@ -79,7 +79,7 @@ pub struct SharedAuthor {
 impl From<ModInfo> for Mod {
     fn from(mut val: ModInfo) -> Self {
         val = val.finish(false);
-        
+
         Self {
             id: format!("{}", val.id.unwrap()),
             name: val.name.unwrap(),

@@ -2017,22 +2017,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3dcaa9ae7725d12cdb85b3ad99a434db70b468c09ded17e012d86b5c1010f7a7"
 
 [[package]]
-name = "furse"
-version = "1.5.14"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "46f97591e5a79c36f8b9cc1a2bdb5af84d81f8ba0b7e169d5faafda2f7056fb4"
-dependencies = [
- "chrono",
- "murmur2",
- "once_cell",
- "reqwest 0.12.4",
- "serde",
- "serde_repr",
- "thiserror",
- "url",
-]
-
-[[package]]
 name = "futf"
 version = "0.1.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -4707,6 +4691,7 @@ dependencies = [
  "anyhow 1.0.81",
  "async-trait",
  "cfg-if 1.0.0",
+ "chrono",
  "ckandex",
  "const_format",
  "data",
@@ -4714,15 +4699,18 @@ dependencies = [
  "dotenvy",
  "envcrypt",
  "ferinth",
- "furse",
  "libsqlite3-sys",
+ "murmur2",
  "once_cell",
  "reqwest 0.12.4",
  "serde",
  "serde_json",
+ "serde_repr",
  "specta",
+ "thiserror",
  "tokio 1.37.0",
  "tracing",
+ "url",
  "whcore",
 ]
 
@@ -5515,9 +5503,9 @@ dependencies = [
 
 [[package]]
 name = "serde_repr"
-version = "0.1.12"
+version = "0.1.19"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "bcec881020c684085e55a25f7fd888954d56609ef363479dc5a1305eb0d40cab"
+checksum = "6c64451ba24fc7a6a2d60fc75dd9c83c90903b19028d4eff35e88fc1e86564e9"
 dependencies = [
  "proc-macro2",
  "quote",

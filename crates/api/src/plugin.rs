@@ -1,10 +1,17 @@
+use std::{collections::HashMap, sync::Arc};
+
 use anyhow::Result;
 use data::{
     instance::Instance,
     source::{SourceMapping, Sources},
 };
 use query::source::Resolver;
-use tokio::process::Child;
+use tokio::{process::Child, sync::Mutex};
+
+lazy_static! {
+    pub static ref RESOLVERS: Arc<Mutex<HashMap<&'static str, Vec<Arc<Box<dyn Resolver + Send + Sync>>>>>> =
+        Arc::new(Mutex::new(HashMap::new()));
+}
 
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize, Type)]
 pub struct PluginInfo {
@@ -33,8 +40,35 @@ pub trait Plugin: Send + Sync {
     /// Get the game ID.
     fn game(&self) -> i32;
 
-    /// Get a query resolver.
-    async fn resolvers(&self) -> Vec<Box<dyn Resolver + Send + Sync>>;
+    /// Get the plugin's query resolvers.
+    async fn resolvers(&self) -> Option<Vec<Arc<Box<dyn Resolver + Send + Sync>>>> {
+        self.bootstrap_resolvers().await.ok()?;
+
+        RESOLVERS.lock().await.get(self.id()).cloned()
+    }
+
+    /// Bootstrap resolvers.
+    async fn bootstrap_resolvers(&self) -> Result<()> {
+        let mut lock = RESOLVERS.lock().await;
+
+        if !lock.contains_key(self.id()) {
+            let resolvers = self.create_resolvers().await;
+            let mut resolvers_out = Vec::new();
+
+            for mut item in resolvers {
+                item.init().await?;
+
+                resolvers_out.push(Arc::new(item));
+            }
+
+            lock.insert(self.id(), resolvers_out);
+        }
+
+        Ok(())
+    }
+
+    /// Create the plugin's query resolvers.
+    async fn create_resolvers(&self) -> Vec<Box<dyn Resolver + Send + Sync>>;
 
     /// Get the display name.
     fn display(&self) -> String;
@@ -55,8 +89,8 @@ pub trait Plugin: Send + Sync {
     fn fallback(&self) -> Option<&'static str>;
 
     /// Get a source based on its ID.
-    async fn get_source(&self, source: i32) -> Option<Box<dyn Resolver + Send + Sync>> {
-        for src in self.resolvers().await {
+    async fn get_source(&self, source: i32) -> Option<Arc<Box<dyn Resolver + Send + Sync>>> {
+        for src in self.resolvers().await? {
             if src.source().id.unwrap() == source {
                 return Some(src);
             }
@@ -65,8 +99,8 @@ pub trait Plugin: Send + Sync {
         None
     }
 
-    async fn as_info(&self) -> PluginInfo {
-        PluginInfo {
+    async fn as_info(&self) -> Option<PluginInfo> {
+        Some(PluginInfo {
             id: self.id(),
             game: self.game(),
             banner_url: self.banner(),
@@ -76,11 +110,11 @@ pub trait Plugin: Send + Sync {
 
             resolvers: self
                 .resolvers()
-                .await
+                .await?
                 .iter()
                 .map(|v| Sources::from(v.source()).into())
                 .collect::<Vec<_>>(),
-        }
+        })
     }
 
     async fn launch(&self, instance: Instance) -> Result<Child>;

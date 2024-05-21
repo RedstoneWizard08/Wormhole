@@ -23,10 +23,14 @@ tokio.workspace = true
 whcore.workspace = true
 data.workspace = true
 ferinth.workspace = true
-furse.workspace = true
 specta.workspace = true
 envcrypt.workspace = true
 once_cell.workspace = true
+thiserror.workspace = true
+murmur2.workspace = true
+serde_repr.workspace = true
+url.workspace = true
+chrono.workspace = true
 
 [build-dependencies]
 dotenvy.workspace = true

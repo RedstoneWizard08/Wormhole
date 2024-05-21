@@ -7,10 +7,10 @@ macro_rules! plugin_fn_proxy {
         async fn $name(game_id: i32, _pool: $crate::AppState<'_>) -> Result<$ret, bool> {
             use $crate::whcore::Boolify;
 
-            let it = $crate::api::register::PLUGINS.lock().unwrap();
+            let it = $crate::api::register::PLUGINS.lock().await;
             let plugin = it.get(&game_id).bool()?;
 
-            $crate::tokio::task::block_in_place(move || $crate::tokio::runtime::Handle::current().block_on(plugin.$fn()).bool())
+            plugin.$fn().await.bool()
         }
     };
 
@@ -21,10 +21,10 @@ macro_rules! plugin_fn_proxy {
         async fn $name(game_id: i32, _pool: $crate::AppState<'_>) -> Result<$ret, bool> {
             use $crate::whcore::Boolify;
 
-            let it = $crate::api::register::PLUGINS.lock().unwrap();
+            let it = $crate::api::register::PLUGINS.lock().await;
             let plugin = it.get(&game_id).bool()?;
 
-            $crate::tokio::task::block_in_place(move || $crate::tokio::runtime::Handle::current().block_on(plugin.$fn()).ok_or(false))
+            plugin.$fn().await.ok_or(false)
         }
     };
 
@@ -35,10 +35,10 @@ macro_rules! plugin_fn_proxy {
         async fn $name(game_id: i32, $($arg: $arg_ty),*, _pool: $crate::AppState<'_>) -> Result<$ret, bool> {
             use $crate::whcore::Boolify;
 
-            let it = $crate::api::register::PLUGINS.lock().unwrap();
+            let it = $crate::api::register::PLUGINS.lock().await;
             let plugin = it.get(&game_id).bool()?;
 
-            $crate::tokio::task::block_in_place(move || $crate::tokio::runtime::Handle::current().block_on(plugin.$fn($($arg),*)).bool())
+            plugin.$fn($($arg),*).await.bool()
         }
     };
 
@@ -49,10 +49,10 @@ macro_rules! plugin_fn_proxy {
         async fn $name(game_id: i32, $($arg: $arg_ty),*, _pool: $crate::AppState<'_>) -> Result<$ret, bool> {
             use $crate::whcore::Boolify;
 
-            let it = $crate::api::register::PLUGINS.lock().unwrap();
+            let it = $crate::api::register::PLUGINS.lock().await;
             let plugin = it.get(&game_id).bool()?;
 
-            $crate::tokio::task::block_in_place(move || $crate::tokio::runtime::Handle::current().block_on(plugin.$fn($($arg),*)).ok_or(false))
+            plugin.$fn($($arg),*).await.ok_or(false)
         }
     };
 
@@ -63,7 +63,7 @@ macro_rules! plugin_fn_proxy {
         async fn $name(game_id: i32, $($arg: $arg_ty),*, _pool: $crate::AppState<'_>) -> Result<$ret, bool> {
             use $crate::whcore::Boolify;
 
-            let it = $crate::api::register::PLUGINS.lock().unwrap();
+            let it = $crate::api::register::PLUGINS.lock().await;
             let plugin = it.get(&game_id).bool()?;
 
             plugin.$fn($($arg),*).ok_or(false)
@@ -77,7 +77,7 @@ macro_rules! plugin_fn_proxy {
         async fn $name(game_id: i32, _pool: $crate::AppState<'_>) -> Result<$ret, bool> {
             use $crate::whcore::Boolify;
 
-            let it = $crate::api::register::PLUGINS.lock().unwrap();
+            let it = $crate::api::register::PLUGINS.lock().await;
             let plugin = it.get(&game_id).bool()?;
 
             plugin.$fn().ok_or(false)

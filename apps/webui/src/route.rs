@@ -33,5 +33,6 @@ pub async fn route_handler(State(state): State<AppState>, req: Request<Body>) ->
         data.cmd,
         serde_json::to_string(&data.data)?,
         TState(&state.pool),
-    ).await)
+    )
+    .await)
 }

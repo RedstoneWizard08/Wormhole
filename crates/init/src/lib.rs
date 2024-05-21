@@ -24,18 +24,19 @@ pub async fn boot(path: &Option<PathBuf>) -> Result<Pool<ConnectionManager<Sqlit
     }
 
     CoreManager::get().init();
-    
+
     let db = db::connect(
         path.clone()
             .unwrap_or(CoreManager::get().data_dir().join("data.db")),
     )?;
 
     migrate(&mut db.get()?)?;
-    register_defaults();
+    register_defaults().await;
 
     tokio::spawn(async move {
         MsaState::init().await.unwrap();
-    }).await?;
+    })
+    .await?;
 
     Ok(db)
 }

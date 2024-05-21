@@ -1,6 +1,7 @@
 pub mod ksp1;
 pub mod ksp2;
 pub mod minecraft;
+pub mod common;
 
 pub use ksp1::Kerbal1Plugin;
 pub use ksp2::Kerbal2Plugin;
@@ -16,8 +17,8 @@ pub fn default_plugins() -> Vec<Box<dyn TauriPluginTrait>> {
     ]
 }
 
-pub fn register_defaults() {
+pub async fn register_defaults() {
     for plugin in default_plugins() {
-        register_plugin(plugin);
+        register_plugin(plugin).await;
     }
 }

@@ -17,7 +17,7 @@ impl IntoAsync<RealMod> for Mod {
             icon: None,
             banner: None,
             author: None,
-            desc: None,
+            desc: self.description,
             downloads: 0,
             followers: 0,
             versions: vec![ModVersion {

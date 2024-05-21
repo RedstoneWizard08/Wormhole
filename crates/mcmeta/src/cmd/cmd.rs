@@ -17,23 +17,29 @@ pub async fn build_launch_command(
 
     args.push(java.to_str().unwrap().to_string());
 
-    args.extend(fix_args(
-        profile.java_args(&get_features()),
-        &root,
-        &profile,
-        loader,
-        &opts,
-    ).await?);
+    args.extend(
+        fix_args(
+            profile.java_args(&get_features()),
+            &root,
+            &profile,
+            loader,
+            &opts,
+        )
+        .await?,
+    );
 
     args.push(profile.main_class.clone());
 
-    args.extend(fix_args(
-        profile.game_args(&get_features()),
-        &root,
-        &profile,
-        loader,
-        &opts,
-    ).await?);
+    args.extend(
+        fix_args(
+            profile.game_args(&get_features()),
+            &root,
+            &profile,
+            loader,
+            &opts,
+        )
+        .await?,
+    );
 
     Ok(args)
 }

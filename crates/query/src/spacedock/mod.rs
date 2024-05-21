@@ -52,7 +52,7 @@ impl Resolver for SpaceDock {
             Ok(serde_json::from_str::<BrowseResult>(&text)?.into())
         } else {
             let url = format!(
-                "{}/api/search/mod?query={}&page={}&count={}&game_id={}",
+                "{}/search/mod?query={}&page={}&count={}&game_id={}",
                 self.base().await,
                 search,
                 opts.unwrap_or_default().page,
@@ -68,7 +68,7 @@ impl Resolver for SpaceDock {
     }
 
     async fn get_mod(&self, id: String) -> Result<Mod> {
-        let url = format!("{}/api/mod/{}", self.base().await, id);
+        let url = format!("{}/mod/{}", self.base().await, id);
         let data = self.client().get(url).send().await?;
         let text = data.text().await?;
 
@@ -95,7 +95,7 @@ impl Resolver for SpaceDock {
                 self.get_version(id, version).await?.url.unwrap()
             ))
         } else {
-            let url = format!("{}/api/mod/{}/latest", self.base().await, id);
+            let url = format!("{}/mod/{}/latest", self.base().await, id);
             let data = self.client().get(url).send().await?;
             let text = data.text().await?;
             let ver = serde_json::from_str::<ModVersion>(&text)?;

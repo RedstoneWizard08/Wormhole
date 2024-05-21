@@ -115,7 +115,7 @@ pub trait TauriPluginTrait: CPlugin + Send + Sync {
 #[async_trait]
 impl<T: CPlugin + Send + Sync> TauriPluginTrait for T {
     async fn info(&self) -> Option<PluginInfo> {
-        Some(self.as_info().await)
+        self.as_info().await
     }
 
     async fn search_mods(
@@ -124,7 +124,7 @@ impl<T: CPlugin + Send + Sync> TauriPluginTrait for T {
         query: Option<String>,
         opts: Option<QueryOptions>,
     ) -> Option<Paginated<Mod>> {
-        let resolvers = self.resolvers().await;
+        let resolvers = self.resolvers().await?;
         let resolver = resolvers.iter().find(|v| v.source().mapping() == resolver);
 
         if let Some(resolver) = resolver {
@@ -138,7 +138,7 @@ impl<T: CPlugin + Send + Sync> TauriPluginTrait for T {
     }
 
     async fn get_mod(&self, resolver: SourceMapping, id: String) -> Option<Mod> {
-        let resolvers = self.resolvers().await;
+        let resolvers = self.resolvers().await?;
         let resolver = resolvers.iter().find(|v| v.source().mapping() == resolver);
 
         if let Some(resolver) = resolver {
@@ -153,7 +153,7 @@ impl<T: CPlugin + Send + Sync> TauriPluginTrait for T {
         resolver: SourceMapping,
         id: String,
     ) -> Option<Vec<ModVersion>> {
-        let resolvers = self.resolvers().await;
+        let resolvers = self.resolvers().await?;
         let resolver = resolvers.iter().find(|v| v.source().mapping() == resolver);
 
         if let Some(resolver) = resolver {
@@ -169,7 +169,7 @@ impl<T: CPlugin + Send + Sync> TauriPluginTrait for T {
         id: String,
         version: String,
     ) -> Option<ModVersion> {
-        let resolvers = self.resolvers().await;
+        let resolvers = self.resolvers().await?;
         let resolver = resolvers.iter().find(|v| v.source().mapping() == resolver);
 
         if let Some(resolver) = resolver {
@@ -185,7 +185,7 @@ impl<T: CPlugin + Send + Sync> TauriPluginTrait for T {
         project: String,
         version: Option<String>,
     ) -> Option<String> {
-        let resolvers = self.resolvers().await;
+        let resolvers = self.resolvers().await?;
         let resolver = resolvers.iter().find(|v| v.source().mapping() == resolver);
 
         if let Some(resolver) = resolver {
@@ -202,6 +202,12 @@ impl<T: CPlugin + Send + Sync> TauriPluginTrait for T {
     }
 
     async fn sources(&self) -> Option<Vec<String>> {
-        Some(self.resolvers().await.iter().map(|v| v.source().mapping().as_str().to_string()).collect())
+        Some(
+            self.resolvers()
+                .await?
+                .iter()
+                .map(|v| v.source().mapping().as_str().to_string())
+                .collect(),
+        )
     }
 }

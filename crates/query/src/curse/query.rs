@@ -1,4 +1,4 @@
-use furse::structures::mod_structs::Mod;
+use super::furse::structures::mod_structs::Mod;
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct QueryResult {

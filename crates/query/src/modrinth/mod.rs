@@ -18,7 +18,6 @@ use ferinth::{
     },
     Ferinth,
 };
-use furse::Furse;
 
 pub struct Modrinth {
     client: Ferinth,

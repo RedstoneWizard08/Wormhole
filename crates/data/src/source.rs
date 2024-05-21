@@ -63,7 +63,7 @@ impl Source {
 }
 
 sources!(
-    Sources:
+    Source => Sources = SourceMapping:
         SpaceDock = (0, "SpaceDock", "https://spacedock.info/api");
         Ckan = (1, "CKAN", "<ckandex>");
         Wormhole = (2, "Wormhole", "<TBD>");

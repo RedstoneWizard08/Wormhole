@@ -49,7 +49,7 @@ impl Plugin for MinecraftPlugin {
         Some("mods")
     }
 
-    async fn resolvers(&self) -> Vec<Box<dyn Resolver + Send + Sync>> {
+    async fn create_resolvers(&self) -> Vec<Box<dyn Resolver + Send + Sync>> {
         vec![
             Box::new(CurseForge::new().await),
             Box::new(Modrinth::new().await),
@@ -60,7 +60,7 @@ impl Plugin for MinecraftPlugin {
         info!("Fetching mod loader...");
 
         let loader = ModLoader::vanilla_latest().await?;
-        
+
         info!("Creating manager...");
 
         let manager = MinecraftManager::load_or_create(instance.data_dir(), &loader).await?;

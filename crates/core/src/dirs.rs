@@ -1,5 +1,5 @@
-use std::path::PathBuf;
 use specta::Type;
+use std::path::PathBuf;
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash, Default, Type)]
 pub struct Dirs {

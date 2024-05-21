@@ -55,7 +55,7 @@ impl MsaState {
 
         if Self::get() == Self::const_default() {
             let res = do_auth().await?;
-            
+
             Self::set(res);
         }
 

@@ -1,5 +1,5 @@
+use super::furse::structures::{file_structs::File, mod_structs::Mod};
 use data::source::Sources;
-use furse::structures::{file_structs::File, mod_structs::Mod};
 
 use crate::mod_::{Mod as RealMod, ModVersion};
 

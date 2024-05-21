@@ -6,9 +6,6 @@ use specta::{NamedType, TypeMap};
 extern crate lazy_static;
 
 #[macro_use]
-extern crate async_trait;
-
-#[macro_use]
 extern crate serde;
 
 #[macro_use]
@@ -16,6 +13,9 @@ extern crate specta;
 
 #[macro_use]
 extern crate tracing;
+
+#[macro_use]
+extern crate async_trait;
 
 pub extern crate whcore;
 
@@ -29,8 +29,8 @@ pub mod tauri;
 #[cfg(test)]
 pub mod test_util;
 
-pub fn init() {
-    register_defaults();
+pub async fn init() {
+    register_defaults().await;
 }
 
 pub fn type_map() -> TypeMap {

@@ -2,7 +2,6 @@
 // #[macro_export]
 // macro_rules! stub_source {
 //     ($struct: ident) => {
-//         #[async_trait]
 //         #[cfg(target_arch = "wasm32")]
 //         impl Source for $struct {
 //             fn new() -> Self {

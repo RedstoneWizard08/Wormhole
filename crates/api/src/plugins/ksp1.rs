@@ -51,7 +51,7 @@ impl Plugin for Kerbal1Plugin {
         Some("GameData")
     }
 
-    async fn resolvers(&self) -> Vec<Box<dyn Resolver + Send + Sync>> {
+    async fn create_resolvers(&self) -> Vec<Box<dyn Resolver + Send + Sync>> {
         vec![
             Box::new(SpaceDock::new().await),
             Box::new(Ckan::new().await),

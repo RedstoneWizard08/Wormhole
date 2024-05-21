@@ -1,14 +1,15 @@
 pub mod config;
+pub mod dirs;
 pub mod finder;
 pub mod manager;
 pub mod messaging;
 pub mod state;
 pub mod traits;
-pub mod dirs;
 
 #[macro_use]
 extern crate serde;
 
+#[macro_use]
 pub extern crate async_trait;
 
 use dirs::Dirs;

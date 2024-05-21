@@ -1,15 +1,15 @@
 #[macro_export]
 macro_rules! sources {
-    ($enum: ident: $($var: ident = ($id: expr, $name: expr, $url: expr);)*) => {
+    ($ty: ident => $enum: ident = $mapping: ident: $($var: ident = ($id: expr, $name: expr, $url: expr);)*) => {
         #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Type)]
         pub enum $enum {
             $($var,)*
         }
 
         impl $enum {
-            pub fn source(&self) -> $crate::source::Source {
+            pub fn source(&self) -> $ty {
                 match self.clone() {
-                    $(Self::$var => $crate::source::Source {
+                    $(Self::$var => $ty {
                         id: Some($id),
                         name: $name.to_string(),
                         base_url: $url.to_string(),
@@ -37,14 +37,14 @@ macro_rules! sources {
             }
         }
 
-        impl From<$enum> for $crate::source::Source {
-            fn from(val: $enum) -> Self {
-                val.source()
+        impl Into<$ty> for $enum {
+            fn into(self) -> $ty {
+                self.source()
             }
         }
 
-        impl From<$crate::source::Source> for $enum {
-            fn from(val: $crate::source::Source) -> Self {
+        impl From<$ty> for $enum {
+            fn from(val: $ty) -> Self {
                 match val.id.unwrap_or_default() {
                     $($id => $enum::$var,)*
 
@@ -53,13 +53,16 @@ macro_rules! sources {
             }
         }
 
+        unsafe impl Send for $enum {}
+        unsafe impl Sync for $enum {}
+
         #[repr(i32)]
         #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize, Type)]
-        pub enum SourceMapping {
+        pub enum $mapping {
             $($var = $id,)*
         }
 
-        impl SourceMapping {
+        impl $mapping {
             pub fn as_str(&self) -> &'static str {
                 match self {
                     $(Self::$var => $name,)*
@@ -67,30 +70,33 @@ macro_rules! sources {
             }
         }
 
-        impl From<$enum> for SourceMapping {
-            fn from(val: $enum) -> SourceMapping {
+        impl From<$enum> for $mapping {
+            fn from(val: $enum) -> $mapping {
                 match val {
-                    $($enum::$var => SourceMapping::$var,)*
+                    $($enum::$var => $mapping::$var,)*
                 }
             }
         }
 
-        impl From<SourceMapping> for $enum {
-            fn from(val: SourceMapping) -> $enum {
+        impl From<$mapping> for $enum {
+            fn from(val: $mapping) -> $enum {
                 match val {
-                    $(SourceMapping::$var => $enum::$var,)*
+                    $($mapping::$var => $enum::$var,)*
                 }
             }
         }
 
-        impl From<i32> for SourceMapping {
-            fn from(val: i32) -> SourceMapping {
+        impl From<i32> for $mapping {
+            fn from(val: i32) -> $mapping {
                 match val {
-                    $($id => SourceMapping::$var,)*
+                    $($id => $mapping::$var,)*
 
-                    _ => panic!("Unsupported value for SourceMapping: {}", val),
+                    _ => panic!("Unsupported value for {}: {}", stringify!($mapping), val),
                 }
             }
         }
+
+        unsafe impl Send for $mapping {}
+        unsafe impl Sync for $mapping {}
     }
 }

@@ -4,9 +4,6 @@
 use once_cell::sync::Lazy;
 
 #[macro_use]
-extern crate async_trait;
-
-#[macro_use]
 pub extern crate anyhow;
 
 #[macro_use]
@@ -17,6 +14,9 @@ extern crate specta;
 
 #[macro_use]
 extern crate envcrypt;
+
+#[macro_use]
+extern crate async_trait;
 
 pub(crate) const CURSEFORGE_KEY: Lazy<&str> = Lazy::new(|| envc!("CURSEFORGE_KEY"));
 pub(crate) const MODRINTH_KEY: Lazy<Option<&str>> = Lazy::new(|| option_envc!("MODRINTH_KEY"));

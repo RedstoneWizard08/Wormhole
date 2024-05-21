@@ -1,4 +1,5 @@
 pub mod conv;
+pub mod furse;
 pub mod query;
 
 use std::env;
@@ -72,6 +73,10 @@ impl Resolver for CurseForge {
         let res = self
             .client()
             .get(format!("{}/mods/search", self.base().await))
+            .header(
+                HeaderName::from_static("x-api-key"),
+                HeaderValue::from_str(&self.token).unwrap(),
+            )
             .query(&[
                 ("gameId", game_id),
                 ("searchFilter", search),
@@ -79,9 +84,11 @@ impl Resolver for CurseForge {
                 ("index", opts.page.to_string()),
             ])
             .send()
-            .await?
-            .json::<QueryResult>()
             .await?;
+
+        let res = res.text().await?;
+
+        let res = serde_json::from_str::<QueryResult>(&res).unwrap_or_else(|e| panic!("{}", e));
 
         Ok(Paginated {
             data: res

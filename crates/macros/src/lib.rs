@@ -61,7 +61,8 @@ pub fn serde_call(_attrs: TokenStream, item: TokenStream) -> TokenStream {
         #func
         #obj
         #wrapper
-    }).into()
+    })
+    .into()
 }
 
 #[proc_macro]
@@ -99,7 +100,8 @@ pub fn serde_impl(_attrs: TokenStream, item: TokenStream) -> TokenStream {
         #it
         #lazy
         #(#out)*
-    }.into()
+    }
+    .into()
 }
 
 fn serde_struct_call_inner(struct_holder: &Path, item: TokenStream) -> TokenStream {
@@ -156,5 +158,6 @@ fn serde_struct_call_inner(struct_holder: &Path, item: TokenStream) -> TokenStre
         #func
         #obj
         #wrapper
-    }).into()
+    })
+    .into()
 }

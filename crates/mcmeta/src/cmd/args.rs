@@ -51,13 +51,13 @@ pub async fn fix_argument(
     if let ModLoader::Quilt(_, _) = loader {
         let it = get_intermediary(loader.mc_version()).await?;
 
-            classpath.push(
-                libs_dir
-                    .join(it.coordinate().path())
-                    .to_str()
-                    .unwrap()
-                    .to_string(),
-            );
+        classpath.push(
+            libs_dir
+                .join(it.coordinate().path())
+                .to_str()
+                .unwrap()
+                .to_string(),
+        );
     }
 
     for lib in &profile.libraries {
