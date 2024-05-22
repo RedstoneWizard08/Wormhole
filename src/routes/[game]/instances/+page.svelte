@@ -144,8 +144,6 @@
 
             z-index: 4;
 
-            font-family: "manteka", serif;
-
             display: flex;
             flex-direction: row;
             align-items: center;
@@ -304,7 +302,6 @@
 
                 &::placeholder {
                     font-size: 10pt;
-                    font-family: "manteka", serif;
                     text-transform: uppercase;
                 }
             }
@@ -323,7 +320,6 @@
                     padding: 1.25% 1.5%;
 
                     color: white;
-                    font-family: "manteka", serif;
                     text-transform: uppercase;
                     background-color: transparent;
 
@@ -352,7 +348,6 @@
                 padding: 1.25% 1.5%;
 
                 color: white;
-                font-family: "manteka", serif;
                 text-transform: uppercase;
                 background-color: transparent;
 
@@ -373,7 +368,6 @@
                 padding: 1.25% 1.5%;
 
                 color: white;
-                font-family: "manteka", serif;
                 text-transform: uppercase;
                 background-color: #1c7c1c;
 
@@ -394,7 +388,6 @@
                 padding: 1.25% 2%;
 
                 color: white;
-                font-family: "manteka", serif;
                 text-transform: uppercase;
                 background-color: #9c1c1c;
 

@@ -220,7 +220,6 @@
                         border: 1px solid lightskyblue;
                         padding: 1% 1.5%;
                         font-size: 12pt;
-                        font-family: "manteka", serif;
 
                         border-radius: 8px;
 
@@ -248,7 +247,6 @@
                         border: 1px solid lightsalmon;
                         padding: 1% 1.5%;
                         font-size: 12pt;
-                        font-family: "manteka", serif;
                         margin-left: 3%;
 
                         border-radius: 8px;
@@ -379,7 +377,6 @@
                 border-radius: 8px;
                 padding: 0.5% 1%;
 
-                font-family: "manteka", serif;
                 font-size: 12pt;
                 cursor: pointer;
 

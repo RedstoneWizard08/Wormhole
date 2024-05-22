@@ -303,7 +303,6 @@
                 border-radius: 8px;
                 padding: 0.5% 1%;
 
-                font-family: "manteka", serif;
                 font-size: 12pt;
                 cursor: pointer;
 

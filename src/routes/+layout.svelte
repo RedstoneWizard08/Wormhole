@@ -41,7 +41,7 @@
         height: 100%;
 
         color: white;
-        font-family: "manteka", serif;
+        font-family: "Ubuntu", serif;
 
         margin: 0;
         padding: 0;

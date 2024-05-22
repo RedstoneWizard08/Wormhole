@@ -24,7 +24,6 @@
             height: 100%;
 
             border: none;
-            font-family: "manteka", serif;
             text-align: center;
             background-color: transparent;
             color: #ffffff;
