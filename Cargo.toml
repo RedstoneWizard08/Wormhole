@@ -91,6 +91,7 @@ windows-sys = { version = "0.52.0", features = ["Win32", "Win32_System", "Win32_
 thiserror = "1.0.61"
 murmur2 = "0.1.0"
 serde_repr = "0.1.19"
+crossbeam-channel = "0.5.13"
 
 tauri-specta = { git = "https://github.com/oscartbeaumont/tauri-specta", features = ["typescript"] }
 tungstenite = { features = ["rustls"], git = "https://github.com/snapview/tungstenite-rs", version = "0.20.1", rev = "fc17f73" }

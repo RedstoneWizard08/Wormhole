@@ -1,8 +1,12 @@
-use axum::{middleware::from_fn, routing::post, Router};
+use axum::{
+    middleware::from_fn,
+    routing::{get, post},
+    Router,
+};
 use glue::{glue::Glue, util::is_debug};
 use midlog::logging_middleware;
 
-use crate::{route::route_handler, state::AppState};
+use crate::{route::route_handler, state::AppState, ws::websocket_handler};
 
 #[derive(Debug, Clone)]
 pub struct RouterBuilder {
@@ -31,6 +35,7 @@ impl RouterBuilder {
     pub fn routes(self) -> Self {
         let mut new = Self::new();
         new.router = self.router.route("/_tauri/invoke", post(route_handler));
+        new.router = new.router.route("/_tauri/events", get(websocket_handler));
         new
     }
 

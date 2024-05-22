@@ -1,4 +1,6 @@
+import { listen as realListen, type EventName, type EventCallback, type UnlistenFn } from "@tauri-apps/api/event";
 import type { __Result__ } from "./bindings/app";
+import { globalEventBus } from "./dev";
 
 export const formatBytes = (n: number) => {
     const k = n > 0 ? Math.floor(Math.log2(n) / 10) : 0;
@@ -12,5 +14,23 @@ export const unwrap = <T, E>(res: __Result__<T, E>): T => {
         return res.data;
     } else {
         throw res.error;
+    }
+};
+
+export const listen = async <T>(event: EventName, handler: EventCallback<T>): Promise<UnlistenFn> => {
+    if (import.meta.env.TAURI_WEB_DEV) {
+        const onEvent = (evt: Event) => {
+            const ev = evt as CustomEvent;
+
+            handler({ event, id: -1, payload: ev.detail, windowLabel: "" });
+        };
+
+        globalEventBus.addEventListener(event, onEvent);
+
+        return () => {
+            globalEventBus.removeEventListener(event, onEvent);
+        };
+    } else {
+        return await realListen(event, handler);
     }
 };

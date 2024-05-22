@@ -3,6 +3,7 @@ pub mod dirs;
 pub mod finder;
 pub mod manager;
 pub mod messaging;
+pub mod progress;
 pub mod state;
 pub mod traits;
 

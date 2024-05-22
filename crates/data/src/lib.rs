@@ -8,6 +8,7 @@ extern crate specta;
 
 use diesel::sqlite::SqliteConnection;
 use instance::Instance;
+use mod_::DbMod;
 use specta::{NamedType, TypeMap};
 
 use crate::{
@@ -45,8 +46,8 @@ pub fn type_map() -> TypeMap {
     let ty = SupportedSource::named_data_type(&mut map, &[]);
     map.insert(SupportedSource::SID, ty);
 
-    // let ty = Mod::named_data_type(&mut map, &[]);
-    // map.insert(Mod::SID, ty);
+    let ty = DbMod::named_data_type(&mut map, &[]);
+    map.insert(DbMod::SID, ty);
 
     map
 }

@@ -1,3 +1,5 @@
+#![feature(async_closure)]
+
 #[macro_use]
 extern crate tracing;
 
@@ -8,3 +10,4 @@ pub mod route;
 pub mod router;
 pub mod server;
 pub mod state;
+pub mod ws;

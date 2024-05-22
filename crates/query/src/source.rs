@@ -68,7 +68,6 @@ pub trait Resolver: WithToken + Send + Sync {
 
     /// Initialize the resolver.
     /// This has a default implementation that does nothing.
-    /// TODO: Actually use this method somewhere.
     async fn init(&mut self) -> Result<()> {
         Ok(())
     }
@@ -97,6 +96,19 @@ pub trait Resolver: WithToken + Send + Sync {
 
     /// Get a mod version by its ID.
     async fn get_version(&self, id: String, version: String) -> Result<ModVersion>;
+
+    /// Get a mod version by its ID (option).
+    async fn get_version_or_latest(
+        &self,
+        id: String,
+        version: Option<String>,
+    ) -> Result<ModVersion> {
+        if let Some(ver) = version {
+            self.get_version(id, ver).await
+        } else {
+            self.get_latest_version(id).await
+        }
+    }
 
     /// Get a mod's direct download URL.
     /// This will default to using the latest version if it isn't specified.

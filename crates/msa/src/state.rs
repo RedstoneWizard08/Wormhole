@@ -35,6 +35,15 @@ impl MsaState {
         }
     }
 
+    pub fn fake(real: &MsaState) -> Self {
+        Self {
+            player_name: real.player_name.clone(),
+            uuid: real.uuid.clone(),
+            xuid: real.xuid.clone(),
+            access_token: "****************".into(),
+        }
+    }
+
     pub fn get() -> Self {
         unsafe { MSA_STATE.clone() }
     }

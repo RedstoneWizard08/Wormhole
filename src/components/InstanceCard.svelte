@@ -1,9 +1,9 @@
 <script lang="ts">
     import { goto } from "$app/navigation";
     import Delete from "./Delete.svelte";
-    import { plugins } from "../api/stores";
-    import { commands, type Instance } from "../api/bindings/app";
-    import { unwrap } from "../api/util";
+    import { plugins } from "$api/stores";
+    import { commands, type Instance } from "$bindings";
+    import { unwrap } from "$api/util";
 
     export let data: Instance;
     // This is just the current instance in the parent
@@ -27,10 +27,6 @@
 
         current = data;
         deleteing = true;
-
-        unwrap(await commands.deleteInstance(data.id!, null));
-
-        deleteing = false;
     };
 </script>
 

@@ -1,14 +1,13 @@
 <script lang="ts">
-    import SearchBar from "../../../components/SearchBar.svelte";
-    import LoadingPage from "../../../components/LoadingPage.svelte";
-    import Pagination from "../../../components/Pagination.svelte";
-    import Mod from "../../../components/Mod.svelte";
+    import SearchBar from "$components/SearchBar.svelte";
+    import LoadingPage from "$components/LoadingPage.svelte";
+    import Pagination from "$components/Pagination.svelte";
+    import Mod from "$components/Mod.svelte";
     import { page } from "$app/stores";
-    import { commands, type PluginInfo, type SourceMapping } from "../../../api/bindings/app";
-    import { unwrap } from "../../../api/util";
-    import Dropdown from "../../../components/Dropdown.svelte";
+    import { commands, type PluginInfo, type SourceMapping, type Mod as ModItem } from "$bindings";
+    import { unwrap } from "$api/util";
+    import Dropdown from "$components/Dropdown.svelte";
     import { onMount } from "svelte";
-    import type { Mod as ModItem } from "../../../api/wrap";
 
     let results: ModItem[] = [];
     let perPage = 30;
@@ -21,6 +20,7 @@
     let sources: SourceMapping[] = [];
     let source = sources[0];
     let last: string | null = null;
+    let instanceId = parseInt($page.url.searchParams.get("instance") || "-1");
 
     onMount(async () => {
         loading = true;
@@ -95,7 +95,7 @@
         <div class="grid">
             {#if results}
                 {#each results as mod}
-                    <Mod {mod} game={gameId} />
+                    <Mod {mod} game={gameId} instance={instanceId} />
                 {/each}
             {/if}
         </div>

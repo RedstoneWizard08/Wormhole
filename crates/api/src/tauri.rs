@@ -1,5 +1,5 @@
 use anyhow::Result;
-use data::{instance::Instance, source::SourceMapping};
+use data::{instance::Instance, source::SourceMapping, Conn};
 
 use query::{
     mod_::{Mod, ModVersion},
@@ -100,12 +100,26 @@ pub trait TauriPluginTrait: CPlugin + Send + Sync {
         version: String,
     ) -> Option<ModVersion>;
 
+    async fn get_latest_version(
+        &self,
+        resolver: SourceMapping,
+        id: String,
+    ) -> Option<ModVersion>;
+
     async fn get_download_url(
         &self,
         resolver: SourceMapping,
         project: String,
         version: Option<String>,
     ) -> Option<String>;
+
+    async fn install(
+        &self,
+        db: &mut Conn,
+        item: Mod,
+        version: Option<ModVersion>,
+        instance: Instance,
+    ) -> Option<()>;
 
     async fn launch_game(&self, instance: Instance) -> Option<()>;
 
@@ -179,6 +193,21 @@ impl<T: CPlugin + Send + Sync> TauriPluginTrait for T {
         }
     }
 
+    async fn get_latest_version(
+        &self,
+        resolver: SourceMapping,
+        id: String,
+    ) -> Option<ModVersion> {
+        let resolvers = self.resolvers().await?;
+        let resolver = resolvers.iter().find(|v| v.source().mapping() == resolver);
+
+        if let Some(resolver) = resolver {
+            resolver.get_latest_version(id).await.ok()
+        } else {
+            None
+        }
+    }
+
     async fn get_download_url(
         &self,
         resolver: SourceMapping,
@@ -209,5 +238,17 @@ impl<T: CPlugin + Send + Sync> TauriPluginTrait for T {
                 .map(|v| v.source().mapping().as_str().to_string())
                 .collect(),
         )
+    }
+
+    async fn install(
+        &self,
+        db: &mut Conn,
+        item: Mod,
+        version: Option<ModVersion>,
+        instance: Instance,
+    ) -> Option<()> {
+        self.install_mod(db, item, version, instance).await.ok()?;
+
+        Some(())
     }
 }

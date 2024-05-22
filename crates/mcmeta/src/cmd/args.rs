@@ -29,7 +29,7 @@ pub async fn fix_argument(
     let mut classpath = Vec::new();
 
     match loader.clone() {
-        ModLoader::Quilt(_, _) | ModLoader::Fabric(_, _) => {
+        ModLoader::Quilt(_, _) | ModLoader::Fabric(_, _) | ModLoader::Vanilla(_) => {
             classpath.push(
                 libs_dir
                     .join(

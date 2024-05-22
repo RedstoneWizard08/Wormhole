@@ -1,7 +1,7 @@
 <script lang="ts">
     import { page } from "$app/stores";
-    import { plugins } from "../api/stores";
-    import logo from "../assets/icon.png";
+    import { plugins } from "$api/stores";
+    import logo from "$assets/icon.png";
 
     let instances = false;
     let gameSettings = false;

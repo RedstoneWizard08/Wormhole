@@ -45,9 +45,21 @@ impl MinecraftManager {
             let me = Self {
                 dir,
                 java,
-                dirs,
+                dirs: dirs.clone(),
                 loader: loader.clone(),
             };
+
+            info!("Installing loader...");
+
+            loader
+                .install(
+                    &dirs.libs,
+                    &dirs.natives,
+                    &dirs.temp,
+                    &dirs.assets(loader.mc_version()),
+                    &None,
+                )
+                .await?;
 
             info!("Saving...");
 

@@ -7,17 +7,27 @@ pub extern crate tauri;
 pub extern crate tokio;
 pub extern crate whcore;
 
+use std::ops::DerefMut;
+
 use anyhow::Result;
 
-use api::{plugin::PluginInfo, register::PLUGINS};
+use api::{install::progress::ProgressPayload, plugin::PluginInfo, register::PLUGINS};
+use chrono::{DateTime, Utc};
 use data::{
     diesel::{
         delete, insert_into,
         r2d2::{ConnectionManager, Pool},
-        ExpressionMethods, QueryDsl, RunQueryDsl, SelectableHelper, SqliteConnection,
+        update, ExpressionMethods, QueryDsl, RunQueryDsl, SelectableHelper, SqliteConnection,
     },
     instance::Instance,
-    schema::instances::dsl::{game_id as gid, id, instances},
+    mod_::DbMod,
+    schema::{
+        instances::{
+            description,
+            dsl::{game_id as gid, id, instances},
+        },
+        mods,
+    },
     source::SourceMapping,
 };
 
@@ -27,6 +37,7 @@ use query::{
 };
 use specta::functions::CollectFunctionsResult;
 use tauri::{utils::assets::EmbeddedAssets, Context, Invoke, Runtime};
+use tauri_specta::{EventCollection, EventDataType};
 use whcore::{dirs::Dirs, manager::CoreManager, merge_type_maps, state::TState, Boolify};
 
 pub type AppState<'a> = TState<'a, Pool<ConnectionManager<SqliteConnection>>>;
@@ -57,6 +68,56 @@ async fn delete_instance(instance_id: i32, pool: AppState<'_>) -> Result<(), boo
         .bool()?;
 
     Ok(())
+}
+
+#[whmacros::serde_call]
+#[tauri::command]
+#[specta::specta]
+async fn create_instance(name: String, game_id: i32, pool: AppState<'_>) -> Result<Instance, bool> {
+    let lock = PLUGINS.lock().await;
+    let plugin = lock.get(&game_id).bool()?;
+    let dirs = plugin.dirs();
+    let now = DateTime::<Utc>::default().timestamp_millis();
+
+    Ok(insert_into(instances)
+        .values(Instance {
+            id: None,
+            cache_dir: dirs.cache.to_str().unwrap().to_string(),
+            game_id,
+            created: now,
+            updated: now,
+            data_dir: dirs
+                .data
+                .join("instances")
+                .join(&name)
+                .to_str()
+                .unwrap()
+                .to_string(),
+            install_dir: plugin.find().bool()?.to_str().unwrap().to_string(),
+            description: String::new(),
+            name,
+        })
+        .returning(Instance::as_returning())
+        .get_result(&mut pool.get().bool()?)
+        .bool()?)
+}
+
+// Realistically, we won't be updating anything but the description for now.
+// If this changes in the future, I'll expand this.
+#[whmacros::serde_call]
+#[tauri::command]
+#[specta::specta]
+async fn update_instance(
+    instance_id: i32,
+    desc: String,
+    pool: AppState<'_>,
+) -> Result<Instance, bool> {
+    Ok(update(instances)
+        .filter(id.eq(instance_id))
+        .set(description.eq(desc))
+        .returning(Instance::as_returning())
+        .get_result(&mut pool.get().bool()?)
+        .bool()?)
 }
 
 #[whmacros::serde_call]
@@ -114,9 +175,42 @@ plugin_fn_proxy!(async search_mods => search_mods: (resolver: SourceMapping, que
 plugin_fn_proxy!(async get_mod => get_mod: (resolver: SourceMapping, mid: String) -> [opt] Mod);
 plugin_fn_proxy!(async get_mod_versions => get_mod_versions: (resolver: SourceMapping, mid: String) -> [opt] Vec<ModVersion>);
 plugin_fn_proxy!(async get_mod_version => get_mod_version: (resolver: SourceMapping, mid: String, version: String) -> [opt] ModVersion);
+plugin_fn_proxy!(async get_latest_version => get_latest_version: (resolver: SourceMapping, mid: String) -> [opt] ModVersion);
 plugin_fn_proxy!(async get_download_url => get_download_url: (resolver: SourceMapping, project: String, version: Option<String>) -> [opt] String);
 plugin_fn_proxy!(async launch_game => launch_game: (instance: Instance) -> ());
 plugin_fn_proxy!(async sources => sources: () -> [opt] Vec<String>);
+
+#[whmacros::serde_call]
+#[tauri::command]
+#[specta::specta]
+async fn install_mod(
+    game_id: i32,
+    item: Mod,
+    version: Option<ModVersion>,
+    instance: Instance,
+    pool: AppState<'_>,
+) -> Result<(), bool> {
+    use whcore::Boolify;
+
+    let it = api::register::PLUGINS.lock().await;
+    let plugin = it.get(&game_id).bool()?;
+
+    plugin
+        .install(pool.get().bool()?.deref_mut(), item, version, instance)
+        .await
+        .ok_or(false)
+}
+
+#[whmacros::serde_call]
+#[tauri::command]
+#[specta::specta]
+async fn get_mods(instance_id: i32, pool: AppState<'_>) -> Result<Vec<DbMod>, bool> {
+    Ok(mods::table
+        .select(DbMod::as_select())
+        .filter(mods::instance_id.eq(instance_id))
+        .load(&mut pool.get().bool()?)
+        .bool()?)
+}
 
 #[macro_export]
 macro_rules! funcs {
@@ -136,7 +230,12 @@ macro_rules! funcs {
             get_download_url,
             launch_game,
             sources,
-            get_source_id
+            get_source_id,
+            create_instance,
+            update_instance,
+            install_mod,
+            get_latest_version,
+            get_mods
         ]
     };
 
@@ -156,7 +255,12 @@ macro_rules! funcs {
             get_download_url,
             launch_game,
             sources,
-            get_source_id
+            get_source_id,
+            create_instance,
+            update_instance,
+            install_mod,
+            get_latest_version,
+            get_mods
         ];
     };
 }
@@ -182,7 +286,12 @@ pub fn funcs() -> CollectFunctionsResult {
         get_download_url,
         launch_game,
         sources,
-        get_source_id
+        get_source_id,
+        create_instance,
+        update_instance,
+        install_mod,
+        get_latest_version,
+        get_mods
     ]
 }
 
@@ -195,6 +304,10 @@ pub fn cmds<R: Runtime>() -> (
     Box<dyn Fn(Invoke<R>) + Send + Sync + 'static>,
 ) {
     (funcs(), invoker())
+}
+
+pub fn events<R: Runtime>() -> (EventCollection, Vec<EventDataType>, specta::TypeMap) {
+    tauri_specta::collect_events![ProgressPayload]
 }
 
 pub fn ctx() -> Context<EmbeddedAssets> {

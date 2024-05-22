@@ -1,6 +1,6 @@
 <script lang="ts">
     import { createEventDispatcher } from "svelte";
-    import type { DropdownItem } from "../api/dropdown";
+    import type { DropdownItem } from "$api/dropdown";
 
     export let val: string | number;
     export let valText: string;

@@ -1,41 +1,26 @@
 <script lang="ts">
-    import InstanceCard from "../../../components/InstanceCard.svelte";
+    import InstanceCard from "$components/InstanceCard.svelte";
     import { onMount } from "svelte";
     import { page } from "$app/stores";
-    import { commands, type Dirs, type Instance, type PluginInfo } from "../../../api/bindings/app";
-    import { unwrap } from "../../../api/util";
+    import { commands, type Instance } from "$bindings";
+    import { unwrap } from "$api/util";
 
     let adding = false;
     let deleteing = false;
-
     let instances: Instance[] = [];
     let current: Instance | null = null;
-    let dirs: Dirs | null = null;
-    let info: PluginInfo | null = null;
 
     let gameId = parseInt($page.params.game);
 
     let name = "";
-    $: path = dirs?.data + "/" + info?.display_name + "/" + name;
 
     onMount(async () => {
         instances = unwrap(await commands.getInstances(gameId, null));
-        dirs = unwrap(await commands.getDirs(null));
-        info = unwrap(await commands.info(gameId, null));
     });
 
     const addInstance = async () => {
-        unwrap(await commands.addInstance({
-            id: null,
-            name: name,
-            cache_dir: dirs?.cache + "/" + info?.display_name,
-            game_id: gameId,
-            created: new Date().getUTCDate(),
-            data_dir: path,
-            description: "",
-            install_dir: dirs?.data + "/" + info?.display_name,
-            updated: new Date().getUTCDate(),
-        }, null));
+        unwrap(await commands.createInstance(name, gameId, null));
+        name = "";
 
         adding = false;
 
@@ -45,7 +30,9 @@
     const deleteInstance = async () => {
         commands.deleteInstance(current?.id!, null);
 
-        deleteing = !deleteing;
+        deleteing = false;
+
+        instances = unwrap(await commands.getInstances(gameId, null));
     };
 
     const toggleAdding = () => {
@@ -69,8 +56,6 @@
             </div>
 
             <input type="text" placeholder="Instance name" class="name" bind:value={name} />
-
-            <p>Will be created in: {path}</p>
 
             <button type="button" class="submit-button" on:click={addInstance}> Continue </button>
         </div>

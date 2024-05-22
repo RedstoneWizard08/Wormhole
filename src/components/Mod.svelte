@@ -1,12 +1,12 @@
 <script lang="ts">
     import { goto } from "$app/navigation";
     import { onMount } from "svelte";
-    import { commands, type SourceMapping } from "../api/bindings/app";
-    import type { Mod } from "../api/wrap";
-    import { unwrap } from "../api/util";
+    import { commands, type SourceMapping, type Mod } from "$bindings";
+    import { unwrap } from "$api/util";
 
     export let mod: Mod;
     export let game: number;
+    export let instance: number;
 
     let source: SourceMapping | null = null;
     let installed = false;
@@ -28,7 +28,12 @@
 
         installing = true;
 
-        // TODO: Install mod
+        // TODO: Version dropdown
+        const resolver = unwrap(await commands.getSourceId(mod.source, null)) as SourceMapping;
+        const latest = unwrap(await commands.getLatestVersion(game, resolver, mod.id, null));
+        const instanceInfo = unwrap(await commands.getInstance(instance, null));
+
+        unwrap(await commands.installMod(game, mod, latest, instanceInfo, null));
 
         installing = false;
     };
@@ -40,7 +45,7 @@
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
-<div class="mod-tile" on:click={() => goto(`/${game}/mod/${source}/${mod.id}`)}>
+<div class="mod-tile" on:click={() => goto(`/${game}/mod/${source}/${mod.id}?instance=${instance}`)}>
     {#if mod.banner}
         <!-- svelte-ignore a11y-img-redundant-alt -->
         <img src={mod.banner} class="image" alt="mod background image" />

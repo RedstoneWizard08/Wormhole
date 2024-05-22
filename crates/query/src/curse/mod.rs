@@ -127,6 +127,7 @@ impl Resolver for CurseForge {
     }
 
     async fn get_download_url(&self, id: String, version: Option<String>) -> Result<String> {
+        dbg!(&version);
         if let Some(version) = version {
             Ok(self.get_version(id, version).await?.url.unwrap())
         } else {

@@ -1,12 +1,19 @@
-use std::{collections::HashMap, sync::Arc};
+use std::{collections::HashMap, path::PathBuf, sync::Arc};
 
 use anyhow::Result;
 use data::{
     instance::Instance,
     source::{SourceMapping, Sources},
+    Conn,
 };
-use query::source::Resolver;
+use query::{
+    mod_::{Mod, ModVersion},
+    source::Resolver,
+};
 use tokio::{process::Child, sync::Mutex};
+use whcore::{dirs::Dirs, manager::CoreManager};
+
+use crate::install::{install_mod, progress::tauri_progress};
 
 lazy_static! {
     pub static ref RESOLVERS: Arc<Mutex<HashMap<&'static str, Vec<Arc<Box<dyn Resolver + Send + Sync>>>>>> =
@@ -79,6 +86,22 @@ pub trait Plugin: Send + Sync {
     /// Get the banner.
     fn banner(&self) -> String;
 
+    /// Find the game's install directory.
+    fn find(&self) -> Option<PathBuf>;
+
+    /// The game's name (for dirs)
+    fn name(&self) -> &'static str;
+
+    /// Get directories for the game.
+    fn dirs(&self) -> Dirs {
+        Dirs {
+            cache: CoreManager::get().game_cache_dir(self.name()),
+            data: CoreManager::get().game_data_dir(self.name()),
+            temp: CoreManager::get().game_temp_dir(self.name()),
+            root: CoreManager::get().dir(),
+        }
+    }
+
     /// Get the fallback mod install directory,
     /// relative to the game directory.
     /// If a mod fails all built-in conditions
@@ -118,4 +141,27 @@ pub trait Plugin: Send + Sync {
     }
 
     async fn launch(&self, instance: Instance) -> Result<Child>;
+
+    async fn install_mod(
+        &self,
+        db: &mut Conn,
+        item: Mod,
+        version: Option<ModVersion>,
+        instance: Instance,
+    ) -> Result<()>
+    where
+        Self: Sized,
+    {
+        install_mod(
+            db,
+            item,
+            version,
+            instance,
+            Box::new(self),
+            Some(Box::new(tauri_progress)),
+        )
+        .await?;
+
+        Ok(())
+    }
 }

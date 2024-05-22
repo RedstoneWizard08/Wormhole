@@ -1,122 +1,109 @@
 use std::{
-    fs::{self, remove_dir_all, rename, write, File},
+    fs::{self, remove_dir_all, File},
     io::{Cursor, Read, Write},
-    path::{Path, PathBuf},
+    path::Path,
 };
 
 use crate::magic::{detect_file_type, FileType};
 use anyhow::Result;
 
-use data::{
-    instance::Instance,
-    schema::instances::dsl::{id as iid, instances},
-    Conn,
-};
+use data::instance::Instance;
 
-use diesel::{ExpressionMethods, QueryDsl, RunQueryDsl, SelectableHelper};
 use flate2::read::GzDecoder;
-use rar::Archive as Rar;
 use tar::Archive;
 use walkdir::WalkDir;
-use whcore::{random_string, rename_dir_all};
+use whcore::random_string;
 use xz::read::XzDecoder;
 use zip::{write::SimpleFileOptions, CompressionMethod, ZipArchive, ZipWriter};
 
 pub fn extract_file(
-    db: &mut Conn,
-    path: PathBuf,
+    data: Vec<u8>,
+    name: impl AsRef<str>,
     kind: FileType,
     instance: Instance,
     fallback: Option<&str>,
 ) -> Result<()> {
-    let meta = instances
-        .filter(iid.eq(instance.id.unwrap()))
-        .select(Instance::as_select())
-        .get_result(db)?;
+    let name = name.as_ref();
 
     match kind {
-        FileType::Jar => Ok(rename(
-            path.clone(),
-            meta.data_dir()
-                .join("mods")
-                .join(path.file_name().unwrap().to_str().unwrap()),
-        )?),
+        FileType::Jar => {
+            if !instance.data_dir().join("mods").exists() {
+                fs::create_dir_all(instance.data_dir().join("mods"))?;
+            }
 
-        FileType::ResourcePack => Ok(rename(
-            path.clone(),
-            meta.data_dir()
-                .join("resourcepacks")
-                .join(path.file_name().unwrap().to_str().unwrap()),
-        )?),
+            Ok(fs::write(
+                instance.data_dir().join("mods").join(name),
+                data,
+            )?)
+        }
 
-        it => reprocess_zip(path, it, instance, meta, fallback),
+        FileType::ResourcePack => {
+            if !instance.data_dir().join("resourcepacks").exists() {
+                fs::create_dir_all(instance.data_dir().join("resourcepacks"))?;
+            }
+
+            Ok(fs::write(
+                instance.data_dir().join("resourcepacks").join(name),
+                data,
+            )?)
+        }
+
+        it => reprocess_zip(data, name, it, instance, fallback),
     }
 }
 
 pub fn reprocess_zip(
-    path: PathBuf,
+    data: Vec<u8>,
+    name: impl AsRef<str>,
     kind: FileType,
     instance: Instance,
-    meta: Instance,
     fallback: Option<&str>,
 ) -> Result<()> {
     match kind {
         FileType::Gzip => {
-            let (p, k, i) = extract_gzip(path, instance, &meta)?;
+            let (data, kind) = extract_gzip(data, &name)?;
 
-            reprocess_zip(p, k, i, meta, fallback)
+            reprocess_zip(data, name, kind, instance, fallback)
         }
 
         FileType::Xz => {
-            let (p, k, i) = extract_xz(path, instance, &meta)?;
+            let (data, kind) = extract_xz(data, &name)?;
 
-            reprocess_zip(p, k, i, meta, fallback)
+            reprocess_zip(data, name, kind, instance, fallback)
         }
 
-        FileType::Rar => {
-            let (p, i) = extract_rar(path, instance, &meta)?;
+        // TODO:
+        // FileType::Rar => {
+        //     let data = extract_rar(data, &instance)?;
 
-            reprocess_zip(p, FileType::Zip, i, meta, fallback)
-        }
-
+        //     reprocess_zip(data, name, FileType::Zip, instance, fallback)
+        // }
         FileType::Tar => {
-            let (p, i) = extract_tar(path, instance, &meta)?;
+            let data = extract_tar(data, &instance)?;
 
-            reprocess_zip(p, FileType::Zip, i, meta, fallback)
+            reprocess_zip(data, name, FileType::Zip, instance, fallback)
         }
 
         FileType::Zip => {
-            let tmp_dir = meta
+            let tmp_dir = instance
                 .cache_dir()
                 .join(format!("zip_process_{}.d", random_string(8)));
 
-            let mut archive = ZipArchive::new(Cursor::new(fs::read(path)?))?;
+            let mut archive = ZipArchive::new(Cursor::new(data))?;
 
             archive.extract(&tmp_dir)?;
 
             // Some names are case-sensitive, so we don't lowercase them.
             let names = archive.file_names().collect::<Vec<_>>();
 
-            let dir_names = fs::read_dir(&tmp_dir)?
-                .filter_map(|v| v.ok())
-                .map(|v| v.path())
-                .collect::<Vec<_>>();
-
             if names.contains(&"BepInEx") {
-                for name in dir_names {
-                    rename_dir_all(name, &meta.data_dir)?;
-                }
+                archive.extract(instance.data_dir())?;
             } else if names.contains(&"plugins") || names.contains(&"patchers") {
-                for name in dir_names {
-                    rename_dir_all(name, &meta.data_dir().join("BepInEx"))?;
-                }
+                archive.extract(instance.data_dir().join("BepInEx"))?;
             } else if names.iter().any(|v| v.ends_with(".dll")) {
-                for name in dir_names {
-                    rename_dir_all(
-                        name,
-                        &meta.data_dir().join(fallback.unwrap_or("BepInEx/plugins")),
-                    )?;
-                }
+                archive.extract(instance.data_dir().join("BepInEx").join("plugins"))?;
+            } else {
+                archive.extract(instance.data_dir().join(fallback.unwrap_or("")))?;
             }
 
             Ok(())
@@ -126,86 +113,40 @@ pub fn reprocess_zip(
     }
 }
 
-pub fn extract_gzip(
-    path: PathBuf,
-    instance: Instance,
-    meta: &Instance,
-) -> Result<(PathBuf, FileType, Instance)> {
-    let new_path = meta
-        .cache_dir()
-        .join(format!("gzip_convert_{}.bin", random_string(8)));
-
-    let data = fs::read(path)?;
+pub fn extract_gzip(data: Vec<u8>, name: impl AsRef<str>) -> Result<(Vec<u8>, FileType)> {
     let mut extracted = Vec::new();
 
     GzDecoder::new(Cursor::new(&data)).read_to_end(&mut extracted)?;
-    write(&new_path, extracted)?;
 
-    let kind = detect_file_type(data)?;
+    let kind = detect_file_type(data, name)?;
 
-    Ok((new_path, kind, instance))
+    Ok((extracted, kind))
 }
 
-pub fn extract_xz(
-    path: PathBuf,
-    instance: Instance,
-    meta: &Instance,
-) -> Result<(PathBuf, FileType, Instance)> {
-    let new_path = meta
-        .cache_dir()
-        .join(format!("xz_convert_{}.bin", random_string(8)));
-
-    let data = fs::read(path)?;
+pub fn extract_xz(data: Vec<u8>, name: impl AsRef<str>) -> Result<(Vec<u8>, FileType)> {
     let mut extracted = Vec::new();
 
     XzDecoder::new(Cursor::new(&data)).read_to_end(&mut extracted)?;
-    write(&new_path, extracted)?;
 
-    let kind = detect_file_type(data)?;
+    let kind = detect_file_type(data, name)?;
 
-    Ok((new_path, kind, instance))
+    Ok((extracted, kind))
 }
 
-pub fn extract_rar(
-    path: PathBuf,
-    instance: Instance,
-    meta: &Instance,
-) -> Result<(PathBuf, Instance)> {
-    let new_path = meta
-        .cache_dir()
-        .join(format!("rar_convert_{}.zip", random_string(8)));
-
-    let tmp_dir = meta
-        .cache_dir()
-        .join(format!("rar_convert_{}.d", random_string(8)));
-
-    Rar::extract_all(path.to_str().unwrap(), tmp_dir.to_str().unwrap(), None)
-        .map_err(|v| anyhow!(v))?;
-
-    zip_directory(&new_path, &tmp_dir)?;
-    remove_dir_all(tmp_dir)?;
-
-    Ok((new_path, instance))
-}
-
-pub fn extract_tar(
-    path: PathBuf,
-    instance: Instance,
-    meta: &Instance,
-) -> Result<(PathBuf, Instance)> {
-    let new_path = meta
+pub fn extract_tar(data: Vec<u8>, instance: &Instance) -> Result<Vec<u8>> {
+    let new_path = instance
         .cache_dir()
         .join(format!("tar_convert_{}.zip", random_string(8)));
 
-    let tmp_dir = meta
+    let tmp_dir = instance
         .cache_dir()
         .join(format!("tar_convert_{}.d", random_string(8)));
 
-    Archive::new(File::open(path)?).unpack(&tmp_dir)?;
+    Archive::new(Cursor::new(data)).unpack(&tmp_dir)?;
     zip_directory(&new_path, &tmp_dir)?;
     remove_dir_all(tmp_dir)?;
 
-    Ok((new_path, instance))
+    Ok(fs::read(new_path)?)
 }
 
 pub fn zip_directory(path: impl AsRef<Path>, dir: impl AsRef<Path>) -> Result<()> {

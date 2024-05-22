@@ -30,6 +30,12 @@ tokio.workspace = true
 java.workspace = true
 macros.workspace = true
 tracing.workspace = true
+install.workspace = true
+tempfile.workspace = true
+reqwest.workspace = true
+tokio-util.workspace = true
+tokio-stream.workspace = true
+crossbeam-channel.workspace = true
 
 [dev-dependencies]
 indicatif.workspace = true

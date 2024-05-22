@@ -6,7 +6,7 @@ import { unwrap } from "./util";
 export const boot = async () => {
     console.log("Backend booting...");
 
-    plugins.set(unwrap(await commands.getPlugins(null)));
+    plugins.set(unwrap(await commands.getPlugins(null)).sort((a, b) => a.game - b.game));
 
     console.log(get(plugins));
 };

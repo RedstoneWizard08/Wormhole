@@ -1,15 +1,15 @@
 <script lang="ts">
-    import "../styles/global.scss";
+    import "$styles/global.scss";
     import { browser } from "$app/environment";
     import { onMount } from "svelte";
-    import LoadingPage from "../components/LoadingPage.svelte";
-    import Sidebar from "../components/Sidebar.svelte";
+    import LoadingPage from "$components/LoadingPage.svelte";
+    import Sidebar from "$components/Sidebar.svelte";
 
     let loading = true;
 
     onMount(async () => {
         if (browser) {
-            const setup = (await import("../api/setup")).setup;
+            const setup = (await import("$api/setup")).setup;
 
             await setup();
 

@@ -1,3 +1,5 @@
+use std::path::PathBuf;
+
 use anyhow::Result;
 use base64::{engine::general_purpose::STANDARD, Engine};
 use data::instance::Instance;
@@ -5,6 +7,7 @@ use mcmeta::cmd::modded::ModLoader;
 use msa::state::MsaState;
 use query::{curse::CurseForge, modrinth::Modrinth, source::Resolver};
 use tokio::process::Child;
+use whcore::manager::CoreManager;
 
 use crate::plugin::Plugin;
 
@@ -49,10 +52,18 @@ impl Plugin for MinecraftPlugin {
         Some("mods")
     }
 
+    fn find(&self) -> Option<PathBuf> {
+        Some(CoreManager::get().game_data_dir("minecraft"))
+    }
+
+    fn name(&self) -> &'static str {
+        "minecraft"
+    }
+
     async fn create_resolvers(&self) -> Vec<Box<dyn Resolver + Send + Sync>> {
         vec![
-            Box::new(CurseForge::new().await),
             Box::new(Modrinth::new().await),
+            Box::new(CurseForge::new().await),
         ]
     }
 

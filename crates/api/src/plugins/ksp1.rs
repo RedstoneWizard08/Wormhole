@@ -1,10 +1,10 @@
-use anyhow::Result;
-use base64::{engine::general_purpose::STANDARD, Engine};
-use data::instance::Instance;
-use query::{ckan::Ckan, source::Resolver, spacedock::SpaceDock};
-use tokio::process::{Child, Command};
+use std::path::PathBuf;
 
-use crate::plugin::Plugin;
+use base64::{engine::general_purpose::STANDARD, Engine};
+use query::{ckan::Ckan, source::Resolver, spacedock::SpaceDock};
+use whcore::finder::{finder::InstallFinder, pdlauncher::PrivateDivision, steam::Steam};
+
+use super::common::unity::UnityPlugin;
 
 pub const ICON_BYTES: &[u8] = include_bytes!("../assets/ksp1/icon.png");
 pub const BANNER_BYTES: &[u8] = include_bytes!("../assets/ksp1/banner.png");
@@ -19,7 +19,7 @@ pub const KSP1_STEAM_API_SIZE: u64 = 249120;
 pub struct Kerbal1Plugin;
 
 #[async_trait]
-impl Plugin for Kerbal1Plugin {
+impl UnityPlugin for Kerbal1Plugin {
     fn new() -> Self
     where
         Self: Sized,
@@ -51,14 +51,24 @@ impl Plugin for Kerbal1Plugin {
         Some("GameData")
     }
 
-    async fn create_resolvers(&self) -> Vec<Box<dyn Resolver + Send + Sync>> {
+    fn executable(&self) -> &'static str {
+        "KSP_x64.exe"
+    }
+
+    fn find(&self) -> Option<PathBuf> {
+        Steam::new()
+            .chain(self.display(), PrivateDivision::new())
+            .unwrap()
+    }
+
+    fn name(&self) -> &'static str {
+        "ksp1"
+    }
+
+    async fn resolvers(&self) -> Vec<Box<dyn Resolver + Send + Sync>> {
         vec![
             Box::new(SpaceDock::new().await),
             Box::new(Ckan::new().await),
         ]
-    }
-
-    async fn launch(&self, instance: Instance) -> Result<Child> {
-        Ok(Command::new(instance.install_dir().join("KSP_x64.exe")).spawn()?)
     }
 }

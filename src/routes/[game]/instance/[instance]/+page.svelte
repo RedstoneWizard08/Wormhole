@@ -1,20 +1,19 @@
 <script lang="ts">
     import { marked } from "marked";
     import { page } from "$app/stores";
-    import { demoMods, type InstalledMod } from "../../../../api/models/mod";
-    import { formatBytes, unwrap } from "../../../../api/util";
-    import Back from "../../../../components/Back.svelte";
-    import Delete from "../../../../components/Delete.svelte";
+    import { formatBytes, unwrap } from "$api/util";
+    import Back from "$components/Back.svelte";
+    import Delete from "$components/Delete.svelte";
     import { goto } from "$app/navigation";
-    import { plugins } from "../../../../api/stores";
-    import { commands, type Instance } from "../../../../api/bindings/app";
+    import { plugins } from "$api/stores";
+    import { commands, type DbMod, type Instance } from "$bindings";
     import { onMount } from "svelte";
 
     let instance: Instance | undefined = undefined;
     let background: string | undefined = undefined;
     let executable: string | undefined = undefined;
     let editing = false;
-    let mods: InstalledMod[] = demoMods;
+    let mods: DbMod[] = [];
     let editor: HTMLTextAreaElement | undefined;
 
     $: description = instance?.description;
@@ -25,6 +24,7 @@
         const info = unwrap(await commands.getInstance(parseInt(id || "-1", 10), null));
 
         instance = info;
+        mods = unwrap(await commands.getMods(info.id!, null));
 
         background = $plugins.find((v) => v.game == info.game_id)?.banner_url;
         executable = info.data_dir;
@@ -32,13 +32,13 @@
 
     const save = async () => {
         if (instance) {
-            instance = {
-                ...instance,
-
-                description: editor?.value || instance.description,
-            };
-
-            // TODO: updateInstance function
+            instance = unwrap(
+                await commands.updateInstance(
+                    instance.id!,
+                    editor?.value || instance.description,
+                    null
+                )
+            );
         }
 
         editing = false;
@@ -65,9 +65,7 @@
     };
 
     const gotoMods = () => {
-        // TODO
-
-        goto(`/${instance?.game_id}/mods`);
+        goto(`/${instance?.game_id}/mods?instance=${instance?.id}`);
     };
 </script>
 
@@ -132,8 +130,8 @@
                 {#each mods as mod}
                     <tr class="item">
                         <td class="name">{mod.name}</td>
-                        <td class="file">{mod.file}</td>
-                        <td class="size">{formatBytes(mod.size)}</td>
+                        <td class="file">{mod.file_name}</td>
+                        <td class="size">{formatBytes(mod.size || 0)}</td>
 
                         <td class="actions">
                             <Delete action={() => {}} clazz="__workaround__action" />

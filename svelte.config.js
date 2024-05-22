@@ -11,5 +11,15 @@ export default {
         adapter: adapter({
             fallback: "index.html",
         }),
+
+        alias: {
+            $components: "src/components",
+            $assets: "src/assets",
+            $api: "src/api",
+            $lib: "src/lib",
+            $routes: "src/routes",
+            $styles: "src/styles",
+            $bindings: "src/api/bindings/app.ts",
+        },
     },
 };

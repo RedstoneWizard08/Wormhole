@@ -18,7 +18,7 @@ use diesel::prelude::*;
 )]
 #[diesel(table_name = mods)]
 #[diesel(check_for_backend(diesel::sqlite::Sqlite))]
-pub struct Mod {
+pub struct DbMod {
     pub id: Option<i32>,
     pub mod_id: String,
     pub version_id: Option<String>,

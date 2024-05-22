@@ -1,11 +1,11 @@
 <script lang="ts">
     import DOMPurify from "dompurify";
     import { page } from "$app/stores";
-    import LoadingPage from "../../../../../components/LoadingPage.svelte";
-    import { unwrap } from "../../../../../api/util";
-    import { commands } from "../../../../../api/bindings/app";
-    import type { SourceMapping, Mod } from "../../../../../api/wrap";
+    import LoadingPage from "$components/LoadingPage.svelte";
+    import { listen, unwrap } from "$api/util";
+    import { commands, type SourceMapping, type Mod } from "$bindings";
     import { marked } from "marked";
+    import { onMount } from "svelte";
 
     const modId = $page.params.mod;
     const source = $page.params.source;
@@ -14,20 +14,31 @@
     let modInfo: Mod | null = null;
     let isLoading = true;
     let mods = false;
+    let instanceId = parseInt($page.url.searchParams.get("instance") || "-1");
+    let downloading = false;
+    let total = 0;
+    let progress = 0;
 
-    $: {
+    onMount(async () => {
         if (modId || $page.url) {
             mods = /\/mods?(\/\d+)?/i.test($page.url.pathname);
-
-            (async () => {
-                modInfo = unwrap(
-                    await commands.getMod(gameId, source as SourceMapping, modId, null)
-                );
-
-                isLoading = false;
-            })();
+            modInfo = unwrap(await commands.getMod(gameId, source as SourceMapping, modId, null));
+            isLoading = false;
         }
-    }
+
+        listen("progress_callback", (data) => {
+            downloading = true;
+
+            const payload = data.payload as any;
+
+            total = payload.total;
+            progress = payload.current;
+
+            if (total == progress) {
+                downloading = false;
+            }
+        });
+    });
 
     const linkFix = (html: string) => {
         const linkRegex = /(<a\s+(?!.*\btarget=)[^>]*)(href="https?:\/\/)(.*?")/gi;
@@ -71,7 +82,12 @@
     };
 
     const install = async () => {
-        // TODO
+        // TODO: Version dropdown
+        const resolver = unwrap(await commands.getSourceId(modInfo!.source, null)) as SourceMapping;
+        const latest = unwrap(await commands.getLatestVersion(gameId, resolver, modId, null));
+        const instance = unwrap(await commands.getInstance(instanceId, null));
+
+        unwrap(await commands.installMod(gameId, modInfo!, latest, instance, null));
     };
 </script>
 
@@ -79,7 +95,7 @@
     <LoadingPage />
 {:else}
     <div class="full-mod-container">
-        <a class={`link ${mods ? "active" : ""}`} href={`/${gameId}/mods`}>
+        <a class={`link ${mods ? "active" : ""}`} href={`/${gameId}/mods?instance=${instanceId}`}>
             <div class="return-container">
                 <div class="return-arrow">
                     <i class="fa-solid fa-long-arrow-left" />
@@ -133,6 +149,10 @@
                 <i class="icon fa-regular fa-circle-down" />
                 &nbsp; Install
             </button>
+
+            {#if downloading}
+                <progress max={total} value={progress} class="progress" />
+            {/if}
         </div>
     </div>
 {/if}
@@ -271,6 +291,11 @@
             margin: 0;
             padding: 1%;
 
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-start;
+
             .action {
                 background-color: transparent;
                 color: lightgreen;
@@ -299,6 +324,23 @@
                 .icon {
                     font-size: 14pt;
                 }
+            }
+
+            .progress {
+                margin-left: 5%;
+                border-radius: 20px;
+                width: 80%;
+                height: 12px;
+            }
+
+            .progress::-webkit-progress-value {
+                background-color: #2c5cba;
+                border-radius: 7px;
+            }
+
+            .progress::-webkit-progress-bar {
+                background-color: #c5c5c5;
+                border-radius: 7px;
             }
         }
     }
