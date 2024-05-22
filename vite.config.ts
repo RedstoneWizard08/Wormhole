@@ -10,15 +10,6 @@ export default defineConfig({
         strictPort: true,
         cors: true,
 
-        proxy: {
-            "^/_spacedock/.*": {
-                target: "https://spacedock.info/",
-                changeOrigin: true,
-                rewrite: (path) => path.replace(/^\/_spacedock/, ""),
-                followRedirects: true,
-            },
-        },
-
         hmr: process.env.TAURI_WEB_DEV
             ? {
                   clientPort: 443,
@@ -39,8 +30,11 @@ export default defineConfig({
 
     build: {
         target: process.env.TAURI_PLATFORM == "windows" ? "chrome105" : "safari13",
-
-        minify: !process.env.TAURI_DEBUG ? "esbuild" : false,
+        minify: !process.env.TAURI_DEBUG ? "terser" : false,
         sourcemap: !!process.env.TAURI_DEBUG,
+
+        terserOptions: {
+            mangle: true,
+        },
     },
 });

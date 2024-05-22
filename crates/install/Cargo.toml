@@ -12,7 +12,6 @@ anyhow.workspace = true
 zip.workspace = true
 reqwest.workspace = true
 flate2.workspace = true
-rar.workspace = true
 tar.workspace = true
 xz.workspace = true
 whcore.workspace = true

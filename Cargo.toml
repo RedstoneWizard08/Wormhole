@@ -101,7 +101,6 @@ wormhole-gui = { path = "./apps/gui" }
 
 anyhow = { path = "./external/anyhow" }
 ckandex = { path = "./external/ckandex/ckandex" }
-rar = { path = "./external/rar" }
 
 api = { path = "./crates/api" }
 auth = { path = "./crates/auth" }
@@ -136,5 +135,10 @@ members = [
     "crates/axumite",
     "crates/glue",
     "external/anyhow",
-    "external/rar", "crates/midlog", "crates/macros", "crates/macro-test", "crates/msa", "crates/java", "crates/mcmeta",
+    "crates/midlog",
+    "crates/macros",
+    "crates/macro-test",
+    "crates/msa",
+    "crates/java",
+    "crates/mcmeta",
 ]
