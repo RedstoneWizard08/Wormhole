@@ -7,6 +7,7 @@ use api::{
     tauri::TauriPlugin,
     TAURI_HANDLE,
 };
+use specta::ts::{BigIntExportBehavior, ExportConfig};
 use tauri::Wry;
 use wormhole_gui::{cmds, ctx, events, invoker};
 
@@ -17,6 +18,7 @@ pub async fn main() -> Result<()> {
     let (_, setup_events) = tauri_specta::ts::builder()
         .commands(cmds())
         .events(events::<Wry>())
+        .config(ExportConfig::default().bigint(BigIntExportBehavior::Number))
         .build()?;
 
     let app = tauri::Builder::default()

@@ -15,8 +15,8 @@ use crate::msa_token::MsaTokenResponse;
 /// The port for MSA auth redirect.
 /// This will be for the local server at http://localhost:[port]/callback
 /// This was determined by combining the ASCII codes for W (87) and H (72)
-// pub const MSA_REDIRECT_PORT: u32 = 8772;
-pub const MSA_REDIRECT_PORT: u32 = 4002;
+pub const MSA_REDIRECT_PORT: u32 = 8772;
+// pub const MSA_REDIRECT_PORT: u32 = 4002;
 
 /// Wormhole's client ID for MSA.
 pub const MSA_CLIENT_ID: &str = "61f104b9-3b1c-49bb-b0b8-2bb1f42f581c";
@@ -25,8 +25,8 @@ pub const MSA_CLIENT_ID: &str = "61f104b9-3b1c-49bb-b0b8-2bb1f42f581c";
 const MSA_CLIENT_SECRET: Lazy<&str> = Lazy::new(|| envc!("MSA_CLIENT_SECRET"));
 
 /// The auth callback URL.
-// pub const CALLBACK_URL: &str = const_format::formatcp!("http://localhost:{}/callback", MSA_REDIRECT_PORT);
-pub const CALLBACK_URL: &str = "https://dev-websocket.kadaroja.com/callback";
+pub const CALLBACK_URL: &str = const_format::formatcp!("http://localhost:{}/callback", MSA_REDIRECT_PORT);
+// pub const CALLBACK_URL: &str = "https://dev-websocket.kadaroja.com/callback";
 
 /// How much time the user has to complete an authentication flow.
 /// This is 2 minutes (2 * 60 * 1000 ms).
