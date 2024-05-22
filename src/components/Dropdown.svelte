@@ -105,7 +105,7 @@
 
         .items {
             position: absolute;
-            background-color: #1f2120;
+            background-color: var(--base-color);
             top: 100%;
             left: 0;
             right: 0;

@@ -59,8 +59,8 @@
     @mixin tooltip-container {
         .tooltip {
             opacity: 0;
-            background-color: #5f6160;
-            color: #dcdcec;
+            background-color: var(--secondary-selected-color);
+            color: var(--fg-color);
             text-align: center;
             padding: 10% 40%;
             border-radius: 6px;
@@ -82,7 +82,7 @@
                 margin-top: -10px;
                 border-width: 10px;
                 border-style: solid;
-                border-color: transparent #5f6160 transparent transparent;
+                border-color: transparent var(--secondary-selected-color) transparent transparent;
             }
         }
 
@@ -106,7 +106,7 @@
         align-items: center;
         justify-content: flex-start;
 
-        background-color: #2f2f2f;
+        background-color: var(--secondary-color);
 
         .logo {
             width: 64px;
@@ -133,11 +133,11 @@
 
             margin-top: 0.5rem;
             margin-bottom: 0.5rem;
-            border-bottom: 1px solid #aeaebe;
+            border-bottom: 1px solid var(--fg-color-light);
         }
 
         .link {
-            color: #aeaebe;
+            color: var(--fg-color-light);
             margin: 10% 0;
             height: 2.75rem;
             padding: 0 20%;
@@ -163,7 +163,7 @@
 
             &.active {
                 color: white;
-                background-color: #4f4f4f;
+                background-color: var(--secondary-highlight-color);
             }
 
             .icon {
@@ -176,7 +176,7 @@
 
             &:hover {
                 color: #dcdcec;
-                background-color: #4f4f4f;
+                background-color: var(--secondary-highlight-color);
             }
 
             @include tooltip-container;
@@ -197,7 +197,7 @@
             align-items: center;
             justify-content: space-evenly;
 
-            background-color: #3f3f3f;
+            background-color: var(--secondary-highlight-color);
             border-radius: 8px;
 
             .link {
@@ -211,7 +211,7 @@
 
                 &:hover,
                 &.active {
-                    background-color: #5f5f5f;
+                    background-color: var(--secondary-selected-color);
                 }
             }
 

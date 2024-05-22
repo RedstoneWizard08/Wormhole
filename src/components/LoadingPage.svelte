@@ -10,7 +10,7 @@
         align-items: center;
         justify-content: center;
         height: 100vh;
-        background-color: #1f2120;
+        background-color: var(--base-color);
 
         user-select: none;
     }

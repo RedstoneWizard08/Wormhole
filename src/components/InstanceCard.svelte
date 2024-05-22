@@ -6,7 +6,7 @@
     import { unwrap } from "$api/util";
 
     export let data: Instance;
-    // This is just the current instance in the parent
+    // This is just the current instance in the parent for deletion (a reference)
     export let current: Instance | null;
     export let deleteing: boolean;
 
@@ -61,7 +61,7 @@
         margin: 5% 0;
 
         border-radius: 8px;
-        background-color: #3f4140;
+        background-color: var(--secondary-highlight-color);
 
         cursor: pointer;
         transition: background-color 0.5s ease;
@@ -76,6 +76,7 @@
             height: 18%;
 
             opacity: 0;
+            margin-bottom: 2%;
 
             transition: opacity 0.5s ease;
 
@@ -93,7 +94,7 @@
         }
 
         &:hover {
-            background-color: #4f5150;
+            background-color: var(--secondary-selected-color);
 
             .buttons {
                 opacity: 1;
@@ -102,14 +103,14 @@
 
         .banner {
             width: 100%;
-            height: 50%;
-            margin: 5% 0;
+            margin-bottom: 8%;
             object-fit: contain;
+            border-radius: 8px 8px 0 0;
         }
 
         .name {
             font-size: 12pt;
-            margin: 2% 0;
+            margin: 0;
             text-align: center;
         }
     }

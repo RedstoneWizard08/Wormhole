@@ -11,8 +11,8 @@
 
     let results: ModItem[] = [];
     let perPage = 30;
-    let pages = 1;
-    let pageId = 1;
+    let pages = 0;
+    let pageId = 0;
     let loading = true;
     let initialLoad = true;
     let gameId = parseInt($page.params.game);
@@ -33,6 +33,7 @@
         handleSearch("");
 
         loading = false;
+        initialLoad = false;
     });
 
     const handleSearch = async (query: string, force = false) => {
@@ -102,7 +103,7 @@
     {/if}
 
     {#if !initialLoad && pages > 0}
-        <Pagination {pages} bind:page={pageId} />
+        <Pagination {pages} bind:page={pageId} on:change={onChange} />
     {/if}
 </div>
 
@@ -111,7 +112,7 @@
         width: 100%;
         height: 93%;
 
-        background-color: #1f2120;
+        background-color: var(--base-color);
         padding: 0;
 
         display: flex;
