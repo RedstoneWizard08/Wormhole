@@ -9,7 +9,7 @@
     import { commands, type DbMod, type Instance } from "$bindings";
     import { onMount } from "svelte";
 
-    let instance: Instance | undefined = undefined;
+    let instance: Instance = null!;
     let background: string | undefined = undefined;
     let executable: string | undefined = undefined;
     let editing = false;
@@ -120,7 +120,7 @@
             </div>
 
             <table class="items">
-                <ModEntry head />
+                <ModEntry {instance} head />
 
                 {#each mods as mod}
                     <ModEntry {mod} {instance} />
