@@ -26,7 +26,7 @@ use super::{cmd::build_launch_command, options::LaunchOptions};
 /// The ModLoader type.
 /// Each element contains the Minecraft version
 /// and its version.
-#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize, Type)]
 pub enum ModLoader {
     Vanilla(String),
     Forge(String, String),

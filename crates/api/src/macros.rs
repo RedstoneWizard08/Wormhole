@@ -49,7 +49,7 @@ mod _private {
 
             fn_alias!(
                 dyn TauriPluginTrait::search_mods => search_mods:
-                async (resolver: SourceMapping, query: StringOpt, opts: OptionsOpt) -> ModsResult
+                async (resolver: SourceMapping, instance: Instance, query: StringOpt, opts: OptionsOpt) -> ModsResult
             );
 
             fn_alias!(
@@ -59,17 +59,17 @@ mod _private {
 
             fn_alias!(
                 dyn TauriPluginTrait::get_mod_versions => get_mod_versions:
-                async (resolver: SourceMapping, id: String) -> VersionsResult
+                async (resolver: SourceMapping, instance: Instance, id: String) -> VersionsResult
             );
 
             fn_alias!(
                 dyn TauriPluginTrait::get_mod_version => get_mod_version:
-                async (resolver: SourceMapping, id: String, version: String) -> VersionResult
+                async (resolver: SourceMapping, instance: Instance, id: String, version: String) -> VersionResult
             );
 
             fn_alias!(
                 dyn TauriPluginTrait::get_download_url => get_download_url:
-                async (resolver: SourceMapping, project: String, version: StringOpt) -> StringResult
+                async (resolver: SourceMapping, instance: Instance, project: String, version: StringOpt) -> StringResult
             );
 
             fn_alias!(

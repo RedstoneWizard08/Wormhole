@@ -5,8 +5,10 @@
 [![crates.io (common)](https://img.shields.io/crates/v/wormhole-common?label=crates.io%20%28common%29&style=flat-square)](https://crates.io/crates/wormhole-common)
 [![crates.io (cli)](https://img.shields.io/crates/v/wormhole-cli?label=crates.io%20%28cli%29&style=flat-square)](https://crates.io/crates/wormhole-cli)
 
+[Download](https://nightly.link/RedstoneWizard08/Wormhole/workflows/build/main)
+
 A centralized multi-game mod and modpack manager and launcher, supporting Steam,
-Epic Games, and the Private Division launcher.
+Minecraft, and the Private Division launcher.
 
 [API Documentation](https://docs.rs/wormhole-common)
 

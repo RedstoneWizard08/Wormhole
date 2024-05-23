@@ -3546,6 +3546,7 @@ dependencies = [
  "serde_json",
  "serial_test",
  "sha-1",
+ "specta",
  "tokio 1.37.0",
  "tokio-stream",
  "whcore",

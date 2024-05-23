@@ -5,7 +5,10 @@ use crate::{
 
 use self::schema::{browse::BrowseResult, info::ModInfo, version::ModVersion};
 use anyhow::Result;
-use data::source::{Source, Sources};
+use data::{
+    instance::Instance,
+    source::{Source, Sources},
+};
 
 pub mod schema;
 
@@ -34,6 +37,7 @@ impl Resolver for SpaceDock {
     async fn search(
         &self,
         game_id: String,
+        _instance: &Instance,
         search: String,
         opts: Option<QueryOptions>,
     ) -> Result<Paginated<Mod>> {
@@ -75,12 +79,17 @@ impl Resolver for SpaceDock {
         Ok(serde_json::from_str::<ModInfo>(&text)?.into())
     }
 
-    async fn get_versions(&self, id: String) -> Result<Vec<RealModVersion>> {
+    async fn get_versions(&self, _instance: &Instance, id: String) -> Result<Vec<RealModVersion>> {
         Ok(self.get_mod(id).await?.versions)
     }
 
-    async fn get_version(&self, id: String, version: String) -> Result<RealModVersion> {
-        self.get_versions(id)
+    async fn get_version(
+        &self,
+        instance: &Instance,
+        id: String,
+        version: String,
+    ) -> Result<RealModVersion> {
+        self.get_versions(instance, id)
             .await?
             .iter()
             .find(|v| v.id == version)
@@ -88,11 +97,16 @@ impl Resolver for SpaceDock {
             .ok_or(anyhow!("Could not find the specified version!"))
     }
 
-    async fn get_download_url(&self, id: String, version: Option<String>) -> Result<String> {
+    async fn get_download_url(
+        &self,
+        id: String,
+        instance: &Instance,
+        version: Option<String>,
+    ) -> Result<String> {
         if let Some(version) = version {
             Ok(format!(
                 "https://spacedock.info{}",
-                self.get_version(id, version).await?.url.unwrap()
+                self.get_version(instance, id, version).await?.url.unwrap()
             ))
         } else {
             let url = format!("{}/mod/{}/latest", self.base().await, id);

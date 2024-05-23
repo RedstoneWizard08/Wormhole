@@ -16,11 +16,11 @@ pub async fn install_mod(
     callback: Option<ProgressCallback>,
 ) -> Result<()> {
     let src = plugin.get_source(item.source).await.unwrap();
-    let version = version.unwrap_or(src.get_latest_version(item.id.clone()).await?);
+    let version = version.unwrap_or(src.get_latest_version(item.id.clone(), &instance).await?);
     let file = version.file_name();
 
     let url = src
-        .get_download_url(item.id.clone(), Some(version.clone().id))
+        .get_download_url(item.id.clone(), &instance, Some(version.clone().id))
         .await?;
 
     let res = reqwest::get(url).await?;

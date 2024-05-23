@@ -11,7 +11,10 @@ use crate::{
 };
 
 use anyhow::Result;
-use data::source::{Source, Sources};
+use data::{
+    instance::Instance,
+    source::{Source, Sources},
+};
 use furse::Furse;
 use reqwest::{
     header::{HeaderMap, HeaderName, HeaderValue},
@@ -65,6 +68,7 @@ impl Resolver for CurseForge {
     async fn search(
         &self,
         game_id: String,
+        instance: &Instance,
         search: String,
         opts: Option<QueryOptions>,
     ) -> Result<Paginated<Mod>> {
@@ -115,7 +119,7 @@ impl Resolver for CurseForge {
         Ok(it)
     }
 
-    async fn get_versions(&self, id: String) -> Result<Vec<ModVersion>> {
+    async fn get_versions(&self, instance: &Instance, id: String) -> Result<Vec<ModVersion>> {
         self.client
             .get_mod_files(id.parse()?)
             .await
@@ -123,7 +127,12 @@ impl Resolver for CurseForge {
             .map_err(|v| anyhow!(v))
     }
 
-    async fn get_version(&self, id: String, version: String) -> Result<ModVersion> {
+    async fn get_version(
+        &self,
+        instance: &Instance,
+        id: String,
+        version: String,
+    ) -> Result<ModVersion> {
         self.client
             .get_mod_file(id.parse()?, version.parse()?)
             .await
@@ -131,19 +140,24 @@ impl Resolver for CurseForge {
             .map_err(|v| anyhow!(v))
     }
 
-    async fn get_download_url(&self, id: String, version: Option<String>) -> Result<String> {
+    async fn get_download_url(
+        &self,
+        id: String,
+        instance: &Instance,
+        version: Option<String>,
+    ) -> Result<String> {
         if let Some(version) = version {
-            Ok(self.get_version(id, version).await?.url.unwrap())
+            Ok(self.get_version(instance, id, version).await?.url.unwrap())
         } else {
             let ver = self
-                .get_versions(id.clone())
+                .get_versions(instance, id.clone())
                 .await?
                 .first()
                 .unwrap()
                 .id
                 .clone();
 
-            Ok(self.get_version(id, ver).await?.url.unwrap())
+            Ok(self.get_version(instance, id, ver).await?.url.unwrap())
         }
     }
 

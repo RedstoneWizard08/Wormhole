@@ -14,7 +14,7 @@ use query::{
 use tokio::{process::Child, sync::Mutex};
 use whcore::{dirs::Dirs, manager::CoreManager};
 
-use crate::install::{install::install_mod, progress::tauri_progress, uninstall::uninstall_mod};
+use crate::{install::{install::install_mod, progress::tauri_progress, uninstall::uninstall_mod}, loader::ModLoader};
 
 lazy_static! {
     pub static ref RESOLVERS: Arc<Mutex<HashMap<&'static str, Vec<Arc<Box<dyn Resolver + Send + Sync>>>>>> =
@@ -35,6 +35,7 @@ pub struct PluginInfo {
 unsafe impl Send for PluginInfo {}
 unsafe impl Sync for PluginInfo {}
 
+// TODO: Install hook (for Minecraft loader installation)
 #[async_trait]
 pub trait Plugin: Send + Sync {
     /// Create a new instance.
@@ -47,6 +48,9 @@ pub trait Plugin: Send + Sync {
 
     /// Get the game ID.
     fn game(&self) -> i32;
+
+    /// Get the mod loader.
+    async fn loader(&self, instance: Instance) -> Result<ModLoader>;
 
     /// Get the plugin's query resolvers.
     async fn resolvers(&self) -> Option<Vec<Arc<Box<dyn Resolver + Send + Sync>>>> {

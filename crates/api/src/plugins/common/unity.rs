@@ -5,7 +5,7 @@ use data::instance::Instance;
 use query::source::Resolver;
 use tokio::process::{Child, Command};
 
-use crate::plugin::Plugin;
+use crate::{plugin::Plugin, loader::ModLoader};
 
 #[async_trait]
 pub trait UnityPlugin: Send + Sync {
@@ -72,5 +72,9 @@ impl<T: UnityPlugin> Plugin for T {
 
     async fn launch(&self, instance: Instance) -> Result<Child> {
         Ok(Command::new(instance.install_dir().join(self.executable())).spawn()?)
+    }
+
+    async fn loader(&self, _instance: Instance) -> Result<ModLoader> {
+        Ok(ModLoader::Vanilla(None))
     }
 }

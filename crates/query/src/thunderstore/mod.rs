@@ -4,7 +4,10 @@ use crate::{
 };
 
 use anyhow::Result;
-use data::source::{Source, Sources};
+use data::{
+    instance::Instance,
+    source::{Source, Sources},
+};
 
 use self::schema::{
     pkg::{MarkdownResp, Package, PackageListing},
@@ -39,6 +42,7 @@ impl Resolver for Thunderstore {
     async fn search(
         &self,
         game_id: String,
+        _instance: &Instance,
         search: String,
         _opts: Option<QueryOptions>,
     ) -> Result<Paginated<Mod>> {
@@ -115,11 +119,16 @@ impl Resolver for Thunderstore {
         Ok(data)
     }
 
-    async fn get_versions(&self, id: String) -> Result<Vec<ModVersion>> {
+    async fn get_versions(&self, _instance: &Instance, id: String) -> Result<Vec<ModVersion>> {
         Ok(self.get_mod(id).await?.versions)
     }
 
-    async fn get_version(&self, id: String, version: String) -> Result<ModVersion> {
+    async fn get_version(
+        &self,
+        _instance: &Instance,
+        id: String,
+        version: String,
+    ) -> Result<ModVersion> {
         let mut spl = id.split("-").collect::<Vec<_>>();
         let ns = spl.remove(0);
         let id = spl.remove(0);
@@ -137,12 +146,17 @@ impl Resolver for Thunderstore {
         Ok(serde_json::from_str::<NewPackageVersion>(&text)?.into())
     }
 
-    async fn get_download_url(&self, id: String, version: Option<String>) -> Result<String> {
+    async fn get_download_url(
+        &self,
+        id: String,
+        instance: &Instance,
+        version: Option<String>,
+    ) -> Result<String> {
         if let Some(ver) = version {
-            Ok(self.get_version(id, ver).await?.url.unwrap())
+            Ok(self.get_version(instance, id, ver).await?.url.unwrap())
         } else {
             Ok(self
-                .get_versions(id)
+                .get_versions(instance, id)
                 .await?
                 .first()
                 .unwrap()

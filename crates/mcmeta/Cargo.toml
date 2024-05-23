@@ -26,6 +26,7 @@ java.workspace = true
 msa.workspace = true
 rayon.workspace = true
 futures.workspace = true
+specta.workspace = true
 
 [dev-dependencies]
 indicatif.workspace = true

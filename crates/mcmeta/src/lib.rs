@@ -1,6 +1,9 @@
 #[macro_use]
 extern crate serde;
 
+#[macro_use]
+extern crate specta;
+
 pub extern crate anyhow;
 
 pub mod cmd;
