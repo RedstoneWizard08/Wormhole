@@ -31,16 +31,32 @@ jobs:
             - name: Run conf
               run: ./apps/gui/genconf.sh
 
-            - uses: tauri-apps/tauri-action@v0
-              env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            - name: Build app
+              run: |
+                  pnpm run build
+                  cargo build --release
+
+            - uses: actions/upload-artifact@v4
               with:
-                  tagName: wormhole-dev-${{ steps.short-sha.outputs.sha }}
-                  releaseName: "Wormhole (Dev) ${{ steps.short-sha.outputs.sha }}"
-                  releaseBody: |
-                      "${{ github.event.head_commit.message }}"
-                      See the assets to download this version and install.
-                  releaseDraft: false
-                  prerelease: true
-                  tauriScript: pnpm tauri
-                  projectPath: apps/gui
+                  name: MacOS Binaries (x86_64)
+                  path: |
+                      target/release/wormhole
+                      target/release/wormhole_gui
+                      target/release/wormhole_cli
+                      target/release/bindings
+                      target/release/webui
+                      target/release/*.exe
+
+                      target/release/*.tar.gz
+                      target/release/*.tar.gz.sig
+                      target/release/*.dmg
+                      target/release/*.AppImage
+                      target/release/*.AppImage.tar.gz
+                      target/release/*.AppImage.tar.gz.sig
+                      target/release/*.deb
+                      target/release/*.rpm
+                      target/release/*.msi
+                      target/release/*.msi.zip
+                      target/release/*.msi.zip.sig
+                      target/release/*.nsis.zip
+                      target/release/*.nsis.zip.sig
