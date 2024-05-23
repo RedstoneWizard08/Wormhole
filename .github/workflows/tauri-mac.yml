@@ -33,6 +33,7 @@ jobs:
 
             - name: Build app
               run: |
+                  touch .env
                   pnpm run build
                   cargo build --release
               env:
