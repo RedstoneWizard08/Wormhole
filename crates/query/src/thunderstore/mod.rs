@@ -87,7 +87,7 @@ impl Resolver for Thunderstore {
 
         let mut data: Mod = self
             .client()
-            .get(&url)
+            .get(url)
             .send()
             .await?
             .json::<Package>()
@@ -104,7 +104,7 @@ impl Resolver for Thunderstore {
 
         let desc_data = self
             .client()
-            .get(url)
+            .get(desc_url)
             .send()
             .await?
             .json::<MarkdownResp>()
