@@ -18,6 +18,9 @@ jobs:
 
             - name: install Rust nightly
               uses: dtolnay/rust-toolchain@nightly
+            
+            - name: Fix Rust
+              run: rustup update
 
             - name: Install system dependencies
               run: |
