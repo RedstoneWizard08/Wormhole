@@ -7842,6 +7842,7 @@ dependencies = [
  "anyhow 1.0.81",
  "bindings",
  "clap",
+ "dotenvy",
  "tokio 1.37.0",
  "webui",
  "whcore",

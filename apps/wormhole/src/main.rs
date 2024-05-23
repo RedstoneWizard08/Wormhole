@@ -5,5 +5,7 @@ use wormhole::Cli;
 
 #[tokio::main]
 pub async fn main() -> Result<()> {
+    dotenvy::dotenv()?;
+
     Cli::parse().run().await
 }

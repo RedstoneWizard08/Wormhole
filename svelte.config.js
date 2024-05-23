@@ -7,14 +7,6 @@ import { vitePreprocess } from "@sveltejs/vite-plugin-svelte";
 export default {
     preprocess: vitePreprocess(),
 
-    vitePlugin: {
-        inspector: {
-            toggleKeyCombo: "alt-i",
-            showToggleButton: "always",
-            toggleButtonPos: "bottom-left",
-        },
-    },
-
     kit: {
         adapter: adapter({
             fallback: "index.html",

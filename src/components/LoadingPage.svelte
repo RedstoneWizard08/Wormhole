@@ -11,6 +11,7 @@
         justify-content: center;
         height: 100vh;
         background-color: var(--base-color);
+        font-family: Ubuntu;
 
         user-select: none;
     }

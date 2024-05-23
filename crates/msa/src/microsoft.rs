@@ -15,8 +15,13 @@ use crate::msa_token::MsaTokenResponse;
 /// The port for MSA auth redirect.
 /// This will be for the local server at http://localhost:[port]/callback
 /// This was determined by combining the ASCII codes for W (87) and H (72)
-pub const MSA_REDIRECT_PORT: u32 = 8772;
-// pub const MSA_REDIRECT_PORT: u32 = 4002;
+pub const MSA_REDIRECT_PORT: Lazy<u32> = Lazy::new(|| {
+    if std::env::var("__REDSTONE_DEV_SERVER").is_ok() {
+        4002
+    } else {
+        8772
+    }
+});
 
 /// Wormhole's client ID for MSA.
 pub const MSA_CLIENT_ID: &str = "61f104b9-3b1c-49bb-b0b8-2bb1f42f581c";
@@ -25,9 +30,13 @@ pub const MSA_CLIENT_ID: &str = "61f104b9-3b1c-49bb-b0b8-2bb1f42f581c";
 const MSA_CLIENT_SECRET: Lazy<&str> = Lazy::new(|| envc!("MSA_CLIENT_SECRET"));
 
 /// The auth callback URL.
-pub const CALLBACK_URL: &str =
-    const_format::formatcp!("http://localhost:{}/callback", MSA_REDIRECT_PORT);
-// pub const CALLBACK_URL: &str = "https://dev-websocket.kadaroja.com/callback";
+pub const CALLBACK_URL: Lazy<String> = Lazy::new(|| {
+    if std::env::var("__REDSTONE_DEV_SERVER").is_ok() {
+        "https://dev-websocket.kadaroja.com/callback".to_string()
+    } else {
+        format!("http://localhost:{}/callback", MSA_REDIRECT_PORT.clone())
+    }
+});
 
 /// How much time the user has to complete an authentication flow.
 /// This is 2 minutes (2 * 60 * 1000 ms).
@@ -43,7 +52,7 @@ pub fn msa_code() -> Result<String> {
 
     let params = &[
         ("client_id", MSA_CLIENT_ID),
-        ("redirect_uri", CALLBACK_URL),
+        ("redirect_uri", &CALLBACK_URL),
         ("response_type", "code"),
         ("response_mode", "query"),
         ("scope", "XboxLive.signin"),
@@ -52,7 +61,7 @@ pub fn msa_code() -> Result<String> {
 
     url.query_pairs_mut().extend_pairs(params);
 
-    let server = Arc::new(Server::http(format!("0.0.0.0:{}", MSA_REDIRECT_PORT)).unwrap());
+    let server = Arc::new(Server::http(format!("0.0.0.0:{}", MSA_REDIRECT_PORT.clone())).unwrap());
     let server_clone = Arc::clone(&server);
 
     static mut STOP: bool = false;
@@ -151,7 +160,7 @@ pub async fn get_auth_token(code: impl AsRef<str>) -> Result<String> {
             ("client_secret", &MSA_CLIENT_SECRET.clone()),
             ("client_id", MSA_CLIENT_ID),
             ("scope", "XboxLive.signin"),
-            ("redirect_uri", CALLBACK_URL),
+            ("redirect_uri", &CALLBACK_URL),
         ]))
         .send()
         .await?
