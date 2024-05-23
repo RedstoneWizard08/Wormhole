@@ -4,7 +4,7 @@ macro_rules! plugin_fn_proxy {
         #[$crate::whmacros::serde_call]
         #[$crate::tauri::command]
         #[$crate::specta::specta]
-        async fn $name(game_id: i32, _pool: $crate::AppState<'_>) -> Result<$ret, bool> {
+        pub async fn $name(game_id: i32, _pool: $crate::AppState<'_>) -> Result<$ret, bool> {
             use $crate::whcore::Boolify;
 
             let it = $crate::api::register::PLUGINS.lock().await;
@@ -18,7 +18,7 @@ macro_rules! plugin_fn_proxy {
         #[$crate::whmacros::serde_call]
         #[$crate::tauri::command]
         #[$crate::specta::specta]
-        async fn $name(game_id: i32, _pool: $crate::AppState<'_>) -> Result<$ret, bool> {
+        pub async fn $name(game_id: i32, _pool: $crate::AppState<'_>) -> Result<$ret, bool> {
             use $crate::whcore::Boolify;
 
             let it = $crate::api::register::PLUGINS.lock().await;
@@ -32,7 +32,7 @@ macro_rules! plugin_fn_proxy {
         #[whmacros::serde_call]
         #[tauri::command]
         #[specta::specta]
-        async fn $name(game_id: i32, $($arg: $arg_ty),*, _pool: $crate::AppState<'_>) -> Result<$ret, bool> {
+        pub async fn $name(game_id: i32, $($arg: $arg_ty),*, _pool: $crate::AppState<'_>) -> Result<$ret, bool> {
             use $crate::whcore::Boolify;
 
             let it = $crate::api::register::PLUGINS.lock().await;
@@ -46,7 +46,7 @@ macro_rules! plugin_fn_proxy {
         #[$crate::whmacros::serde_call]
         #[$crate::tauri::command]
         #[$crate::specta::specta]
-        async fn $name(game_id: i32, $($arg: $arg_ty),*, _pool: $crate::AppState<'_>) -> Result<$ret, bool> {
+        pub async fn $name(game_id: i32, $($arg: $arg_ty),*, _pool: $crate::AppState<'_>) -> Result<$ret, bool> {
             use $crate::whcore::Boolify;
 
             let it = $crate::api::register::PLUGINS.lock().await;
@@ -60,7 +60,7 @@ macro_rules! plugin_fn_proxy {
         #[$crate::whmacros::serde_call]
         #[$crate::tauri::command]
         #[$crate::specta::specta]
-        async fn $name(game_id: i32, $($arg: $arg_ty),*, _pool: $crate::AppState<'_>) -> Result<$ret, bool> {
+        pub async fn $name(game_id: i32, $($arg: $arg_ty),*, _pool: $crate::AppState<'_>) -> Result<$ret, bool> {
             use $crate::whcore::Boolify;
 
             let it = $crate::api::register::PLUGINS.lock().await;
@@ -74,7 +74,7 @@ macro_rules! plugin_fn_proxy {
         #[$crate::whmacros::serde_call]
         #[$crate::tauri::command]
         #[$crate::specta::specta]
-        async fn $name(game_id: i32, _pool: $crate::AppState<'_>) -> Result<$ret, bool> {
+        pub async fn $name(game_id: i32, _pool: $crate::AppState<'_>) -> Result<$ret, bool> {
             use $crate::whcore::Boolify;
 
             let it = $crate::api::register::PLUGINS.lock().await;
