@@ -110,7 +110,7 @@ impl Resolver for CurseForge {
             .map(|v| v.into())
             .map_err(|v| anyhow!(v))?;
 
-        it.desc = self.client.get_mod_description(id.parse()?).ok();
+        it.desc = self.client.get_mod_description(id.parse()?).await.ok();
 
         Ok(it)
     }
