@@ -45,7 +45,6 @@ jobs:
               run: |
                   touch .env
                   pnpm run build
-                  cargo build --release
               env:
                 CURSEFORGE_KEY: ${{ secrets.CURSEFORGE_KEY }}
                 MSA_CLIENT_SECRET: ${{ secrets.MSA_CLIENT_SECRET }}
@@ -62,16 +61,16 @@ jobs:
                       target/release/webui
                       target/release/*.exe
 
-                      target/release/*.tar.gz
-                      target/release/*.tar.gz.sig
-                      target/release/*.dmg
-                      target/release/*.AppImage
-                      target/release/*.AppImage.tar.gz
-                      target/release/*.AppImage.tar.gz.sig
-                      target/release/*.deb
-                      target/release/*.rpm
-                      target/release/*.msi
-                      target/release/*.msi.zip
-                      target/release/*.msi.zip.sig
-                      target/release/*.nsis.zip
-                      target/release/*.nsis.zip.sig
+                      target/release/bundle/**/*.tar.gz
+                      target/release/bundle/**/*.tar.gz.sig
+                      target/release/bundle/**/*.dmg
+                      target/release/bundle/**/*.AppImage
+                      target/release/bundle/**/*.AppImage.tar.gz
+                      target/release/bundle/**/*.AppImage.tar.gz.sig
+                      target/release/bundle/**/*.deb
+                      target/release/bundle/**/*.rpm
+                      target/release/bundle/**/*.msi
+                      target/release/bundle/**/*.msi.zip
+                      target/release/bundle/**/*.msi.zip.sig
+                      target/release/bundle/**/*.nsis.zip
+                      target/release/bundle/**/*.nsis.zip.sig

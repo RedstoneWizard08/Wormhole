@@ -205,6 +205,7 @@
 
                         border: 1px solid lightskyblue;
                         padding: 1% 1.5%;
+                        font-family: Ubuntu;
                         font-size: 12pt;
 
                         border-radius: 8px;
@@ -232,6 +233,7 @@
 
                         border: 1px solid lightsalmon;
                         padding: 1% 1.5%;
+                        font-family: Ubuntu;
                         font-size: 12pt;
                         margin-left: 3%;
 
@@ -320,6 +322,7 @@
                 border-radius: 8px;
                 padding: 0.5% 1%;
 
+                font-family: Ubuntu;
                 font-size: 12pt;
                 cursor: pointer;
 

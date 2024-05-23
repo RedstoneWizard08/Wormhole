@@ -211,6 +211,12 @@
                 background-color: green;
                 z-index: 2;
                 cursor: pointer;
+
+                transition: background-color 0.5s ease;
+
+                &:hover {
+                    background-color: #00a000;
+                }
             }
 
             .return-arrow i {
@@ -228,6 +234,12 @@
                 border-radius: 50%;
                 background-color: green;
                 z-index: 1;
+
+                transition: background-color 0.5s ease;
+
+                &:hover {
+                    background-color: #00a000;
+                }
             }
         }
 
@@ -255,6 +267,7 @@
                     object-fit: cover;
                     object-position: center center;
                     margin-right: 1rem;
+                    margin-left: 2.5rem;
                 }
 
                 .texts {

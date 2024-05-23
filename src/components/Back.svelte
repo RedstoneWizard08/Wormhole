@@ -30,7 +30,7 @@
             z-index: 2;
             cursor: pointer;
 
-            transition: background-color 0.5s ease;
+            transition: background-color 0.25s ease;
 
             &:hover {
                 background-color: #00a000;

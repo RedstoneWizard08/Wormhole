@@ -8,6 +8,7 @@
     import { unwrap } from "$api/util";
     import Dropdown from "$components/Dropdown.svelte";
     import { onMount } from "svelte";
+    import Back from "$components/Back.svelte";
 
     let results: ModItem[] = [];
     let perPage = 30;
@@ -16,7 +17,6 @@
     let loading = true;
     let initialLoad = true;
     let gameId = parseInt($page.params.game);
-    let plugin: PluginInfo | null = null;
     let sources: SourceMapping[] = [];
     let source = sources[0];
     let last: string | null = null;
@@ -26,7 +26,6 @@
         loading = true;
         pages = 0;
 
-        plugin = unwrap(await commands.info(gameId, null));
         sources = unwrap(await commands.sources(gameId, null)) as SourceMapping[];
         source = source || sources[0];
 
@@ -77,7 +76,14 @@
 
 <div class="browse-container">
     <div class="top">
-        <span></span>
+        <a class="link" href="/{gameId}/instance/{instanceId}">
+            <div class="return-container">
+                <div class="return-arrow">
+                    <i class="fa-solid fa-long-arrow-left" />
+                </div>
+                <div class="return-circle" />
+            </div>
+        </a>
 
         <div class="search-bar">
             <SearchBar onSearch={handleSearch} />
@@ -119,6 +125,53 @@
         flex-direction: column;
         align-items: center;
         justify-content: flex-start;
+
+        .return-container {
+            .return-arrow {
+                position: absolute;
+                user-select: none;
+                top: 10px;
+                left: 10px;
+                width: 40px;
+                height: 40px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border-radius: 50%;
+                background-color: green;
+                z-index: 2;
+                cursor: pointer;
+
+                transition: background-color 0.5s ease;
+
+                &:hover {
+                    background-color: #00a000;
+                }
+            }
+
+            .return-arrow i {
+                font-size: 24px;
+                color: white;
+            }
+
+            .return-circle {
+                position: absolute;
+                user-select: none;
+                top: 10px;
+                left: 10px;
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                background-color: green;
+                z-index: 1;
+
+                transition: background-color 0.5s ease;
+
+                &:hover {
+                    background-color: #00a000;
+                }
+            }
+        }
 
         .list {
             height: calc(98% - 3rem);
