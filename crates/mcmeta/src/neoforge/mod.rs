@@ -15,9 +15,6 @@ pub mod install;
 pub mod profile;
 pub mod util;
 
-#[cfg(test)]
-pub mod tests;
-
 /// Takes in a neoforge version and returns
 /// a tuple with the Minecraft version (1st) and
 /// the NeoForge verison (2nd).

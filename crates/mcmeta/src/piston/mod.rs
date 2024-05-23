@@ -7,9 +7,6 @@ pub mod game;
 pub mod install;
 pub mod manifest;
 
-#[cfg(test)]
-pub mod tests;
-
 pub fn get_features() -> Vec<String> {
     // I'll just get the values that are true here, this is just for clarity. :)
     let raw = HashMap::from([

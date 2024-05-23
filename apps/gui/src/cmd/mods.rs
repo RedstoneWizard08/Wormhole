@@ -35,6 +35,26 @@ pub async fn install_mod(
 #[whmacros::serde_call]
 #[tauri::command]
 #[specta::specta]
+pub async fn uninstall_mod(
+    game_id: i32,
+    item: Mod,
+    instance: Instance,
+    pool: AppState<'_>,
+) -> Result<(), bool> {
+    use whcore::Boolify;
+
+    let it = api::register::PLUGINS.lock().await;
+    let plugin = it.get(&game_id).bool()?;
+
+    plugin
+        .uninstall(pool.get().bool()?.deref_mut(), item, instance)
+        .await
+        .ok_or(false)
+}
+
+#[whmacros::serde_call]
+#[tauri::command]
+#[specta::specta]
 pub async fn get_mods(instance_id: i32, pool: AppState<'_>) -> Result<Vec<DbMod>, bool> {
     Ok(mods::table
         .select(DbMod::as_select())

@@ -3,6 +3,7 @@ use std::{collections::HashMap, path::PathBuf, sync::Arc};
 use anyhow::Result;
 use data::{
     instance::Instance,
+    mod_::DbMod,
     source::{SourceMapping, Sources},
     Conn,
 };
@@ -13,7 +14,7 @@ use query::{
 use tokio::{process::Child, sync::Mutex};
 use whcore::{dirs::Dirs, manager::CoreManager};
 
-use crate::install::{install_mod, progress::tauri_progress};
+use crate::install::{install::install_mod, progress::tauri_progress, uninstall::uninstall_mod};
 
 lazy_static! {
     pub static ref RESOLVERS: Arc<Mutex<HashMap<&'static str, Vec<Arc<Box<dyn Resolver + Send + Sync>>>>>> =
@@ -161,6 +162,15 @@ pub trait Plugin: Send + Sync {
             Some(Box::new(tauri_progress)),
         )
         .await?;
+
+        Ok(())
+    }
+
+    async fn uninstall_mod(&self, db: &mut Conn, item: DbMod, instance: Instance) -> Result<()>
+    where
+        Self: Sized,
+    {
+        uninstall_mod(db, item, instance).await?;
 
         Ok(())
     }

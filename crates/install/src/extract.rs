@@ -1,7 +1,7 @@
 use std::{
     fs::{self, remove_dir_all, File},
     io::{Cursor, Read, Write},
-    path::Path,
+    path::{Path, PathBuf},
 };
 
 use crate::magic::{detect_file_type, FileType};
@@ -22,7 +22,7 @@ pub fn extract_file(
     kind: FileType,
     instance: Instance,
     fallback: Option<&str>,
-) -> Result<()> {
+) -> Result<Vec<PathBuf>> {
     let name = name.as_ref();
 
     match kind {
@@ -31,10 +31,11 @@ pub fn extract_file(
                 fs::create_dir_all(instance.data_dir().join("mods"))?;
             }
 
-            Ok(fs::write(
-                instance.data_dir().join("mods").join(name),
-                data,
-            )?)
+            let output = instance.data_dir().join("mods").join(name);
+
+            fs::write(&output, data)?;
+
+            Ok(vec![output])
         }
 
         FileType::ResourcePack => {
@@ -42,14 +43,44 @@ pub fn extract_file(
                 fs::create_dir_all(instance.data_dir().join("resourcepacks"))?;
             }
 
-            Ok(fs::write(
-                instance.data_dir().join("resourcepacks").join(name),
-                data,
-            )?)
+            let output = instance.data_dir().join("resourcepacks").join(name);
+
+            fs::write(&output, data)?;
+
+            Ok(vec![output])
         }
 
         it => reprocess_zip(data, name, it, instance, fallback),
     }
+}
+
+pub fn extract_zip(arc: &mut ZipArchive<Cursor<Vec<u8>>>, root: PathBuf) -> Result<Vec<PathBuf>> {
+    let mut paths = Vec::new();
+
+    for idx in 0..arc.len() {
+        let mut item = arc.by_index(idx)?;
+
+        if !item.is_file() {
+            continue;
+        }
+
+        let mut data = Vec::new();
+
+        item.read_to_end(&mut data)?;
+
+        let path = root.join(item.enclosed_name().unwrap());
+        let parent = path.parent().unwrap();
+
+        if !parent.exists() {
+            fs::create_dir_all(&parent)?;
+            paths.push(parent.into());
+        }
+
+        fs::write(&path, data)?;
+        paths.push(path);
+    }
+
+    Ok(paths)
 }
 
 pub fn reprocess_zip(
@@ -58,7 +89,7 @@ pub fn reprocess_zip(
     kind: FileType,
     instance: Instance,
     fallback: Option<&str>,
-) -> Result<()> {
+) -> Result<Vec<PathBuf>> {
     match kind {
         FileType::Gzip => {
             let (data, kind) = extract_gzip(data, &name)?;
@@ -78,6 +109,7 @@ pub fn reprocess_zip(
 
         //     reprocess_zip(data, name, FileType::Zip, instance, fallback)
         // }
+        
         FileType::Tar => {
             let data = extract_tar(data, &instance)?;
 
@@ -97,16 +129,20 @@ pub fn reprocess_zip(
             let names = archive.file_names().collect::<Vec<_>>();
 
             if names.contains(&"BepInEx") {
-                archive.extract(instance.data_dir())?;
+                extract_zip(&mut archive, instance.data_dir())
             } else if names.contains(&"plugins") || names.contains(&"patchers") {
-                archive.extract(instance.data_dir().join("BepInEx"))?;
+                extract_zip(&mut archive, instance.data_dir().join("BepInEx"))
             } else if names.iter().any(|v| v.ends_with(".dll")) {
-                archive.extract(instance.data_dir().join("BepInEx").join("plugins"))?;
+                extract_zip(
+                    &mut archive,
+                    instance.data_dir().join("BepInEx").join("plugins"),
+                )
             } else {
-                archive.extract(instance.data_dir().join(fallback.unwrap_or("")))?;
+                extract_zip(
+                    &mut archive,
+                    instance.data_dir().join(fallback.unwrap_or("")),
+                )
             }
-
-            Ok(())
         }
 
         _ => Err(anyhow!("Could not reprocess the specified type!")),

@@ -1,0 +1,1 @@
+ALTER TABLE mods ADD path TEXT NOT NULL;

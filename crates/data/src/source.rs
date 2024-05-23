@@ -5,6 +5,9 @@ use crate::{
 };
 use diesel::prelude::*;
 
+/// A mod source.
+/// This represents a mod provider, like Modrinth,
+/// CurseForge, SpaceDock, etc.
 #[derive(
     Debug,
     Clone,
@@ -23,8 +26,13 @@ use diesel::prelude::*;
 #[diesel(table_name = sources)]
 #[diesel(check_for_backend(diesel::sqlite::Sqlite))]
 pub struct Source {
+    /// The ID of this source in the database.
     pub id: Option<i32>,
+
+    /// The human-friendly name of this source.
     pub name: String,
+
+    /// The source's API base URL.
     pub base_url: String,
 }
 

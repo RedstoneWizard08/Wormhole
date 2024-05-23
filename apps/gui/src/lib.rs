@@ -73,6 +73,7 @@ commands![
     cmd::plugin::sources,
     cmd::plugin::get_latest_version,
     cmd::mods::install_mod,
+    cmd::mods::uninstall_mod,
     cmd::mods::get_mods;
 
     ProgressPayload

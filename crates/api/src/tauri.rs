@@ -1,5 +1,5 @@
 use anyhow::Result;
-use data::{instance::Instance, source::SourceMapping, Conn};
+use data::{instance::Instance, mod_::DbMod, source::SourceMapping, Conn};
 
 use query::{
     mod_::{Mod, ModVersion},
@@ -116,6 +116,8 @@ pub trait TauriPluginTrait: CPlugin + Send + Sync {
         version: Option<ModVersion>,
         instance: Instance,
     ) -> Option<()>;
+
+    async fn uninstall(&self, db: &mut Conn, item: DbMod, instance: Instance) -> Option<()>;
 
     async fn launch_game(&self, instance: Instance) -> Option<()>;
 
@@ -240,6 +242,12 @@ impl<T: CPlugin + Send + Sync> TauriPluginTrait for T {
         instance: Instance,
     ) -> Option<()> {
         self.install_mod(db, item, version, instance).await.ok()?;
+
+        Some(())
+    }
+
+    async fn uninstall(&self, db: &mut Conn, item: DbMod, instance: Instance) -> Option<()> {
+        self.uninstall_mod(db, item, instance).await.ok()?;
 
         Some(())
     }

@@ -32,6 +32,7 @@ diesel::table! {
         instance_id -> Nullable<Integer>,
         size -> Nullable<Integer>,
         hash -> Nullable<Text>,
+        path -> Text,
     }
 }
 
@@ -58,4 +59,10 @@ diesel::joinable!(mods -> sources (source_id));
 diesel::joinable!(supported_sources -> games (game_id));
 diesel::joinable!(supported_sources -> sources (source_id));
 
-diesel::allow_tables_to_appear_in_same_query!(games, instances, mods, sources, supported_sources,);
+diesel::allow_tables_to_appear_in_same_query!(
+    games,
+    instances,
+    mods,
+    sources,
+    supported_sources,
+);

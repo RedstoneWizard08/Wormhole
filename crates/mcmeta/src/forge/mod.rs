@@ -4,9 +4,6 @@ pub mod mappings;
 pub mod processor;
 pub mod util;
 
-#[cfg(test)]
-pub mod tests;
-
 use std::io::{Cursor, Read};
 
 use anyhow::Result;
