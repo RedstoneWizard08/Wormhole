@@ -2,7 +2,7 @@
 
 set -xe
 
-pip3 install yq
+pip3 install yq --break-system-packages
 
 DIR="$(dirname "$(realpath "$0")")"
 

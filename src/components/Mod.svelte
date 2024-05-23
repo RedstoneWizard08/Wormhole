@@ -23,6 +23,10 @@
 
     onMount(async () => {
         source = unwrap(await commands.getSourceId(mod.source, null)) as SourceMapping;
+
+        const mods = unwrap(await commands.getMods(instance, null));
+
+        installed = mods.find((v) => v.mod_id == mod.id) != null;
     });
 
     const onDownload = async (ev: MouseEvent) => {
@@ -39,10 +43,10 @@
         unwrap(await commands.installMod(game, mod, latest, instanceInfo, null));
 
         installing = false;
-    };
 
-    const isInstalled = () => {
-        return false;
+        const mods = unwrap(await commands.getMods(instance, null));
+
+        installed = mods.find((v) => v.mod_id == mod.id) != null;
     };
 </script>
 
@@ -77,9 +81,9 @@
 
             <button type="button" class="action" on:click={onDownload}>
                 {#if installing}
-                    <i class="icon fa-solid fa-spinner fa-spin" />
-                {:else if isInstalled()}
-                    <i class="icon fa-solid fa-trash-can" />
+                    <i class="icon progress fa-solid fa-spinner fa-spin" />
+                {:else if installed}
+                    <i class="icon delete fa-solid fa-trash-can" />
                 {:else}
                     <i class="icon fa-solid fa-circle-down" />
                 {/if}
@@ -180,6 +184,30 @@
 
                         &:hover {
                             color: #50ae50;
+                        }
+
+                        &.delete {
+                            color: #ac2c2c;
+                            font-size: 14pt;
+                            cursor: pointer;
+
+                            transition: color 0.5s ease;
+
+                            &:hover {
+                                color: #dc2c2c;
+                            }
+                        }
+
+                        &.progress {
+                            color: #ac2cac;
+                            font-size: 14pt;
+                            cursor: pointer;
+
+                            transition: color 0.5s ease;
+
+                            &:hover {
+                                color: #dc2cdc;
+                            }
                         }
                     }
                 }

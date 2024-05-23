@@ -1,9 +1,9 @@
 <script lang="ts">
+    import ModEntry from "$components/ModEntry.svelte";
     import { marked } from "marked";
     import { page } from "$app/stores";
-    import { formatBytes, unwrap } from "$api/util";
+    import { unwrap } from "$api/util";
     import Back from "$components/Back.svelte";
-    import Delete from "$components/Delete.svelte";
     import { goto } from "$app/navigation";
     import { plugins } from "$api/stores";
     import { commands, type DbMod, type Instance } from "$bindings";
@@ -120,23 +120,10 @@
             </div>
 
             <table class="items">
-                <tr class="item head-item">
-                    <td class="name">Mod Name</td>
-                    <td class="file">File Name</td>
-                    <td class="size">File Size</td>
-                    <td class="actions" />
-                </tr>
+                <ModEntry head />
 
                 {#each mods as mod}
-                    <tr class="item">
-                        <td class="name">{mod.name}</td>
-                        <td class="file">{mod.file_name}</td>
-                        <td class="size">{formatBytes(mod.size || 0)}</td>
-
-                        <td class="actions">
-                            <Delete action={() => {}} clazz="__workaround__action" />
-                        </td>
-                    </tr>
+                    <ModEntry {mod} />
                 {/each}
             </table>
         </div>
@@ -309,49 +296,6 @@
                     align-items: flex-start;
                     justify-content: center;
                     width: 100%;
-
-                    .item {
-                        display: flex;
-                        flex-direction: row;
-                        align-items: center;
-                        justify-content: flex-start;
-
-                        width: 100%;
-                        margin: 0.5rem 0;
-                        font-size: 12pt;
-
-                        &.head-item {
-                            padding-bottom: 0.75rem;
-                            border-bottom: 1px solid white;
-                        }
-
-                        td {
-                            margin: 0;
-                            padding: 0;
-                            text-align: left;
-
-                            display: flex;
-                            flex-direction: row;
-                            align-items: center;
-                            justify-content: flex-start;
-                        }
-
-                        .name {
-                            width: 35%;
-                        }
-
-                        .file {
-                            width: 50%;
-                        }
-
-                        .size {
-                            width: calc(15% - 2rem);
-                        }
-
-                        .actions {
-                            width: 2rem;
-                        }
-                    }
                 }
             }
         }
