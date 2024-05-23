@@ -31,7 +31,7 @@ jobs:
                   length: 7
 
             - name: Run conf
-              run: ./apps/gui/genconf.sh
+              run: .\apps\gui\genconf.ps1
 
             - name: Build app
               run: |
