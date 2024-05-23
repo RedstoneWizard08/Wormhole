@@ -123,7 +123,7 @@
                 <ModEntry head />
 
                 {#each mods as mod}
-                    <ModEntry {mod} />
+                    <ModEntry {mod} {instance} />
                 {/each}
             </table>
         </div>

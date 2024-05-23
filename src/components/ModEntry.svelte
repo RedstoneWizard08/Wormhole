@@ -1,10 +1,11 @@
 <script lang="ts">
     import { formatBytes, unwrap } from "$api/util";
     import { onMount } from "svelte";
-    import { commands, type DbMod } from "$api/bindings/app";
+    import { commands, type DbMod, type Instance } from "$api/bindings/app";
     import Delete from "./Delete.svelte";
 
     export let mod: DbMod | null = null;
+    export let instance: Instance;
     export let head: boolean = false;
 
     let source: string | null = null;
@@ -12,6 +13,10 @@
     onMount(async () => {
         source = unwrap(await commands.getSourceId(mod?.source_id!, null));
     });
+
+    const uninstall = async () => {
+        unwrap(await commands.uninstallMod(instance.game_id, mod, instance, null));
+    };
 </script>
 
 <tr class="mod" class:head-item={head}>
@@ -27,7 +32,7 @@
         <td class="source">{source}</td>
 
         <td class="actions">
-            <Delete action={() => {}} clazz="__workaround__action" />
+            <Delete action={uninstall} clazz="__workaround__action" />
         </td>
     {/if}
 </tr>
