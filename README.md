@@ -25,7 +25,7 @@ Epic Games, and the Private Division launcher.
 
 ## Roadmap
 
-- [ ] Run udeps
+- [x] Run udeps
 - [ ] Mod deletion
 - [x] Support for KSP 2
 - [x] Support for KSP 1
