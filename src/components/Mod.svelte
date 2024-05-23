@@ -99,7 +99,7 @@
     </div>
 </div>
 
-<style lang="scss">
+<style scoped lang="scss">
     .mod-tile {
         width: 96%;
         height: 4rem;

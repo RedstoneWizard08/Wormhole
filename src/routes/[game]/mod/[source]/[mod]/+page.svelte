@@ -3,9 +3,11 @@
     import { page } from "$app/stores";
     import LoadingPage from "$components/LoadingPage.svelte";
     import { listen, unwrap } from "$api/util";
-    import { commands, type SourceMapping, type Mod } from "$bindings";
+    import { commands, type SourceMapping, type Mod, type ModVersion } from "$bindings";
     import { marked } from "marked";
     import { onMount } from "svelte";
+    import Dropdown from "$components/Dropdown.svelte";
+    import type { DropdownItem } from "$api/dropdown";
 
     const modId = $page.params.mod;
     const source = $page.params.source;
@@ -19,6 +21,12 @@
     let total = 0;
     let progress = 0;
     let icon: string | null | undefined = null;
+    let versions: ModVersion[] = [];
+    let latest: ModVersion | null = null;
+    let selected: DropdownItem = { id: "", text: "" };
+    let installed = false;
+
+    $: items = versions.map((v) => ({ id: v.id, text: v.name }) as DropdownItem);
 
     const fmt = new Intl.NumberFormat("en-US", {
         notation: "compact",
@@ -29,11 +37,23 @@
         if (modId || $page.url) {
             mods = /\/mods?(\/\d+)?/i.test($page.url.pathname);
             modInfo = unwrap(await commands.getMod(gameId, source as SourceMapping, modId, null));
+            versions = unwrap(
+                await commands.getModVersions(gameId, source as SourceMapping, modId, null)
+            );
+            latest = unwrap(
+                await commands.getLatestVersion(gameId, source as SourceMapping, modId, null)
+            );
             isLoading = false;
+
+            selected = { id: latest.id, text: latest.name! };
 
             icon = import.meta.env.DEV
                 ? modInfo.icon?.replace("https://cdn.modrinth.com/", "/__mr_cdn/")
                 : modInfo.icon;
+
+            const modsList = unwrap(await commands.getMods(instanceId, null));
+
+            installed = modsList.find((v) => v.mod_id == modId) != null;
         }
 
         listen("progress_callback", (data) => {
@@ -96,12 +116,34 @@
     };
 
     const install = async () => {
-        // TODO: Version dropdown
-        const resolver = unwrap(await commands.getSourceId(modInfo!.source, null)) as SourceMapping;
-        const latest = unwrap(await commands.getLatestVersion(gameId, resolver, modId, null));
+        downloading = true;
+
+        const version = versions.find((v) => v.id == selected.id)!;
         const instance = unwrap(await commands.getInstance(instanceId, null));
 
-        unwrap(await commands.installMod(gameId, modInfo!, latest, instance, null));
+        unwrap(await commands.installMod(gameId, modInfo!, version, instance, null));
+
+        const mods = unwrap(await commands.getMods(instance.id!, null));
+
+        installed = mods.find((v) => v.mod_id == modId) != null;
+
+        downloading = false;
+    };
+
+    const uninstall = async () => {
+        downloading = true;
+
+        const instance = unwrap(await commands.getInstance(instanceId, null));
+        const modsNow = unwrap(await commands.getMods(instance.id!, null));
+        const me = modsNow.find((v) => v.mod_id == modId)!;
+
+        unwrap(await commands.uninstallMod(gameId, me, instance, null));
+
+        const mods = unwrap(await commands.getMods(instance.id!, null));
+
+        installed = mods.find((v) => v.mod_id == modId) != null;
+
+        downloading = false;
     };
 </script>
 
@@ -164,19 +206,34 @@
         </div>
 
         <div class="actions">
-            <button type="button" class="action" on:click={install}>
-                <i class="icon fa-regular fa-circle-down" />
-                &nbsp; Install
-            </button>
-
             {#if downloading}
-                <progress max={total} value={progress} class="progress" />
+                <button type="button" class="action progress">
+                    <i class="icon fa-solid fa-spin fa-spinner" />
+                    &nbsp; Working...
+                </button>
+            {:else if installed}
+                <button type="button" class="action uninstall" on:click={uninstall}>
+                    <i class="icon fa-regular fa-trash-can" />
+                    &nbsp; Uninstall
+                </button>
+            {:else}
+                <button type="button" class="action" on:click={install}>
+                    <i class="icon fa-regular fa-circle-down" />
+                    &nbsp; Install
+                </button>
             {/if}
+
+            <Dropdown {items} bind:val={selected.id} bind:valText={selected.text} thin up />
+
+            <!-- TODO: This thing looks terrible, fix it. -->
+            <!-- {#if downloading}
+                <progress max={total} value={progress} class="progress-bar" />
+            {/if} -->
         </div>
     </div>
 {/if}
 
-<style lang="scss">
+<style scoped lang="scss">
     .full-mod-container {
         width: 100%;
         height: 100%;
@@ -367,21 +424,42 @@
                 .icon {
                     font-size: 14pt;
                 }
+
+                &.uninstall {
+                    color: #ac2c2c;
+                    border-color: #ac2c2c;
+
+                    &:hover {
+                        color: black;
+                        background-color: #ac2c2c;
+                    }
+                }
+
+                &.progress {
+                    color: #ac2cac;
+                    border-color: #ac2cac;
+                    cursor: progress;
+
+                    &:hover {
+                        color: #ac2cac;
+                        background-color: transparent;
+                    }
+                }
             }
 
-            .progress {
+            .progress-bar {
                 margin-left: 5%;
                 border-radius: 20px;
-                width: 80%;
+                width: 30%;
                 height: 12px;
             }
 
-            .progress::-webkit-progress-value {
+            .progress-bar::-webkit-progress-value {
                 background-color: #2c5cba;
                 border-radius: 7px;
             }
 
-            .progress::-webkit-progress-bar {
+            .progress-bar::-webkit-progress-bar {
                 background-color: #c5c5c5;
                 border-radius: 7px;
             }
