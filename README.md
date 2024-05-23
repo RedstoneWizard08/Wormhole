@@ -25,9 +25,11 @@ Epic Games, and the Private Division launcher.
 
 ## Roadmap
 
+- [ ] Run udeps
+- [ ] Mod deletion
 - [x] Support for KSP 2
 - [x] Support for KSP 1
-- [ ] Support for Minecraft
+- [x] Support for Minecraft
 - [ ] Support for other suggested games.
 - [x] Support for Windows, Linux, and MacOS
 - [x] Support for any Steam library location
