@@ -30,6 +30,10 @@
         executable = info.data_dir;
     });
 
+    const refresh = async () => {
+        mods = unwrap(await commands.getMods(instance?.id!, null));
+    };
+
     const save = async () => {
         if (instance) {
             instance = unwrap(
@@ -123,7 +127,7 @@
                 <ModEntry {instance} head />
 
                 {#each mods as mod}
-                    <ModEntry {mod} {instance} />
+                    <ModEntry {mod} {instance} on:uninstall={refresh} />
                 {/each}
             </table>
         </div>

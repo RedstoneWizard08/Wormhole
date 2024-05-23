@@ -29,7 +29,7 @@
         installed = mods.find((v) => v.mod_id == mod.id) != null;
     });
 
-    const onDownload = async (ev: MouseEvent) => {
+    const download = async (ev: MouseEvent) => {
         ev.preventDefault();
         ev.stopPropagation();
 
@@ -40,13 +40,20 @@
         const latest = unwrap(await commands.getLatestVersion(game, resolver, mod.id, null));
         const instanceInfo = unwrap(await commands.getInstance(instance, null));
 
-        unwrap(await commands.installMod(game, mod, latest, instanceInfo, null));
+        if (installed) {
+            const mods = unwrap(await commands.getMods(instance, null));
+            const me = mods.find((v) => v.mod_id == mod.id);
 
-        installing = false;
+            unwrap(await commands.uninstallMod(game, me!, instanceInfo, null));
+        } else {
+            unwrap(await commands.installMod(game, mod, latest, instanceInfo, null));
+        }
 
         const mods = unwrap(await commands.getMods(instance, null));
 
         installed = mods.find((v) => v.mod_id == mod.id) != null;
+
+        installing = false;
     };
 </script>
 
@@ -79,7 +86,7 @@
                 </div>
             </div>
 
-            <button type="button" class="action" on:click={onDownload}>
+            <button type="button" class="action" on:click={download}>
                 {#if installing}
                     <i class="icon progress fa-solid fa-spinner fa-spin" />
                 {:else if installed}

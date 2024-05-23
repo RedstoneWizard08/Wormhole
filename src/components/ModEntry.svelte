@@ -1,6 +1,6 @@
 <script lang="ts">
     import { formatBytes, unwrap } from "$api/util";
-    import { onMount } from "svelte";
+    import { createEventDispatcher, onMount } from "svelte";
     import { commands, type DbMod, type Instance } from "$api/bindings/app";
     import Delete from "./Delete.svelte";
 
@@ -10,12 +10,16 @@
 
     let source: string | null = null;
 
+    const disp = createEventDispatcher();
+
     onMount(async () => {
         source = unwrap(await commands.getSourceId(mod?.source_id!, null));
     });
 
     const uninstall = async () => {
-        unwrap(await commands.uninstallMod(instance.game_id, mod, instance, null));
+        unwrap(await commands.uninstallMod(instance.game_id, mod!, instance, null));
+
+        disp("uninstall");
     };
 </script>
 
