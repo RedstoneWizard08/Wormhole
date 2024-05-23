@@ -88,6 +88,10 @@
 
         html = processes.reduce((html, process) => process(html), html);
 
+        if (import.meta.env.DEV) {
+            html = html.replace("https://cdn.modrinth.com/", "/__mr_cdn/");
+        }
+
         return html;
     };
 
