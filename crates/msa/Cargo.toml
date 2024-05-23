@@ -18,7 +18,6 @@ url.workspace = true
 open.workspace = true
 rand.workspace = true
 envcrypt.workspace = true
-const_format.workspace = true
 once_cell.workspace = true
 tracing.workspace = true
 whcore.workspace = true

@@ -28,7 +28,6 @@ mcmeta.workspace = true
 msa.workspace = true
 tokio.workspace = true
 java.workspace = true
-macros.workspace = true
 tracing.workspace = true
 install.workspace = true
 tempfile.workspace = true

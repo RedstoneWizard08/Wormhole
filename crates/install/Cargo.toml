@@ -10,13 +10,11 @@ authors.workspace = true
 [dependencies]
 anyhow.workspace = true
 zip.workspace = true
-reqwest.workspace = true
 flate2.workspace = true
 tar.workspace = true
 xz.workspace = true
 whcore.workspace = true
 walkdir.workspace = true
-query.workspace = true
 tempfile.workspace = true
 data.workspace = true
 diesel.workspace = true
