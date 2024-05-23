@@ -103,7 +103,7 @@ impl Resolver for CurseForge {
     }
 
     async fn get_mod(&self, id: String) -> Result<Mod> {
-        let mut it = self
+        let mut it: Mod = self
             .client
             .get_mod(id.parse()?)
             .await
