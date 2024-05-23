@@ -6,6 +6,13 @@ use super::{
 #[derive(
     Serialize, Deserialize, Type, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Default,
 )]
+pub struct MarkdownResp {
+    pub markdown: String,
+}
+
+#[derive(
+    Serialize, Deserialize, Type, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Default,
+)]
 pub struct PackageListing {
     pub name: String,
     pub full_name: String,

@@ -6,6 +6,7 @@ use crate::mod_::{Mod as RealMod, ModVersion};
 impl From<Mod> for RealMod {
     fn from(val: Mod) -> Self {
         Self {
+            url: Some(val.links.website_url),
             id: val.id.to_string(),
             game_id: Some(val.game_id),
             versions: val

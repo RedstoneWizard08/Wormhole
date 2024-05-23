@@ -81,6 +81,7 @@ impl From<ModInfo> for Mod {
         val = val.finish(false);
 
         Self {
+            url: Some(format!("https://spacedock.info/mod/{}", val.id.unwrap())),
             id: format!("{}", val.id.unwrap()),
             name: val.name.unwrap(),
             source: Sources::SpaceDock.id(),

@@ -103,11 +103,16 @@ impl Resolver for CurseForge {
     }
 
     async fn get_mod(&self, id: String) -> Result<Mod> {
-        self.client
+        let mut it = self
+            .client
             .get_mod(id.parse()?)
             .await
             .map(|v| v.into())
-            .map_err(|v| anyhow!(v))
+            .map_err(|v| anyhow!(v))?;
+
+        it.desc = self.client.get_mod_description(id.parse()?).ok();
+
+        Ok(it)
     }
 
     async fn get_versions(&self, id: String) -> Result<Vec<ModVersion>> {

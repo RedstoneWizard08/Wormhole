@@ -7,7 +7,9 @@ jobs:
             contents: write
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v3
+            - uses: actions/checkout@v4
+              with:
+                  submodules: recursive
 
             - name: setup node
               uses: actions/setup-node@v3
@@ -38,33 +40,33 @@ jobs:
 
             - name: Build app
               run: |
-                pnpm run build
-                cargo build --release
-            
+                  pnpm run build
+                  cargo build --release
+
             - uses: actions/upload-artifact@v4
               with:
-                name: Linux Binaries (x86_64)
-                path: |
-                  target/release/wormhole
-                  target/release/wormhole_gui
-                  target/release/wormhole_cli
-                  target/release/bindings
-                  target/release/webui
-                  target/release/*.exe
+                  name: Linux Binaries (x86_64)
+                  path: |
+                      target/release/wormhole
+                      target/release/wormhole_gui
+                      target/release/wormhole_cli
+                      target/release/bindings
+                      target/release/webui
+                      target/release/*.exe
 
-                  target/release/*.tar.gz
-                  target/release/*.tar.gz.sig
-                  target/release/*.dmg
-                  target/release/*.AppImage
-                  target/release/*.AppImage.tar.gz
-                  target/release/*.AppImage.tar.gz.sig
-                  target/release/*.deb
-                  target/release/*.rpm
-                  target/release/*.msi
-                  target/release/*.msi.zip
-                  target/release/*.msi.zip.sig
-                  target/release/*.nsis.zip
-                  target/release/*.nsis.zip.sig
+                      target/release/*.tar.gz
+                      target/release/*.tar.gz.sig
+                      target/release/*.dmg
+                      target/release/*.AppImage
+                      target/release/*.AppImage.tar.gz
+                      target/release/*.AppImage.tar.gz.sig
+                      target/release/*.deb
+                      target/release/*.rpm
+                      target/release/*.msi
+                      target/release/*.msi.zip
+                      target/release/*.msi.zip.sig
+                      target/release/*.nsis.zip
+                      target/release/*.nsis.zip.sig
 
     # publish-tauri-arm64:
     #     permissions:

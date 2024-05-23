@@ -37,6 +37,7 @@ impl From<NewPackageVersion> for ModVersion {
 impl From<PackageListing> for Mod {
     fn from(value: PackageListing) -> Self {
         Self {
+            url: Some(value.package_url),
             game_id: None,
             id: value.full_name,
             versions: value
@@ -59,6 +60,7 @@ impl From<PackageListing> for Mod {
 impl From<Package> for Mod {
     fn from(value: Package) -> Self {
         Self {
+            url: Some(value.package_url),
             game_id: None,
             id: value.full_name,
             versions: vec![value.latest.clone().into()],

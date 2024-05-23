@@ -10,6 +10,15 @@ export default defineConfig({
         strictPort: true,
         cors: true,
 
+        proxy: {
+            "^/__mr_cdn/.*": {
+                target: "https://cdn.modrinth.com/",
+                changeOrigin: true,
+                rewrite: (path) => path.replace(/^\/__mr_cdn/, ""),
+                followRedirects: true,
+            },
+        },
+
         hmr: process.env.TAURI_WEB_DEV
             ? {
                   clientPort: 443,

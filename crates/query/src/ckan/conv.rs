@@ -20,6 +20,7 @@ impl IntoAsync<RealMod> for Mod {
             desc: self.description,
             downloads: 0,
             followers: 0,
+            url: None,
             versions: vec![ModVersion {
                 url: Some(url.clone()),
                 name: None,

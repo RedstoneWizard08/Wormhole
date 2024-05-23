@@ -12,15 +12,18 @@
     let installed = false;
     let installing = false;
 
+    const img = import.meta.env.DEV
+        ? mod.icon?.replace("https://cdn.modrinth.com/", "/__mr_cdn/")
+        : mod.icon;
+
+    const fmt = new Intl.NumberFormat("en-US", {
+        notation: "compact",
+        compactDisplay: "short",
+    });
+
     onMount(async () => {
         source = unwrap(await commands.getSourceId(mod.source, null)) as SourceMapping;
     });
-
-    const capText = (text: string, size: number) => {
-        if (text.length > size) return `${text.substring(0, size - 3)}...`;
-
-        return text;
-    };
 
     const onDownload = async (ev: MouseEvent) => {
         ev.preventDefault();
@@ -45,40 +48,60 @@
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
-<div class="mod-tile" on:click={() => goto(`/${game}/mod/${source}/${mod.id}?instance=${instance}`)}>
-    {#if mod.banner}
+<div
+    class="mod-tile"
+    on:click={() => goto(`/${game}/mod/${source}/${mod.id}?instance=${instance}`)}>
+    {#if img}
         <!-- svelte-ignore a11y-img-redundant-alt -->
-        <img src={mod.banner} class="image" alt="mod background image" />
+        <img src={img} class="image" alt="mod background image" />
     {/if}
 
-    <div class="info">
-        <p class="title">{capText(mod.name, 22)}</p>
+    <div class="after-img">
+        <div class="info">
+            <p class="title">{mod.name}</p>
+            <p class="author">by {mod.author}</p>
+        </div>
 
-        <button type="button" class="action" on:click={onDownload}>
-            {#if installing}
-                <i class="icon fa-solid fa-spinner fa-spin" />
-            {:else if isInstalled()}
-                <i class="icon fa-solid fa-trash-can" />
-            {:else}
-                <i class="icon fa-solid fa-circle-down" />
-            {/if}
-        </button>
+        <div class="right">
+            <div class="stats">
+                <div class="stat">
+                    <i class="icon fa-solid fa-circle-down" />
+                    <p class="text">{fmt.format(mod.downloads)}</p>
+                </div>
+
+                <div class="stat">
+                    <i class="icon fa-solid fa-eye" />
+                    <p class="text">{fmt.format(mod.followers)}</p>
+                </div>
+            </div>
+
+            <button type="button" class="action" on:click={onDownload}>
+                {#if installing}
+                    <i class="icon fa-solid fa-spinner fa-spin" />
+                {:else if isInstalled()}
+                    <i class="icon fa-solid fa-trash-can" />
+                {:else}
+                    <i class="icon fa-solid fa-circle-down" />
+                {/if}
+            </button>
+        </div>
     </div>
 </div>
 
 <style lang="scss">
     .mod-tile {
         width: 96%;
-        height: 90%;
+        height: 4rem;
 
         user-select: none;
 
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         align-items: center;
-        justify-content: center;
+        justify-content: space-between;
 
-        padding: 2%;
+        margin: 0.5% 0;
+        padding: 1% 1.5%;
         border-radius: 4px;
 
         transition: background-color 0.5s ease;
@@ -89,35 +112,75 @@
         }
 
         .image {
-            margin-top: 2%;
-            width: 96%;
             height: 100%;
             object-fit: cover;
             border-radius: 4px;
         }
 
-        .info {
+        .after-img {
+            width: 100%;
             display: flex;
             flex-direction: row;
             align-items: center;
             justify-content: space-between;
 
-            width: 96%;
-            padding: 0 2%;
+            .info {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                justify-content: center;
 
-            .action {
-                border: none;
-                background-color: transparent;
+                & > p {
+                    margin: 0.5rem;
+                }
 
-                .icon {
-                    color: #90ee90;
-                    font-size: 14pt;
-                    cursor: pointer;
+                .author {
+                    color: var(--fg-color-light);
+                }
+            }
 
-                    transition: color 0.5s ease;
+            .right {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: flex-end;
 
-                    &:hover {
-                        color: #50ae50;
+                .stats {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: flex-start;
+                    justify-content: center;
+                    margin-right: 2rem;
+
+                    .stat {
+                        display: flex;
+                        flex-direction: row;
+                        align-items: center;
+                        justify-content: flex-start;
+
+                        margin: 0;
+                        width: 4rem;
+
+                        .text {
+                            margin: 0.5rem;
+                        }
+                    }
+                }
+
+                .action {
+                    border: none;
+                    background-color: transparent;
+
+                    .icon {
+                        color: #90ee90;
+                        font-size: 14pt;
+                        cursor: pointer;
+
+                        transition: color 0.5s ease;
+
+                        &:hover {
+                            color: #50ae50;
+                        }
                     }
                 }
             }

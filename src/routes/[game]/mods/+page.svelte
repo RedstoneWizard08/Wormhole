@@ -93,7 +93,7 @@
     {#if loading}
         <LoadingPage />
     {:else}
-        <div class="grid">
+        <div class="list">
             {#if results}
                 {#each results as mod}
                     <Mod {mod} game={gameId} instance={instanceId} />
@@ -120,52 +120,17 @@
         align-items: center;
         justify-content: flex-start;
 
-        .grid {
+        .list {
             height: calc(98% - 3rem);
             width: 100%;
             margin-left: 1.75%;
 
-            display: grid;
-            grid-template-columns: repeat(5, 18.5%);
-            grid-column-gap: 1.5%;
-            grid-template-rows: auto auto 1fr 1fr 1fr auto auto;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: flex-start;
 
             overflow-y: scroll;
-        }
-
-        @media screen and (min-width: 1100px) {
-            .grid {
-                grid-template-columns: repeat(5, 18.25%);
-                grid-column-gap: 2%;
-            }
-        }
-
-        @media screen and (max-width: 1099px) {
-            .grid {
-                grid-template-columns: repeat(4, 23%);
-                grid-column-gap: 2%;
-            }
-        }
-
-        @media screen and (max-width: 900px) {
-            .grid {
-                grid-template-columns: repeat(3, 31%);
-                grid-column-gap: 3%;
-            }
-        }
-
-        @media screen and (max-width: 600px) {
-            .grid {
-                grid-template-columns: repeat(2, 48%);
-                grid-column-gap: 4%;
-            }
-        }
-
-        @media screen and (max-width: 400px) {
-            .grid {
-                grid-template-columns: repeat(1, 96%);
-                grid-column-gap: 4%;
-            }
         }
     }
 

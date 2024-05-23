@@ -14,7 +14,11 @@ export const createMockAPI = () => {
             "cmd" in (args.message as any) &&
             (args.message as any).cmd == "emit"
         ) {
-            return globalEventBus.dispatchEvent(new CustomEvent((args.message as any).event, { detail: (args.message as any).payload }));
+            return globalEventBus.dispatchEvent(
+                new CustomEvent((args.message as any).event, {
+                    detail: (args.message as any).payload,
+                })
+            );
         }
 
         const data = await fetch("/_tauri/invoke", {

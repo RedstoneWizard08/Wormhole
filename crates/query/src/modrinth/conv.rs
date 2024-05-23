@@ -13,6 +13,7 @@ use crate::{
 impl From<Project> for Mod {
     fn from(val: Project) -> Self {
         Self {
+            url: Some(format!("https://modrinth.com/mod/{}", val.id)),
             id: val.id,
             game_id: None,
             versions: Vec::new(),
@@ -20,7 +21,7 @@ impl From<Project> for Mod {
             source: Sources::Modrinth.id(),
             icon: val.icon_url.clone().map(|v| v.to_string()),
             author: Some(val.team),
-            desc: Some(val.description),
+            desc: Some(val.body),
             downloads: val.downloads as u64,
             followers: val.followers as u64,
             banner: val
@@ -37,6 +38,7 @@ impl From<Project> for Mod {
 impl From<SearchHit> for Mod {
     fn from(val: SearchHit) -> Self {
         Self {
+            url: Some(format!("https://modrinth.com/mod/{}", val.project_id)),
             id: val.project_id,
             game_id: None,
             versions: Vec::new(),

@@ -4,7 +4,7 @@
 
     export let pages: number;
     export let page: number;
-    
+
     const dispatch = createEventDispatcher();
 
     let offset = 0;

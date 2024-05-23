@@ -7,7 +7,7 @@ use anyhow::Result;
 use data::source::{Source, Sources};
 
 use self::schema::{
-    pkg::{Package, PackageListing},
+    pkg::{MarkdownResp, Package, PackageListing},
     ver::NewPackageVersion,
 };
 
@@ -70,6 +70,7 @@ impl Resolver for Thunderstore {
         let mut spl = id.split("-").collect::<Vec<_>>();
         let ns = spl.remove(0);
         let id = spl.remove(0);
+
         let ver = spl
             .first()
             .cloned()
@@ -83,10 +84,35 @@ impl Resolver for Thunderstore {
             id,
             ver
         );
-        let data = self.client().get(url).send().await?;
-        let text = data.text().await?;
 
-        Ok(serde_json::from_str::<Package>(&text)?.into())
+        let mut data: Mod = self
+            .client()
+            .get(url)
+            .send()
+            .await?
+            .json::<Package>()
+            .await?
+            .into();
+
+        let desc_url = format!(
+            "{}/api/experimental/package/{}/{}/{}/readme",
+            self.base().await,
+            ns,
+            id,
+            ver
+        );
+
+        let desc_data = self
+            .client()
+            .get(url)
+            .send()
+            .await?
+            .json::<MarkdownResp>()
+            .await?;
+
+        data.desc = Some(desc_data.markdown);
+
+        Ok(data)
     }
 
     async fn get_versions(&self, id: String) -> Result<Vec<ModVersion>> {

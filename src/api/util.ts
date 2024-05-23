@@ -1,4 +1,9 @@
-import { listen as realListen, type EventName, type EventCallback, type UnlistenFn } from "@tauri-apps/api/event";
+import {
+    listen as realListen,
+    type EventName,
+    type EventCallback,
+    type UnlistenFn,
+} from "@tauri-apps/api/event";
 import type { __Result__ } from "./bindings/app";
 import { globalEventBus } from "./dev";
 
@@ -17,7 +22,10 @@ export const unwrap = <T, E>(res: __Result__<T, E>): T => {
     }
 };
 
-export const listen = async <T>(event: EventName, handler: EventCallback<T>): Promise<UnlistenFn> => {
+export const listen = async <T>(
+    event: EventName,
+    handler: EventCallback<T>
+): Promise<UnlistenFn> => {
     if (import.meta.env.TAURI_WEB_DEV) {
         const onEvent = (evt: Event) => {
             const ev = evt as CustomEvent;

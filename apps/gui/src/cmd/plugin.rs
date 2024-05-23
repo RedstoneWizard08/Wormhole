@@ -1,7 +1,10 @@
+use crate::{plugin_fn_proxy, AppState};
 use api::plugin::PluginInfo;
 use data::{instance::Instance, source::SourceMapping};
-use query::{mod_::{Mod, ModVersion}, source::{Paginated, QueryOptions}};
-use crate::{AppState, plugin_fn_proxy};
+use query::{
+    mod_::{Mod, ModVersion},
+    source::{Paginated, QueryOptions},
+};
 
 plugin_fn_proxy!(async info => info: () -> [opt] PluginInfo);
 plugin_fn_proxy!(async search_mods => search_mods: (resolver: SourceMapping, query: Option<String>, opts: Option<QueryOptions>) -> [opt] Paginated<Mod>);

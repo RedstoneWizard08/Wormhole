@@ -18,12 +18,22 @@
     let downloading = false;
     let total = 0;
     let progress = 0;
+    let icon: string | null | undefined = null;
+
+    const fmt = new Intl.NumberFormat("en-US", {
+        notation: "compact",
+        compactDisplay: "short",
+    });
 
     onMount(async () => {
         if (modId || $page.url) {
             mods = /\/mods?(\/\d+)?/i.test($page.url.pathname);
             modInfo = unwrap(await commands.getMod(gameId, source as SourceMapping, modId, null));
             isLoading = false;
+
+            icon = import.meta.env.DEV
+                ? modInfo.icon?.replace("https://cdn.modrinth.com/", "/__mr_cdn/")
+                : modInfo.icon;
         }
 
         listen("progress_callback", (data) => {
@@ -105,37 +115,42 @@
         </a>
 
         <div class="mod">
-            {#if modInfo?.banner}
-                <!-- svelte-ignore a11y-img-redundant-alt -->
-                <img src={modInfo?.banner} class="background" alt="mod-background-image" />
-            {/if}
-
             <div class="infos">
-                <div class="left">
-                    <p class="name">{modInfo?.name}</p>
+                {#if icon}
+                    <!-- svelte-ignore a11y-img-redundant-alt -->
+                    <img src={icon} class="icon" alt="{modInfo?.name} Icon" />
+                {/if}
 
-                    {#if modInfo?.author}
-                        &bull;
-                        <p class="author">{modInfo?.author}</p>
-                    {/if}
-                </div>
+                <div class="texts">
+                    <div class="left">
+                        {#if modInfo?.url}
+                            <a class="name" href={modInfo?.url}>{modInfo?.name}</a>
+                        {:else}
+                            <p class="name">{modInfo?.name}</p>
+                        {/if}
 
-                <div class="right">
-                    {#if modInfo?.downloads}
-                        <p class="downloads">
-                            <i class="fa-solid fa-circle-down" />
-                            &nbsp;&nbsp;
-                            {modInfo?.downloads}
-                        </p>
-                    {/if}
+                        {#if modInfo?.author}
+                            <p class="author">by {modInfo?.author}</p>
+                        {/if}
+                    </div>
 
-                    {#if modInfo?.followers}
-                        <p class="followers">
-                            <i class="fa-solid fa-eye" />
-                            &nbsp;&nbsp;
-                            {modInfo?.followers}
-                        </p>
-                    {/if}
+                    <div class="right">
+                        {#if modInfo?.downloads}
+                            <p class="downloads">
+                                <i class="fa-solid fa-circle-down" />
+                                &nbsp;&nbsp;
+                                {fmt.format(modInfo?.downloads)}
+                            </p>
+                        {/if}
+
+                        {#if modInfo?.followers}
+                            <p class="followers">
+                                <i class="fa-solid fa-eye" />
+                                &nbsp;&nbsp;
+                                {fmt.format(modInfo?.followers)}
+                            </p>
+                        {/if}
+                    </div>
                 </div>
             </div>
 
@@ -218,14 +233,6 @@
 
             overflow-y: scroll;
 
-            .background {
-                user-select: none;
-                width: 100%;
-                height: 70%;
-                object-fit: cover;
-                object-position: center center;
-            }
-
             .infos {
                 width: 97%;
                 user-select: none;
@@ -234,40 +241,59 @@
                 align-items: center;
                 justify-content: space-between;
 
+                margin: 0.5rem 0;
+                height: 4rem;
                 padding: 0.25% 1.5%;
 
-                .left,
-                .right {
+                .icon {
+                    user-select: none;
+                    height: 100%;
+                    object-fit: cover;
+                    object-position: center center;
+                    margin-right: 1rem;
+                }
+
+                .texts {
                     display: flex;
                     flex-direction: row;
                     align-items: center;
-                }
+                    justify-content: space-between;
+                    width: 100%;
 
-                .left {
-                    width: 50%;
-                    justify-content: flex-start;
+                    .left,
+                    .right {
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
 
-                    .name {
-                        margin-right: 2%;
+                        & > p {
+                            margin: 0.5rem;
+                        }
                     }
 
-                    .author {
-                        margin-left: 2%;
-                        color: #bcbebc;
-                    }
-                }
+                    .left {
+                        align-items: flex-start;
 
-                .right {
-                    width: 50%;
-                    justify-content: flex-end;
+                        & > a {
+                            color: inherit;
+                            margin: 0.5rem;
+                        }
 
-                    .downloads {
-                        color: lightgreen;
-                        margin-right: 4%;
+                        .author {
+                            color: #bcbebc;
+                        }
                     }
 
-                    .followers {
-                        color: lightskyblue;
+                    .right {
+                        align-items: flex-end;
+
+                        .downloads {
+                            color: lightgreen;
+                        }
+
+                        .followers {
+                            color: lightskyblue;
+                        }
                     }
                 }
             }
@@ -276,6 +302,7 @@
                 width: 97%;
                 padding: 0 1.5%;
                 margin: 0;
+                margin-top: 2%;
 
                 font-family: "Ubuntu Mono", monospace;
 

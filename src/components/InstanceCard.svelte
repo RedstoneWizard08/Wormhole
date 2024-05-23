@@ -16,7 +16,7 @@
 
     const doLaunch = async (e: MouseEvent) => {
         e.stopPropagation();
-        
+
         unwrap(await commands.launchGame(data.game_id, data, null));
     };
 
@@ -33,7 +33,10 @@
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <div class="instance-container" on:click={clicked}>
-    <img src={$plugins.find((v) => v.game == data.game_id)?.banner_url} class="banner" alt={"background"} />
+    <img
+        src={$plugins.find((v) => v.game == data.game_id)?.banner_url}
+        class="banner"
+        alt={"background"} />
 
     <p class="name">{data.name}</p>
 

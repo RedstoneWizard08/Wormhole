@@ -38,6 +38,9 @@ pub struct Mod {
 
     /// The mod's followers.
     pub followers: u64,
+
+    /// The mod's web URL.
+    pub url: Option<String>,
 }
 
 unsafe impl Send for Mod {}
