@@ -100,11 +100,7 @@ pub trait TauriPluginTrait: CPlugin + Send + Sync {
         version: String,
     ) -> Option<ModVersion>;
 
-    async fn get_latest_version(
-        &self,
-        resolver: SourceMapping,
-        id: String,
-    ) -> Option<ModVersion>;
+    async fn get_latest_version(&self, resolver: SourceMapping, id: String) -> Option<ModVersion>;
 
     async fn get_download_url(
         &self,
@@ -193,11 +189,7 @@ impl<T: CPlugin + Send + Sync> TauriPluginTrait for T {
         }
     }
 
-    async fn get_latest_version(
-        &self,
-        resolver: SourceMapping,
-        id: String,
-    ) -> Option<ModVersion> {
+    async fn get_latest_version(&self, resolver: SourceMapping, id: String) -> Option<ModVersion> {
         let resolvers = self.resolvers().await?;
         let resolver = resolvers.iter().find(|v| v.source().mapping() == resolver);
 

@@ -1,7 +1,7 @@
 use anyhow::Result;
 use clap::Parser;
 use whcore::traits::Runnable;
-use wormhole_cli::cli::Cli;
+use wormhole::Cli;
 
 #[tokio::main]
 pub async fn main() -> Result<()> {

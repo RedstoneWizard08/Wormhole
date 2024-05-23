@@ -8,6 +8,8 @@ use lazy_static::lazy_static;
 use midlog::add_route_filter;
 use std::path::PathBuf;
 use std::sync::RwLock;
+use whcore::async_trait::async_trait;
+use whcore::traits::Runnable;
 
 lazy_static! {
     pub static ref CONFIG: RwLock<Option<Cli>> = RwLock::new(None);
@@ -38,8 +40,9 @@ pub struct Cli {
     pub safe: bool,
 }
 
-impl Cli {
-    pub async fn run(&mut self) -> Result<()> {
+#[async_trait]
+impl Runnable for Cli {
+    async fn run(&self) -> Result<()> {
         init_file_logger(
             "./logs/server.log",
             from_log_level(self.verbose.log_level_filter()),
@@ -60,7 +63,9 @@ impl Cli {
 
         run_server(pool, self.clone()).await
     }
+}
 
+impl Cli {
     pub const fn init_script(&self) -> &str {
         "
             Object.defineProperty(window, '__TAURI_POST_MESSAGE__', {{

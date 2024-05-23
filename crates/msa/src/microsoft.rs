@@ -25,7 +25,8 @@ pub const MSA_CLIENT_ID: &str = "61f104b9-3b1c-49bb-b0b8-2bb1f42f581c";
 const MSA_CLIENT_SECRET: Lazy<&str> = Lazy::new(|| envc!("MSA_CLIENT_SECRET"));
 
 /// The auth callback URL.
-pub const CALLBACK_URL: &str = const_format::formatcp!("http://localhost:{}/callback", MSA_REDIRECT_PORT);
+pub const CALLBACK_URL: &str =
+    const_format::formatcp!("http://localhost:{}/callback", MSA_REDIRECT_PORT);
 // pub const CALLBACK_URL: &str = "https://dev-websocket.kadaroja.com/callback";
 
 /// How much time the user has to complete an authentication flow.

@@ -1,5 +1,5 @@
 [package]
-name = "bindings"
+name = "wormhole"
 version.workspace = true
 edition.workspace = true
 license.workspace = true
@@ -8,13 +8,11 @@ homepage.workspace = true
 authors.workspace = true
 
 [dependencies]
-api.workspace = true
+webui.workspace = true
 wormhole-gui.workspace = true
-const_format.workspace = true
-specta.workspace = true
-tauri.workspace = true
-tauri-specta.workspace = true
-tokio.workspace = true
-anyhow.workspace = true
+wormhole-cli.workspace = true
 clap.workspace = true
 whcore.workspace = true
+bindings.workspace = true
+anyhow.workspace = true
+tokio.workspace = true

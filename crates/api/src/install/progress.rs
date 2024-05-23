@@ -6,7 +6,7 @@ use tauri_specta::Event as TEvent;
 use crate::{EVENT_BUS, TAURI_HANDLE};
 
 #[derive(
-    Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Default, Serialize, Deserialize, Type
+    Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Default, Serialize, Deserialize, Type,
 )]
 pub struct ProgressPayload {
     /// The total number of iterations. For a request or

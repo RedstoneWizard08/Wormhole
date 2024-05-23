@@ -116,6 +116,8 @@ java = { path = "./crates/java" }
 macros = { path = "./crates/macros" }
 msa = { path = "./crates/msa" }
 mcmeta = { path = "./crates/mcmeta" }
+webui = { path = "./apps/webui" }
+bindings = { path = "./apps/bindings" }
 
 [workspace]
 resolver = "2"
@@ -141,4 +143,5 @@ members = [
     "crates/msa",
     "crates/java",
     "crates/mcmeta",
+    "apps/wormhole",
 ]

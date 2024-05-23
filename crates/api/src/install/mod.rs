@@ -47,13 +47,7 @@ pub async fn install_mod(
 
     let kind = detect_file_type(&data, &file)?;
 
-    extract_file(
-        data,
-        file,
-        kind,
-        instance.clone(),
-        plugin.fallback(),
-    )?;
+    extract_file(data, file, kind, instance.clone(), plugin.fallback())?;
 
     item.db_into_arg(db, (version, instance))?;
 

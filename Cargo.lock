@@ -608,11 +608,13 @@ version = "2.0.0"
 dependencies = [
  "anyhow 1.0.81",
  "api",
+ "clap",
  "const_format",
  "specta",
  "tauri",
  "tauri-specta",
  "tokio 1.37.0",
+ "whcore",
  "wormhole-gui",
 ]
 
@@ -7831,6 +7833,20 @@ dependencies = [
  "tree_magic_mini",
  "wayland-client",
  "wayland-protocols",
+]
+
+[[package]]
+name = "wormhole"
+version = "2.0.0"
+dependencies = [
+ "anyhow 1.0.81",
+ "bindings",
+ "clap",
+ "tokio 1.37.0",
+ "webui",
+ "whcore",
+ "wormhole-cli",
+ "wormhole-gui",
 ]
 
 [[package]]
