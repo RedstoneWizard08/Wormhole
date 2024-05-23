@@ -2,7 +2,11 @@
 
 set -xe
 
-pip3 install yq --break-system-packages
+if [[ "$(uname)" == *"Darwin"* ]]; then
+    pip3 install yq --break-system-packages
+else
+    pip3 install yq
+fi
 
 DIR="$(dirname "$(realpath "$0")")"
 

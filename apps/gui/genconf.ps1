@@ -1,4 +1,4 @@
-pip3 install yq --break-system-packages
+pip3 install yq
 
 $scriptDirectory = Split-Path -Parent $MyInvocation.MyCommand.Definition
 
