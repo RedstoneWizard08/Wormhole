@@ -37,7 +37,7 @@ pub async fn install_mod(
 #[specta::specta]
 pub async fn uninstall_mod(
     game_id: i32,
-    item: Mod,
+    item: DbMod,
     instance: Instance,
     pool: AppState<'_>,
 ) -> Result<(), bool> {
