@@ -2,6 +2,7 @@ use anyhow::Result;
 use const_format::formatcp;
 
 use data::{instance::Instance, source::Source};
+use mcmeta::cmd::modded::ModLoader;
 use reqwest::{
     header::{HeaderMap, HeaderValue, AUTHORIZATION},
     Client,
@@ -83,8 +84,8 @@ pub trait Resolver: WithToken + Send + Sync {
     /// Search for mods.
     async fn search(
         &self,
+        loader: &ModLoader,
         game_id: String,
-        instance: &Instance,
         search: String,
         options: Option<QueryOptions>,
     ) -> Result<Paginated<Mod>>;
@@ -93,22 +94,27 @@ pub trait Resolver: WithToken + Send + Sync {
     async fn get_mod(&self, id: String) -> Result<Mod>;
 
     /// Get a mod's versions.
-    async fn get_versions(&self, instance: &Instance, id: String) -> Result<Vec<ModVersion>>;
+    async fn get_versions(&self, loader: &ModLoader, id: String) -> Result<Vec<ModVersion>>;
 
     /// Get a mod version by its ID.
-    async fn get_version(&self, instance: &Instance, id: String, version: String) -> Result<ModVersion>;
+    async fn get_version(
+        &self,
+        loader: &ModLoader,
+        id: String,
+        version: String,
+    ) -> Result<ModVersion>;
 
     /// Get a mod version by its ID (option).
     async fn get_version_or_latest(
         &self,
+        loader: &ModLoader,
         id: String,
-        instance: &Instance,
         version: Option<String>,
     ) -> Result<ModVersion> {
         if let Some(ver) = version {
-            self.get_version(instance, id, ver).await
+            self.get_version(loader, id, ver).await
         } else {
-            self.get_latest_version(id, instance).await
+            self.get_latest_version(loader, id).await
         }
     }
 
@@ -116,8 +122,8 @@ pub trait Resolver: WithToken + Send + Sync {
     /// This will default to using the latest version if it isn't specified.
     async fn get_download_url(
         &self,
+        loader: &ModLoader,
         id: String,
-        instance: &Instance,
         version: Option<String>,
     ) -> Result<String>;
 
@@ -125,8 +131,8 @@ pub trait Resolver: WithToken + Send + Sync {
     fn source(&self) -> Source;
 
     /// Get the latest version.
-    async fn get_latest_version(&self, id: String, instance: &Instance) -> Result<ModVersion> {
-        self.get_versions(instance, id)
+    async fn get_latest_version(&self, loader: &ModLoader, id: String) -> Result<ModVersion> {
+        self.get_versions(loader, id)
             .await?
             .first()
             .cloned()

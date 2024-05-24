@@ -1,6 +1,7 @@
 use std::{env::consts::OS, fs, path::PathBuf};
 
-use anyhow::Result;
+use anyhow::{anyhow, Result};
+use data::instance::Instance;
 use java::install::install_java;
 use whcore::{async_trait::async_trait, manager::CoreManager, traits::AsyncDefault};
 
@@ -33,6 +34,10 @@ pub enum ModLoader {
     NeoForge(String, String),
     Fabric(String, String),
     Quilt(String, String),
+
+    /// This is for any other game, I just didn't feel
+    /// like dealing with recursive dependencies.
+    None,
 }
 
 impl ModLoader {
@@ -43,6 +48,7 @@ impl ModLoader {
             Self::NeoForge(_, _) => Some("neoforge"),
             Self::Fabric(_, _) => Some("fabric"),
             Self::Quilt(_, _) => Some("quilt"),
+            Self::None => None,
         }
     }
 
@@ -87,6 +93,7 @@ impl ModLoader {
             ModLoader::NeoForge(mc, _) => mc,
             ModLoader::Fabric(mc, _) => mc,
             ModLoader::Quilt(mc, _) => mc,
+            ModLoader::None => String::new(),
         }
     }
 
@@ -97,6 +104,7 @@ impl ModLoader {
             ModLoader::NeoForge(_, ver) => ver,
             ModLoader::Fabric(_, ver) => ver,
             ModLoader::Quilt(_, ver) => ver,
+            ModLoader::None => String::new(),
         }
     }
 
@@ -110,6 +118,7 @@ impl ModLoader {
             ModLoader::Forge(_, ver) => get_forge_manifest(ver).await?.resolve().await?,
             ModLoader::NeoForge(_, ver) => get_neoforge_manifest(ver).await?.resolve().await?,
             ModLoader::Quilt(mc, ver) => get_quilt_profile(mc, ver).await?.resolve().await?,
+            ModLoader::None => return Err(anyhow!("No manifest for an unknown game!")),
         })
     }
 
@@ -135,6 +144,7 @@ impl ModLoader {
             Self::Quilt(mc, ver) => format!("quilt+{}+{}", mc, ver),
             Self::Forge(mc, ver) => format!("forge+{}+{}", mc, ver),
             Self::NeoForge(mc, ver) => format!("neoforge+{}+{}", mc, ver),
+            Self::None => String::new(),
         }
     }
 
@@ -245,5 +255,25 @@ impl ModLoader {
 impl AsyncDefault for ModLoader {
     async fn default() -> Self {
         Self::vanilla_latest().await.unwrap()
+    }
+}
+
+#[async_trait]
+pub trait GetLoader {
+    async fn loader(&self) -> Result<ModLoader>;
+}
+
+#[async_trait]
+impl GetLoader for Instance {
+    async fn loader(&self) -> Result<ModLoader> {
+        if let Some(loader) = &self.loader {
+            Ok(serde_json::from_str(loader)?)
+        } else if self.game_id == 432 {
+            let loader = ModLoader::default().await;
+
+            Ok(loader)
+        } else {
+            Ok(ModLoader::None)
+        }
     }
 }

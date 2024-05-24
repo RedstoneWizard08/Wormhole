@@ -8,7 +8,11 @@ use crate::{
 
 use anyhow::Result;
 use ckandex::{kref::KrefResolver, refresh_data, CacheClient, IdFilter, NameFilter, Query, KSP};
-use data::{instance::Instance, source::{Source, Sources}};
+use data::{
+    instance::Instance,
+    source::{Source, Sources},
+};
+use mcmeta::cmd::modded::ModLoader;
 use whcore::manager::CoreManager;
 
 pub struct Ckan {
@@ -55,13 +59,15 @@ impl Resolver for Ckan {
 
     async fn search(
         &self,
-        _game_id: String, _instance: &Instance,
+        _loader: &ModLoader,
+        _game_id: String,
         search: String,
         _opts: Option<QueryOptions>,
     ) -> Result<Paginated<Mod>> {
         let res = Query::new()
             .filter(NameFilter::new(search).into())
             .execute(&self.client);
+
         let mut out = Vec::new();
 
         for item in res.netkans {
@@ -92,12 +98,17 @@ impl Resolver for Ckan {
         }
     }
 
-    async fn get_versions(&self, _instance: &Instance, id: String) -> Result<Vec<ModVersion>> {
+    async fn get_versions(&self, _loader: &ModLoader, id: String) -> Result<Vec<ModVersion>> {
         Ok(self.get_mod(id).await?.versions)
     }
 
-    async fn get_version(&self, instance: &Instance, id: String, version: String) -> Result<ModVersion> {
-        self.get_versions(instance, id)
+    async fn get_version(
+        &self,
+        loader: &ModLoader,
+        id: String,
+        version: String,
+    ) -> Result<ModVersion> {
+        self.get_versions(loader, id)
             .await?
             .iter()
             .find(|v| v.id == version)
@@ -105,7 +116,12 @@ impl Resolver for Ckan {
             .ok_or(anyhow!("Could not find the specified version!"))
     }
 
-    async fn get_download_url(&self, id: String, _instance: &Instance, _version: Option<String>) -> Result<String> {
+    async fn get_download_url(
+        &self,
+        _loader: &ModLoader,
+        id: String,
+        _version: Option<String>,
+    ) -> Result<String> {
         // I can't get a list of versions with CKAN, so we just use the latest.
         Ok(self
             .get_mod(id)

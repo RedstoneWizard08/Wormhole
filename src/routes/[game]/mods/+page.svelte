@@ -41,13 +41,14 @@
 
         try {
             loading = true;
-            
+
             const instance = unwrap(await commands.getInstance(instanceId, null));
 
             const data = unwrap(
                 await commands.searchMods(
                     gameId,
-                    source, instance,
+                    source,
+                    instance,
                     query,
                     { page: pageId, count: perPage },
                     null

@@ -8,6 +8,7 @@ use data::{
     instance::Instance,
     source::{Source, Sources},
 };
+use mcmeta::cmd::modded::ModLoader;
 
 use self::schema::{
     pkg::{MarkdownResp, Package, PackageListing},
@@ -41,8 +42,8 @@ impl Resolver for Thunderstore {
 
     async fn search(
         &self,
+        _loader: &ModLoader,
         game_id: String,
-        _instance: &Instance,
         search: String,
         _opts: Option<QueryOptions>,
     ) -> Result<Paginated<Mod>> {
@@ -119,13 +120,13 @@ impl Resolver for Thunderstore {
         Ok(data)
     }
 
-    async fn get_versions(&self, _instance: &Instance, id: String) -> Result<Vec<ModVersion>> {
+    async fn get_versions(&self, _loader: &ModLoader, id: String) -> Result<Vec<ModVersion>> {
         Ok(self.get_mod(id).await?.versions)
     }
 
     async fn get_version(
         &self,
-        _instance: &Instance,
+        _loader: &ModLoader,
         id: String,
         version: String,
     ) -> Result<ModVersion> {
@@ -148,15 +149,15 @@ impl Resolver for Thunderstore {
 
     async fn get_download_url(
         &self,
+        loader: &ModLoader,
         id: String,
-        instance: &Instance,
         version: Option<String>,
     ) -> Result<String> {
         if let Some(ver) = version {
-            Ok(self.get_version(instance, id, ver).await?.url.unwrap())
+            Ok(self.get_version(loader, id, ver).await?.url.unwrap())
         } else {
             Ok(self
-                .get_versions(instance, id)
+                .get_versions(loader, id)
                 .await?
                 .first()
                 .unwrap()

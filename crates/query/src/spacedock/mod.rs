@@ -9,6 +9,7 @@ use data::{
     instance::Instance,
     source::{Source, Sources},
 };
+use mcmeta::cmd::modded::ModLoader;
 
 pub mod schema;
 
@@ -36,8 +37,8 @@ impl Resolver for SpaceDock {
 
     async fn search(
         &self,
+        _loader: &ModLoader,
         game_id: String,
-        _instance: &Instance,
         search: String,
         opts: Option<QueryOptions>,
     ) -> Result<Paginated<Mod>> {
@@ -79,17 +80,17 @@ impl Resolver for SpaceDock {
         Ok(serde_json::from_str::<ModInfo>(&text)?.into())
     }
 
-    async fn get_versions(&self, _instance: &Instance, id: String) -> Result<Vec<RealModVersion>> {
+    async fn get_versions(&self, _loader: &ModLoader, id: String) -> Result<Vec<RealModVersion>> {
         Ok(self.get_mod(id).await?.versions)
     }
 
     async fn get_version(
         &self,
-        instance: &Instance,
+        loader: &ModLoader,
         id: String,
         version: String,
     ) -> Result<RealModVersion> {
-        self.get_versions(instance, id)
+        self.get_versions(loader, id)
             .await?
             .iter()
             .find(|v| v.id == version)
@@ -99,14 +100,14 @@ impl Resolver for SpaceDock {
 
     async fn get_download_url(
         &self,
+        loader: &ModLoader,
         id: String,
-        instance: &Instance,
         version: Option<String>,
     ) -> Result<String> {
         if let Some(version) = version {
             Ok(format!(
                 "https://spacedock.info{}",
-                self.get_version(instance, id, version).await?.url.unwrap()
+                self.get_version(loader, id, version).await?.url.unwrap()
             ))
         } else {
             let url = format!("{}/mod/{}/latest", self.base().await, id);

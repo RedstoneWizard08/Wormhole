@@ -7829,6 +7829,7 @@ dependencies = [
  "keyvalues-parser",
  "log",
  "macros",
+ "mcmeta",
  "query",
  "reqwest 0.12.4",
  "serde",

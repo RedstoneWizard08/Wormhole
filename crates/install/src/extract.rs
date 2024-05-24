@@ -109,7 +109,6 @@ pub fn reprocess_zip(
 
         //     reprocess_zip(data, name, FileType::Zip, instance, fallback)
         // }
-        
         FileType::Tar => {
             let data = extract_tar(data, &instance)?;
 

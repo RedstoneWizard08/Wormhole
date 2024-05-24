@@ -11,11 +11,18 @@ impl DbIntoArg<DbMod, (ModVersion, Instance, Vec<PathBuf>)> for RealMod {
         db: &mut Conn,
         (version, instance, paths): (ModVersion, Instance, Vec<PathBuf>),
     ) -> Result<DbMod> {
-        let path = serde_json::to_string(&paths.iter().map(|v| v
-            .strip_prefix(instance.data_dir()).unwrap()
-            .to_str()
-            .unwrap()
-            .to_string()).collect::<Vec<_>>())?;
+        let path = serde_json::to_string(
+            &paths
+                .iter()
+                .map(|v| {
+                    v.strip_prefix(instance.data_dir())
+                        .unwrap()
+                        .to_str()
+                        .unwrap()
+                        .to_string()
+                })
+                .collect::<Vec<_>>(),
+        )?;
 
         let mut obj = DbMod {
             id: None,

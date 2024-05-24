@@ -1,7 +1,7 @@
 pub mod cmd;
+pub mod log;
 pub mod macros;
 pub mod run;
-pub mod log;
 
 pub extern crate api;
 pub extern crate macros as whmacros;
@@ -10,6 +10,9 @@ pub extern crate tauri;
 pub extern crate tauri_specta;
 pub extern crate tokio;
 pub extern crate whcore;
+
+#[macro_use]
+extern crate tracing;
 
 use api::install::progress::ProgressPayload;
 use data::diesel::{
@@ -53,7 +56,7 @@ macro_rules! commands {
 }
 
 commands![
-    data, api, whcore;
+    data, api, whcore, mcmeta;
 
     cmd::base::get_plugins,
     cmd::base::get_dirs,

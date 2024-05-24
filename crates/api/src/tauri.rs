@@ -1,6 +1,7 @@
 use anyhow::Result;
 use data::{instance::Instance, mod_::DbMod, source::SourceMapping, Conn};
 
+use mcmeta::cmd::modded::GetLoader;
 use query::{
     mod_::{Mod, ModVersion},
     source::{Paginated, QueryOptions},
@@ -152,8 +153,8 @@ impl<T: CPlugin + Send + Sync> TauriPluginTrait for T {
         if let Some(resolver) = resolver {
             resolver
                 .search(
+                    &instance.loader().await.ok()?,
                     self.game().to_string(),
-                    &instance,
                     query.unwrap_or_default(),
                     opts,
                 )
@@ -185,7 +186,10 @@ impl<T: CPlugin + Send + Sync> TauriPluginTrait for T {
         let resolver = resolvers.iter().find(|v| v.source().mapping() == resolver);
 
         if let Some(resolver) = resolver {
-            resolver.get_versions(&instance, id).await.ok()
+            resolver
+                .get_versions(&instance.loader().await.ok()?, id)
+                .await
+                .ok()
         } else {
             None
         }
@@ -202,7 +206,10 @@ impl<T: CPlugin + Send + Sync> TauriPluginTrait for T {
         let resolver = resolvers.iter().find(|v| v.source().mapping() == resolver);
 
         if let Some(resolver) = resolver {
-            resolver.get_version(&instance, id, version).await.ok()
+            resolver
+                .get_version(&instance.loader().await.ok()?, id, version)
+                .await
+                .ok()
         } else {
             None
         }
@@ -218,7 +225,10 @@ impl<T: CPlugin + Send + Sync> TauriPluginTrait for T {
         let resolver = resolvers.iter().find(|v| v.source().mapping() == resolver);
 
         if let Some(resolver) = resolver {
-            resolver.get_latest_version(id, &instance).await.ok()
+            resolver
+                .get_latest_version(&instance.loader().await.ok()?, id)
+                .await
+                .ok()
         } else {
             None
         }
@@ -236,7 +246,7 @@ impl<T: CPlugin + Send + Sync> TauriPluginTrait for T {
 
         if let Some(resolver) = resolver {
             resolver
-                .get_download_url(project, &instance, version)
+                .get_download_url(&instance.loader().await.ok()?, project, version)
                 .await
                 .ok()
         } else {

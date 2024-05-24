@@ -7,6 +7,7 @@ use data::{
     instance::Instance,
     schema::instances,
 };
+use mcmeta::cmd::modded::GetLoader;
 use whcore::Boolify;
 
 use crate::AppState;
@@ -52,7 +53,9 @@ pub async fn create_instance(
     let dirs = plugin.dirs();
     let now = DateTime::<Utc>::default().timestamp_millis();
 
-    Ok(insert_into(instances::table)
+    info!("Creating instance...");
+
+    let mut it = insert_into(instances::table)
         .values(Instance {
             id: None,
             cache_dir: dirs.cache.to_str().unwrap().to_string(),
@@ -69,10 +72,30 @@ pub async fn create_instance(
             install_dir: plugin.find().bool()?.to_str().unwrap().to_string(),
             description: String::new(),
             name,
+            loader: None,
         })
         .returning(Instance::as_returning())
         .get_result(&mut pool.get().bool()?)
-        .bool()?)
+        .bool()?;
+
+    info!("Installing loader...");
+
+    it.loader = Some(serde_json::to_string(&it.loader().await.bool()?).bool()?);
+
+    info!("Updating database...");
+
+    let it = update(instances::table)
+        .filter(instances::id.eq(it.id))
+        .set(instances::loader.eq(it.loader))
+        .returning(Instance::as_returning())
+        .get_result(&mut pool.get().bool()?)
+        .bool()?;
+
+    info!("Installing instance...");
+
+    plugin.install_instance(&it).await.bool()?;
+
+    Ok(it)
 }
 
 // Realistically, we won't be updating anything but the description for now.
@@ -97,15 +120,31 @@ pub async fn update_instance(
 #[tauri::command]
 #[specta::specta]
 pub async fn add_instance(instance: Instance, pool: AppState<'_>) -> Result<Instance, bool> {
-    let res = insert_into(instances::table)
+    let mut it = insert_into(instances::table)
         .values(instance)
         .returning(Instance::as_returning())
         .get_result(&mut pool.get().bool()?)
         .bool()?;
 
-    PLUGINS.lock().await.get(&res.game_id).bool()?.install_instance(&res).await.bool()?;
+    it.loader = Some(serde_json::to_string(&it.loader().await.bool()?).bool()?);
 
-    Ok(res)
+    let it = update(instances::table)
+        .filter(instances::id.eq(it.id))
+        .set(instances::loader.eq(it.loader))
+        .returning(Instance::as_returning())
+        .get_result(&mut pool.get().bool()?)
+        .bool()?;
+
+    PLUGINS
+        .lock()
+        .await
+        .get(&it.game_id)
+        .bool()?
+        .install_instance(&it)
+        .await
+        .bool()?;
+
+    Ok(it)
 }
 
 #[whmacros::serde_call]

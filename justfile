@@ -8,19 +8,26 @@ ts_node := "node_modules/.bin/ts-node"
 svelte_kit := "node_modules/.bin/svelte-kit"
 svelte_check := "node_modules/.bin/svelte-check"
 serve := "node_modules/.bin/serve"
+wormhole := "target/debug/wormhole"
 cargo := "cargo"
 
-set shell := ["powershell.exe", "-c"]
+set windows-shell := ["powershell.exe", "-c"]
 
-dev_app:
-    {{ vite }}
+bin:
+    cargo build --bin wormhole
 
-build_app:
+bin_release:
+    cargo build --bin wormhole --release
+
+web_dev: bin
+    {{ wormhole }} server
+
+[private]
+_web_build:
     {{ tsc }}
     {{ vite }} build
 
-preview_app:
-    {{ vite }} preview
+web_build: _web_build bin_release
 
 dev:
     {{ tauri }} dev
@@ -28,20 +35,9 @@ dev:
 build:
     {{ tauri }} build
 
-tauri:
-    {{ tauri }}
-
 fmt:
     {{ prettier }} --write .
     {{ cargo }} fmt
-
-web_dev:
-    $env:TAURI_WEB_DEV=1
-    {{ vite }}
-
-web_build:
-    $env:TAURI_WEB_DEV=1
-    {{ vite }} build
 
 lint_eslint:
     {{ eslint }} --ext .ts,.tsx,.svelte .
@@ -54,9 +50,6 @@ lint_clippy:
 
 lint: lint_eslint lint_stylelint lint_clippy
 
-console:
-    {{ ts_node }} scripts/console.ts
-
 check:
     {{ svelte_kit }} sync
     {{ svelte_check }}
@@ -65,11 +58,8 @@ watch_check:
     {{ svelte_kit }} sync
     {{ svelte_check }} --watch
 
-postinstall:
+sync:
     {{ svelte_kit }} sync
 
-serve:
-    {{ serve }} -p 4000 build
-
-bindgen:
-    {{ cargo }} run --bin bindings
+bindgen: bin
+    {{ wormhole }} bindgen

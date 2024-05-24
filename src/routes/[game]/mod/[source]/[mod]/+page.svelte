@@ -36,14 +36,26 @@
     onMount(async () => {
         if (modId || $page.url) {
             const instance = unwrap(await commands.getInstance(instanceId, null));
-            
+
             mods = /\/mods?(\/\d+)?/i.test($page.url.pathname);
             modInfo = unwrap(await commands.getMod(gameId, source as SourceMapping, modId, null));
             versions = unwrap(
-                await commands.getModVersions(gameId, source as SourceMapping, instance, modId, null)
+                await commands.getModVersions(
+                    gameId,
+                    source as SourceMapping,
+                    instance,
+                    modId,
+                    null
+                )
             );
             latest = unwrap(
-                await commands.getLatestVersion(gameId, source as SourceMapping, instance, modId, null)
+                await commands.getLatestVersion(
+                    gameId,
+                    source as SourceMapping,
+                    instance,
+                    modId,
+                    null
+                )
             );
             isLoading = false;
 

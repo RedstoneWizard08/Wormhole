@@ -1,3 +1,6 @@
+use cmd::modded::ModLoader;
+use specta::{NamedType, TypeMap};
+
 #[macro_use]
 extern crate serde;
 
@@ -16,10 +19,19 @@ pub mod forge;
 pub mod jar_mf;
 pub mod launchwrapper;
 pub mod macros;
+pub mod manager;
 pub mod mappings;
 pub mod maven;
 pub mod neoforge;
 pub mod piston;
 pub mod quilt;
 pub mod util;
-pub mod manager;
+
+pub fn type_map() -> TypeMap {
+    let mut map = TypeMap::default();
+
+    let ty = ModLoader::named_data_type(&mut map, &[]);
+    map.insert(ModLoader::SID, ty);
+
+    map
+}

@@ -1,7 +1,7 @@
 use std::path::PathBuf;
 
-use anyhow::Result;
 use crate::cmd::{cmd::build_launch_command, modded::ModLoader, options::LaunchOptions};
+use anyhow::Result;
 use msa::state::MsaState;
 use tokio::process::{Child, Command};
 
@@ -18,5 +18,8 @@ pub async fn launch_minecraft(
 
     info!("Launching process: {}", cmd_l.join(" "));
 
-    Ok(Command::new(cmd.first().unwrap()).args(&cmd[1..]).spawn()?)
+    Ok(Command::new(cmd.first().unwrap())
+        .current_dir(root)
+        .args(&cmd[1..])
+        .spawn()?)
 }

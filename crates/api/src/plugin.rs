@@ -7,6 +7,7 @@ use data::{
     source::{SourceMapping, Sources},
     Conn,
 };
+use mcmeta::cmd::modded::ModLoader;
 use query::{
     mod_::{Mod, ModVersion},
     source::Resolver,
@@ -14,7 +15,7 @@ use query::{
 use tokio::{process::Child, sync::Mutex};
 use whcore::{dirs::Dirs, manager::CoreManager};
 
-use crate::{install::{install::install_mod, progress::tauri_progress, uninstall::uninstall_mod}, loader::ModLoader};
+use crate::install::{install::install_mod, progress::tauri_progress, uninstall::uninstall_mod};
 
 lazy_static! {
     pub static ref RESOLVERS: Arc<Mutex<HashMap<&'static str, Vec<Arc<Box<dyn Resolver + Send + Sync>>>>>> =

@@ -91,7 +91,9 @@ impl MsaState {
         let file = dir.join("auth.json");
 
         if file.exists() {
-            return Ok(MsaState::set(serde_json::from_str(&fs::read_to_string(file)?)?));
+            return Ok(MsaState::set(serde_json::from_str(&fs::read_to_string(
+                file,
+            )?)?));
         }
 
         Err(anyhow!("No MSA auth file found!"))

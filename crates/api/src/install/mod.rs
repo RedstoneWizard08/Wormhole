@@ -1,3 +1,3 @@
-pub mod progress;
 pub mod install;
+pub mod progress;
 pub mod uninstall;

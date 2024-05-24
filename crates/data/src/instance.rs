@@ -55,6 +55,9 @@ pub struct Instance {
     /// A UTC timestamp of when the instance was
     /// last updated/changed.
     pub updated: i64,
+
+    /// The JSON-serialized mod loader for this instance.
+    pub loader: Option<String>,
 }
 
 impl Instance {

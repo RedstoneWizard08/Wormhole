@@ -142,7 +142,11 @@ pub async fn fix_args(
     let mut out = Vec::new();
 
     for arg in args {
-        out.push(fix_argument(arg, root, profile, loader, opts).await?.replace("\\", "/"));
+        out.push(
+            fix_argument(arg, root, profile, loader, opts)
+                .await?
+                .replace("\\", "/"),
+        );
     }
 
     Ok(out)

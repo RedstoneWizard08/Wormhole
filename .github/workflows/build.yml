@@ -18,7 +18,7 @@ jobs:
 
             - name: install Rust nightly
               uses: dtolnay/rust-toolchain@nightly
-            
+
             - name: Fix Rust
               run: rustup update
 
@@ -40,7 +40,7 @@ jobs:
 
             - name: Run conf
               run: ./apps/gui/genconf.sh
-            
+
             - uses: Swatinem/rust-cache@v2
 
             - name: Build app
@@ -48,9 +48,9 @@ jobs:
                   touch .env
                   pnpm run build
               env:
-                CURSEFORGE_KEY: ${{ secrets.CURSEFORGE_KEY }}
-                MSA_CLIENT_SECRET: ${{ secrets.MSA_CLIENT_SECRET }}
-                NEXUS_API_KEY: ${{ secrets.NEXUS_API_KEY }}
+                  CURSEFORGE_KEY: ${{ secrets.CURSEFORGE_KEY }}
+                  MSA_CLIENT_SECRET: ${{ secrets.MSA_CLIENT_SECRET }}
+                  NEXUS_API_KEY: ${{ secrets.NEXUS_API_KEY }}
 
             - uses: actions/upload-artifact@v4
               with:
@@ -107,7 +107,7 @@ jobs:
 
             - name: Run conf
               run: .\apps\gui\genconf.ps1
-            
+
             - uses: Swatinem/rust-cache@v2
 
             - name: Build app
@@ -115,9 +115,9 @@ jobs:
                   touch .env
                   pnpm run build
               env:
-                CURSEFORGE_KEY: ${{ secrets.CURSEFORGE_KEY }}
-                MSA_CLIENT_SECRET: ${{ secrets.MSA_CLIENT_SECRET }}
-                NEXUS_API_KEY: ${{ secrets.NEXUS_API_KEY }}
+                  CURSEFORGE_KEY: ${{ secrets.CURSEFORGE_KEY }}
+                  MSA_CLIENT_SECRET: ${{ secrets.MSA_CLIENT_SECRET }}
+                  NEXUS_API_KEY: ${{ secrets.NEXUS_API_KEY }}
 
             - uses: actions/upload-artifact@v4
               with:
@@ -174,7 +174,7 @@ jobs:
 
             - name: Run conf
               run: ./apps/gui/genconf.sh
-            
+
             - uses: Swatinem/rust-cache@v2
 
             - name: Build app
@@ -182,9 +182,9 @@ jobs:
                   touch .env
                   pnpm run build
               env:
-                CURSEFORGE_KEY: ${{ secrets.CURSEFORGE_KEY }}
-                MSA_CLIENT_SECRET: ${{ secrets.MSA_CLIENT_SECRET }}
-                NEXUS_API_KEY: ${{ secrets.NEXUS_API_KEY }}
+                  CURSEFORGE_KEY: ${{ secrets.CURSEFORGE_KEY }}
+                  MSA_CLIENT_SECRET: ${{ secrets.MSA_CLIENT_SECRET }}
+                  NEXUS_API_KEY: ${{ secrets.NEXUS_API_KEY }}
 
             - uses: actions/upload-artifact@v4
               with:

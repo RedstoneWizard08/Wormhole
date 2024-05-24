@@ -37,7 +37,9 @@
 
         const resolver = unwrap(await commands.getSourceId(mod.source, null)) as SourceMapping;
         const instanceInfo = unwrap(await commands.getInstance(instance, null));
-        const latest = unwrap(await commands.getLatestVersion(game, resolver, instanceInfo, mod.id, null));
+        const latest = unwrap(
+            await commands.getLatestVersion(game, resolver, instanceInfo, mod.id, null)
+        );
 
         if (installed) {
             const mods = unwrap(await commands.getMods(instance, null));

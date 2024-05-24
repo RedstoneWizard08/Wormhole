@@ -25,7 +25,8 @@ pub struct MinecraftManager {
 
 impl MinecraftManager {
     pub async fn load(dir: PathBuf) -> Result<Self> {
-        let me: MinecraftManager = serde_json::from_str(&fs::read_to_string(dir.join("instance-metadata.json"))?)?;
+        let me: MinecraftManager =
+            serde_json::from_str(&fs::read_to_string(dir.join("instance-metadata.json"))?)?;
         let java = me.loader.get_java_version().await?;
 
         info!("Installing Java...");

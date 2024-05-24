@@ -2,10 +2,11 @@ use std::path::PathBuf;
 
 use anyhow::Result;
 use data::instance::Instance;
+use mcmeta::cmd::modded::ModLoader;
 use query::source::Resolver;
 use tokio::process::{Child, Command};
 
-use crate::{plugin::Plugin, loader::ModLoader};
+use crate::plugin::Plugin;
 
 #[async_trait]
 pub trait UnityPlugin: Send + Sync {
@@ -75,6 +76,6 @@ impl<T: UnityPlugin> Plugin for T {
     }
 
     async fn loader(&self, _instance: Instance) -> Result<ModLoader> {
-        Ok(ModLoader::Vanilla(None))
+        Ok(ModLoader::None)
     }
 }

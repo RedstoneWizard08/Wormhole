@@ -92,7 +92,7 @@ impl Plugin for MinecraftPlugin {
         manager.launch(&MsaState::get(), &instance).await
     }
 
-    async fn loader(&self, instance: Instance) -> Result<crate::loader::ModLoader> {
+    async fn loader(&self, instance: Instance) -> Result<ModLoader> {
         info!("Fetching mod loader...");
 
         let loader = ModLoader::quilt_latest().await?;
@@ -102,6 +102,6 @@ impl Plugin for MinecraftPlugin {
         // We have to do this so that we can install the loader too
         let manager = MinecraftManager::load_or_create(instance.data_dir(), &loader).await?;
 
-        Ok(crate::loader::ModLoader::Minecraft(manager.loader))
+        Ok(manager.loader)
     }
 }

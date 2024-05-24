@@ -68,16 +68,12 @@ impl Resolver for Modrinth {
 
     async fn search(
         &self,
+        loader: &ModLoader,
         _game_id: String,
-        instance: &Instance,
         search: String,
         opts: Option<QueryOptions>,
     ) -> Result<Paginated<Mod>> {
         let opts = opts.unwrap_or_default();
-        let default_loader = ModLoader::quilt_latest().await?;
-        let manager =
-            MinecraftManager::load_or_create(instance.data_dir(), &default_loader).await?;
-        let loader = manager.loader;
         let ver = loader.mc_version();
         let mut facets = vec![
             vec![Facet::ProjectType(ProjectType::Mod)],
@@ -110,11 +106,7 @@ impl Resolver for Modrinth {
             .map_err(|v| anyhow!(v))
     }
 
-    async fn get_versions(&self, instance: &Instance, id: String) -> Result<Vec<ModVersion>> {
-        let default_loader = ModLoader::quilt_latest().await?;
-        let manager =
-            MinecraftManager::load_or_create(instance.data_dir(), &default_loader).await?;
-        let loader = manager.loader;
+    async fn get_versions(&self, loader: &ModLoader, id: String) -> Result<Vec<ModVersion>> {
         let ver = loader.mc_version();
 
         if let Some(name) = loader.name() {
@@ -138,7 +130,7 @@ impl Resolver for Modrinth {
 
     async fn get_version(
         &self,
-        _instance: &Instance,
+        _loader: &ModLoader,
         _id: String,
         version: String,
     ) -> Result<ModVersion> {
@@ -151,22 +143,22 @@ impl Resolver for Modrinth {
 
     async fn get_download_url(
         &self,
+        loader: &ModLoader,
         id: String,
-        instance: &Instance,
         version: Option<String>,
     ) -> Result<String> {
         if let Some(version) = version {
-            Ok(self.get_version(instance, id, version).await?.url.unwrap())
+            Ok(self.get_version(loader, id, version).await?.url.unwrap())
         } else {
             let ver = self
-                .get_versions(instance, id.clone())
+                .get_versions(loader, id.clone())
                 .await?
                 .first()
                 .unwrap()
                 .id
                 .clone();
 
-            Ok(self.get_version(instance, id, ver).await?.url.unwrap())
+            Ok(self.get_version(loader, id, ver).await?.url.unwrap())
         }
     }
 

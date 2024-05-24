@@ -32,7 +32,6 @@ pub mod plugins;
 pub mod register;
 pub mod res;
 pub mod tauri;
-pub mod loader;
 
 #[cfg(test)]
 pub mod test_util;
