@@ -87,7 +87,7 @@ jobs:
             - name: Build app
               run: |
                   touch .env
-                  pnpm run build --runner cross --target ${{ matrix.target }}
+                  pnpm run build --target ${{ matrix.target }}
               env:
                   CURSEFORGE_KEY: ${{ secrets.CURSEFORGE_KEY }}
                   MSA_CLIENT_SECRET: ${{ secrets.MSA_CLIENT_SECRET }}
