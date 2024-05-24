@@ -13,7 +13,7 @@ serde = { version = "1.0.202", features = ["derive"] }
 tauri = { version = "1.6.6", features = ["api-all"] }
 zip-extensions = "0.6.2"
 keyvalues-parser = "0.2.0"
-reqwest = { version = "0.12.4", features = ["json", "stream", "gzip"] }
+reqwest = { version = "0.12.4", features = ["json", "stream", "gzip", "rustls-tls"], default-features = false }
 tokio-util = { version = "0.7.11", features = ["full"] }
 tokio-stream = { version = "0.1.15", features = ["tokio-util", "fs", "net", "sync"] }
 tauri-build = "1.5.2"
