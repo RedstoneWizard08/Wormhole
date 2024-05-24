@@ -6,21 +6,21 @@ jobs:
         permissions:
             contents: write
         strategy:
-          fail-fast: false
-          matrix:
-            include:
-              - os: ubuntu-latest
-                target: x86_64-unknown-linux-gnu
-                arch: linux-x86_64
-              - os: windows-latest
-                target: x86_64-pc-windows-msvc
-                arch: windows-x86_64
-              - os: macos-latest
-                target: x86_64-apple-darwin
-                arch: macos-x86_64
-              - os: macos-latest
-                target: aarch64-apple-darwin
-                arch: macos-aarch64
+            fail-fast: false
+            matrix:
+                include:
+                    - os: ubuntu-latest
+                      target: x86_64-unknown-linux-gnu
+                      arch: linux-x86_64
+                    - os: windows-latest
+                      target: x86_64-pc-windows-msvc
+                      arch: windows-x86_64
+                    - os: macos-latest
+                      target: x86_64-apple-darwin
+                      arch: macos-x86_64
+                    - os: macos-latest
+                      target: aarch64-apple-darwin
+                      arch: macos-aarch64
         runs-on: ${{ matrix.os }}
         steps:
             - uses: actions/checkout@v4
@@ -37,20 +37,20 @@ jobs:
 
             - name: Fix Rust
               run: rustup update
-            
+
             - name: Target
               run: rustup target add ${{ matrix.target }}
-            
+
             - name: Rust cache
               uses: Swatinem/rust-cache@v2
-            
+
             - name: Binstall
               uses: cargo-bins/cargo-binstall@main
-            
+
             - name: Cross & Zigbuild
               run: |
-                cargo binstall -y cross
-                cargo binstall -y cargo-zigbuild
+                  cargo binstall -y cross
+                  cargo binstall -y cargo-zigbuild
 
             - name: Install system dependencies
               if: matrix.os == 'ubuntu-latest'
@@ -61,13 +61,7 @@ jobs:
                     libwebkit2gtk-4.0-dev \
                     libappindicator3-dev \
                     librsvg2-dev \
-                    patchelf \
-                    gcc-x86-64-linux-gnu \
-                    gcc-aarch64-linux-gnu \
-                    pkg-config \
-                    cmake \
-                    make \
-                    build-essential
+                    patchelf
 
             - name: Install pnpm
               run: npm i -g pnpm
@@ -83,7 +77,7 @@ jobs:
             - name: Run conf
               if: matrix.os != 'windows-latest'
               run: ./apps/gui/genconf.sh
-            
+
             - name: Run conf
               if: matrix.os == 'windows-latest'
               run: .\apps\gui\genconf.ps1
