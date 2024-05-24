@@ -41,7 +41,7 @@ jobs:
             - name: Cross & Zigbuild
               run: |
                 cargo binstall -y cross
-                cargo binstall -y zigbuild
+                cargo binstall -y cargo-zigbuild
 
             - name: Install system dependencies
               if: matrix.os == 'ubuntu-latest'
