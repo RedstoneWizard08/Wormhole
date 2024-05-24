@@ -44,6 +44,9 @@ jobs:
             - name: Fix Rust
               run: rustup update
             
+            - name: Target
+              run: rustup target add ${{ matrix.target }}
+            
             - name: Binstall
               uses: cargo-bins/cargo-binstall@main
             
