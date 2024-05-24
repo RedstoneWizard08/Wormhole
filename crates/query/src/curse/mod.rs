@@ -89,6 +89,8 @@ impl Resolver for CurseForge {
                 ("index", opts.page.to_string()),
                 ("sortOrder", "desc".into()),
                 ("sortField", "1".into()),
+                ("gameVersion", loader.mc_version()),
+                ("modLoaderTypes", format!("[{}]", loader.curse_id())),
             ])
             .send()
             .await?
@@ -121,10 +123,23 @@ impl Resolver for CurseForge {
     }
 
     async fn get_versions(&self, loader: &ModLoader, id: String) -> Result<Vec<ModVersion>> {
+        let mc = loader.mc_version();
+        let loader = loader.name();
+
         self.client
             .get_mod_files(id.parse()?)
             .await
-            .map(|v| v.iter().map(|v| v.clone().into()).collect::<Vec<_>>())
+            .map(|v| {
+                v.iter()
+                    .filter(|v| {
+                        v.game_versions.contains(&mc)
+                            && loader
+                                .map(|loader| v.game_versions.contains(&loader.to_string()))
+                                .unwrap_or(true)
+                    })
+                    .map(|v| v.clone().into())
+                    .collect::<Vec<_>>()
+            })
             .map_err(|v| anyhow!(v))
     }
 

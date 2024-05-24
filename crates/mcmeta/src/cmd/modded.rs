@@ -52,6 +52,17 @@ impl ModLoader {
         }
     }
 
+    pub fn curse_id(&self) -> &'static str {
+        match self {
+            Self::Vanilla(_) => "",
+            Self::Forge(_, _) => "1",
+            Self::NeoForge(_, _) => "6",
+            Self::Fabric(_, _) => "4",
+            Self::Quilt(_, _) => "5",
+            Self::None => "",
+        }
+    }
+
     pub async fn vanilla_latest() -> Result<Self> {
         let ver = get_manifest().await?.latest.release;
 
