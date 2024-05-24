@@ -3532,6 +3532,7 @@ version = "2.0.0"
 dependencies = [
  "anyhow 1.0.81",
  "base64 0.22.1",
+ "data",
  "futures",
  "indicatif",
  "java",
@@ -3549,6 +3550,7 @@ dependencies = [
  "specta",
  "tokio 1.37.0",
  "tokio-stream",
+ "tracing",
  "whcore",
  "zip",
 ]
@@ -4623,6 +4625,7 @@ dependencies = [
  "envcrypt",
  "ferinth",
  "libsqlite3-sys",
+ "mcmeta",
  "murmur2",
  "once_cell",
  "reqwest 0.12.4",
@@ -7824,6 +7827,7 @@ dependencies = [
  "init",
  "install",
  "keyvalues-parser",
+ "log",
  "macros",
  "query",
  "reqwest 0.12.4",
@@ -7836,6 +7840,9 @@ dependencies = [
  "tokio 1.37.0",
  "tokio-stream",
  "tokio-util 0.7.11",
+ "tracing",
+ "tracing-appender",
+ "tracing-subscriber",
  "whcore",
 ]
 

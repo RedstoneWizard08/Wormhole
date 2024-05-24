@@ -1,4 +1,4 @@
-use crate::{cmds, ctx, events, invoker};
+use crate::{cmds, ctx, events, invoker, log::init_file_logger};
 use anyhow::Result;
 use api::{
     plugin::Plugin,
@@ -8,8 +8,11 @@ use api::{
 };
 use specta::ts::{BigIntExportBehavior, ExportConfig};
 use tauri::Wry;
+use tracing::level_filters::LevelFilter;
 
 pub async fn run() -> Result<()> {
+    init_file_logger("./logs/app.log", LevelFilter::INFO)?;
+
     let db = init::boot(&None).await?;
 
     let (_, setup_events) = tauri_specta::ts::builder()

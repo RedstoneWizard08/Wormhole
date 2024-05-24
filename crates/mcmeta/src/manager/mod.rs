@@ -1,14 +1,17 @@
+pub mod dirs;
+pub mod launch;
+
 use std::{fs, path::PathBuf};
 
+use crate::{cmd::modded::ModLoader, download::DownloadCallbackFn};
 use anyhow::Result;
 use data::instance::Instance;
 use java::install::install_java;
-use mcmeta::{cmd::modded::ModLoader, download::DownloadCallbackFn};
 use msa::state::MsaState;
 use tokio::process::Child;
 use whcore::manager::CoreManager;
 
-use super::{dirs::MinecraftDirs, launch::launch_minecraft};
+use self::{dirs::MinecraftDirs, launch::launch_minecraft};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MinecraftManager {
@@ -21,15 +24,32 @@ pub struct MinecraftManager {
 }
 
 impl MinecraftManager {
-    pub fn load(dir: PathBuf) -> Result<Self> {
-        Ok(serde_json::from_str(&fs::read_to_string(
-            dir.join("instance-metadata.json"),
-        )?)?)
+    pub async fn load(dir: PathBuf) -> Result<Self> {
+        let me: MinecraftManager = serde_json::from_str(&fs::read_to_string(dir.join("instance-metadata.json"))?)?;
+        let java = me.loader.get_java_version().await?;
+
+        info!("Installing Java...");
+
+        install_java(&me.dirs.java.join(java.to_string()), java).await?;
+
+        info!("Installing loader...");
+
+        me.loader
+            .install(
+                &me.dirs.libs,
+                &me.dirs.natives,
+                &me.dirs.temp,
+                &me.dirs.assets(me.loader.mc_version()),
+                &None,
+            )
+            .await?;
+
+        Ok(me)
     }
 
     pub async fn load_or_create(dir: PathBuf, loader: &ModLoader) -> Result<Self> {
         if dir.join("instance-metadata.json").exists() {
-            Self::load(dir)
+            Self::load(dir).await
         } else {
             info!("Creating a new manager...");
 

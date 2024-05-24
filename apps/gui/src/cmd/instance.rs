@@ -97,11 +97,15 @@ pub async fn update_instance(
 #[tauri::command]
 #[specta::specta]
 pub async fn add_instance(instance: Instance, pool: AppState<'_>) -> Result<Instance, bool> {
-    Ok(insert_into(instances::table)
+    let res = insert_into(instances::table)
         .values(instance)
         .returning(Instance::as_returning())
         .get_result(&mut pool.get().bool()?)
-        .bool()?)
+        .bool()?;
+
+    PLUGINS.lock().await.get(&res.game_id).bool()?.install_instance(&res).await.bool()?;
+
+    Ok(res)
 }
 
 #[whmacros::serde_call]

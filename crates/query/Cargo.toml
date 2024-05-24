@@ -31,6 +31,7 @@ murmur2.workspace = true
 serde_repr.workspace = true
 url.workspace = true
 chrono.workspace = true
+mcmeta.workspace = true
 
 [build-dependencies]
 dotenvy.workspace = true

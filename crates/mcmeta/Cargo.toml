@@ -27,6 +27,8 @@ msa.workspace = true
 rayon.workspace = true
 futures.workspace = true
 specta.workspace = true
+data.workspace = true
+tracing.workspace = true
 
 [dev-dependencies]
 indicatif.workspace = true

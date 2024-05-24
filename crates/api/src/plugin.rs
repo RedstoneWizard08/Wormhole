@@ -178,4 +178,8 @@ pub trait Plugin: Send + Sync {
 
         Ok(())
     }
+
+    async fn install_instance(&self, _inst: &Instance) -> Result<()> {
+        Ok(())
+    }
 }

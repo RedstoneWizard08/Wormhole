@@ -25,7 +25,7 @@ use super::{cmd::build_launch_command, options::LaunchOptions};
 
 /// The ModLoader type.
 /// Each element contains the Minecraft version
-/// and its version.
+/// and then its version.
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize, Type)]
 pub enum ModLoader {
     Vanilla(String),
@@ -36,6 +36,16 @@ pub enum ModLoader {
 }
 
 impl ModLoader {
+    pub fn name(&self) -> Option<&'static str> {
+        match self {
+            Self::Vanilla(_) => None,
+            Self::Forge(_, _) => Some("forge"),
+            Self::NeoForge(_, _) => Some("neoforge"),
+            Self::Fabric(_, _) => Some("fabric"),
+            Self::Quilt(_, _) => Some("quilt"),
+        }
+    }
+
     pub async fn vanilla_latest() -> Result<Self> {
         let ver = get_manifest().await?.latest.release;
 

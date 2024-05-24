@@ -92,8 +92,18 @@ pub async fn fix_argument(
 
     // Java stuff
     cmd_string_fix!(arg, opts, memory -> o:memory);
-    cmd_string_fix!(arg, opts, classpath -> classpath.join(":"));
-    cmd_string_fix!(arg, opts, classpath_separator -> s:":");
+
+    #[cfg(not(windows))]
+    {
+        cmd_string_fix!(arg, opts, classpath -> classpath.join(":"));
+        cmd_string_fix!(arg, opts, classpath_separator -> s:":");
+    }
+
+    #[cfg(windows)]
+    {
+        cmd_string_fix!(arg, opts, classpath -> classpath.join(";"));
+        cmd_string_fix!(arg, opts, classpath_separator -> s:";");
+    }
 
     // Player stuff
     cmd_string_fix!(arg, opts, auth_player_name -> o:player_name);
@@ -132,7 +142,7 @@ pub async fn fix_args(
     let mut out = Vec::new();
 
     for arg in args {
-        out.push(fix_argument(arg, root, profile, loader, opts).await?);
+        out.push(fix_argument(arg, root, profile, loader, opts).await?.replace("\\", "/"));
     }
 
     Ok(out)

@@ -4,6 +4,9 @@ extern crate serde;
 #[macro_use]
 extern crate specta;
 
+#[macro_use]
+extern crate tracing;
+
 pub extern crate anyhow;
 
 pub mod cmd;
@@ -19,6 +22,4 @@ pub mod neoforge;
 pub mod piston;
 pub mod quilt;
 pub mod util;
-
-#[cfg(test)]
-pub mod test_util;
+pub mod manager;

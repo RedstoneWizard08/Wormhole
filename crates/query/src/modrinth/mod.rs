@@ -21,6 +21,7 @@ use ferinth::{
     },
     Ferinth,
 };
+use mcmeta::{cmd::modded::ModLoader, manager::MinecraftManager};
 
 pub struct Modrinth {
     client: Ferinth,
@@ -73,6 +74,19 @@ impl Resolver for Modrinth {
         opts: Option<QueryOptions>,
     ) -> Result<Paginated<Mod>> {
         let opts = opts.unwrap_or_default();
+        let default_loader = ModLoader::quilt_latest().await?;
+        let manager =
+            MinecraftManager::load_or_create(instance.data_dir(), &default_loader).await?;
+        let loader = manager.loader;
+        let ver = loader.mc_version();
+        let mut facets = vec![
+            vec![Facet::ProjectType(ProjectType::Mod)],
+            vec![Facet::Versions(ver)],
+        ];
+
+        if let Some(name) = loader.name() {
+            facets.push(vec![Facet::Categories(name.to_string())]);
+        }
 
         Ok(self
             .client
@@ -81,7 +95,7 @@ impl Resolver for Modrinth {
                 &Sort::Relevance,
                 opts.count as usize,
                 (opts.page * opts.count) as usize,
-                vec![vec![Facet::ProjectType(ProjectType::Mod)]],
+                facets,
             )
             .await
             .map_err(|v| anyhow!(v))?
@@ -97,18 +111,29 @@ impl Resolver for Modrinth {
     }
 
     async fn get_versions(&self, instance: &Instance, id: String) -> Result<Vec<ModVersion>> {
-        let res = self
-            .client()
-            .get(format!("{}/project/{}/version", self.base().await, id))
-            .send()
-            .await?
-            .text()
-            .await?;
+        let default_loader = ModLoader::quilt_latest().await?;
+        let manager =
+            MinecraftManager::load_or_create(instance.data_dir(), &default_loader).await?;
+        let loader = manager.loader;
+        let ver = loader.mc_version();
 
-        Ok(serde_json::from_str::<Vec<Version>>(&res)?
-            .iter()
-            .map(|v| v.clone().into())
-            .collect::<Vec<_>>())
+        if let Some(name) = loader.name() {
+            Ok(self
+                .client
+                .list_versions_filtered(&id, Some(&[name]), Some(&[&ver]), None)
+                .await?
+                .iter()
+                .map(|v| v.clone().into())
+                .collect::<Vec<_>>())
+        } else {
+            Ok(self
+                .client
+                .list_versions_filtered(&id, None, Some(&[&ver]), None)
+                .await?
+                .iter()
+                .map(|v| v.clone().into())
+                .collect::<Vec<_>>())
+        }
     }
 
     async fn get_version(

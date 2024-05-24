@@ -8,7 +8,6 @@
     import { unwrap } from "$api/util";
     import Dropdown from "$components/Dropdown.svelte";
     import { onMount } from "svelte";
-    import Back from "$components/Back.svelte";
 
     let results: ModItem[] = [];
     let perPage = 30;
@@ -42,11 +41,13 @@
 
         try {
             loading = true;
+            
+            const instance = unwrap(await commands.getInstance(instanceId, null));
 
             const data = unwrap(
                 await commands.searchMods(
                     gameId,
-                    source,
+                    source, instance,
                     query,
                     { page: pageId, count: perPage },
                     null

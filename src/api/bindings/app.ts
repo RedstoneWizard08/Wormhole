@@ -81,9 +81,9 @@ try {
     else return { status: "error", error: e  as any };
 }
 },
-async searchMods(gameId: number, resolver: SourceMapping, query: string | null, opts: { page: number; count: number } | null, pool: unknown | null) : Promise<__Result__<{ data: Mod[]; page: number | null; per_page: number | null; pages: number | null }, boolean>> {
+async searchMods(gameId: number, resolver: SourceMapping, instance: Instance, query: string | null, opts: { page: number; count: number } | null, pool: unknown | null) : Promise<__Result__<{ data: Mod[]; page: number | null; per_page: number | null; pages: number | null }, boolean>> {
 try {
-    return { status: "ok", data: await TAURI_INVOKE("search_mods", { gameId, resolver, query, opts, pool }) };
+    return { status: "ok", data: await TAURI_INVOKE("search_mods", { gameId, resolver, instance, query, opts, pool }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
@@ -97,25 +97,25 @@ try {
     else return { status: "error", error: e  as any };
 }
 },
-async getModVersions(gameId: number, resolver: SourceMapping, mid: string, pool: unknown | null) : Promise<__Result__<({ id: string; name: string | null; file_name: string | null; size: string | null; hash: string | null; url: string | null })[], boolean>> {
+async getModVersions(gameId: number, resolver: SourceMapping, instance: Instance, mid: string, pool: unknown | null) : Promise<__Result__<({ id: string; name: string | null; file_name: string | null; size: string | null; hash: string | null; url: string | null })[], boolean>> {
 try {
-    return { status: "ok", data: await TAURI_INVOKE("get_mod_versions", { gameId, resolver, mid, pool }) };
+    return { status: "ok", data: await TAURI_INVOKE("get_mod_versions", { gameId, resolver, instance, mid, pool }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
 },
-async getModVersion(gameId: number, resolver: SourceMapping, mid: string, version: string, pool: unknown | null) : Promise<__Result__<{ id: string; name: string | null; file_name: string | null; size: string | null; hash: string | null; url: string | null }, boolean>> {
+async getModVersion(gameId: number, resolver: SourceMapping, instance: Instance, mid: string, version: string, pool: unknown | null) : Promise<__Result__<{ id: string; name: string | null; file_name: string | null; size: string | null; hash: string | null; url: string | null }, boolean>> {
 try {
-    return { status: "ok", data: await TAURI_INVOKE("get_mod_version", { gameId, resolver, mid, version, pool }) };
+    return { status: "ok", data: await TAURI_INVOKE("get_mod_version", { gameId, resolver, instance, mid, version, pool }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
 },
-async getDownloadUrl(gameId: number, resolver: SourceMapping, project: string, version: string | null, pool: unknown | null) : Promise<__Result__<string, boolean>> {
+async getDownloadUrl(gameId: number, resolver: SourceMapping, instance: Instance, project: string, version: string | null, pool: unknown | null) : Promise<__Result__<string, boolean>> {
 try {
-    return { status: "ok", data: await TAURI_INVOKE("get_download_url", { gameId, resolver, project, version, pool }) };
+    return { status: "ok", data: await TAURI_INVOKE("get_download_url", { gameId, resolver, instance, project, version, pool }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
@@ -137,9 +137,9 @@ try {
     else return { status: "error", error: e  as any };
 }
 },
-async getLatestVersion(gameId: number, resolver: SourceMapping, mid: string, pool: unknown | null) : Promise<__Result__<{ id: string; name: string | null; file_name: string | null; size: string | null; hash: string | null; url: string | null }, boolean>> {
+async getLatestVersion(gameId: number, resolver: SourceMapping, instance: Instance, mid: string, pool: unknown | null) : Promise<__Result__<{ id: string; name: string | null; file_name: string | null; size: string | null; hash: string | null; url: string | null }, boolean>> {
 try {
-    return { status: "ok", data: await TAURI_INVOKE("get_latest_version", { gameId, resolver, mid, pool }) };
+    return { status: "ok", data: await TAURI_INVOKE("get_latest_version", { gameId, resolver, instance, mid, pool }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };

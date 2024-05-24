@@ -1,7 +1,7 @@
 use std::path::PathBuf;
 
 use anyhow::Result;
-use mcmeta::cmd::{cmd::build_launch_command, modded::ModLoader, options::LaunchOptions};
+use crate::cmd::{cmd::build_launch_command, modded::ModLoader, options::LaunchOptions};
 use msa::state::MsaState;
 use tokio::process::{Child, Command};
 
