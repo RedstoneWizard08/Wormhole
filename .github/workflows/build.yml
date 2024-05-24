@@ -37,6 +37,7 @@ jobs:
               uses: actions/setup-node@v3
               with:
                   node-version: 18
+                  cache: pnpm
 
             - name: install Rust nightly
               uses: dtolnay/rust-toolchain@nightly
@@ -46,6 +47,9 @@ jobs:
             
             - name: Target
               run: rustup target add ${{ matrix.target }}
+            
+            - name: Rust cache
+              uses: Swatinem/rust-cache@v2
             
             - name: Binstall
               uses: cargo-bins/cargo-binstall@main
@@ -79,8 +83,6 @@ jobs:
             - name: Run conf
               if: matrix.os == 'windows-latest'
               run: .\apps\gui\genconf.ps1
-
-            - uses: Swatinem/rust-cache@v2
 
             - name: Build app
               run: |
