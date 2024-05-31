@@ -29,7 +29,6 @@ fn build() {
     println!("Not running the gui's build script, this is a debug build.");
 }
 
-
 fn main() -> Result<()> {
     let mut data = fs::read_to_string(CONFIG_PATH)?;
 
