@@ -87,7 +87,7 @@ jobs:
                   touch .env
                   # pnpm run build --target ${{ matrix.target }}
                   pnpm run app:build
-                  cargo build --release --target ${{ matrix.target }}
+                  cargo build --release --target ${{ matrix.target }} -vvv
               env:
                   CURSEFORGE_KEY: ${{ secrets.CURSEFORGE_KEY }}
                   MSA_CLIENT_SECRET: ${{ secrets.MSA_CLIENT_SECRET }}
