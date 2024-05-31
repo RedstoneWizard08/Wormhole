@@ -1,15 +1,15 @@
 <script lang="ts">
-    export let page: number;
-    export let setCurrent: (n: number) => void;
-    export let active: boolean;
-    export let next = false;
-    export let prev = false;
-    export let ellipsis = false;
+export let page: number;
+export let setCurrent: (n: number) => void;
+export let active: boolean;
+export let next = false;
+export let prev = false;
+export let ellipsis = false;
 
-    const clickHandler = () => {
-        if (active) return;
-        setCurrent(page);
-    };
+const clickHandler = () => {
+    if (active) return;
+    setCurrent(page);
+};
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->

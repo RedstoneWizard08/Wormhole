@@ -1,11 +1,11 @@
 <script lang="ts">
-    export let onSearch: (query: string) => void;
+export let onSearch: (query: string) => void;
 
-    const handleInput = (event: Event) => {
-        const target = event.target as HTMLInputElement;
+const handleInput = (event: Event) => {
+    const target = event.target as HTMLInputElement;
 
-        onSearch(target.value);
-    };
+    onSearch(target.value);
+};
 </script>
 
 <div class="searchbar">

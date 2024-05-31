@@ -1,47 +1,47 @@
 <script lang="ts">
-    import InstanceCard from "$components/InstanceCard.svelte";
-    import { onMount } from "svelte";
-    import { page } from "$app/stores";
-    import { commands, type Instance } from "$bindings";
-    import { unwrap } from "$api/util";
+import InstanceCard from "$components/InstanceCard.svelte";
+import { onMount } from "svelte";
+import { page } from "$app/stores";
+import { commands, type Instance } from "$bindings";
+import { unwrap } from "$api/util";
 
-    let adding = false;
-    let deleteing = false;
-    let instances: Instance[] = [];
-    let current: Instance | null = null;
+let adding = false;
+let deleteing = false;
+let instances: Instance[] = [];
+let current: Instance | null = null;
 
-    let gameId = parseInt($page.params.game);
+let gameId = parseInt($page.params.game);
 
-    let name = "";
+let name = "";
 
-    onMount(async () => {
-        instances = unwrap(await commands.getInstances(gameId, null));
-    });
+onMount(async () => {
+    instances = unwrap(await commands.getInstances(gameId, null));
+});
 
-    const addInstance = async () => {
-        unwrap(await commands.createInstance(name, gameId, null));
-        name = "";
+const addInstance = async () => {
+    unwrap(await commands.createInstance(name, gameId, null));
+    name = "";
 
-        adding = false;
+    adding = false;
 
-        instances = unwrap(await commands.getInstances(gameId, null));
-    };
+    instances = unwrap(await commands.getInstances(gameId, null));
+};
 
-    const deleteInstance = async () => {
-        commands.deleteInstance(current?.id!, null);
+const deleteInstance = async () => {
+    commands.deleteInstance(current?.id!, null);
 
-        deleteing = false;
+    deleteing = false;
 
-        instances = unwrap(await commands.getInstances(gameId, null));
-    };
+    instances = unwrap(await commands.getInstances(gameId, null));
+};
 
-    const toggleAdding = () => {
-        adding = !adding;
-    };
+const toggleAdding = () => {
+    adding = !adding;
+};
 
-    const toggleDeleteing = () => {
-        deleteing = !deleteing;
-    };
+const toggleDeleteing = () => {
+    deleteing = !deleteing;
+};
 </script>
 
 {#if adding}

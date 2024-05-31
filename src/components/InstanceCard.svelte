@@ -1,33 +1,33 @@
 <script lang="ts">
-    import { goto } from "$app/navigation";
-    import Delete from "./Delete.svelte";
-    import { plugins } from "$api/stores";
-    import { commands, type Instance } from "$bindings";
-    import { unwrap } from "$api/util";
+import { goto } from "$app/navigation";
+import Delete from "./Delete.svelte";
+import { plugins } from "$api/stores";
+import { commands, type Instance } from "$bindings";
+import { unwrap } from "$api/util";
 
-    export let data: Instance;
-    // This is just the current instance in the parent for deletion (a reference)
-    export let current: Instance | null;
-    export let deleteing: boolean;
+export let data: Instance;
+// This is just the current instance in the parent for deletion (a reference)
+export let current: Instance | null;
+export let deleteing: boolean;
 
-    const clicked = () => {
-        goto(`/${data.game_id}/instance/${data.id}`);
-    };
+const clicked = () => {
+    goto(`/${data.game_id}/instance/${data.id}`);
+};
 
-    const doLaunch = async (e: MouseEvent) => {
-        e.stopPropagation();
+const doLaunch = async (e: MouseEvent) => {
+    e.stopPropagation();
 
-        unwrap(await commands.launchGame(data.game_id, data, null));
-    };
+    unwrap(await commands.launchGame(data.game_id, data, null));
+};
 
-    const doDelete = async (e: MouseEvent) => {
-        e.stopPropagation();
+const doDelete = async (e: MouseEvent) => {
+    e.stopPropagation();
 
-        if (deleteing) return;
+    if (deleteing) return;
 
-        current = data;
-        deleteing = true;
-    };
+    current = data;
+    deleteing = true;
+};
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->

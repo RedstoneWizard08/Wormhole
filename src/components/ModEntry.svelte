@@ -1,26 +1,26 @@
 <script lang="ts">
-    import { formatBytes, unwrap } from "$api/util";
-    import { createEventDispatcher, onMount } from "svelte";
-    import { commands, type DbMod, type Instance } from "$api/bindings/app";
-    import Delete from "./Delete.svelte";
+import { formatBytes, unwrap } from "$api/util";
+import { createEventDispatcher, onMount } from "svelte";
+import { commands, type DbMod, type Instance } from "$api/bindings/app";
+import Delete from "./Delete.svelte";
 
-    export let mod: DbMod | null = null;
-    export let instance: Instance;
-    export let head: boolean = false;
+export let mod: DbMod | null = null;
+export let instance: Instance;
+export let head: boolean = false;
 
-    let source: string | null = null;
+let source: string | null = null;
 
-    const disp = createEventDispatcher();
+const disp = createEventDispatcher();
 
-    onMount(async () => {
-        source = unwrap(await commands.getSourceId(mod?.source_id!, null));
-    });
+onMount(async () => {
+    source = unwrap(await commands.getSourceId(mod?.source_id!, null));
+});
 
-    const uninstall = async () => {
-        unwrap(await commands.uninstallMod(instance.game_id, mod!, instance, null));
+const uninstall = async () => {
+    unwrap(await commands.uninstallMod(instance.game_id, mod!, instance, null));
 
-        disp("uninstall");
-    };
+    disp("uninstall");
+};
 </script>
 
 <tr class="mod" class:head-item={head}>

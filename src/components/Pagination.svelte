@@ -1,22 +1,22 @@
 <script lang="ts">
-    import { createEventDispatcher } from "svelte";
-    import PaginationButton from "./PaginationButton.svelte";
+import { createEventDispatcher } from "svelte";
+import PaginationButton from "./PaginationButton.svelte";
 
-    export let pages: number;
-    export let page: number;
+export let pages: number;
+export let page: number;
 
-    const dispatch = createEventDispatcher();
+const dispatch = createEventDispatcher();
 
-    let offset = 0;
-    const offsetted = 8;
+let offset = 0;
+const offsetted = 8;
 
-    $: _array = [...Array(offsetted + 1)];
+$: _array = [...Array(offsetted + 1)];
 
-    const setCurrent = (n: number) => {
-        page = Math.max(0, n);
-        offset = Math.max(0, n - 3) + offsetted > pages ? pages - offsetted : Math.max(0, n - 3);
-        dispatch("change");
-    };
+const setCurrent = (n: number) => {
+    page = Math.max(0, n);
+    offset = Math.max(0, n - 3) + offsetted > pages ? pages - offsetted : Math.max(0, n - 3);
+    dispatch("change");
+};
 </script>
 
 <div class="pagination">

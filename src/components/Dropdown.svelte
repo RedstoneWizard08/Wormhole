@@ -1,31 +1,31 @@
 <script lang="ts">
-    import { createEventDispatcher } from "svelte";
-    import type { DropdownItem } from "$api/dropdown";
+import { createEventDispatcher } from "svelte";
+import type { DropdownItem } from "$api/dropdown";
 
-    export let val: string | number;
-    export let valText: string;
-    export let left = false;
-    export let right = false;
-    export let items: DropdownItem[];
-    export let thin = false;
-    export let up = false;
+export let val: string | number;
+export let valText: string;
+export let left = false;
+export let right = false;
+export let items: DropdownItem[];
+export let thin = false;
+export let up = false;
 
-    let shown = false;
-    const dispatch = createEventDispatcher();
+let shown = false;
+const dispatch = createEventDispatcher();
 
-    const makeOnSelected = (value: string | number, txt: string) => {
-        return () => {
-            val = value;
-            valText = txt;
+const makeOnSelected = (value: string | number, txt: string) => {
+    return () => {
+        val = value;
+        valText = txt;
 
-            shown = false;
-            dispatch("change");
-        };
+        shown = false;
+        dispatch("change");
     };
+};
 
-    const onClick = () => {
-        shown = !shown;
-    };
+const onClick = () => {
+    shown = !shown;
+};
 </script>
 
 <div class="dropdown" class:up class:active={shown} class:thin class:left class:right>

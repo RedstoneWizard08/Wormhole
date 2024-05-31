@@ -1,164 +1,152 @@
 <script lang="ts">
-    import DOMPurify from "dompurify";
-    import { page } from "$app/stores";
-    import LoadingPage from "$components/LoadingPage.svelte";
-    import { listen, unwrap } from "$api/util";
-    import { commands, type SourceMapping, type Mod, type ModVersion } from "$bindings";
-    import { marked } from "marked";
-    import { onMount } from "svelte";
-    import Dropdown from "$components/Dropdown.svelte";
-    import type { DropdownItem } from "$api/dropdown";
+import DOMPurify from "dompurify";
+import { page } from "$app/stores";
+import LoadingPage from "$components/LoadingPage.svelte";
+import { listen, unwrap } from "$api/util";
+import { commands, type SourceMapping, type Mod, type ModVersion } from "$bindings";
+import { marked } from "marked";
+import { onMount } from "svelte";
+import Dropdown from "$components/Dropdown.svelte";
+import type { DropdownItem } from "$api/dropdown";
 
-    const modId = $page.params.mod;
-    const source = $page.params.source;
-    const gameId = parseInt($page.params.game);
+const modId = $page.params.mod;
+const source = $page.params.source;
+const gameId = parseInt($page.params.game);
 
-    let modInfo: Mod | null = null;
-    let isLoading = true;
-    let mods = false;
-    let instanceId = parseInt($page.url.searchParams.get("instance") || "-1");
-    let downloading = false;
-    let total = 0;
-    let progress = 0;
-    let icon: string | null | undefined = null;
-    let versions: ModVersion[] = [];
-    let latest: ModVersion | null = null;
-    let selected: DropdownItem = { id: "", text: "" };
-    let installed = false;
+let modInfo: Mod | null = null;
+let isLoading = true;
+let mods = false;
+let instanceId = parseInt($page.url.searchParams.get("instance") || "-1");
+let downloading = false;
+let total = 0;
+let progress = 0;
+let icon: string | null | undefined = null;
+let versions: ModVersion[] = [];
+let latest: ModVersion | null = null;
+let selected: DropdownItem = { id: "", text: "" };
+let installed = false;
 
-    $: items = versions.map((v) => ({ id: v.id, text: v.name }) as DropdownItem);
+$: items = versions.map((v) => ({ id: v.id, text: v.name }) as DropdownItem);
 
-    const fmt = new Intl.NumberFormat("en-US", {
-        notation: "compact",
-        compactDisplay: "short",
-    });
+const fmt = new Intl.NumberFormat("en-US", {
+    notation: "compact",
+    compactDisplay: "short",
+});
 
-    onMount(async () => {
-        if (modId || $page.url) {
-            const instance = unwrap(await commands.getInstance(instanceId, null));
-
-            mods = /\/mods?(\/\d+)?/i.test($page.url.pathname);
-            modInfo = unwrap(await commands.getMod(gameId, source as SourceMapping, modId, null));
-            versions = unwrap(
-                await commands.getModVersions(
-                    gameId,
-                    source as SourceMapping,
-                    instance,
-                    modId,
-                    null
-                )
-            );
-            latest = unwrap(
-                await commands.getLatestVersion(
-                    gameId,
-                    source as SourceMapping,
-                    instance,
-                    modId,
-                    null
-                )
-            );
-            isLoading = false;
-
-            selected = { id: latest.id, text: latest.name! };
-
-            icon = import.meta.env.DEV
-                ? modInfo.icon?.replace("https://cdn.modrinth.com/", "/__mr_cdn/")
-                : modInfo.icon;
-
-            const modsList = unwrap(await commands.getMods(instanceId, null));
-
-            installed = modsList.find((v) => v.mod_id == modId) != null;
-        }
-
-        listen("progress_callback", (data) => {
-            downloading = true;
-
-            const payload = data.payload as any;
-
-            total = payload.total;
-            progress = payload.current;
-
-            if (total == progress) {
-                downloading = false;
-            }
-        });
-    });
-
-    const linkFix = (html: string) => {
-        const linkRegex = /(<a\s+(?!.*\btarget=)[^>]*)(href="https?:\/\/)(.*?")/gi;
-
-        const matches = html.matchAll(linkRegex);
-
-        for (const match of matches) {
-            const startTag = match[1];
-            const href = match[2] + match[3];
-            const newStartTag = `${startTag} target="_blank"`;
-            const newLink = `${newStartTag} ${href}`;
-            html = html.replace(match[0], newLink);
-        }
-
-        return html;
-    };
-
-    const imageFix = (html: string) => {
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(html, "text/html");
-        const images = doc.querySelectorAll("img");
-
-        images.forEach((img) => {
-            img.style.maxWidth = "50%";
-        });
-
-        return doc.body.innerHTML;
-    };
-
-    const handleHtml = (html: string) => {
-        const processes = [
-            (html: string) => marked(html) as string,
-            DOMPurify.sanitize,
-            linkFix,
-            imageFix,
-        ];
-
-        html = processes.reduce((html, process) => process(html), html);
-
-        if (import.meta.env.DEV) {
-            html = html.replace("https://cdn.modrinth.com/", "/__mr_cdn/");
-        }
-
-        return html;
-    };
-
-    const install = async () => {
-        downloading = true;
-
-        const version = versions.find((v) => v.id == selected.id)!;
+onMount(async () => {
+    if (modId || $page.url) {
         const instance = unwrap(await commands.getInstance(instanceId, null));
 
-        unwrap(await commands.installMod(gameId, modInfo!, version, instance, null));
+        mods = /\/mods?(\/\d+)?/i.test($page.url.pathname);
+        modInfo = unwrap(await commands.getMod(gameId, source as SourceMapping, modId, null));
+        versions = unwrap(
+            await commands.getModVersions(gameId, source as SourceMapping, instance, modId, null)
+        );
+        latest = unwrap(
+            await commands.getLatestVersion(gameId, source as SourceMapping, instance, modId, null)
+        );
+        isLoading = false;
 
-        const mods = unwrap(await commands.getMods(instance.id!, null));
+        selected = { id: latest.id, text: latest.name! };
 
-        installed = mods.find((v) => v.mod_id == modId) != null;
+        icon = import.meta.env.DEV
+            ? modInfo.icon?.replace("https://cdn.modrinth.com/", "/__mr_cdn/")
+            : modInfo.icon;
 
-        downloading = false;
-    };
+        const modsList = unwrap(await commands.getMods(instanceId, null));
 
-    const uninstall = async () => {
+        installed = modsList.find((v) => v.mod_id == modId) != null;
+    }
+
+    listen("progress_callback", (data) => {
         downloading = true;
 
-        const instance = unwrap(await commands.getInstance(instanceId, null));
-        const modsNow = unwrap(await commands.getMods(instance.id!, null));
-        const me = modsNow.find((v) => v.mod_id == modId)!;
+        const payload = data.payload as any;
 
-        unwrap(await commands.uninstallMod(gameId, me, instance, null));
+        total = payload.total;
+        progress = payload.current;
 
-        const mods = unwrap(await commands.getMods(instance.id!, null));
+        if (total == progress) {
+            downloading = false;
+        }
+    });
+});
 
-        installed = mods.find((v) => v.mod_id == modId) != null;
+const linkFix = (html: string) => {
+    const linkRegex = /(<a\s+(?!.*\btarget=)[^>]*)(href="https?:\/\/)(.*?")/gi;
 
-        downloading = false;
-    };
+    const matches = html.matchAll(linkRegex);
+
+    for (const match of matches) {
+        const startTag = match[1];
+        const href = match[2] + match[3];
+        const newStartTag = `${startTag} target="_blank"`;
+        const newLink = `${newStartTag} ${href}`;
+        html = html.replace(match[0], newLink);
+    }
+
+    return html;
+};
+
+const imageFix = (html: string) => {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, "text/html");
+    const images = doc.querySelectorAll("img");
+
+    images.forEach((img) => {
+        img.style.maxWidth = "50%";
+    });
+
+    return doc.body.innerHTML;
+};
+
+const handleHtml = (html: string) => {
+    const processes = [
+        (html: string) => marked(html) as string,
+        DOMPurify.sanitize,
+        linkFix,
+        imageFix,
+    ];
+
+    html = processes.reduce((html, process) => process(html), html);
+
+    if (import.meta.env.DEV) {
+        html = html.replace("https://cdn.modrinth.com/", "/__mr_cdn/");
+    }
+
+    return html;
+};
+
+const install = async () => {
+    downloading = true;
+
+    const version = versions.find((v) => v.id == selected.id)!;
+    const instance = unwrap(await commands.getInstance(instanceId, null));
+
+    unwrap(await commands.installMod(gameId, modInfo!, version, instance, null));
+
+    const mods = unwrap(await commands.getMods(instance.id!, null));
+
+    installed = mods.find((v) => v.mod_id == modId) != null;
+
+    downloading = false;
+};
+
+const uninstall = async () => {
+    downloading = true;
+
+    const instance = unwrap(await commands.getInstance(instanceId, null));
+    const modsNow = unwrap(await commands.getMods(instance.id!, null));
+    const me = modsNow.find((v) => v.mod_id == modId)!;
+
+    unwrap(await commands.uninstallMod(gameId, me, instance, null));
+
+    const mods = unwrap(await commands.getMods(instance.id!, null));
+
+    installed = mods.find((v) => v.mod_id == modId) != null;
+
+    downloading = false;
+};
 </script>
 
 {#if isLoading}

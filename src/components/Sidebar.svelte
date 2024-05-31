@@ -1,18 +1,18 @@
 <script lang="ts">
-    import { page } from "$app/stores";
-    import { plugins } from "$api/stores";
-    import logo from "$assets/icon.png";
+import { page } from "$app/stores";
+import { plugins } from "$api/stores";
+import logo from "$assets/icon.png";
 
-    let instances = false;
-    let gameSettings = false;
-    let settings = false;
+let instances = false;
+let gameSettings = false;
+let settings = false;
 
-    $: {
-        gameSettings = /\/settings?(\/\d+)?/i.test($page.url.pathname);
-        instances = /\/instances?(\/\d+)?/i.test($page.url.pathname);
+$: {
+    gameSettings = /\/settings?(\/\d+)?/i.test($page.url.pathname);
+    instances = /\/instances?(\/\d+)?/i.test($page.url.pathname);
 
-        settings = $page.url.pathname == "/settings";
-    }
+    settings = $page.url.pathname == "/settings";
+}
 </script>
 
 <div class="sidebar">

@@ -1,61 +1,61 @@
 <script lang="ts">
-    import { goto } from "$app/navigation";
-    import { onMount } from "svelte";
-    import { commands, type SourceMapping, type Mod } from "$bindings";
-    import { unwrap } from "$api/util";
+import { goto } from "$app/navigation";
+import { onMount } from "svelte";
+import { commands, type SourceMapping, type Mod } from "$bindings";
+import { unwrap } from "$api/util";
 
-    export let mod: Mod;
-    export let game: number;
-    export let instance: number;
+export let mod: Mod;
+export let game: number;
+export let instance: number;
 
-    let source: SourceMapping | null = null;
-    let installed = false;
-    let installing = false;
+let source: SourceMapping | null = null;
+let installed = false;
+let installing = false;
 
-    const img = import.meta.env.DEV
-        ? mod.icon?.replace("https://cdn.modrinth.com/", "/__mr_cdn/")
-        : mod.icon;
+const img = import.meta.env.DEV
+    ? mod.icon?.replace("https://cdn.modrinth.com/", "/__mr_cdn/")
+    : mod.icon;
 
-    const fmt = new Intl.NumberFormat("en-US", {
-        notation: "compact",
-        compactDisplay: "short",
-    });
+const fmt = new Intl.NumberFormat("en-US", {
+    notation: "compact",
+    compactDisplay: "short",
+});
 
-    onMount(async () => {
-        source = unwrap(await commands.getSourceId(mod.source, null)) as SourceMapping;
+onMount(async () => {
+    source = unwrap(await commands.getSourceId(mod.source, null)) as SourceMapping;
 
+    const mods = unwrap(await commands.getMods(instance, null));
+
+    installed = mods.find((v) => v.mod_id == mod.id) != null;
+});
+
+const download = async (ev: MouseEvent) => {
+    ev.preventDefault();
+    ev.stopPropagation();
+
+    installing = true;
+
+    const resolver = unwrap(await commands.getSourceId(mod.source, null)) as SourceMapping;
+    const instanceInfo = unwrap(await commands.getInstance(instance, null));
+    const latest = unwrap(
+        await commands.getLatestVersion(game, resolver, instanceInfo, mod.id, null)
+    );
+
+    if (installed) {
         const mods = unwrap(await commands.getMods(instance, null));
+        const me = mods.find((v) => v.mod_id == mod.id);
 
-        installed = mods.find((v) => v.mod_id == mod.id) != null;
-    });
+        unwrap(await commands.uninstallMod(game, me!, instanceInfo, null));
+    } else {
+        unwrap(await commands.installMod(game, mod, latest, instanceInfo, null));
+    }
 
-    const download = async (ev: MouseEvent) => {
-        ev.preventDefault();
-        ev.stopPropagation();
+    const mods = unwrap(await commands.getMods(instance, null));
 
-        installing = true;
+    installed = mods.find((v) => v.mod_id == mod.id) != null;
 
-        const resolver = unwrap(await commands.getSourceId(mod.source, null)) as SourceMapping;
-        const instanceInfo = unwrap(await commands.getInstance(instance, null));
-        const latest = unwrap(
-            await commands.getLatestVersion(game, resolver, instanceInfo, mod.id, null)
-        );
-
-        if (installed) {
-            const mods = unwrap(await commands.getMods(instance, null));
-            const me = mods.find((v) => v.mod_id == mod.id);
-
-            unwrap(await commands.uninstallMod(game, me!, instanceInfo, null));
-        } else {
-            unwrap(await commands.installMod(game, mod, latest, instanceInfo, null));
-        }
-
-        const mods = unwrap(await commands.getMods(instance, null));
-
-        installed = mods.find((v) => v.mod_id == mod.id) != null;
-
-        installing = false;
-    };
+    installing = false;
+};
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->

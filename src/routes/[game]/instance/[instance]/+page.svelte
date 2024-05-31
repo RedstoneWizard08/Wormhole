@@ -1,76 +1,72 @@
 <script lang="ts">
-    import ModEntry from "$components/ModEntry.svelte";
-    import { marked } from "marked";
-    import { page } from "$app/stores";
-    import { unwrap } from "$api/util";
-    import Back from "$components/Back.svelte";
-    import { goto } from "$app/navigation";
-    import { plugins } from "$api/stores";
-    import { commands, type DbMod, type Instance } from "$bindings";
-    import { onMount } from "svelte";
+import ModEntry from "$components/ModEntry.svelte";
+import { marked } from "marked";
+import { page } from "$app/stores";
+import { unwrap } from "$api/util";
+import Back from "$components/Back.svelte";
+import { goto } from "$app/navigation";
+import { plugins } from "$api/stores";
+import { commands, type DbMod, type Instance } from "$bindings";
+import { onMount } from "svelte";
 
-    let instance: Instance = null!;
-    let background: string | undefined = undefined;
-    let executable: string | undefined = undefined;
-    let editing = false;
-    let mods: DbMod[] = [];
-    let editor: HTMLTextAreaElement | undefined;
+let instance: Instance = null!;
+let background: string | undefined = undefined;
+let executable: string | undefined = undefined;
+let editing = false;
+let mods: DbMod[] = [];
+let editor: HTMLTextAreaElement | undefined;
 
-    $: description = instance?.description;
+$: description = instance?.description;
 
-    const id = $page.params.instance;
+const id = $page.params.instance;
 
-    onMount(async () => {
-        const info = unwrap(await commands.getInstance(parseInt(id || "-1", 10), null));
+onMount(async () => {
+    const info = unwrap(await commands.getInstance(parseInt(id || "-1", 10), null));
 
-        instance = info;
-        mods = unwrap(await commands.getMods(info.id!, null));
+    instance = info;
+    mods = unwrap(await commands.getMods(info.id!, null));
 
-        background = $plugins.find((v) => v.game == info.game_id)?.banner_url;
-        executable = info.data_dir;
+    background = $plugins.find((v) => v.game == info.game_id)?.banner_url;
+    executable = info.data_dir;
+});
+
+const refresh = async () => {
+    mods = unwrap(await commands.getMods(instance?.id!, null));
+};
+
+const save = async () => {
+    if (instance) {
+        instance = unwrap(
+            await commands.updateInstance(instance.id!, editor?.value || instance.description, null)
+        );
+    }
+
+    editing = false;
+};
+
+const edit = () => {
+    editing = true;
+
+    setTimeout(() => {
+        editor?.focus();
     });
+};
 
-    const refresh = async () => {
-        mods = unwrap(await commands.getMods(instance?.id!, null));
-    };
+const launch = async () => {
+    if (instance == null) return;
 
-    const save = async () => {
-        if (instance) {
-            instance = unwrap(
-                await commands.updateInstance(
-                    instance.id!,
-                    editor?.value || instance.description,
-                    null
-                )
-            );
-        }
+    console.log(unwrap(await commands.launchGame(instance.game_id, instance, null)));
+};
 
-        editing = false;
-    };
+const updateDescription = (ev: Event) => {
+    const textarea = ev.target as HTMLTextAreaElement;
 
-    const edit = () => {
-        editing = true;
+    description = textarea.value;
+};
 
-        setTimeout(() => {
-            editor?.focus();
-        });
-    };
-
-    const launch = async () => {
-        if (instance == null) return;
-
-        console.log(unwrap(await commands.launchGame(instance.game_id, instance, null)));
-    };
-
-    const updateDescription = (ev: Event) => {
-        const textarea = ev.target as HTMLTextAreaElement;
-
-        description = textarea.value;
-    };
-
-    const gotoMods = () => {
-        goto(`/${instance?.game_id}/mods?instance=${instance?.id}`);
-    };
+const gotoMods = () => {
+    goto(`/${instance?.game_id}/mods?instance=${instance?.id}`);
+};
 </script>
 
 <div class="full-instance-container">

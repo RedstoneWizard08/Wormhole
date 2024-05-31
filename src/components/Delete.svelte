@@ -1,6 +1,6 @@
 <script lang="ts">
-    export let clazz: string | undefined;
-    export let action: (event: MouseEvent) => any;
+export let clazz: string | undefined;
+export let action: (event: MouseEvent) => any;
 </script>
 
 <button type="button" class="button {clazz || ''}" on:click={action}>

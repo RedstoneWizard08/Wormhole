@@ -1,5 +1,5 @@
 <script>
-    import { plugins } from "$api/stores";
+import { plugins } from "$api/stores";
 </script>
 
 <div class="home-container">

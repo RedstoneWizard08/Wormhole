@@ -1,79 +1,79 @@
 <script lang="ts">
-    import SearchBar from "$components/SearchBar.svelte";
-    import LoadingPage from "$components/LoadingPage.svelte";
-    import Pagination from "$components/Pagination.svelte";
-    import Mod from "$components/Mod.svelte";
-    import { page } from "$app/stores";
-    import { commands, type PluginInfo, type SourceMapping, type Mod as ModItem } from "$bindings";
-    import { unwrap } from "$api/util";
-    import Dropdown from "$components/Dropdown.svelte";
-    import { onMount } from "svelte";
+import SearchBar from "$components/SearchBar.svelte";
+import LoadingPage from "$components/LoadingPage.svelte";
+import Pagination from "$components/Pagination.svelte";
+import Mod from "$components/Mod.svelte";
+import { page } from "$app/stores";
+import { commands, type PluginInfo, type SourceMapping, type Mod as ModItem } from "$bindings";
+import { unwrap } from "$api/util";
+import Dropdown from "$components/Dropdown.svelte";
+import { onMount } from "svelte";
 
-    let results: ModItem[] = [];
-    let perPage = 30;
-    let pages = 0;
-    let pageId = 0;
-    let loading = true;
-    let initialLoad = true;
-    let gameId = parseInt($page.params.game);
-    let sources: SourceMapping[] = [];
-    let source = sources[0];
-    let last: string | null = null;
-    let instanceId = parseInt($page.url.searchParams.get("instance") || "-1");
+let results: ModItem[] = [];
+let perPage = 30;
+let pages = 0;
+let pageId = 0;
+let loading = true;
+let initialLoad = true;
+let gameId = parseInt($page.params.game);
+let sources: SourceMapping[] = [];
+let source = sources[0];
+let last: string | null = null;
+let instanceId = parseInt($page.url.searchParams.get("instance") || "-1");
 
-    onMount(async () => {
+onMount(async () => {
+    loading = true;
+    pages = 0;
+
+    sources = unwrap(await commands.sources(gameId, null)) as SourceMapping[];
+    source = source || sources[0];
+
+    handleSearch("");
+
+    loading = false;
+    initialLoad = false;
+});
+
+const handleSearch = async (query: string, force = false) => {
+    if (last == query && !force) return;
+
+    console.log("Searching for:", query);
+
+    try {
         loading = true;
-        pages = 0;
 
-        sources = unwrap(await commands.sources(gameId, null)) as SourceMapping[];
-        source = source || sources[0];
+        const instance = unwrap(await commands.getInstance(instanceId, null));
 
-        handleSearch("");
+        const data = unwrap(
+            await commands.searchMods(
+                gameId,
+                source,
+                instance,
+                query,
+                { page: pageId, count: perPage },
+                null
+            )
+        );
 
-        loading = false;
-        initialLoad = false;
-    });
+        console.log("Got data:", data);
 
-    const handleSearch = async (query: string, force = false) => {
-        if (last == query && !force) return;
+        results = data.data;
+        pageId = data.page || pageId;
+        perPage = data.per_page || perPage;
+        pages = data.pages || pages;
 
-        console.log("Searching for:", query);
+        if (pageId > pages) pageId = Math.max(pages - 1, 0);
+    } catch (e) {
+        console.log(e);
+    }
 
-        try {
-            loading = true;
+    last = query;
+    loading = false;
+};
 
-            const instance = unwrap(await commands.getInstance(instanceId, null));
-
-            const data = unwrap(
-                await commands.searchMods(
-                    gameId,
-                    source,
-                    instance,
-                    query,
-                    { page: pageId, count: perPage },
-                    null
-                )
-            );
-
-            console.log("Got data:", data);
-
-            results = data.data;
-            pageId = data.page || pageId;
-            perPage = data.per_page || perPage;
-            pages = data.pages || pages;
-
-            if (pageId > pages) pageId = Math.max(pages - 1, 0);
-        } catch (e) {
-            console.log(e);
-        }
-
-        last = query;
-        loading = false;
-    };
-
-    const onChange = async () => {
-        await handleSearch(last || "", true);
-    };
+const onChange = async () => {
+    await handleSearch(last || "", true);
+};
 </script>
 
 <div class="browse-container">

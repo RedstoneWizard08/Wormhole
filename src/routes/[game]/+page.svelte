@@ -1,8 +1,8 @@
 <script lang="ts">
-    import { goto } from "$app/navigation";
-    import { page } from "$app/stores";
+import { goto } from "$app/navigation";
+import { page } from "$app/stores";
 
-    const gameId = parseInt($page.params.game);
+const gameId = parseInt($page.params.game);
 
-    goto(`/${gameId}/instances`);
+goto(`/${gameId}/instances`);
 </script>
