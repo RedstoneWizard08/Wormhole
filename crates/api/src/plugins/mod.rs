@@ -1,3 +1,5 @@
+//! Default plugins.
+
 pub mod common;
 pub mod ksp1;
 pub mod ksp2;
@@ -9,6 +11,7 @@ pub use minecraft::MinecraftPlugin;
 
 use crate::{plugin::Plugin, register::register_plugin, tauri::TauriPluginTrait};
 
+/// Default plugins.
 pub fn default_plugins() -> Vec<Box<dyn TauriPluginTrait>> {
     vec![
         Box::new(Kerbal1Plugin::new()),
@@ -17,6 +20,7 @@ pub fn default_plugins() -> Vec<Box<dyn TauriPluginTrait>> {
     ]
 }
 
+/// Register default plugins.
 pub async fn register_defaults() {
     for plugin in default_plugins() {
         register_plugin(plugin).await;

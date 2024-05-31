@@ -1,3 +1,5 @@
+//! The plugin API.
+
 use std::{collections::HashMap, path::PathBuf, sync::Arc};
 
 use anyhow::Result;
@@ -18,25 +20,49 @@ use whcore::{dirs::Dirs, manager::CoreManager};
 use crate::install::{install::install_mod, progress::tauri_progress, uninstall::uninstall_mod};
 
 lazy_static! {
+    /// A map of plugin identifiers to their resolvers.
+    /// This is a cache, as some resolvers are expensive to create
+    /// (e.g. CKAN, which refreshes two git repos every time it's created).
     pub static ref RESOLVERS: Arc<Mutex<HashMap<&'static str, Vec<Arc<Box<dyn Resolver + Send + Sync>>>>>> =
         Arc::new(Mutex::new(HashMap::new()));
 }
 
+/// A plugin's metadata. This is useful for getting information
+/// about the plugin on the frontend.
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize, Type)]
 pub struct PluginInfo {
+    /// The plugin's identifier.
     pub id: &'static str,
+
+    /// The plugin's game ID.
     pub game: i32,
+
+    /// The plugin's display name.
     pub display_name: String,
+
+    /// The plugin's icon URL.
     pub icon_url: String,
+
+    /// The plugin's banner URL.
     pub banner_url: String,
+
+    /// The plugin's fallback mod install directory.
+    /// If the installer can't automatically determine
+    /// where to install a mod, this will be used.
     pub fallback_dir: Option<&'static str>,
+
+    /// The plugin's query resolvers (IDs).
     pub resolvers: Vec<SourceMapping>,
 }
 
 unsafe impl Send for PluginInfo {}
 unsafe impl Sync for PluginInfo {}
 
-// TODO: Install hook (for Minecraft loader installation)
+/// A plugin.
+/// 
+/// This is the main interface for interacting with plugins.
+/// This is essentially a support module for a game. Every operation
+/// that Wormhole does goes through a plugin.
 #[async_trait]
 pub trait Plugin: Send + Sync {
     /// Create a new instance.
@@ -131,6 +157,7 @@ pub trait Plugin: Send + Sync {
         None
     }
 
+    /// Get the plugin as a [`PluginInfo`].
     async fn as_info(&self) -> Option<PluginInfo> {
         Some(PluginInfo {
             id: self.id(),
@@ -149,8 +176,10 @@ pub trait Plugin: Send + Sync {
         })
     }
 
+    /// Launch the game instance.
     async fn launch(&self, instance: Instance) -> Result<Child>;
 
+    /// Install a mod to the provided instance.
     async fn install_mod(
         &self,
         db: &mut Conn,
@@ -174,6 +203,7 @@ pub trait Plugin: Send + Sync {
         Ok(())
     }
 
+    /// Uninstall a mod from the provided instance.
     async fn uninstall_mod(&self, db: &mut Conn, item: DbMod, instance: Instance) -> Result<()>
     where
         Self: Sized,
@@ -183,6 +213,7 @@ pub trait Plugin: Send + Sync {
         Ok(())
     }
 
+    /// Install an instance after creation.
     async fn install_instance(&self, _inst: &Instance) -> Result<()> {
         Ok(())
     }

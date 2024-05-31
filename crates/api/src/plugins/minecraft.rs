@@ -1,3 +1,5 @@
+//! The Minecraft support module.
+
 use std::path::PathBuf;
 
 use anyhow::Result;
@@ -11,9 +13,10 @@ use whcore::manager::CoreManager;
 
 use crate::plugin::Plugin;
 
-pub const ICON_BYTES: &[u8] = include_bytes!("../../assets/minecraft/icon.svg");
-pub const BANNER_BYTES: &[u8] = include_bytes!("../../assets/minecraft/banner.jpg");
+const ICON_BYTES: &[u8] = include_bytes!("../assets/minecraft/icon.svg");
+const BANNER_BYTES: &[u8] = include_bytes!("../assets/minecraft/banner.jpg");
 
+/// The plugin for Minecraft.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct MinecraftPlugin;
 

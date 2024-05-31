@@ -1,3 +1,5 @@
+//! The Tauri plugin API.
+
 use anyhow::Result;
 use data::{instance::Instance, mod_::DbMod, source::SourceMapping, Conn};
 
@@ -27,21 +29,30 @@ use crate::{
     plugin::{Plugin as CPlugin, PluginInfo},
 };
 
+/// A Tauri command invoker.
 pub type Invoker<R> = Box<dyn Fn(Invoke<R>) + Send + Sync + 'static>;
 
+/// A Tauri plugin (struct form).
 pub struct TauriPlugin<R: Runtime> {
     plugin: Arc<Box<dyn TauriPluginTrait + Send + Sync + 'static>>,
 
+    /// The plugin's command invoker.
     pub handler: Arc<Invoker<R>>,
+
+    /// The plugin's name.
     pub name: &'static str,
+
+    /// The plugin's command handler and [`CollectFunctionsResult`].
     pub cmds: (CollectFunctionsResult, Invoker<R>),
 }
 
 impl<R: Runtime> TauriPlugin<R> {
+    /// Create a new Tauri plugin based on its trait form.
     pub fn new<T: TauriPluginTrait + Send + Sync + 'static>(plugin: T) -> Result<Self> {
         Self::new_boxed(Box::new(plugin))
     }
 
+    /// Create a new Tauri plugin based on the boxed version of its trait form.
     pub fn new_boxed(plugin: Box<dyn TauriPluginTrait + Send + Sync + 'static>) -> Result<Self> {
         tauri_aliases!();
 
@@ -75,10 +86,17 @@ impl<R: Runtime> Plugin<R> for TauriPlugin<R> {
     }
 }
 
+/// A Tauri plugin (trait form).
+/// 
+/// This was originally used for my naive version of the web UI's
+/// invoker system, but it's still used as the function proxy target
+/// in the GUI.
 #[async_trait]
 pub trait TauriPluginTrait: CPlugin + Send + Sync {
+    /// Get the plugin's identifier.
     async fn info(&self) -> Option<PluginInfo>;
 
+    /// Get the plugin's search results.
     async fn search_mods(
         &self,
         resolver: SourceMapping,
@@ -87,8 +105,10 @@ pub trait TauriPluginTrait: CPlugin + Send + Sync {
         opts: Option<QueryOptions>,
     ) -> Option<Paginated<Mod>>;
 
+    /// Get a mod's information.
     async fn get_mod(&self, resolver: SourceMapping, id: String) -> Option<Mod>;
 
+    /// Get mod's available versions.
     async fn get_mod_versions(
         &self,
         resolver: SourceMapping,
@@ -96,6 +116,7 @@ pub trait TauriPluginTrait: CPlugin + Send + Sync {
         id: String,
     ) -> Option<Vec<ModVersion>>;
 
+    /// Get a mod's version.
     async fn get_mod_version(
         &self,
         resolver: SourceMapping,
@@ -104,6 +125,7 @@ pub trait TauriPluginTrait: CPlugin + Send + Sync {
         version: String,
     ) -> Option<ModVersion>;
 
+    /// Get the latest available version of a mod.
     async fn get_latest_version(
         &self,
         resolver: SourceMapping,
@@ -111,6 +133,7 @@ pub trait TauriPluginTrait: CPlugin + Send + Sync {
         id: String,
     ) -> Option<ModVersion>;
 
+    /// Get the download URL for a mod.
     async fn get_download_url(
         &self,
         resolver: SourceMapping,
@@ -119,6 +142,7 @@ pub trait TauriPluginTrait: CPlugin + Send + Sync {
         version: Option<String>,
     ) -> Option<String>;
 
+    /// Install a mod.
     async fn install(
         &self,
         db: &mut Conn,
@@ -127,10 +151,13 @@ pub trait TauriPluginTrait: CPlugin + Send + Sync {
         instance: Instance,
     ) -> Option<()>;
 
+    /// Uninstall a mod.
     async fn uninstall(&self, db: &mut Conn, item: DbMod, instance: Instance) -> Option<()>;
 
+    /// Launch the game with the given instance.
     async fn launch_game(&self, instance: Instance) -> Option<()>;
 
+    /// Get the plugin's sources (IDs).
     async fn sources(&self) -> Option<Vec<String>>;
 }
 

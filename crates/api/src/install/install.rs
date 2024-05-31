@@ -1,3 +1,5 @@
+//! The module responsible for actually installing mods.
+
 use anyhow::Result;
 use data::{conv::DbIntoArg, instance::Instance, Conn};
 use install::{extract::extract_file, magic::detect_file_type};
@@ -7,6 +9,7 @@ use whcore::progress::ProgressCallback;
 
 use crate::plugin::Plugin;
 
+/// Install a mod.
 pub async fn install_mod(
     db: &mut Conn,
     item: Mod,

@@ -1,3 +1,5 @@
+//! The progress API.
+
 use std::{future::Future, pin::Pin};
 
 use tauri::Manager;
@@ -5,6 +7,7 @@ use tauri_specta::Event as TEvent;
 
 use crate::{EVENT_BUS, TAURI_HANDLE};
 
+/// A progress payload.
 #[derive(
     Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Default, Serialize, Deserialize, Type,
 )]
@@ -27,6 +30,7 @@ impl TEvent for ProgressPayload {
     const NAME: &'static str = "progress_callback";
 }
 
+/// A progress callback for Tauri.
 pub fn tauri_progress(
     total: u64,
     current: u64,

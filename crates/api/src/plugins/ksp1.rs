@@ -1,3 +1,5 @@
+//! The KSP1 support module.
+
 use std::path::PathBuf;
 
 use base64::{engine::general_purpose::STANDARD, Engine};
@@ -6,15 +8,18 @@ use whcore::finder::{finder::InstallFinder, pdlauncher::PrivateDivision, steam::
 
 use super::common::unity::UnityPlugin;
 
-pub const ICON_BYTES: &[u8] = include_bytes!("../assets/ksp1/icon.png");
-pub const BANNER_BYTES: &[u8] = include_bytes!("../assets/ksp1/banner.png");
+const ICON_BYTES: &[u8] = include_bytes!("../assets/ksp1/icon.png");
+const BANNER_BYTES: &[u8] = include_bytes!("../assets/ksp1/banner.png");
 
-// The expected size of KSP1's `steam_api64.dll` in bytes.
-// This helps to make sure that the game is not pirated.
-// File path: `[KSP1_ROOT]/KSP_x64_Data/Plugins/x86_64/steam_api64.dll`
-// Information from: SteamDB, DepotDownloader, KSP1 Installed Files
+/// The expected size of KSP1's `steam_api64.dll` in bytes.
+/// This helps to make sure that the game is not pirated.
+/// File path: `[KSP1_ROOT]/KSP_x64_Data/Plugins/x86_64/steam_api64.dll`
+/// Information from: SteamDB, DepotDownloader, KSP1 Installed Files
+///
+/// TODO: Actually use this information somewhere.
 pub const KSP1_STEAM_API_SIZE: u64 = 249120;
 
+/// The plugin for KSP1.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct Kerbal1Plugin;
 

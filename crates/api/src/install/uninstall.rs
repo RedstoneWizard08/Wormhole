@@ -1,3 +1,6 @@
+//! The uninstall API.
+//! This module really hates the installer API, on an emotional level.
+
 use std::{fs, path::PathBuf};
 
 use anyhow::Result;
@@ -9,6 +12,7 @@ use data::{
     Conn,
 };
 
+/// Uninstall a mod.
 pub async fn uninstall_mod(db: &mut Conn, item: DbMod, instance: Instance) -> Result<()> {
     let paths = serde_json::from_str::<Vec<PathBuf>>(&item.path)?;
 
