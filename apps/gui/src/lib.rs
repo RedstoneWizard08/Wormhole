@@ -1,3 +1,5 @@
+#![warn(missing_docs)]
+
 pub mod cmd;
 pub mod log;
 pub mod macros;

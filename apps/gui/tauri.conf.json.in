@@ -44,7 +44,7 @@
                 "signingIdentity": null
             },
             "resources": [],
-            "shortDescription": "The (unofficial) successor to CKAN.",
+            "shortDescription": "A centralized multi-game mod and modpack manager and launcher, supporting Steam, Minecraft, and the Private Division launcher.",
             "targets": "all",
             "windows": {
                 "certificateThumbprint": null,

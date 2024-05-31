@@ -111,6 +111,8 @@ const changer = (type: ModLoaderType, ver: string) => {
 
                 if (loader && getLoader(loader) === "Vanilla") {
                     loader = { Vanilla: ver };
+                } else if (loader && getLoader(loader) !== "None") {
+                    (loader as any)[getLoader(loader)][0] = ver;
                 }
 
                 break;
