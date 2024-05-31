@@ -143,19 +143,23 @@ const toggleOpen = () => {
     {@const name = getLoader(loader)}
     {@const ver = getLoaderVersion(loader)}
 
-    <button type="button" class="button" class:loading on:click={toggleOpen} bind:this={button}>
+    <button
+        type="button"
+        class="button"
+        class:loading
+        on:click={toggleOpen}
+        bind:this={button}
+    >
         {name === "None" ? "Vanilla" : name}
         {ver && ver != "" && ver != "." ? ver + "/" : ""}{vanillaVer}
         &nbsp;&nbsp;&nbsp;
 
         {#if loading}
-        <i class="fa-solid fa-refresh fa-spin" />
-        {:else}
-        {#if open}
+            <i class="fa-solid fa-refresh fa-spin" />
+        {:else if open}
             <i class="fa-solid fa-chevron-up" />
         {:else}
             <i class="fa-solid fa-chevron-down" />
-        {/if}
         {/if}
     </button>
 {/if}
