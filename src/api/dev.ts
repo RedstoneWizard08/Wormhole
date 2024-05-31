@@ -9,10 +9,10 @@ export const createMockAPI = () => {
         console.log(`Tauri invoke: ${cmd}\n`, args);
 
         if (
-            cmd == "tauri" &&
+            cmd === "tauri" &&
             "message" in args &&
             "cmd" in (args.message as any) &&
-            (args.message as any).cmd == "emit"
+            (args.message as any).cmd === "emit"
         ) {
             return globalEventBus.dispatchEvent(
                 new CustomEvent((args.message as any).event, {
@@ -46,7 +46,7 @@ export const createMockAPI = () => {
             output = data.Some;
         }
 
-        if ("None" in data || data == "None") {
+        if ("None" in data || data === "None") {
             output = null;
         }
 
@@ -55,9 +55,9 @@ export const createMockAPI = () => {
         return output;
     });
 
-    const proto = window.location.protocol == "https:" ? "wss" : "ws";
+    const proto = window.location.protocol === "https:" ? "wss" : "ws";
     const host = window.location.host;
-    const port = window.location.port == "" ? "" : ":" + window.location.port;
+    const port = window.location.port === "" ? "" : `:${window.location.port}`;
     const url = `${proto}://${host}${port}/_tauri/events`;
 
     console.log(`Connecting to events socket at ${url}...`);

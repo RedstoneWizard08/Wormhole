@@ -11,7 +11,7 @@ $: {
     gameSettings = /\/settings?(\/\d+)?/i.test($page.url.pathname);
     instances = /\/instances?(\/\d+)?/i.test($page.url.pathname);
 
-    settings = $page.url.pathname == "/settings";
+    settings = $page.url.pathname === "/settings";
 }
 </script>
 

@@ -19,7 +19,7 @@ export const commands = {
             return { status: "ok", data: await TAURI_INVOKE("get_plugins", { pool }) };
         } catch (e) {
             if (e instanceof Error) throw e;
-            else return { status: "error", error: e as any };
+            return { status: "error", error: e as any };
         }
     },
     async getDirs(
@@ -29,7 +29,7 @@ export const commands = {
             return { status: "ok", data: await TAURI_INVOKE("get_dirs", { pool }) };
         } catch (e) {
             if (e instanceof Error) throw e;
-            else return { status: "error", error: e as any };
+            return { status: "error", error: e as any };
         }
     },
     async getSourceId(sid: number, pool: unknown | null): Promise<__Result__<string, boolean>> {
@@ -37,7 +37,7 @@ export const commands = {
             return { status: "ok", data: await TAURI_INVOKE("get_source_id", { sid, pool }) };
         } catch (e) {
             if (e instanceof Error) throw e;
-            else return { status: "error", error: e as any };
+            return { status: "error", error: e as any };
         }
     },
     async getInstances(
@@ -64,7 +64,7 @@ export const commands = {
             return { status: "ok", data: await TAURI_INVOKE("get_instances", { gameId, pool }) };
         } catch (e) {
             if (e instanceof Error) throw e;
-            else return { status: "error", error: e as any };
+            return { status: "error", error: e as any };
         }
     },
     async getInstance(
@@ -91,7 +91,7 @@ export const commands = {
             return { status: "ok", data: await TAURI_INVOKE("get_instance", { instanceId, pool }) };
         } catch (e) {
             if (e instanceof Error) throw e;
-            else return { status: "error", error: e as any };
+            return { status: "error", error: e as any };
         }
     },
     async addInstance(
@@ -118,7 +118,7 @@ export const commands = {
             return { status: "ok", data: await TAURI_INVOKE("add_instance", { instance, pool }) };
         } catch (e) {
             if (e instanceof Error) throw e;
-            else return { status: "error", error: e as any };
+            return { status: "error", error: e as any };
         }
     },
     async deleteInstance(
@@ -132,7 +132,7 @@ export const commands = {
             };
         } catch (e) {
             if (e instanceof Error) throw e;
-            else return { status: "error", error: e as any };
+            return { status: "error", error: e as any };
         }
     },
     async createInstance(
@@ -163,7 +163,7 @@ export const commands = {
             };
         } catch (e) {
             if (e instanceof Error) throw e;
-            else return { status: "error", error: e as any };
+            return { status: "error", error: e as any };
         }
     },
     async updateInstance(
@@ -194,7 +194,7 @@ export const commands = {
             };
         } catch (e) {
             if (e instanceof Error) throw e;
-            else return { status: "error", error: e as any };
+            return { status: "error", error: e as any };
         }
     },
     async info(
@@ -218,7 +218,7 @@ export const commands = {
             return { status: "ok", data: await TAURI_INVOKE("info", { gameId, pool }) };
         } catch (e) {
             if (e instanceof Error) throw e;
-            else return { status: "error", error: e as any };
+            return { status: "error", error: e as any };
         }
     },
     async searchMods(
@@ -248,7 +248,7 @@ export const commands = {
             };
         } catch (e) {
             if (e instanceof Error) throw e;
-            else return { status: "error", error: e as any };
+            return { status: "error", error: e as any };
         }
     },
     async getMod(
@@ -282,7 +282,7 @@ export const commands = {
             };
         } catch (e) {
             if (e instanceof Error) throw e;
-            else return { status: "error", error: e as any };
+            return { status: "error", error: e as any };
         }
     },
     async getModVersions(
@@ -317,7 +317,7 @@ export const commands = {
             };
         } catch (e) {
             if (e instanceof Error) throw e;
-            else return { status: "error", error: e as any };
+            return { status: "error", error: e as any };
         }
     },
     async getModVersion(
@@ -354,7 +354,7 @@ export const commands = {
             };
         } catch (e) {
             if (e instanceof Error) throw e;
-            else return { status: "error", error: e as any };
+            return { status: "error", error: e as any };
         }
     },
     async getDownloadUrl(
@@ -379,7 +379,7 @@ export const commands = {
             };
         } catch (e) {
             if (e instanceof Error) throw e;
-            else return { status: "error", error: e as any };
+            return { status: "error", error: e as any };
         }
     },
     async launchGame(
@@ -394,7 +394,7 @@ export const commands = {
             };
         } catch (e) {
             if (e instanceof Error) throw e;
-            else return { status: "error", error: e as any };
+            return { status: "error", error: e as any };
         }
     },
     async sources(gameId: number, pool: unknown | null): Promise<__Result__<string[], boolean>> {
@@ -402,7 +402,7 @@ export const commands = {
             return { status: "ok", data: await TAURI_INVOKE("sources", { gameId, pool }) };
         } catch (e) {
             if (e instanceof Error) throw e;
-            else return { status: "error", error: e as any };
+            return { status: "error", error: e as any };
         }
     },
     async getLatestVersion(
@@ -437,7 +437,7 @@ export const commands = {
             };
         } catch (e) {
             if (e instanceof Error) throw e;
-            else return { status: "error", error: e as any };
+            return { status: "error", error: e as any };
         }
     },
     async installMod(
@@ -461,7 +461,7 @@ export const commands = {
             };
         } catch (e) {
             if (e instanceof Error) throw e;
-            else return { status: "error", error: e as any };
+            return { status: "error", error: e as any };
         }
     },
     async uninstallMod(
@@ -477,7 +477,7 @@ export const commands = {
             };
         } catch (e) {
             if (e instanceof Error) throw e;
-            else return { status: "error", error: e as any };
+            return { status: "error", error: e as any };
         }
     },
     async getMods(
@@ -504,7 +504,7 @@ export const commands = {
             return { status: "ok", data: await TAURI_INVOKE("get_mods", { instanceId, pool }) };
         } catch (e) {
             if (e instanceof Error) throw e;
-            else return { status: "error", error: e as any };
+            return { status: "error", error: e as any };
         }
     },
 };
@@ -803,7 +803,7 @@ export type SupportedSource = {
 
 import { invoke as TAURI_INVOKE } from "@tauri-apps/api/tauri";
 import * as TAURI_API_EVENT from "@tauri-apps/api/event";
-import { type WebviewWindowHandle as __WebviewWindowHandle__ } from "@tauri-apps/api/window";
+import type { WebviewWindowHandle as __WebviewWindowHandle__ } from "@tauri-apps/api/window";
 
 type __EventObj__<T> = {
     listen: (cb: TAURI_API_EVENT.EventCallback<T>) => ReturnType<typeof TAURI_API_EVENT.listen<T>>;
@@ -818,9 +818,8 @@ export type __Result__<T, E> = { status: "ok"; data: T } | { status: "error"; er
 function __makeEvents__<T extends Record<string, any>>(mappings: Record<keyof T, string>) {
     return new Proxy(
         {} as unknown as {
-            [K in keyof T]: __EventObj__<T[K]> & {
-                (handle: __WebviewWindowHandle__): __EventObj__<T[K]>;
-            };
+            [K in keyof T]: __EventObj__<T[K]> &
+                ((handle: __WebviewWindowHandle__) => __EventObj__<T[K]>);
         },
         {
             get: (_, event) => {

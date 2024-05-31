@@ -21,12 +21,12 @@ $: description = instance?.description;
 const id = $page.params.instance;
 
 onMount(async () => {
-    const info = unwrap(await commands.getInstance(parseInt(id || "-1", 10), null));
+    const info = unwrap(await commands.getInstance(Number.parseInt(id || "-1", 10), null));
 
     instance = info;
     mods = unwrap(await commands.getMods(info.id!, null));
 
-    background = $plugins.find((v) => v.game == info.game_id)?.banner_url;
+    background = $plugins.find((v) => v.game === info.game_id)?.banner_url;
     executable = info.data_dir;
 });
 

@@ -26,7 +26,7 @@ onMount(async () => {
 
     const mods = unwrap(await commands.getMods(instance, null));
 
-    installed = mods.find((v) => v.mod_id == mod.id) != null;
+    installed = mods.find((v) => v.mod_id === mod.id) != null;
 });
 
 const download = async (ev: MouseEvent) => {
@@ -43,7 +43,7 @@ const download = async (ev: MouseEvent) => {
 
     if (installed) {
         const mods = unwrap(await commands.getMods(instance, null));
-        const me = mods.find((v) => v.mod_id == mod.id);
+        const me = mods.find((v) => v.mod_id === mod.id);
 
         unwrap(await commands.uninstallMod(game, me!, instanceInfo, null));
     } else {
@@ -52,7 +52,7 @@ const download = async (ev: MouseEvent) => {
 
     const mods = unwrap(await commands.getMods(instance, null));
 
-    installed = mods.find((v) => v.mod_id == mod.id) != null;
+    installed = mods.find((v) => v.mod_id === mod.id) != null;
 
     installing = false;
 };

@@ -6,7 +6,7 @@ import Delete from "./Delete.svelte";
 
 export let mod: DbMod | null = null;
 export let instance: Instance;
-export let head: boolean = false;
+export let head = false;
 
 let source: string | null = null;
 

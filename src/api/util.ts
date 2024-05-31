@@ -9,17 +9,16 @@ import { globalEventBus } from "./dev";
 
 export const formatBytes = (n: number) => {
     const k = n > 0 ? Math.floor(Math.log2(n) / 10) : 0;
-    const rank = (k > 0 ? "KMGTPE"[k - 1] : "") + "b";
-    const count = (n / Math.pow(1024, k)).toFixed(1);
-    return count + " " + rank;
+    const rank = `${k > 0 ? "KMGTPE"[k - 1] : ""}b`;
+    const count = (n / 1024 ** k).toFixed(1);
+    return `${count} ${rank}`;
 };
 
 export const unwrap = <T, E>(res: __Result__<T, E>): T => {
-    if (res.status == "ok") {
+    if (res.status === "ok") {
         return res.data;
-    } else {
-        throw res.error;
     }
+    throw res.error;
 };
 
 export const listen = async <T>(
@@ -38,7 +37,6 @@ export const listen = async <T>(
         return () => {
             globalEventBus.removeEventListener(event, onEvent);
         };
-    } else {
-        return await realListen(event, handler);
     }
+    return await realListen(event, handler);
 };

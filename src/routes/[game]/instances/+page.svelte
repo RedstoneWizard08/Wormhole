@@ -10,7 +10,7 @@ let deleteing = false;
 let instances: Instance[] = [];
 let current: Instance | null = null;
 
-let gameId = parseInt($page.params.game);
+let gameId = Number.parseInt($page.params.game);
 
 let name = "";
 

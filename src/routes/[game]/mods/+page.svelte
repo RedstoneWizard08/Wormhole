@@ -15,11 +15,11 @@ let pages = 0;
 let pageId = 0;
 let loading = true;
 let initialLoad = true;
-let gameId = parseInt($page.params.game);
+let gameId = Number.parseInt($page.params.game);
 let sources: SourceMapping[] = [];
 let source = sources[0];
 let last: string | null = null;
-let instanceId = parseInt($page.url.searchParams.get("instance") || "-1");
+let instanceId = Number.parseInt($page.url.searchParams.get("instance") || "-1");
 
 onMount(async () => {
     loading = true;
@@ -35,7 +35,7 @@ onMount(async () => {
 });
 
 const handleSearch = async (query: string, force = false) => {
-    if (last == query && !force) return;
+    if (last === query && !force) return;
 
     console.log("Searching for:", query);
 

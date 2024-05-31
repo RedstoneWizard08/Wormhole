@@ -11,12 +11,12 @@ import type { DropdownItem } from "$api/dropdown";
 
 const modId = $page.params.mod;
 const source = $page.params.source;
-const gameId = parseInt($page.params.game);
+const gameId = Number.parseInt($page.params.game);
 
 let modInfo: Mod | null = null;
 let isLoading = true;
 let mods = false;
-let instanceId = parseInt($page.url.searchParams.get("instance") || "-1");
+let instanceId = Number.parseInt($page.url.searchParams.get("instance") || "-1");
 let downloading = false;
 let total = 0;
 let progress = 0;
@@ -55,7 +55,7 @@ onMount(async () => {
 
         const modsList = unwrap(await commands.getMods(instanceId, null));
 
-        installed = modsList.find((v) => v.mod_id == modId) != null;
+        installed = modsList.find((v) => v.mod_id === modId) != null;
     }
 
     listen("progress_callback", (data) => {
@@ -66,7 +66,7 @@ onMount(async () => {
         total = payload.total;
         progress = payload.current;
 
-        if (total == progress) {
+        if (total === progress) {
             downloading = false;
         }
     });
@@ -93,9 +93,9 @@ const imageFix = (html: string) => {
     const doc = parser.parseFromString(html, "text/html");
     const images = doc.querySelectorAll("img");
 
-    images.forEach((img) => {
+    for (const img of images) {
         img.style.maxWidth = "50%";
-    });
+    }
 
     return doc.body.innerHTML;
 };
@@ -120,14 +120,14 @@ const handleHtml = (html: string) => {
 const install = async () => {
     downloading = true;
 
-    const version = versions.find((v) => v.id == selected.id)!;
+    const version = versions.find((v) => v.id === selected.id)!;
     const instance = unwrap(await commands.getInstance(instanceId, null));
 
     unwrap(await commands.installMod(gameId, modInfo!, version, instance, null));
 
     const mods = unwrap(await commands.getMods(instance.id!, null));
 
-    installed = mods.find((v) => v.mod_id == modId) != null;
+    installed = mods.find((v) => v.mod_id === modId) != null;
 
     downloading = false;
 };
@@ -137,13 +137,13 @@ const uninstall = async () => {
 
     const instance = unwrap(await commands.getInstance(instanceId, null));
     const modsNow = unwrap(await commands.getMods(instance.id!, null));
-    const me = modsNow.find((v) => v.mod_id == modId)!;
+    const me = modsNow.find((v) => v.mod_id === modId)!;
 
     unwrap(await commands.uninstallMod(gameId, me, instance, null));
 
     const mods = unwrap(await commands.getMods(instance.id!, null));
 
-    installed = mods.find((v) => v.mod_id == modId) != null;
+    installed = mods.find((v) => v.mod_id === modId) != null;
 
     downloading = false;
 };
