@@ -87,6 +87,7 @@ jobs:
                   touch .env
                   # pnpm run build --target ${{ matrix.target }}
                   pnpm run app:build
+                  pnpm run web:build
                   cargo build --release --target ${{ matrix.target }}
               env:
                   CURSEFORGE_KEY: ${{ secrets.CURSEFORGE_KEY }}
