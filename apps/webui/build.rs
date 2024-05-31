@@ -5,6 +5,7 @@ fn build() {
         .join("..");
 
     std::process::Command::new("pnpm")
+        .arg("run")
         .arg("web:build")
         .current_dir(path)
         .spawn()
