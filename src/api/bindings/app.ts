@@ -176,6 +176,14 @@ try {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
+},
+async getLatestLoader(loader: ModLoaderType, pool: unknown | null) : Promise<__Result__<{ Vanilla: string } | { Forge: [string, string] } | { NeoForge: [string, string] } | { Fabric: [string, string] } | { Quilt: [string, string] } | "None", boolean>> {
+try {
+    return { status: "ok", data: await TAURI_INVOKE("get_latest_loader", { loader, pool }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
 }
 }
 

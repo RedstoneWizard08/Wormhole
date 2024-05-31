@@ -86,9 +86,7 @@ const gotoMods = () => {
 
             <div class="right">
                 {#if loader}
-                    <span class="loader">
-                        <LoaderDropdown />
-                    </span>
+                    <LoaderDropdown bind:loader />
                 {/if}
 
                 {#if editing}
@@ -209,10 +207,6 @@ const gotoMods = () => {
                 .right {
                     width: 50%;
                     justify-content: flex-end;
-
-                    .loader {
-                        margin-right: 2%;
-                    }
 
                     .edit {
                         color: lightskyblue;

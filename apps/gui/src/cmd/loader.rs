@@ -87,3 +87,14 @@ pub async fn get_loaders(
         _ => Vec::new(),
     })
 }
+
+#[whmacros::serde_call]
+#[tauri::command]
+#[specta::specta]
+pub async fn install_loader(
+    loader: ModLoader,
+    pool: AppState<'_>
+) -> Result<(), bool> {
+    
+    Ok(())
+}

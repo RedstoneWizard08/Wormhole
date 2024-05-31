@@ -5,11 +5,24 @@ export const getLoader = (loader: ModLoader): string => {
 };
 
 export const getMinecraft = (loader: ModLoader): string => {
-    return Object.values(loader)[0];
+    switch (getLoader(loader)) {
+        case "Vanilla":
+            return loader["Vanilla"];
+        case "Forge":
+            return loader["Forge"][0];
+        case "NeoForge":
+            return loader["NeoForge"][0];
+        case "Fabric":
+            return loader["Fabric"][0];
+        case "Quilt":
+            return loader["Quilt"][0];
+        default:
+            return "latest";
+    }
 };
 
 export const getLoaderVersion = (loader: ModLoader): string | undefined => {
-    return Object.values(loader)[1];
+    return Object.values(loader)[0][1];
 };
 
 export const formatLoader = (loader: ModLoader) => {

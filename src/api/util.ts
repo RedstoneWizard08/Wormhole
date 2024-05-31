@@ -40,3 +40,15 @@ export const listen = async <T>(
     }
     return await realListen(event, handler);
 };
+
+export const isChildOf = (node: Node, ancestor: HTMLElement) => {
+    let child: Node | null = node;
+
+    while (child !== null) {
+        if (child === ancestor) return true;
+        
+        child = child.parentNode;
+    }
+    
+    return false;   
+};
