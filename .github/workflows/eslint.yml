@@ -6,7 +6,7 @@ on:
     pull_request:
         branches: ["main"]
     schedule:
-        - cron: "23 17 * * 0"
+        - cron: "30 0 * * 5"
 
 jobs:
     eslint:
@@ -18,7 +18,7 @@ jobs:
             actions: read
         steps:
             - name: Checkout code
-              uses: actions/checkout@v3
+              uses: actions/checkout@v4
 
             - name: Install ESLint
               run: |

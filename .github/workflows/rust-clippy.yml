@@ -6,7 +6,7 @@ on:
     pull_request:
         branches: ["main"]
     schedule:
-        - cron: "40 23 * * 6"
+        - cron: "15 7 * * 1"
 
 jobs:
     rust-clippy-analyze:
@@ -18,7 +18,7 @@ jobs:
             actions: read
         steps:
             - name: Checkout code
-              uses: actions/checkout@v2
+              uses: actions/checkout@v4
 
             - name: Install Rust toolchain
               uses: actions-rs/toolchain@16499b5e05bf2e26879000db0c1d13f7e13fa3af
