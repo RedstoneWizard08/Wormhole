@@ -7,15 +7,15 @@ export const getLoader = (loader: ModLoader): string => {
 export const getMinecraft = (loader: ModLoader): string => {
     switch (getLoader(loader)) {
         case "Vanilla":
-            return loader["Vanilla"];
+            return (loader as any).Vanilla;
         case "Forge":
-            return loader["Forge"][0];
+            return (loader as any).Forge[0];
         case "NeoForge":
-            return loader["NeoForge"][0];
+            return (loader as any).NeoForge[0];
         case "Fabric":
-            return loader["Fabric"][0];
+            return (loader as any).Fabric[0];
         case "Quilt":
-            return loader["Quilt"][0];
+            return (loader as any).Quilt[0];
         default:
             return "latest";
     }
