@@ -1,3 +1,5 @@
+//! The CLI for the Web UI.
+
 use crate::log::{from_log_level, init_file_logger};
 use crate::server::run_server;
 use anyhow::Result;
@@ -12,9 +14,10 @@ use whcore::async_trait::async_trait;
 use whcore::traits::Runnable;
 
 lazy_static! {
-    pub static ref CONFIG: RwLock<Option<Cli>> = RwLock::new(None);
+    static ref CONFIG: RwLock<Option<Cli>> = RwLock::new(None);
 }
 
+/// The CLI for the Web UI.
 #[derive(Debug, Clone, Parser)]
 #[command(author, version, about, long_about = None)]
 pub struct Cli {
@@ -62,35 +65,5 @@ impl Runnable for Cli {
         add_route_filter("/@id/");
 
         run_server(pool, self.clone()).await
-    }
-}
-
-impl Cli {
-    pub const fn init_script(&self) -> &str {
-        "
-            Object.defineProperty(window, '__TAURI_POST_MESSAGE__', {{
-                value: (message) => {{
-                    const request = new XMLHttpRequest();
-                    
-                    request.addEventListener('load', function () {{
-                        let arg;
-                        let success = this.status === 200;
-
-                        try {{
-                          arg = JSON.parse(this.response);
-                        }} catch (e) {{
-                          arg = e;
-                          success = false;
-                        }}
-
-                        window[`_${{success ? message.callback : message.error}}`](arg);
-                    }});
-
-                    request.open('POST', '/_tauri/invoke/?window=' + window.__TAURI_METADATA__.__currentWindow.label, true);
-                    request.setRequestHeader('Content-Type', 'application/json');
-                    request.send(JSON.stringify(message));
-                }},
-            }});
-        "
     }
 }

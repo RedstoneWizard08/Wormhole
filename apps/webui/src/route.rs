@@ -1,3 +1,5 @@
+//! The invoke route.
+
 use crate::state::AppState;
 use anyhow::{anyhow, Result};
 use axum::{
@@ -10,12 +12,17 @@ use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use whcore::state::TState;
 
+/// The invoke command input.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InvokeInput {
+    /// The command to invoke.
     pub cmd: String,
+
+    /// The data to pass to the command.
     pub data: Value,
 }
 
+/// The route handler for invoking commands.
 #[axum::debug_handler]
 pub async fn route_handler(State(state): State<AppState>, req: Request<Body>) -> Result<String> {
     let headers = req.headers().clone();

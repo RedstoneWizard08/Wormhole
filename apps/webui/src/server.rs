@@ -1,3 +1,5 @@
+//! The server module.
+
 use std::net::{IpAddr, SocketAddr};
 
 use anyhow::Result;
@@ -11,6 +13,7 @@ use tokio::{join, net::TcpListener};
 
 use crate::{cli::Cli, glue::make_glue, router::RouterBuilder, state::AppState};
 
+/// Run the server.
 pub async fn run_server(pool: Pool<ConnectionManager<Conn>>, cli: Cli) -> Result<()> {
     info!("Setting up CTRL-C handler...");
 

@@ -1,3 +1,5 @@
+//! [`Glue`] stuff.
+
 use anyhow::Result;
 use glue::{config::GlueConfig, framework::Framework, glue::Glue};
 
@@ -18,6 +20,8 @@ mod client {
         Some(include_dir!("$CARGO_MANIFEST_DIR/../../build"));
 }
 
+/// Create a new [`Glue`] instance.
+// DISCLAIMER: No horses were harmed in the making of this function.
 pub fn make_glue() -> Result<Glue> {
     Ok(Glue::new(
         GlueConfig::builder()

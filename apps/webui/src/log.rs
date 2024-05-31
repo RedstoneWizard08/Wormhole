@@ -1,3 +1,5 @@
+//! The logging stuff.
+
 use anyhow::Result;
 use std::{io, path::PathBuf};
 use tracing_appender::{non_blocking, rolling};
@@ -11,6 +13,7 @@ use tracing_subscriber::{
     EnvFilter,
 };
 
+/// Converts a [`log::LevelFilter`] to a [`LevelFilter`].
 pub fn from_log_level(level: log::LevelFilter) -> LevelFilter {
     match level {
         log::LevelFilter::Debug => LevelFilter::DEBUG,
@@ -22,6 +25,7 @@ pub fn from_log_level(level: log::LevelFilter) -> LevelFilter {
     }
 }
 
+/// Initializes the file logger.
 pub fn init_file_logger(file: impl AsRef<str>, verbosity: LevelFilter) -> Result<()> {
     let file = PathBuf::from(file.as_ref());
     let file = rolling::hourly(file.parent().unwrap(), file.file_name().unwrap());

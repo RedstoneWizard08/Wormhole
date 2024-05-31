@@ -1,3 +1,5 @@
+//! The websocket module.
+
 use std::net::SocketAddr;
 
 use api::EVENT_BUS;
@@ -12,6 +14,7 @@ use futures_util::{SinkExt, StreamExt};
 use serde_json::json;
 use tokio_tungstenite::tungstenite::Message;
 
+/// The websocket handler for events.
 #[debug_handler]
 pub async fn websocket_handler(
     ws: WebSocketUpgrade,
