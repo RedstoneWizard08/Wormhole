@@ -28,6 +28,7 @@
         "app:build": "tsc && vite build",
         "app:preview": "vite preview",
         "dev": "tauri dev",
+        "dev:remote": "cargo run --bin webui",
         "build": "tauri build",
         "tauri": "tauri",
         "fmt": "biome format . --write && cargo fmt",
