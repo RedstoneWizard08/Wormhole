@@ -1,3 +1,5 @@
+use std::env::consts::OS;
+
 #[cfg(not(debug_assertions))]
 fn build() {
     let path = std::path::PathBuf::from(env!("CARGO_MANIFEST_DIR"))
@@ -20,5 +22,9 @@ fn build() {
 }
 
 fn main() {
+    if OS == "windows" {
+        return;
+    }
+    
     build();
 }
