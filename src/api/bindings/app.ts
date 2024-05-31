@@ -145,6 +145,15 @@ try {
     else return { status: "error", error: e  as any };
 }
 },
+/**
+ * Install a mod.
+ * 
+ * Arguments:
+ * - `game_id` - The instance's game ID.
+ * - `item` - The mod to install.
+ * - `version` - The specific version of the mod to install. This can be `null` or `None`.
+ * - `instance` - The instance to install to.
+ */
 async installMod(gameId: number, item: Mod, version: { id: string; name: string | null; file_name: string | null; size: string | null; hash: string | null; url: string | null } | null, instance: Instance, pool: unknown | null) : Promise<__Result__<null, boolean>> {
 try {
     return { status: "ok", data: await TAURI_INVOKE("install_mod", { gameId, item, version, instance, pool }) };
@@ -153,6 +162,14 @@ try {
     else return { status: "error", error: e  as any };
 }
 },
+/**
+ * Uninstall a mod.
+ * 
+ * Arguments:
+ * - `game_id` - The instance's game ID.
+ * - `item` - The mod to uninstall.
+ * - `instance` - The instance to uninstall from.
+ */
 async uninstallMod(gameId: number, item: DbMod, instance: Instance, pool: unknown | null) : Promise<__Result__<null, boolean>> {
 try {
     return { status: "ok", data: await TAURI_INVOKE("uninstall_mod", { gameId, item, instance, pool }) };
@@ -161,6 +178,12 @@ try {
     else return { status: "error", error: e  as any };
 }
 },
+/**
+ * Get a list of mods installed on an instance.
+ * 
+ * Arguments:
+ * - `instance_id` - The instance's ID in the database.
+ */
 async getMods(instanceId: number, pool: unknown | null) : Promise<__Result__<({ id: number | null; mod_id: string; version_id: string | null; name: string; file_name: string; instance_id: number | null; source_id: number | null; size: number | null; hash: string | null; path: string })[], boolean>> {
 try {
     return { status: "ok", data: await TAURI_INVOKE("get_mods", { instanceId, pool }) };

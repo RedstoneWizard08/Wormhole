@@ -41,7 +41,7 @@ pub fn serde_call(_attrs: TokenStream, item: TokenStream) -> TokenStream {
     accessors.pop();
 
     let obj = quote! {
-        #[allow(non_camel_case_types)]
+        #[allow(non_camel_case_types, missing_docs)]
         #[derive(serde::Serialize, serde::Deserialize)]
         #[serde(rename_all = "camelCase")]
         pub struct #holder {
@@ -50,6 +50,7 @@ pub fn serde_call(_attrs: TokenStream, item: TokenStream) -> TokenStream {
     };
 
     let wrapper = quote! {
+        #[allow(missing_docs)]
         #vis #async_ fn #invoke(data: impl AsRef<str>, state: AppState<'_>) #ret {
             let holder = serde_json::from_str::<#holder>(data.as_ref()).unwrap();
 
@@ -81,6 +82,7 @@ pub fn serde_impl(_attrs: TokenStream, item: TokenStream) -> TokenStream {
 
     let lazy = quote! {
         lazy_static::lazy_static! {
+            #[allow(missing_docs)]
             static ref #instance: std::sync::Arc<std::sync::Mutex<#holder>> = std::sync::Arc::new(std::sync::Mutex::new(#holder::new()));
         }
     };
@@ -138,7 +140,7 @@ fn serde_struct_call_inner(struct_holder: &Path, item: TokenStream) -> TokenStre
     accessors.pop();
 
     let obj = quote! {
-        #[allow(non_camel_case_types)]
+        #[allow(non_camel_case_types, missing_docs)]
         #[derive(serde::Serialize, serde::Deserialize)]
         #[serde(rename_all = "camelCase")]
         pub struct #holder {
@@ -147,6 +149,7 @@ fn serde_struct_call_inner(struct_holder: &Path, item: TokenStream) -> TokenStre
     };
 
     let wrapper = quote! {
+        #[allow(missing_docs)]
         #vis #async_ fn #invoke(data: impl AsRef<str>) #ret {
             let holder = serde_json::from_str::<#holder>(data.as_ref()).unwrap();
 

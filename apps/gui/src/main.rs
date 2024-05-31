@@ -4,5 +4,5 @@ use anyhow::Result;
 
 #[tokio::main]
 pub async fn main() -> Result<()> {
-    wormhole_gui::run::run().await
+    wormhole_gui::run().await
 }

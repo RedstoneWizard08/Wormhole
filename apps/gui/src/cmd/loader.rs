@@ -1,3 +1,5 @@
+//! Loader commands for the GUI.
+
 use api::register::PLUGINS;
 use data::{
     diesel::{update, ExpressionMethods, RunQueryDsl, SelectableHelper},
@@ -16,6 +18,10 @@ use whcore::Boolify;
 
 use crate::AppState;
 
+/// Get a loader's latest version.
+/// 
+/// Arguments:
+/// - `loader` - The loader type.
 #[whmacros::serde_call]
 #[tauri::command]
 #[specta::specta]
@@ -33,6 +39,10 @@ pub async fn get_latest_loader(
     })
 }
 
+/// Get a loader's versions.
+/// 
+/// Arguments:
+/// - `loader` - The loader type.
 #[whmacros::serde_call]
 #[tauri::command]
 #[specta::specta]
@@ -94,6 +104,11 @@ pub async fn get_loaders(
     })
 }
 
+/// Installs a loader to an instance.
+/// 
+/// Arguments:
+/// - `loader` - The loader to install.
+/// - `instance` - The instance to install the loader to.
 #[whmacros::serde_call]
 #[tauri::command]
 #[specta::specta]

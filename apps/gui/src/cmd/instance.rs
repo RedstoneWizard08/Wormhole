@@ -1,3 +1,5 @@
+//! Instance commands for the GUI.
+
 use api::register::PLUGINS;
 use chrono::{DateTime, Utc};
 use data::{
@@ -12,6 +14,12 @@ use whcore::Boolify;
 
 use crate::AppState;
 
+/// Gets all instances for the given game.
+/// 
+/// Arguments:
+/// - `game_id` - The game's ID in the database.
+/// 
+/// See: [`Instance`]
 #[whmacros::serde_call]
 #[tauri::command]
 #[specta::specta]
@@ -27,6 +35,10 @@ pub async fn get_instances(game_id: i32, pool: AppState<'_>) -> Result<Vec<Insta
     Ok(items)
 }
 
+/// Deletes an instance.
+/// 
+/// Arguments:
+/// - `instance_id` - The instance's ID in the database.
 #[whmacros::serde_call]
 #[tauri::command]
 #[specta::specta]
@@ -40,6 +52,15 @@ pub async fn delete_instance(instance_id: i32, pool: AppState<'_>) -> Result<(),
     Ok(())
 }
 
+/// Creates a new instance.
+/// This will also install whatever its default mod loader is.
+/// 
+/// Example: For Minecraft, this will install whatever the latest version
+///          of the vanilla game is.
+/// 
+/// Arguments:
+/// - `name` - The instance's name.
+/// - `game_id` - The game's ID in the database.
 #[whmacros::serde_call]
 #[tauri::command]
 #[specta::specta]
@@ -98,6 +119,11 @@ pub async fn create_instance(
     Ok(it)
 }
 
+/// Updates an instance's description.
+/// 
+/// Arguments:
+/// - `instance_id` - The instance's ID in the database.
+/// - `desc` - The new description.
 // Realistically, we won't be updating anything but the description for now.
 // If this changes in the future, I'll expand this.
 #[whmacros::serde_call]
@@ -116,6 +142,10 @@ pub async fn update_instance(
         .bool()?)
 }
 
+/// Creates a new instance, without installing a mod loader.
+/// 
+/// Arguments:
+/// - `instance` - The partial instance to create. This should not have an ID set.
 #[whmacros::serde_call]
 #[tauri::command]
 #[specta::specta]
@@ -147,6 +177,10 @@ pub async fn add_instance(instance: Instance, pool: AppState<'_>) -> Result<Inst
     Ok(it)
 }
 
+/// Gets an instance by its ID.
+/// 
+/// Arguments:
+/// - `instance_id` - The instance's ID in the database.
 #[whmacros::serde_call]
 #[tauri::command]
 #[specta::specta]

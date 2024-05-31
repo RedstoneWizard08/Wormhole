@@ -91,6 +91,19 @@
                     }
                 }
             }
+        },
+
+        {
+            "include": ["src/api/bindings/**/*.ts"],
+            "linter": {
+                "rules": {
+                    "style": {
+                        "noUselessElse": "off",
+                        "useShorthandFunctionType": "off",
+                        "useImportType": "off"
+                    }
+                }
+            }
         }
     ]
 }

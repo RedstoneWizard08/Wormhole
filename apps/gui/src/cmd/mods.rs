@@ -1,3 +1,5 @@
+//! Mod commands for the GUI.
+
 use std::ops::DerefMut;
 
 use data::{
@@ -11,6 +13,13 @@ use whcore::Boolify;
 
 use crate::AppState;
 
+/// Install a mod.
+/// 
+/// Arguments:
+/// - `game_id` - The instance's game ID.
+/// - `item` - The mod to install.
+/// - `version` - The specific version of the mod to install. This can be `null` or `None`.
+/// - `instance` - The instance to install to.
 #[whmacros::serde_call]
 #[tauri::command]
 #[specta::specta]
@@ -32,6 +41,12 @@ pub async fn install_mod(
         .ok_or(false)
 }
 
+/// Uninstall a mod.
+/// 
+/// Arguments:
+/// - `game_id` - The instance's game ID.
+/// - `item` - The mod to uninstall.
+/// - `instance` - The instance to uninstall from.
 #[whmacros::serde_call]
 #[tauri::command]
 #[specta::specta]
@@ -52,6 +67,10 @@ pub async fn uninstall_mod(
         .ok_or(false)
 }
 
+/// Get a list of mods installed on an instance.
+/// 
+/// Arguments:
+/// - `instance_id` - The instance's ID in the database.
 #[whmacros::serde_call]
 #[tauri::command]
 #[specta::specta]

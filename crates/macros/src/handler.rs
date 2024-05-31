@@ -55,6 +55,7 @@ impl From<Handler> for proc_macro::TokenStream {
         }
 
         quote! {
+            #[allow(missing_docs)]
             pub async fn handle_serde_call(cmd: impl AsRef<str>, data: impl AsRef<str>, state: AppState<'_>) -> String {
                 let cmd = cmd.as_ref();
 

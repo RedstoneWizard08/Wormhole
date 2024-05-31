@@ -10,6 +10,7 @@ use specta::ts::{BigIntExportBehavior, ExportConfig};
 use tauri::Wry;
 use tracing::level_filters::LevelFilter;
 
+/// Initialize a logger and start the Tauri app.
 pub async fn run() -> Result<()> {
     init_file_logger("./logs/app.log", LevelFilter::INFO)?;
 

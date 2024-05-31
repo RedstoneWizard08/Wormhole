@@ -11,17 +11,6 @@ use tracing_subscriber::{
     EnvFilter,
 };
 
-pub fn from_log_level(level: log::LevelFilter) -> LevelFilter {
-    match level {
-        log::LevelFilter::Debug => LevelFilter::DEBUG,
-        log::LevelFilter::Error => LevelFilter::ERROR,
-        log::LevelFilter::Info => LevelFilter::INFO,
-        log::LevelFilter::Off => LevelFilter::OFF,
-        log::LevelFilter::Trace => LevelFilter::TRACE,
-        log::LevelFilter::Warn => LevelFilter::WARN,
-    }
-}
-
 pub fn init_file_logger(file: impl AsRef<str>, verbosity: LevelFilter) -> Result<()> {
     let file = PathBuf::from(file.as_ref());
     let file = rolling::hourly(file.parent().unwrap(), file.file_name().unwrap());

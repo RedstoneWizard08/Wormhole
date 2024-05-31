@@ -78,6 +78,20 @@ export default tslint.config(
             "svelte/valid-compile": "off",
             "svelte/no-at-html-tags": "off",
             "no-unused-vars": "off",
+            "jsdoc/require-param": "off",
+            "jsdoc/require-returns": "off",
+            "jsdoc/require-jsdoc": "off",
+        },
+    },
+
+    {
+        files: [
+            "src/api/bindings/**/*.ts",
+        ],
+
+        rules: {
+            semi: "off",
+            "jsdoc/no-multi-asterisks": "off",
         },
     }
 );

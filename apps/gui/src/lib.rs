@@ -1,9 +1,18 @@
-#![warn(missing_docs)]
+#![warn(missing_docs, rustdoc::broken_intra_doc_links)]
 
-pub mod cmd;
-pub mod log;
-pub mod macros;
-pub mod run;
+//! # Wormhole GUI
+//! 
+//! Wormhole's Tauri-based GUI application.
+//! This is also a library crate so it's API can be used elsewhere. This API will eventually
+//! be moved into a separate crate.
+
+mod cmd;
+mod log;
+mod macros;
+mod run;
+
+pub use cmd::*;
+pub use run::run;
 
 pub extern crate api;
 pub extern crate macros as whmacros;
@@ -23,39 +32,9 @@ use data::diesel::{
 };
 use whcore::state::TState;
 
+/// Wormhole's state container.
+/// This is wrapped in a [`TState`] to work with [`specta`] and [`tauri_specta`].
 pub type AppState<'a> = TState<'a, Pool<ConnectionManager<SqliteConnection>>>;
-
-#[macro_export]
-macro_rules! commands {
-    ($($map: ident),* $(,)?; $($command: path),* $(,)?; $($event: ident),* $(,)?) => {
-        $crate::whmacros::serde_funcs![$($command),*];
-
-        pub fn funcs() -> $crate::specta::functions::CollectFunctionsResult {
-            let map = $crate::whcore::merge_type_maps(vec![$($map::type_map()),*]);
-
-            $crate::specta::functions::collect_functions![map; $($command),*]
-        }
-
-        pub fn invoker<R: $crate::tauri::Runtime>() -> Box<dyn Fn($crate::tauri::Invoke<R>) + Send + Sync + 'static> {
-            Box::new($crate::tauri::generate_handler![$($command),*])
-        }
-
-        pub fn cmds<R: $crate::tauri::Runtime>() -> (
-            $crate::specta::functions::CollectFunctionsResult,
-            Box<dyn Fn($crate::tauri::Invoke<R>) + Send + Sync + 'static>,
-        ) {
-            (funcs(), invoker())
-        }
-
-        pub fn events<R: $crate::tauri::Runtime>() -> ($crate::tauri_specta::EventCollection, Vec<$crate::tauri_specta::EventDataType>, $crate::specta::TypeMap) {
-            $crate::tauri_specta::collect_events![$($event),*]
-        }
-
-        pub fn ctx() -> $crate::tauri::Context<$crate::tauri::utils::assets::EmbeddedAssets> {
-            $crate::tauri::generate_context!()
-        }
-    }
-}
 
 commands![
     data, api, whcore, mcmeta;
