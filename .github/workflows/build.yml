@@ -98,23 +98,23 @@ jobs:
               with:
                   name: Binaries (${{ matrix.arch }})
                   path: |
-                      target/release/wormhole
-                      target/release/wormhole_gui
-                      target/release/wormhole_cli
-                      target/release/bindings
-                      target/release/webui
-                      target/release/*.exe
+                      target/${{ matrix.target }}/release/wormhole
+                      target/${{ matrix.target }}/release/wormhole_gui
+                      target/${{ matrix.target }}/release/wormhole_cli
+                      target/${{ matrix.target }}/release/bindings
+                      target/${{ matrix.target }}/release/webui
+                      target/${{ matrix.target }}/release/*.exe
 
-                      target/release/bundle/**/*.tar.gz
-                      target/release/bundle/**/*.tar.gz.sig
-                      target/release/bundle/**/*.dmg
-                      target/release/bundle/**/*.AppImage
-                      target/release/bundle/**/*.AppImage.tar.gz
-                      target/release/bundle/**/*.AppImage.tar.gz.sig
-                      target/release/bundle/**/*.deb
-                      target/release/bundle/**/*.rpm
-                      target/release/bundle/**/*.msi
-                      target/release/bundle/**/*.msi.zip
-                      target/release/bundle/**/*.msi.zip.sig
-                      target/release/bundle/**/*.nsis.zip
-                      target/release/bundle/**/*.nsis.zip.sig
+                      target/${{ matrix.target }}/release/bundle/**/*.tar.gz
+                      target/${{ matrix.target }}/release/bundle/**/*.tar.gz.sig
+                      target/${{ matrix.target }}/release/bundle/**/*.dmg
+                      target/${{ matrix.target }}/release/bundle/**/*.AppImage
+                      target/${{ matrix.target }}/release/bundle/**/*.AppImage.tar.gz
+                      target/${{ matrix.target }}/release/bundle/**/*.AppImage.tar.gz.sig
+                      target/${{ matrix.target }}/release/bundle/**/*.deb
+                      target/${{ matrix.target }}/release/bundle/**/*.rpm
+                      target/${{ matrix.target }}/release/bundle/**/*.msi
+                      target/${{ matrix.target }}/release/bundle/**/*.msi.zip
+                      target/${{ matrix.target }}/release/bundle/**/*.msi.zip.sig
+                      target/${{ matrix.target }}/release/bundle/**/*.nsis.zip
+                      target/${{ matrix.target }}/release/bundle/**/*.nsis.zip.sig
