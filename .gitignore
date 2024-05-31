@@ -17,6 +17,7 @@ testing
 # Svelte
 .svelte-kit
 build
+web-build
 
 # Editor directories and files
 .idea

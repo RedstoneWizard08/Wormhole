@@ -1,7 +1,22 @@
 use anyhow::Result;
-use glue::{client, config::GlueConfig, framework::Framework, glue::Glue};
+use glue::{config::GlueConfig, framework::Framework, glue::Glue};
 
-client!("$CARGO_MANIFEST_DIR/../../build");
+// For some reason the `client!` macro doesn't work.
+// I'll need to look into that.
+#[cfg(debug_assertions)]
+mod client {
+    use glue::include_dir::Dir;
+
+    pub const CLIENT_DIR: Option<Dir<'static>> = None;
+}
+
+#[cfg(not(debug_assertions))]
+mod client {
+    use glue::include_dir::{self, include_dir, Dir};
+
+    pub const CLIENT_DIR: Option<Dir<'static>> =
+        Some(include_dir!("$CARGO_MANIFEST_DIR/../../build"));
+}
 
 pub fn make_glue() -> Result<Glue> {
     Ok(Glue::new(

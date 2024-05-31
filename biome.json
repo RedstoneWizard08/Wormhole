@@ -29,7 +29,8 @@
             ".git",
             "*.rs",
             "external",
-            "crates/mcmeta/test"
+            "crates/mcmeta/test",
+            "web-build"
         ]
     },
     "organizeImports": { "enabled": true },

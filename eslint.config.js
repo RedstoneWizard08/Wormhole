@@ -26,6 +26,7 @@ const ignores = [
     ".git",
     "*.rs",
     "target",
+    "web-build",
 ];
 
 export default tslint.config(

@@ -10,6 +10,9 @@ export default {
     kit: {
         adapter: adapter({
             fallback: "index.html",
+
+            // eslint-disable-next-line no-undef
+            pages: process.env.TAURI_WEB_DEV ? "web-build" : "build",
         }),
 
         alias: {
