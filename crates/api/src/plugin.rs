@@ -83,6 +83,9 @@ pub trait Plugin: Send + Sync {
     /// Create the plugin's query resolvers.
     async fn create_resolvers(&self) -> Vec<Box<dyn Resolver + Send + Sync>>;
 
+    /// Install a mod loader to an instance.
+    async fn install_loader(&self, instance: &Instance, loader: &ModLoader) -> Result<()>;
+
     /// Get the display name.
     fn display(&self) -> String;
 

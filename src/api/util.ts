@@ -46,9 +46,9 @@ export const isChildOf = (node: Node, ancestor: HTMLElement) => {
 
     while (child !== null) {
         if (child === ancestor) return true;
-        
+
         child = child.parentNode;
     }
-    
-    return false;   
+
+    return false;
 };

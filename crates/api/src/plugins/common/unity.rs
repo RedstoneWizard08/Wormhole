@@ -78,4 +78,8 @@ impl<T: UnityPlugin> Plugin for T {
     async fn loader(&self, _instance: Instance) -> Result<ModLoader> {
         Ok(ModLoader::None)
     }
+
+    async fn install_loader(&self, _instance: &Instance, _loader: &ModLoader) -> Result<()> {
+        Ok(())
+    }
 }

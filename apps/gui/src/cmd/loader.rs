@@ -1,3 +1,9 @@
+use api::register::PLUGINS;
+use data::{
+    diesel::{update, ExpressionMethods, RunQueryDsl, SelectableHelper},
+    instance::Instance,
+    schema::instances,
+};
 use mcmeta::{
     cmd::modded::{ModLoader, ModLoaderType},
     fabric::get_fabric_versions,
@@ -93,8 +99,20 @@ pub async fn get_loaders(
 #[specta::specta]
 pub async fn install_loader(
     loader: ModLoader,
-    pool: AppState<'_>
-) -> Result<(), bool> {
-    
-    Ok(())
+    instance: Instance,
+    pool: AppState<'_>,
+) -> Result<Instance, bool> {
+    let mut instance = instance;
+    let lock = PLUGINS.lock().await;
+    let plugin = lock.get(&instance.game_id).bool()?;
+
+    instance.loader = Some(serde_json::to_string(&loader).bool()?);
+    plugin.install_loader(&instance, &loader).await.bool()?;
+
+    Ok(update(instances::table)
+        .filter(instances::id.eq(instance.id))
+        .set(instances::loader.eq(instance.loader))
+        .returning(Instance::as_returning())
+        .get_result(&mut pool.get().bool()?)
+        .bool()?)
 }

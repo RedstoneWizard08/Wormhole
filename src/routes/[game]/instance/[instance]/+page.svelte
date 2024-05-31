@@ -17,26 +17,23 @@ let editing = false;
 let mods: DbMod[] = [];
 let editor: HTMLTextAreaElement | undefined;
 let loader: ModLoader | undefined;
+let installing = false;
 
 $: description = instance?.description;
 
 const id = $page.params.instance;
 
-onMount(async () => {
-    const info = unwrap(await commands.getInstance(Number.parseInt(id || "-1", 10), null));
+const refresh = async () => {
+    instance = unwrap(await commands.getInstance(Number.parseInt(id || "-1", 10), null));
+    mods = unwrap(await commands.getMods(instance.id!, null));
 
-    instance = info;
-    mods = unwrap(await commands.getMods(info.id!, null));
-
-    background = $plugins.find((v) => v.game === info.game_id)?.banner_url;
-    executable = info.data_dir;
+    background = $plugins.find((v) => v.game === instance.game_id)?.banner_url;
+    executable = instance.data_dir;
 
     loader = instance.loader ? JSON.parse(instance.loader) : { Vanilla: "<unknown>" };
-});
-
-const refresh = async () => {
-    mods = unwrap(await commands.getMods(instance?.id!, null));
 };
+
+onMount(refresh);
 
 const save = async () => {
     if (instance) {
@@ -71,6 +68,14 @@ const updateDescription = (ev: Event) => {
 const gotoMods = () => {
     goto(`/${instance?.game_id}/mods?instance=${instance?.id}`);
 };
+
+const reinstall = async () => {
+    if (instance == null) return;
+
+    installing = true;
+    instance = unwrap(await commands.installLoader(loader!, instance, null));
+    installing = false;
+};
 </script>
 
 <div class="full-instance-container">
@@ -86,7 +91,7 @@ const gotoMods = () => {
 
             <div class="right">
                 {#if loader}
-                    <LoaderDropdown bind:loader />
+                    <LoaderDropdown bind:loader on:change={reinstall} bind:loading={installing} />
                 {/if}
 
                 {#if editing}

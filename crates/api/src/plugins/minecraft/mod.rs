@@ -68,8 +68,7 @@ impl Plugin for MinecraftPlugin {
     async fn install_instance(&self, inst: &Instance) -> Result<()> {
         info!("Fetching mod loader...");
 
-        let latest = ModLoader::quilt_latest().await?;
-        let loader = ModLoader::Quilt("1.20.4".into(), latest.loader_version());
+        let loader = ModLoader::vanilla_latest().await?;
 
         info!("Creating manager and installing loader...");
 
@@ -103,5 +102,16 @@ impl Plugin for MinecraftPlugin {
         let manager = MinecraftManager::load_or_create(instance.data_dir(), &loader).await?;
 
         Ok(manager.loader)
+    }
+
+    async fn install_loader(&self, instance: &Instance, loader: &ModLoader) -> Result<()> {
+        info!("Creating manager...");
+
+        let mut manager = MinecraftManager::load_or_create(instance.data_dir(), loader).await?;
+
+        info!("Installing loader...");
+
+        manager.install_loader(loader, &None).await?;
+        manager.save()
     }
 }

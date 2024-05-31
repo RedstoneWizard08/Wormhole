@@ -80,7 +80,8 @@ commands![
     cmd::mods::uninstall_mod,
     cmd::mods::get_mods,
     cmd::loader::get_loaders,
-    cmd::loader::get_latest_loader;
+    cmd::loader::get_latest_loader,
+    cmd::loader::install_loader;
 
     ProgressPayload
 ];

@@ -6,6 +6,7 @@ import { isChildOf, unwrap } from "$api/util";
 import { createEventDispatcher, onMount } from "svelte";
 
 export let loader: ModLoader | undefined;
+export let loading = false;
 
 let dropdown: HTMLDivElement;
 let button: HTMLButtonElement;
@@ -130,21 +131,31 @@ const changer = (type: ModLoaderType, ver: string) => {
         emitter("change");
     };
 };
+
+const toggleOpen = () => {
+    if (loading) return;
+
+    open = !open;
+};
 </script>
 
 {#if loader}
     {@const name = getLoader(loader)}
     {@const ver = getLoaderVersion(loader)}
 
-    <button type="button" class="button" on:click={() => (open = !open)} bind:this={button}>
+    <button type="button" class="button" class:loading on:click={toggleOpen} bind:this={button}>
         {name === "None" ? "Vanilla" : name}
         {ver && ver != "" && ver != "." ? ver + "/" : ""}{vanillaVer}
         &nbsp;&nbsp;&nbsp;
 
+        {#if loading}
+        <i class="fa-solid fa-refresh fa-spin" />
+        {:else}
         {#if open}
             <i class="fa-solid fa-chevron-up" />
         {:else}
             <i class="fa-solid fa-chevron-down" />
+        {/if}
         {/if}
     </button>
 {/if}
@@ -152,7 +163,7 @@ const changer = (type: ModLoaderType, ver: string) => {
 <div
     class="dropdown"
     class:loader={openLoader !== "Vanilla" && openLoader !== "None"}
-    class:open
+    class:open={open && !loading}
     bind:this={dropdown}
 >
     <div class="left list">
@@ -279,6 +290,15 @@ const changer = (type: ModLoaderType, ver: string) => {
         &:hover {
             color: black;
             background-color: lightskyblue;
+        }
+
+        &.loading {
+            cursor: not-allowed;
+
+            &:hover {
+                color: lightskyblue;
+                background-color: transparent;
+            }
         }
     }
 
