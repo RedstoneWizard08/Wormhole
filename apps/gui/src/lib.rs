@@ -78,7 +78,9 @@ commands![
     cmd::plugin::get_latest_version,
     cmd::mods::install_mod,
     cmd::mods::uninstall_mod,
-    cmd::mods::get_mods;
+    cmd::mods::get_mods,
+    cmd::loader::get_loaders,
+    cmd::loader::get_latest_loader;
 
     ProgressPayload
 ];

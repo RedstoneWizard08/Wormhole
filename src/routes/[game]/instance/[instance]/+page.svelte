@@ -6,15 +6,17 @@ import { unwrap } from "$api/util";
 import Back from "$components/Back.svelte";
 import { goto } from "$app/navigation";
 import { plugins } from "$api/stores";
-import { commands, type DbMod, type Instance } from "$bindings";
+import { commands, type DbMod, type Instance, type ModLoader } from "$bindings";
 import { onMount } from "svelte";
+import LoaderDropdown from "$components/LoaderDropdown.svelte";
 
 let instance: Instance = null!;
-let background: string | undefined = undefined;
-let executable: string | undefined = undefined;
+let background: string | undefined;
+let executable: string | undefined;
 let editing = false;
 let mods: DbMod[] = [];
 let editor: HTMLTextAreaElement | undefined;
+let loader: ModLoader | undefined;
 
 $: description = instance?.description;
 
@@ -28,6 +30,8 @@ onMount(async () => {
 
     background = $plugins.find((v) => v.game === info.game_id)?.banner_url;
     executable = info.data_dir;
+
+    loader = instance.loader ? JSON.parse(instance.loader) : { Vanilla: "<unknown>" };
 });
 
 const refresh = async () => {
@@ -81,6 +85,12 @@ const gotoMods = () => {
             </div>
 
             <div class="right">
+                {#if loader}
+                    <span class="loader">
+                        <LoaderDropdown />
+                    </span>
+                {/if}
+
                 {#if editing}
                     <button type="button" class="edit" on:click={save}>
                         <i class="fa-solid fa-save" />
@@ -107,7 +117,8 @@ const gotoMods = () => {
                 on:input={updateDescription}
                 on:keydown={updateDescription}
                 on:change={updateDescription}
-                bind:this={editor} />
+                bind:this={editor}
+            />
         {:else}
             <p class="description">
                 {@html marked(instance?.description || "")}
@@ -198,6 +209,10 @@ const gotoMods = () => {
                 .right {
                     width: 50%;
                     justify-content: flex-end;
+
+                    .loader {
+                        margin-right: 2%;
+                    }
 
                     .edit {
                         color: lightskyblue;

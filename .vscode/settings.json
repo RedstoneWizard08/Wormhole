@@ -5,6 +5,6 @@
     "eslint.experimental.useFlatConfig": true,
 
     "[svelte]": {
-        "editor.defaultFormatter": "svelte.svelte-vscode"
+        "editor.defaultFormatter": "biomejs.biome"
     }
 }

@@ -18,7 +18,9 @@ pub mod util;
 /// Takes in a neoforge version and returns
 /// a tuple with the Minecraft version (1st) and
 /// the NeoForge verison (2nd).
-pub fn parse_neoforge_version(ver: String) -> (String, String) {
+pub fn parse_neoforge_version(ver: impl AsRef<str>) -> (String, String) {
+    let ver = ver.as_ref().to_string();
+
     if ver.starts_with("1.") {
         (
             ver.split("-").nth(0).unwrap().to_string(),

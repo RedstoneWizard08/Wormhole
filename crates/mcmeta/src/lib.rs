@@ -1,4 +1,4 @@
-use cmd::modded::ModLoader;
+use cmd::modded::{ModLoader, ModLoaderType};
 use specta::{NamedType, TypeMap};
 
 #[macro_use]
@@ -32,6 +32,9 @@ pub fn type_map() -> TypeMap {
 
     let ty = ModLoader::named_data_type(&mut map, &[]);
     map.insert(ModLoader::SID, ty);
+
+    let ty = ModLoaderType::named_data_type(&mut map, &[]);
+    map.insert(ModLoaderType::SID, ty);
 
     map
 }

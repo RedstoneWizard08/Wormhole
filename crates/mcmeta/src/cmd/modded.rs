@@ -40,6 +40,16 @@ pub enum ModLoader {
     None,
 }
 
+#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize, Type)]
+pub enum ModLoaderType {
+    Vanilla,
+    Forge,
+    NeoForge,
+    Fabric,
+    Quilt,
+    None,
+}
+
 impl ModLoader {
     pub fn name(&self) -> Option<&'static str> {
         match self {
