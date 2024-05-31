@@ -17,7 +17,6 @@ const main = async () => {
     page.on("console", (message) => {
         const type = message.type().substr(0, 3).toUpperCase();
 
-        // eslint-disable-next-line no-unused-vars
         const colors: { [key: string]: (text: string) => string } = {
             LOG: (text) => text,
             ERR: red,
