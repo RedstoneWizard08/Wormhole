@@ -48,7 +48,12 @@ $: openLoaders = (() => {
 })().sort();
 
 onMount(async () => {
-    vanillaVer = getMinecraft(unwrap(await commands.getLatestLoader("Vanilla", null)));
+    if (loader) {
+        vanillaVer = getMinecraft(loader);
+    } else {
+        vanillaVer = getMinecraft(unwrap(await commands.getLatestLoader("Vanilla", null)));
+    }
+
     vanilla = unwrap(await commands.getLoaders("Vanilla", null));
 
     window.addEventListener("click", (ev) => {

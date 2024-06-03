@@ -8,13 +8,13 @@ macro_rules! plugin_fn_proxy {
         #[$crate::whmacros::serde_call]
         #[$crate::tauri::command]
         #[$crate::specta::specta]
-        pub async fn $name(game_id: i32, _pool: $crate::AppState<'_>) -> Result<$ret, bool> {
-            use $crate::whcore::Boolify;
+        pub async fn $name(game_id: i32, _pool: $crate::AppState<'_>) -> $crate::Result<$ret> {
+            use $crate::whcore::Stringify;
 
             let it = $crate::api::register::PLUGINS.lock().await;
-            let plugin = it.get(&game_id).bool()?;
+            let plugin = it.get(&game_id).stringify()?;
 
-            plugin.$fn().await.bool()
+            plugin.$fn().await.stringify()
         }
     };
 
@@ -23,13 +23,13 @@ macro_rules! plugin_fn_proxy {
         #[$crate::whmacros::serde_call]
         #[$crate::tauri::command]
         #[$crate::specta::specta]
-        pub async fn $name(game_id: i32, _pool: $crate::AppState<'_>) -> Result<$ret, bool> {
-            use $crate::whcore::Boolify;
+        pub async fn $name(game_id: i32, _pool: $crate::AppState<'_>) -> $crate::Result<$ret> {
+            use $crate::whcore::Stringify;
 
             let it = $crate::api::register::PLUGINS.lock().await;
-            let plugin = it.get(&game_id).bool()?;
+            let plugin = it.get(&game_id).stringify()?;
 
-            plugin.$fn().await.ok_or(false)
+            plugin.$fn().await.ok_or("Tried to unwrap a None value!".into())
         }
     };
 
@@ -38,13 +38,13 @@ macro_rules! plugin_fn_proxy {
         #[whmacros::serde_call]
         #[tauri::command]
         #[specta::specta]
-        pub async fn $name(game_id: i32, $($arg: $arg_ty),*, _pool: $crate::AppState<'_>) -> Result<$ret, bool> {
-            use $crate::whcore::Boolify;
+        pub async fn $name(game_id: i32, $($arg: $arg_ty),*, _pool: $crate::AppState<'_>) -> $crate::Result<$ret> {
+            use $crate::whcore::Stringify;
 
             let it = $crate::api::register::PLUGINS.lock().await;
-            let plugin = it.get(&game_id).bool()?;
+            let plugin = it.get(&game_id).stringify()?;
 
-            plugin.$fn($($arg),*).await.bool()
+            plugin.$fn($($arg),*).await.stringify()
         }
     };
 
@@ -53,13 +53,13 @@ macro_rules! plugin_fn_proxy {
         #[$crate::whmacros::serde_call]
         #[$crate::tauri::command]
         #[$crate::specta::specta]
-        pub async fn $name(game_id: i32, $($arg: $arg_ty),*, _pool: $crate::AppState<'_>) -> Result<$ret, bool> {
-            use $crate::whcore::Boolify;
+        pub async fn $name(game_id: i32, $($arg: $arg_ty),*, _pool: $crate::AppState<'_>) -> $crate::Result<$ret> {
+            use $crate::whcore::Stringify;
 
             let it = $crate::api::register::PLUGINS.lock().await;
-            let plugin = it.get(&game_id).bool()?;
+            let plugin = it.get(&game_id).stringify()?;
 
-            plugin.$fn($($arg),*).await.ok_or(false)
+            plugin.$fn($($arg),*).await.ok_or("Tried to unwrap a None value!".into())
         }
     };
 
@@ -68,13 +68,13 @@ macro_rules! plugin_fn_proxy {
         #[$crate::whmacros::serde_call]
         #[$crate::tauri::command]
         #[$crate::specta::specta]
-        pub async fn $name(game_id: i32, $($arg: $arg_ty),*, _pool: $crate::AppState<'_>) -> Result<$ret, bool> {
-            use $crate::whcore::Boolify;
+        pub async fn $name(game_id: i32, $($arg: $arg_ty),*, _pool: $crate::AppState<'_>) -> $crate::Result<$ret> {
+            use $crate::whcore::Stringify;
 
             let it = $crate::api::register::PLUGINS.lock().await;
-            let plugin = it.get(&game_id).bool()?;
+            let plugin = it.get(&game_id).stringify()?;
 
-            plugin.$fn($($arg),*).ok_or(false)
+            plugin.$fn($($arg),*).ok_or("Tried to unwrap a None value!".into())
         }
     };
 
@@ -82,13 +82,13 @@ macro_rules! plugin_fn_proxy {
         #[$crate::whmacros::serde_call]
         #[$crate::tauri::command]
         #[$crate::specta::specta]
-        pub async fn $name(game_id: i32, _pool: $crate::AppState<'_>) -> Result<$ret, bool> {
-            use $crate::whcore::Boolify;
+        pub async fn $name(game_id: i32, _pool: $crate::AppState<'_>) -> $crate::Result<$ret> {
+            use $crate::whcore::Stringify;
 
             let it = $crate::api::register::PLUGINS.lock().await;
-            let plugin = it.get(&game_id).bool()?;
+            let plugin = it.get(&game_id).stringify()?;
 
-            plugin.$fn().ok_or(false)
+            plugin.$fn().ok_or("Tried to unwrap a None value!".into())
         }
     };
 }

@@ -10,9 +10,9 @@ use data::{
     schema::instances,
 };
 use mcmeta::cmd::modded::GetLoader;
-use whcore::Boolify;
+use whcore::Stringify;
 
-use crate::AppState;
+use crate::{AppState, Result};
 
 /// Gets all instances for the given game.
 ///
@@ -23,14 +23,14 @@ use crate::AppState;
 #[whmacros::serde_call]
 #[tauri::command]
 #[specta::specta]
-pub async fn get_instances(game_id: i32, pool: AppState<'_>) -> Result<Vec<Instance>, bool> {
-    let mut db = pool.get().bool()?;
+pub async fn get_instances(game_id: i32, pool: AppState<'_>) -> Result<Vec<Instance>> {
+    let mut db = pool.get().stringify()?;
 
     let items = instances::table
         .select(Instance::as_select())
         .filter(instances::game_id.eq(game_id))
         .load(&mut db)
-        .bool()?;
+        .stringify()?;
 
     Ok(items)
 }
@@ -42,12 +42,12 @@ pub async fn get_instances(game_id: i32, pool: AppState<'_>) -> Result<Vec<Insta
 #[whmacros::serde_call]
 #[tauri::command]
 #[specta::specta]
-pub async fn delete_instance(instance_id: i32, pool: AppState<'_>) -> Result<(), bool> {
-    let mut db = pool.get().bool()?;
+pub async fn delete_instance(instance_id: i32, pool: AppState<'_>) -> Result<()> {
+    let mut db = pool.get().stringify()?;
 
     delete(instances::table.filter(instances::id.eq(instance_id)))
         .execute(&mut db)
-        .bool()?;
+        .stringify()?;
 
     Ok(())
 }
@@ -64,13 +64,9 @@ pub async fn delete_instance(instance_id: i32, pool: AppState<'_>) -> Result<(),
 #[whmacros::serde_call]
 #[tauri::command]
 #[specta::specta]
-pub async fn create_instance(
-    name: String,
-    game_id: i32,
-    pool: AppState<'_>,
-) -> Result<Instance, bool> {
+pub async fn create_instance(name: String, game_id: i32, pool: AppState<'_>) -> Result<Instance> {
     let lock = PLUGINS.lock().await;
-    let plugin = lock.get(&game_id).bool()?;
+    let plugin = lock.get(&game_id).stringify()?;
     let dirs = plugin.dirs();
     let now = DateTime::<Utc>::default().timestamp_millis();
 
@@ -90,18 +86,18 @@ pub async fn create_instance(
                 .to_str()
                 .unwrap()
                 .to_string(),
-            install_dir: plugin.find().bool()?.to_str().unwrap().to_string(),
+            install_dir: plugin.find().stringify()?.to_str().unwrap().to_string(),
             description: String::new(),
             name,
             loader: None,
         })
         .returning(Instance::as_returning())
-        .get_result(&mut pool.get().bool()?)
-        .bool()?;
+        .get_result(&mut pool.get().stringify()?)
+        .stringify()?;
 
     info!("Installing loader...");
 
-    it.loader = Some(serde_json::to_string(&it.loader().await.bool()?).bool()?);
+    it.loader = Some(serde_json::to_string(&it.loader().await.stringify()?).stringify()?);
 
     info!("Updating database...");
 
@@ -109,12 +105,12 @@ pub async fn create_instance(
         .filter(instances::id.eq(it.id))
         .set(instances::loader.eq(it.loader))
         .returning(Instance::as_returning())
-        .get_result(&mut pool.get().bool()?)
-        .bool()?;
+        .get_result(&mut pool.get().stringify()?)
+        .stringify()?;
 
     info!("Installing instance...");
 
-    plugin.install_instance(&it).await.bool()?;
+    plugin.install_instance(&it).await.stringify()?;
 
     Ok(it)
 }
@@ -133,13 +129,13 @@ pub async fn update_instance(
     instance_id: i32,
     desc: String,
     pool: AppState<'_>,
-) -> Result<Instance, bool> {
+) -> Result<Instance> {
     Ok(update(instances::table)
         .filter(instances::id.eq(instance_id))
         .set(instances::description.eq(desc))
         .returning(Instance::as_returning())
-        .get_result(&mut pool.get().bool()?)
-        .bool()?)
+        .get_result(&mut pool.get().stringify()?)
+        .stringify()?)
 }
 
 /// Creates a new instance, without installing a mod loader.
@@ -149,30 +145,30 @@ pub async fn update_instance(
 #[whmacros::serde_call]
 #[tauri::command]
 #[specta::specta]
-pub async fn add_instance(instance: Instance, pool: AppState<'_>) -> Result<Instance, bool> {
+pub async fn add_instance(instance: Instance, pool: AppState<'_>) -> Result<Instance> {
     let mut it = insert_into(instances::table)
         .values(instance)
         .returning(Instance::as_returning())
-        .get_result(&mut pool.get().bool()?)
-        .bool()?;
+        .get_result(&mut pool.get().stringify()?)
+        .stringify()?;
 
-    it.loader = Some(serde_json::to_string(&it.loader().await.bool()?).bool()?);
+    it.loader = Some(serde_json::to_string(&it.loader().await.stringify()?).stringify()?);
 
     let it = update(instances::table)
         .filter(instances::id.eq(it.id))
         .set(instances::loader.eq(it.loader))
         .returning(Instance::as_returning())
-        .get_result(&mut pool.get().bool()?)
-        .bool()?;
+        .get_result(&mut pool.get().stringify()?)
+        .stringify()?;
 
     PLUGINS
         .lock()
         .await
         .get(&it.game_id)
-        .bool()?
+        .stringify()?
         .install_instance(&it)
         .await
-        .bool()?;
+        .stringify()?;
 
     Ok(it)
 }
@@ -184,10 +180,10 @@ pub async fn add_instance(instance: Instance, pool: AppState<'_>) -> Result<Inst
 #[whmacros::serde_call]
 #[tauri::command]
 #[specta::specta]
-pub async fn get_instance(instance_id: i32, pool: AppState<'_>) -> Result<Instance, bool> {
+pub async fn get_instance(instance_id: i32, pool: AppState<'_>) -> Result<Instance> {
     Ok(instances::table
         .select(Instance::as_select())
         .filter(instances::id.eq(instance_id))
-        .get_result(&mut pool.get().bool()?)
-        .bool()?)
+        .get_result(&mut pool.get().stringify()?)
+        .stringify()?)
 }

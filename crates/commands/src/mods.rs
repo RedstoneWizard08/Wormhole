@@ -9,9 +9,9 @@ use data::{
     schema::mods,
 };
 use query::mod_::{Mod, ModVersion};
-use whcore::Boolify;
+use whcore::Stringify;
 
-use crate::AppState;
+use crate::{AppState, Result};
 
 /// Install a mod.
 ///
@@ -29,16 +29,14 @@ pub async fn install_mod(
     version: Option<ModVersion>,
     instance: Instance,
     pool: AppState<'_>,
-) -> Result<(), bool> {
-    use whcore::Boolify;
-
+) -> Result<()> {
     let it = api::register::PLUGINS.lock().await;
-    let plugin = it.get(&game_id).bool()?;
+    let plugin = it.get(&game_id).stringify()?;
 
     plugin
-        .install(pool.get().bool()?.deref_mut(), item, version, instance)
+        .install(pool.get().stringify()?.deref_mut(), item, version, instance)
         .await
-        .ok_or(false)
+        .ok_or("Tried to unwrap a None value!".into())
 }
 
 /// Uninstall a mod.
@@ -55,16 +53,14 @@ pub async fn uninstall_mod(
     item: DbMod,
     instance: Instance,
     pool: AppState<'_>,
-) -> Result<(), bool> {
-    use whcore::Boolify;
-
+) -> Result<()> {
     let it = api::register::PLUGINS.lock().await;
-    let plugin = it.get(&game_id).bool()?;
+    let plugin = it.get(&game_id).stringify()?;
 
     plugin
-        .uninstall(pool.get().bool()?.deref_mut(), item, instance)
+        .uninstall(pool.get().stringify()?.deref_mut(), item, instance)
         .await
-        .ok_or(false)
+        .ok_or("Tried to unwrap a None value!".into())
 }
 
 /// Get a list of mods installed on an instance.
@@ -74,10 +70,10 @@ pub async fn uninstall_mod(
 #[whmacros::serde_call]
 #[tauri::command]
 #[specta::specta]
-pub async fn get_mods(instance_id: i32, pool: AppState<'_>) -> Result<Vec<DbMod>, bool> {
+pub async fn get_mods(instance_id: i32, pool: AppState<'_>) -> Result<Vec<DbMod>> {
     Ok(mods::table
         .select(DbMod::as_select())
         .filter(mods::instance_id.eq(instance_id))
-        .load(&mut pool.get().bool()?)
-        .bool()?)
+        .load(&mut pool.get().stringify()?)
+        .stringify()?)
 }

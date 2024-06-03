@@ -76,19 +76,19 @@ pub fn random_string(len: usize) -> String {
         .collect()
 }
 
-pub trait Boolify<T> {
-    fn bool(self) -> std::result::Result<T, bool>;
+pub trait Stringify<T> {
+    fn stringify(self) -> std::result::Result<T, String>;
 }
 
-impl<T, E> Boolify<T> for std::result::Result<T, E> {
-    fn bool(self) -> std::result::Result<T, bool> {
-        self.map_err(|_| false)
+impl<T, E: std::fmt::Display> Stringify<T> for std::result::Result<T, E> {
+    fn stringify(self) -> std::result::Result<T, String> {
+        self.map_err(|err| format!("{}", err))
     }
 }
 
-impl<T> Boolify<T> for Option<T> {
-    fn bool(self) -> std::result::Result<T, bool> {
-        self.ok_or(false)
+impl<T> Stringify<T> for Option<T> {
+    fn stringify(self) -> std::result::Result<T, String> {
+        self.ok_or("Tried to unwrap a None value!".into())
     }
 }
 

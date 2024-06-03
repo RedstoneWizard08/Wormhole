@@ -22,6 +22,9 @@ use whcore::state::TState;
 /// This is wrapped in a [`TState`] to work with [`specta`] and [`tauri_specta`].
 pub type AppState<'a> = TState<'a, Pool<ConnectionManager<SqliteConnection>>>;
 
+/// The result type.
+pub type Result<T, E = String> = core::result::Result<T, E>;
+
 pub mod base;
 pub mod instance;
 pub mod loader;

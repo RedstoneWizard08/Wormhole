@@ -14,9 +14,9 @@ use mcmeta::{
     piston::manifest::get_manifest,
     quilt::get_quilt_versions,
 };
-use whcore::Boolify;
+use whcore::Stringify;
 
-use crate::AppState;
+use crate::{AppState, Result};
 
 /// Get a loader's latest version.
 ///
@@ -25,16 +25,13 @@ use crate::AppState;
 #[whmacros::serde_call]
 #[tauri::command]
 #[specta::specta]
-pub async fn get_latest_loader(
-    loader: ModLoaderType,
-    _pool: AppState<'_>,
-) -> Result<ModLoader, bool> {
+pub async fn get_latest_loader(loader: ModLoaderType, _pool: AppState<'_>) -> Result<ModLoader> {
     Ok(match loader {
-        ModLoaderType::Forge => ModLoader::forge_latest().await.bool()?,
-        ModLoaderType::NeoForge => ModLoader::neo_latest().await.bool()?,
-        ModLoaderType::Fabric => ModLoader::fabric_latest().await.bool()?,
-        ModLoaderType::Quilt => ModLoader::quilt_latest().await.bool()?,
-        ModLoaderType::Vanilla => ModLoader::vanilla_latest().await.bool()?,
+        ModLoaderType::Forge => ModLoader::forge_latest().await.stringify()?,
+        ModLoaderType::NeoForge => ModLoader::neo_latest().await.stringify()?,
+        ModLoaderType::Fabric => ModLoader::fabric_latest().await.stringify()?,
+        ModLoaderType::Quilt => ModLoader::quilt_latest().await.stringify()?,
+        ModLoaderType::Vanilla => ModLoader::vanilla_latest().await.stringify()?,
         ModLoaderType::None => ModLoader::None,
     })
 }
@@ -46,14 +43,11 @@ pub async fn get_latest_loader(
 #[whmacros::serde_call]
 #[tauri::command]
 #[specta::specta]
-pub async fn get_loaders(
-    loader: ModLoaderType,
-    _pool: AppState<'_>,
-) -> Result<Vec<ModLoader>, bool> {
+pub async fn get_loaders(loader: ModLoaderType, _pool: AppState<'_>) -> Result<Vec<ModLoader>> {
     Ok(match loader {
         ModLoaderType::Forge => get_forge_versions()
             .await
-            .bool()?
+            .stringify()?
             .versioning
             .versions
             .iter()
@@ -65,7 +59,7 @@ pub async fn get_loaders(
 
         ModLoaderType::NeoForge => get_neoforge_versions()
             .await
-            .bool()?
+            .stringify()?
             .0
             .iter()
             .map(|v| {
@@ -76,7 +70,7 @@ pub async fn get_loaders(
 
         ModLoaderType::Fabric => get_fabric_versions()
             .await
-            .bool()?
+            .stringify()?
             .versioning
             .versions
             .iter()
@@ -85,7 +79,7 @@ pub async fn get_loaders(
 
         ModLoaderType::Quilt => get_quilt_versions()
             .await
-            .bool()?
+            .stringify()?
             .versioning
             .versions
             .iter()
@@ -94,7 +88,7 @@ pub async fn get_loaders(
 
         ModLoaderType::Vanilla => get_manifest()
             .await
-            .bool()?
+            .stringify()?
             .versions
             .iter()
             .map(|v| ModLoader::Vanilla(v.id.clone()))
@@ -116,18 +110,21 @@ pub async fn install_loader(
     loader: ModLoader,
     instance: Instance,
     pool: AppState<'_>,
-) -> Result<Instance, bool> {
+) -> Result<Instance> {
     let mut instance = instance;
     let lock = PLUGINS.lock().await;
-    let plugin = lock.get(&instance.game_id).bool()?;
+    let plugin = lock.get(&instance.game_id).stringify()?;
 
-    instance.loader = Some(serde_json::to_string(&loader).bool()?);
-    plugin.install_loader(&instance, &loader).await.bool()?;
+    instance.loader = Some(serde_json::to_string(&loader).stringify()?);
+    plugin
+        .install_loader(&instance, &loader)
+        .await
+        .stringify()?;
 
     Ok(update(instances::table)
         .filter(instances::id.eq(instance.id))
         .set(instances::loader.eq(instance.loader))
         .returning(Instance::as_returning())
-        .get_result(&mut pool.get().bool()?)
-        .bool()?)
+        .get_result(&mut pool.get().stringify()?)
+        .stringify()?)
 }
