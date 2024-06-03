@@ -10,7 +10,7 @@ use data::{
     schema::instances,
 };
 use mcmeta::cmd::modded::GetLoader;
-use whcore::Stringify;
+use whcore::errors::Stringify;
 
 use crate::{AppState, Result};
 

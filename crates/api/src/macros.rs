@@ -94,7 +94,7 @@ mod _private {
     macro_rules! cmds {
         () => {
             {
-                let map = whcore::merge_type_maps(vec![data::type_map(), crate::type_map()]);
+                let map = whcore::typing::merge_type_maps(vec![data::type_map(), crate::type_map()]);
 
                 (
                     collect_functions![

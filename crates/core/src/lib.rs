@@ -6,6 +6,10 @@ pub mod messaging;
 pub mod progress;
 pub mod state;
 pub mod traits;
+pub mod fs_util;
+pub mod errors;
+pub mod typing;
+pub mod util;
 
 #[macro_use]
 extern crate serde;
@@ -14,95 +18,7 @@ extern crate serde;
 pub extern crate async_trait;
 
 use dirs::Dirs;
-use rand::{distributions::Alphanumeric, thread_rng, Rng};
 use specta::{NamedType, TypeMap};
-use std::{
-    fs::{copy, create_dir_all, read_dir, rename},
-    io::Result,
-    path::Path,
-};
-
-pub fn copy_dir_all(src: impl AsRef<Path>, dst: impl AsRef<Path>) -> Result<()> {
-    create_dir_all(&dst)?;
-
-    if !src.as_ref().is_dir() {
-        copy(&src, dst.as_ref().join(src.as_ref().file_name().unwrap()))?;
-
-        return Ok(());
-    }
-
-    for entry in read_dir(src)? {
-        let entry = entry?;
-        let ty = entry.file_type()?;
-
-        if ty.is_dir() {
-            copy_dir_all(entry.path(), dst.as_ref().join(entry.file_name()))?;
-        } else {
-            copy(entry.path(), dst.as_ref().join(entry.file_name()))?;
-        }
-    }
-
-    Ok(())
-}
-
-pub fn rename_dir_all(src: impl AsRef<Path>, dst: impl AsRef<Path>) -> Result<()> {
-    create_dir_all(&dst)?;
-
-    if !src.as_ref().is_dir() {
-        rename(&src, dst.as_ref().join(src.as_ref().file_name().unwrap()))?;
-
-        return Ok(());
-    }
-
-    for entry in read_dir(src)? {
-        let entry = entry?;
-        let ty = entry.file_type()?;
-
-        if ty.is_dir() {
-            rename_dir_all(entry.path(), dst.as_ref().join(entry.file_name()))?;
-        } else {
-            rename(entry.path(), dst.as_ref().join(entry.file_name()))?;
-        }
-    }
-
-    Ok(())
-}
-
-pub fn random_string(len: usize) -> String {
-    thread_rng()
-        .sample_iter(&Alphanumeric)
-        .take(len)
-        .map(char::from)
-        .collect()
-}
-
-pub trait Stringify<T> {
-    fn stringify(self) -> std::result::Result<T, String>;
-}
-
-impl<T, E: std::fmt::Display> Stringify<T> for std::result::Result<T, E> {
-    fn stringify(self) -> std::result::Result<T, String> {
-        self.map_err(|err| format!("{}", err))
-    }
-}
-
-impl<T> Stringify<T> for Option<T> {
-    fn stringify(self) -> std::result::Result<T, String> {
-        self.ok_or("Tried to unwrap a None value!".into())
-    }
-}
-
-pub fn merge_type_maps(maps: Vec<TypeMap>) -> TypeMap {
-    let mut map = TypeMap::default();
-
-    for ty_map in maps {
-        for (id, ty) in ty_map.iter() {
-            map.insert(id, ty.clone());
-        }
-    }
-
-    map
-}
 
 pub fn type_map() -> TypeMap {
     let mut map = TypeMap::default();

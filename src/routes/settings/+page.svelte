@@ -1,4 +1,8 @@
-<div class="settings-container" />
+<div class="settings-container">
+    <div class="setting">
+        <p class="name">Data Folder</p>
+    </div>
+</div>
 
 <style lang="scss">
     .settings-container {

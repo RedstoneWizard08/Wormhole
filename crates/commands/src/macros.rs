@@ -9,7 +9,7 @@ macro_rules! plugin_fn_proxy {
         #[$crate::tauri::command]
         #[$crate::specta::specta]
         pub async fn $name(game_id: i32, _pool: $crate::AppState<'_>) -> $crate::Result<$ret> {
-            use $crate::whcore::Stringify;
+            use $crate::whcore::errors::Stringify;
 
             let it = $crate::api::register::PLUGINS.lock().await;
             let plugin = it.get(&game_id).stringify()?;
@@ -24,7 +24,7 @@ macro_rules! plugin_fn_proxy {
         #[$crate::tauri::command]
         #[$crate::specta::specta]
         pub async fn $name(game_id: i32, _pool: $crate::AppState<'_>) -> $crate::Result<$ret> {
-            use $crate::whcore::Stringify;
+            use $crate::whcore::errors::Stringify;
 
             let it = $crate::api::register::PLUGINS.lock().await;
             let plugin = it.get(&game_id).stringify()?;
@@ -39,7 +39,7 @@ macro_rules! plugin_fn_proxy {
         #[tauri::command]
         #[specta::specta]
         pub async fn $name(game_id: i32, $($arg: $arg_ty),*, _pool: $crate::AppState<'_>) -> $crate::Result<$ret> {
-            use $crate::whcore::Stringify;
+            use $crate::whcore::errors::Stringify;
 
             let it = $crate::api::register::PLUGINS.lock().await;
             let plugin = it.get(&game_id).stringify()?;
@@ -54,7 +54,7 @@ macro_rules! plugin_fn_proxy {
         #[$crate::tauri::command]
         #[$crate::specta::specta]
         pub async fn $name(game_id: i32, $($arg: $arg_ty),*, _pool: $crate::AppState<'_>) -> $crate::Result<$ret> {
-            use $crate::whcore::Stringify;
+            use $crate::whcore::errors::Stringify;
 
             let it = $crate::api::register::PLUGINS.lock().await;
             let plugin = it.get(&game_id).stringify()?;
@@ -69,7 +69,7 @@ macro_rules! plugin_fn_proxy {
         #[$crate::tauri::command]
         #[$crate::specta::specta]
         pub async fn $name(game_id: i32, $($arg: $arg_ty),*, _pool: $crate::AppState<'_>) -> $crate::Result<$ret> {
-            use $crate::whcore::Stringify;
+            use $crate::whcore::errors::Stringify;
 
             let it = $crate::api::register::PLUGINS.lock().await;
             let plugin = it.get(&game_id).stringify()?;
@@ -83,7 +83,7 @@ macro_rules! plugin_fn_proxy {
         #[$crate::tauri::command]
         #[$crate::specta::specta]
         pub async fn $name(game_id: i32, _pool: $crate::AppState<'_>) -> $crate::Result<$ret> {
-            use $crate::whcore::Stringify;
+            use $crate::whcore::errors::Stringify;
 
             let it = $crate::api::register::PLUGINS.lock().await;
             let plugin = it.get(&game_id).stringify()?;

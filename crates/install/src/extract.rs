@@ -12,7 +12,7 @@ use data::instance::Instance;
 use flate2::read::GzDecoder;
 use tar::Archive;
 use walkdir::WalkDir;
-use whcore::random_string;
+use whcore::util::random_string;
 use xz::read::XzDecoder;
 use zip::{write::SimpleFileOptions, CompressionMethod, ZipArchive, ZipWriter};
 

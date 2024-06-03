@@ -8,7 +8,7 @@ macro_rules! commands {
 
         /// Get the app's [`$crate::specta::functions::CollectFunctionsResult`].
         pub fn funcs() -> $crate::specta::functions::CollectFunctionsResult {
-            let map = $crate::whcore::merge_type_maps(vec![$($map::type_map()),*]);
+            let map = $crate::whcore::typing::merge_type_maps(vec![$($map::type_map()),*]);
 
             $crate::specta::functions::collect_functions![map; $($command),*]
         }

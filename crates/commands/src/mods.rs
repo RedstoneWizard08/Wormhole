@@ -9,7 +9,7 @@ use data::{
     schema::mods,
 };
 use query::mod_::{Mod, ModVersion};
-use whcore::Stringify;
+use whcore::errors::Stringify;
 
 use crate::{AppState, Result};
 

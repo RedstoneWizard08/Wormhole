@@ -14,7 +14,7 @@ use mcmeta::{
     piston::manifest::get_manifest,
     quilt::get_quilt_versions,
 };
-use whcore::Stringify;
+use whcore::errors::Stringify;
 
 use crate::{AppState, Result};
 
