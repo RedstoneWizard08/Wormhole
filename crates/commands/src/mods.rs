@@ -14,7 +14,7 @@ use whcore::Boolify;
 use crate::AppState;
 
 /// Install a mod.
-/// 
+///
 /// Arguments:
 /// - `game_id` - The instance's game ID.
 /// - `item` - The mod to install.
@@ -42,7 +42,7 @@ pub async fn install_mod(
 }
 
 /// Uninstall a mod.
-/// 
+///
 /// Arguments:
 /// - `game_id` - The instance's game ID.
 /// - `item` - The mod to uninstall.
@@ -68,7 +68,7 @@ pub async fn uninstall_mod(
 }
 
 /// Get a list of mods installed on an instance.
-/// 
+///
 /// Arguments:
 /// - `instance_id` - The instance's ID in the database.
 #[whmacros::serde_call]

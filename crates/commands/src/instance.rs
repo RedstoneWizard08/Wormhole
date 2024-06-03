@@ -15,10 +15,10 @@ use whcore::Boolify;
 use crate::AppState;
 
 /// Gets all instances for the given game.
-/// 
+///
 /// Arguments:
 /// - `game_id` - The game's ID in the database.
-/// 
+///
 /// See: [`Instance`]
 #[whmacros::serde_call]
 #[tauri::command]
@@ -36,7 +36,7 @@ pub async fn get_instances(game_id: i32, pool: AppState<'_>) -> Result<Vec<Insta
 }
 
 /// Deletes an instance.
-/// 
+///
 /// Arguments:
 /// - `instance_id` - The instance's ID in the database.
 #[whmacros::serde_call]
@@ -54,10 +54,10 @@ pub async fn delete_instance(instance_id: i32, pool: AppState<'_>) -> Result<(),
 
 /// Creates a new instance.
 /// This will also install whatever its default mod loader is.
-/// 
+///
 /// Example: For Minecraft, this will install whatever the latest version
 ///          of the vanilla game is.
-/// 
+///
 /// Arguments:
 /// - `name` - The instance's name.
 /// - `game_id` - The game's ID in the database.
@@ -120,7 +120,7 @@ pub async fn create_instance(
 }
 
 /// Updates an instance's description.
-/// 
+///
 /// Arguments:
 /// - `instance_id` - The instance's ID in the database.
 /// - `desc` - The new description.
@@ -143,7 +143,7 @@ pub async fn update_instance(
 }
 
 /// Creates a new instance, without installing a mod loader.
-/// 
+///
 /// Arguments:
 /// - `instance` - The partial instance to create. This should not have an ID set.
 #[whmacros::serde_call]
@@ -178,7 +178,7 @@ pub async fn add_instance(instance: Instance, pool: AppState<'_>) -> Result<Inst
 }
 
 /// Gets an instance by its ID.
-/// 
+///
 /// Arguments:
 /// - `instance_id` - The instance's ID in the database.
 #[whmacros::serde_call]

@@ -19,7 +19,7 @@ use whcore::Boolify;
 use crate::AppState;
 
 /// Get a loader's latest version.
-/// 
+///
 /// Arguments:
 /// - `loader` - The loader type.
 #[whmacros::serde_call]
@@ -40,7 +40,7 @@ pub async fn get_latest_loader(
 }
 
 /// Get a loader's versions.
-/// 
+///
 /// Arguments:
 /// - `loader` - The loader type.
 #[whmacros::serde_call]
@@ -105,7 +105,7 @@ pub async fn get_loaders(
 }
 
 /// Installs a loader to an instance.
-/// 
+///
 /// Arguments:
 /// - `loader` - The loader to install.
 /// - `instance` - The instance to install the loader to.

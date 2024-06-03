@@ -1106,6 +1106,38 @@ dependencies = [
 ]
 
 [[package]]
+name = "commands"
+version = "2.0.0"
+dependencies = [
+ "anyhow 1.0.81",
+ "api",
+ "chrono",
+ "ckandex",
+ "data",
+ "futures",
+ "init",
+ "install",
+ "keyvalues-parser",
+ "log",
+ "macros",
+ "mcmeta",
+ "query",
+ "reqwest 0.12.4",
+ "serde",
+ "serde_json",
+ "specta",
+ "tauri",
+ "tauri-specta",
+ "tokio 1.37.0",
+ "tokio-stream",
+ "tokio-util 0.7.11",
+ "tracing",
+ "tracing-appender",
+ "tracing-subscriber",
+ "whcore",
+]
+
+[[package]]
 name = "concurrent-queue"
 version = "2.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -7809,6 +7841,7 @@ dependencies = [
  "api",
  "chrono",
  "ckandex",
+ "commands",
  "const_format",
  "data",
  "futures",

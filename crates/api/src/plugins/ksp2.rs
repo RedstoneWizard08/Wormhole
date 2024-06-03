@@ -15,7 +15,7 @@ const BANNER_BYTES: &[u8] = include_bytes!("../assets/ksp2/banner.png");
 /// This helps to make sure that the game is not pirated.
 /// File path: `[KSP2_ROOT]/KSP2_x64_Data/Plugins/x86_64/steam_api64.dll`
 /// Information from: SteamDB, DepotDownloader, KSP2 Installed Files
-/// 
+///
 /// TODO: Actually use this information somewhere.
 pub const KSP2_STEAM_API_SIZE: u64 = 295336;
 

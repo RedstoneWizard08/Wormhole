@@ -1,19 +1,11 @@
 [package]
-name = "wormhole-gui"
+name = "commands"
 version.workspace = true
 edition.workspace = true
 license.workspace = true
 repository.workspace = true
 homepage.workspace = true
 authors.workspace = true
-
-[build-dependencies]
-tauri-build.workspace = true
-const_format.workspace = true
-anyhow.workspace = true
-
-[dev-dependencies]
-const_format.workspace = true
 
 [dependencies]
 serde_json.workspace = true
@@ -42,8 +34,3 @@ tracing-appender.workspace = true
 tracing.workspace = true
 log.workspace = true
 mcmeta.workspace = true
-commands.workspace = true
-
-[features]
-default = ["custom-protocol"]
-custom-protocol = ["tauri/custom-protocol"]

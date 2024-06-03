@@ -1,9 +1,9 @@
 #![warn(missing_docs, rustdoc::broken_intra_doc_links)]
 //! # Wormhole's API.
-//! 
+//!
 //! This implements all of the plugins, mod installers,
 //! game supports, assets, and a lot more.
-//! 
+//!
 //! In the future, this will hopefully be able to support
 //! WASI-based plugins for extensibility.
 

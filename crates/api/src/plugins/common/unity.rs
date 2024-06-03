@@ -18,7 +18,7 @@ pub trait UnityPlugin: Send + Sync {
     fn new() -> Self
     where
         Self: Sized;
-    
+
     /// The id of the plugin.
 
     fn id(&self) -> &'static str;

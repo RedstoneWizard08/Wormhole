@@ -87,7 +87,7 @@ impl<R: Runtime> Plugin<R> for TauriPlugin<R> {
 }
 
 /// A Tauri plugin (trait form).
-/// 
+///
 /// This was originally used for my naive version of the web UI's
 /// invoker system, but it's still used as the function proxy target
 /// in the GUI.

@@ -25,6 +25,6 @@ fn main() {
     if OS == "windows" {
         return;
     }
-    
+
     build();
 }

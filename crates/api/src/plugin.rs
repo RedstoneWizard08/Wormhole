@@ -59,7 +59,7 @@ unsafe impl Send for PluginInfo {}
 unsafe impl Sync for PluginInfo {}
 
 /// A plugin.
-/// 
+///
 /// This is the main interface for interacting with plugins.
 /// This is essentially a support module for a game. Every operation
 /// that Wormhole does goes through a plugin.
