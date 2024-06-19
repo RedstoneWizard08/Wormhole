@@ -90,7 +90,7 @@ const reinstall = async () => {
             </div>
 
             <div class="right">
-                {#if loader}
+                {#if loader && instance.game_id == 432}
                     <LoaderDropdown bind:loader on:change={reinstall} bind:loading={installing} />
                 {/if}
 

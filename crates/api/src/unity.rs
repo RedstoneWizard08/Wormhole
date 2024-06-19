@@ -69,20 +69,28 @@ impl<T: UnityPlugin> Plugin for T {
         self.game()
     }
 
-    fn icon(&self) -> String {
-        self.icon()
+    async fn loader(&self, _instance: Instance) -> Result<ModLoader> {
+        Ok(ModLoader::None)
     }
 
-    fn banner(&self) -> String {
-        self.banner()
+    async fn create_resolvers(&self) -> Vec<Box<dyn Resolver + Send + Sync>> {
+        self.resolvers().await
+    }
+
+    async fn install_loader(&self, _instance: &Instance, _loader: &ModLoader) -> Result<()> {
+        Ok(())
     }
 
     fn display(&self) -> String {
         self.display()
     }
 
-    fn fallback(&self) -> Option<&'static str> {
-        self.fallback()
+    fn icon(&self) -> String {
+        self.icon()
+    }
+
+    fn banner(&self) -> String {
+        self.banner()
     }
 
     fn find(&self) -> Option<PathBuf> {
@@ -93,19 +101,11 @@ impl<T: UnityPlugin> Plugin for T {
         self.name()
     }
 
-    async fn create_resolvers(&self) -> Vec<Box<dyn Resolver + Send + Sync>> {
-        self.resolvers().await
+    fn fallback(&self) -> Option<&'static str> {
+        self.fallback()
     }
 
     async fn launch(&self, instance: Instance) -> Result<Child> {
         Ok(Command::new(instance.install_dir().join(self.executable())).spawn()?)
-    }
-
-    async fn loader(&self, _instance: Instance) -> Result<ModLoader> {
-        Ok(ModLoader::None)
-    }
-
-    async fn install_loader(&self, _instance: &Instance, _loader: &ModLoader) -> Result<()> {
-        Ok(())
     }
 }

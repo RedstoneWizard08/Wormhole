@@ -1,8 +1,8 @@
 #![warn(missing_docs, rustdoc::broken_intra_doc_links)]
 //! # Wormhole's API.
 //!
-//! This implements all of the plugins, mod installers,
-//! game supports, assets, and a lot more.
+//! This implements the plugin structure, mod installers,
+//! game supports, and a lot more.
 //!
 //! In the future, this will hopefully be able to support
 //! WASI-based plugins for extensibility.
@@ -13,7 +13,6 @@ use ::tauri::AppHandle;
 use crossbeam_channel::{unbounded, Receiver, Sender};
 use install::progress::ProgressPayload;
 use plugin::PluginInfo;
-use plugins::register_defaults;
 use specta::{NamedType, TypeMap};
 use tokio::sync::Mutex;
 
@@ -27,9 +26,6 @@ extern crate serde;
 extern crate specta;
 
 #[macro_use]
-extern crate tracing;
-
-#[macro_use]
 extern crate async_trait;
 
 pub extern crate whcore;
@@ -37,10 +33,10 @@ pub extern crate whcore;
 pub mod install;
 pub mod macros;
 pub mod plugin;
-pub mod plugins;
 pub mod register;
 pub mod res;
 pub mod tauri;
+pub mod unity;
 
 // This isn't just lazily initialized, it's also "lazy" because
 // I'm too lazy to actually pass around a struct.
@@ -55,11 +51,6 @@ lazy_static! {
     /// to support more event types.
     pub static ref EVENT_BUS: Arc<(Sender<ProgressPayload>, Receiver<ProgressPayload>)> =
         Arc::new(unbounded());
-}
-
-/// Initializes the API, registering all of the default plugins.
-pub async fn init() {
-    register_defaults().await;
 }
 
 /// Gets the [`TypeMap`] for the API.

@@ -43,6 +43,7 @@ tracing.workspace = true
 log.workspace = true
 mcmeta.workspace = true
 commands.workspace = true
+plugins.workspace = true
 
 [features]
 default = ["custom-protocol"]

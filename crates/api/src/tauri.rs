@@ -281,22 +281,6 @@ impl<T: CPlugin + Send + Sync> TauriPluginTrait for T {
         }
     }
 
-    async fn launch_game(&self, instance: Instance) -> Option<()> {
-        let _ = self.launch(instance).await.ok()?;
-
-        Some(())
-    }
-
-    async fn sources(&self) -> Option<Vec<String>> {
-        Some(
-            self.resolvers()
-                .await?
-                .iter()
-                .map(|v| v.source().mapping().as_str().to_string())
-                .collect(),
-        )
-    }
-
     async fn install(
         &self,
         db: &mut Conn,
@@ -313,5 +297,21 @@ impl<T: CPlugin + Send + Sync> TauriPluginTrait for T {
         self.uninstall_mod(db, item, instance).await.ok()?;
 
         Some(())
+    }
+
+    async fn launch_game(&self, instance: Instance) -> Option<()> {
+        let _ = self.launch(instance).await.ok()?;
+
+        Some(())
+    }
+
+    async fn sources(&self) -> Option<Vec<String>> {
+        Some(
+            self.resolvers()
+                .await?
+                .iter()
+                .map(|v| v.source().mapping().as_str().to_string())
+                .collect(),
+        )
     }
 }

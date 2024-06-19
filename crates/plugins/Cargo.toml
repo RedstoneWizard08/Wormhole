@@ -1,5 +1,5 @@
 [package]
-name = "init"
+name = "plugins"
 version.workspace = true
 edition.workspace = true
 license.workspace = true
@@ -8,12 +8,16 @@ homepage.workspace = true
 authors.workspace = true
 
 [dependencies]
-anyhow.workspace = true
-diesel.workspace = true
-libsqlite3-sys.workspace = true
-whcore.workspace = true
-data.workspace = true
 api.workspace = true
+base64.workspace = true
+whcore.workspace = true
+query.workspace = true
+mcmeta.workspace = true
+data.workspace = true
+anyhow.workspace = true
 msa.workspace = true
 tokio.workspace = true
-plugins.workspace = true
+async-trait.workspace = true
+tracing.workspace = true
+tauri.workspace = true
+const_format.workspace = true

@@ -37,6 +37,12 @@ pub mod source;
 pub mod spacedock;
 pub mod thunderstore;
 
+pub use ckan::Ckan;
+pub use curse::CurseForge;
+pub use modrinth::Modrinth;
+pub use spacedock::SpaceDock;
+pub use thunderstore::Thunderstore;
+
 #[async_trait]
 pub trait IntoAsync<T> {
     async fn into_async(self) -> T;

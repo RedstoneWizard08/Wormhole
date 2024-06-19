@@ -1,14 +1,10 @@
 use crate::{cmds, ctx, events, invoker, log::init_file_logger};
 use anyhow::Result;
-use api::{
-    plugin::Plugin,
-    plugins::{Kerbal1Plugin, Kerbal2Plugin, MinecraftPlugin},
-    tauri::TauriPlugin,
-    TAURI_HANDLE,
-};
+use api::TAURI_HANDLE;
 use specta::ts::{BigIntExportBehavior, ExportConfig};
 use tauri::Wry;
 use tracing::level_filters::LevelFilter;
+use plugins::ext::PluginRegister;
 
 /// Initialize a logger and start the Tauri app.
 pub async fn run() -> Result<()> {
@@ -23,9 +19,7 @@ pub async fn run() -> Result<()> {
         .build()?;
 
     let app = tauri::Builder::default()
-        .plugin(TauriPlugin::new(Kerbal1Plugin::new())?)
-        .plugin(TauriPlugin::new(Kerbal2Plugin::new())?)
-        .plugin(TauriPlugin::new(MinecraftPlugin::new())?)
+        .add_plugins()?
         .manage(db)
         .invoke_handler(invoker())
         .setup(|app| {

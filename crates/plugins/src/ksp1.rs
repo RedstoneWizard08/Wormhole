@@ -1,30 +1,21 @@
-//! The KSP2 support module.
+//! The KSP1 support module.
 
 use std::path::PathBuf;
 
 use base64::{engine::general_purpose::STANDARD, Engine};
+use api::unity::UnityPlugin;
 use query::{ckan::Ckan, source::Resolver, spacedock::SpaceDock};
 use whcore::finder::{finder::InstallFinder, pdlauncher::PrivateDivision, steam::Steam};
 
-use super::common::unity::UnityPlugin;
+const ICON_BYTES: &[u8] = include_bytes!("../assets/ksp1/icon.png");
+const BANNER_BYTES: &[u8] = include_bytes!("../assets/ksp1/banner.png");
 
-const ICON_BYTES: &[u8] = include_bytes!("../assets/ksp2/icon.png");
-const BANNER_BYTES: &[u8] = include_bytes!("../assets/ksp2/banner.png");
-
-/// The expected size of KSP2's `steam_api64.dll` in bytes.
-/// This helps to make sure that the game is not pirated.
-/// File path: `[KSP2_ROOT]/KSP2_x64_Data/Plugins/x86_64/steam_api64.dll`
-/// Information from: SteamDB, DepotDownloader, KSP2 Installed Files
-///
-/// TODO: Actually use this information somewhere.
-pub const KSP2_STEAM_API_SIZE: u64 = 295336;
-
-/// The plugin for KSP2.
+/// The plugin for KSP1.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
-pub struct Kerbal2Plugin;
+pub struct Kerbal1Plugin;
 
 #[async_trait]
-impl UnityPlugin for Kerbal2Plugin {
+impl UnityPlugin for Kerbal1Plugin {
     fn new() -> Self
     where
         Self: Sized,
@@ -33,11 +24,11 @@ impl UnityPlugin for Kerbal2Plugin {
     }
 
     fn id(&self) -> &'static str {
-        "KSP2".into()
+        "KSP1".into()
     }
 
     fn game(&self) -> i32 {
-        22407
+        3102
     }
 
     fn icon(&self) -> String {
@@ -49,15 +40,15 @@ impl UnityPlugin for Kerbal2Plugin {
     }
 
     fn display(&self) -> String {
-        "Kerbal Space Program 2".into()
+        "Kerbal Space Program".into()
     }
 
     fn fallback(&self) -> Option<&'static str> {
-        Some("BepInEx/plugins")
+        Some("GameData")
     }
 
     fn executable(&self) -> &'static str {
-        "KSP2_x64.exe"
+        "KSP_x64.exe"
     }
 
     fn find(&self) -> Option<PathBuf> {
@@ -67,7 +58,7 @@ impl UnityPlugin for Kerbal2Plugin {
     }
 
     fn name(&self) -> &'static str {
-        "ksp2"
+        "ksp1"
     }
 
     async fn resolvers(&self) -> Vec<Box<dyn Resolver + Send + Sync>> {

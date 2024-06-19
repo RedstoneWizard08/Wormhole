@@ -1,7 +1,6 @@
 use std::path::PathBuf;
 
 use anyhow::Result;
-use api::plugins::register_defaults;
 use data::migrate::migrate;
 use diesel::{
     r2d2::{ConnectionManager, Pool},
@@ -9,6 +8,7 @@ use diesel::{
 };
 use msa::state::MsaState;
 use whcore::manager::CoreManager;
+use plugins::register_defaults;
 
 pub mod db;
 

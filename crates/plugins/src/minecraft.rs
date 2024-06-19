@@ -9,9 +9,8 @@ use mcmeta::{cmd::modded::ModLoader, manager::MinecraftManager};
 use msa::state::MsaState;
 use query::{curse::CurseForge, modrinth::Modrinth, source::Resolver};
 use tokio::process::Child;
+use api::plugin::Plugin;
 use whcore::manager::CoreManager;
-
-use crate::plugin::Plugin;
 
 const ICON_BYTES: &[u8] = include_bytes!("../assets/minecraft/icon.svg");
 const BANNER_BYTES: &[u8] = include_bytes!("../assets/minecraft/banner.jpg");
@@ -37,20 +36,47 @@ impl Plugin for MinecraftPlugin {
         432
     }
 
-    fn icon(&self) -> String {
-        format!("data:image/svg+xml;base64,{}", STANDARD.encode(ICON_BYTES))
+    async fn loader(&self, instance: Instance) -> Result<ModLoader> {
+        info!("Fetching mod loader...");
+
+        let loader = ModLoader::quilt_latest().await?;
+
+        info!("Creating manager...");
+
+        // We have to do this so that we can install the loader too
+        let manager = MinecraftManager::load_or_create(instance.data_dir(), &loader).await?;
+
+        Ok(manager.loader)
     }
 
-    fn banner(&self) -> String {
-        format!("data:image/jpeg;base64,{}", STANDARD.encode(BANNER_BYTES))
+    async fn create_resolvers(&self) -> Vec<Box<dyn Resolver + Send + Sync>> {
+        vec![
+            Box::new(Modrinth::new().await),
+            Box::new(CurseForge::new().await),
+        ]
+    }
+
+    async fn install_loader(&self, instance: &Instance, loader: &ModLoader) -> Result<()> {
+        info!("Creating manager...");
+
+        let mut manager = MinecraftManager::load_or_create(instance.data_dir(), loader).await?;
+
+        info!("Installing loader...");
+
+        manager.install_loader(loader, &None).await?;
+        manager.save()
     }
 
     fn display(&self) -> String {
         "Minecraft".into()
     }
 
-    fn fallback(&self) -> Option<&'static str> {
-        Some("mods")
+    fn icon(&self) -> String {
+        format!("data:image/svg+xml;base64,{}", STANDARD.encode(ICON_BYTES))
+    }
+
+    fn banner(&self) -> String {
+        format!("data:image/jpeg;base64,{}", STANDARD.encode(BANNER_BYTES))
     }
 
     fn find(&self) -> Option<PathBuf> {
@@ -61,23 +87,8 @@ impl Plugin for MinecraftPlugin {
         "minecraft"
     }
 
-    async fn create_resolvers(&self) -> Vec<Box<dyn Resolver + Send + Sync>> {
-        vec![
-            Box::new(Modrinth::new().await),
-            Box::new(CurseForge::new().await),
-        ]
-    }
-
-    async fn install_instance(&self, inst: &Instance) -> Result<()> {
-        info!("Fetching mod loader...");
-
-        let loader = ModLoader::vanilla_latest().await?;
-
-        info!("Creating manager and installing loader...");
-
-        MinecraftManager::load_or_create(inst.data_dir(), &loader).await?;
-
-        Ok(())
+    fn fallback(&self) -> Option<&'static str> {
+        Some("mods")
     }
 
     async fn launch(&self, instance: Instance) -> Result<Child> {
@@ -94,27 +105,15 @@ impl Plugin for MinecraftPlugin {
         manager.launch(&MsaState::get(), &instance).await
     }
 
-    async fn loader(&self, instance: Instance) -> Result<ModLoader> {
+    async fn install_instance(&self, inst: &Instance) -> Result<()> {
         info!("Fetching mod loader...");
 
-        let loader = ModLoader::quilt_latest().await?;
+        let loader = ModLoader::vanilla_latest().await?;
 
-        info!("Creating manager...");
+        info!("Creating manager and installing loader...");
 
-        // We have to do this so that we can install the loader too
-        let manager = MinecraftManager::load_or_create(instance.data_dir(), &loader).await?;
+        MinecraftManager::load_or_create(inst.data_dir(), &loader).await?;
 
-        Ok(manager.loader)
-    }
-
-    async fn install_loader(&self, instance: &Instance, loader: &ModLoader) -> Result<()> {
-        info!("Creating manager...");
-
-        let mut manager = MinecraftManager::load_or_create(instance.data_dir(), loader).await?;
-
-        info!("Installing loader...");
-
-        manager.install_loader(loader, &None).await?;
-        manager.save()
+        Ok(())
     }
 }
