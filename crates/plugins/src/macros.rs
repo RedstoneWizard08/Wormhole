@@ -67,7 +67,7 @@ macro_rules! unity_plugin {
                 fn find(&self) -> Option<std::path::PathBuf> {
                     use $crate::whcore::finder::finder::InstallFinder;
 
-                    $crate::whcore::finder::steam::Steam::new().find_game($dir).unwrap()
+                    $crate::whcore::finder::steam::Steam::new().find_game($dir).ok().flatten()
                 }
 
                 fn name(&self) -> &'static str {
