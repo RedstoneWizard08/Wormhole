@@ -147,5 +147,5 @@ members = [
     "crates/mcmeta",
     "apps/wormhole",
     "crates/commands",
-    "crates/plugins",
+    "crates/plugins", "crates/pack",
 ]
