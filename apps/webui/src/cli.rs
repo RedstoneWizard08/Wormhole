@@ -55,7 +55,7 @@ impl Runnable for Cli {
 
         info!("Setting up the database...");
 
-        let pool = boot(&self.db_path).await?;
+        boot().await?;
 
         info!("Creating route filters...");
 
@@ -64,6 +64,6 @@ impl Runnable for Cli {
         add_route_filter("/@vite/client");
         add_route_filter("/@id/");
 
-        run_server(pool, self.clone()).await
+        run_server(self.clone()).await
     }
 }

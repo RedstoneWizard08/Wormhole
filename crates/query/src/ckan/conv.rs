@@ -1,6 +1,6 @@
 use crate::mod_::{Mod as RealMod, ModVersion};
 use ckandex::Mod;
-use data::source::Sources;
+use data::{sources::Sources, Source};
 
 use crate::IntoAsync;
 
@@ -13,7 +13,7 @@ impl IntoAsync<RealMod> for Mod {
             game_id: None,
             id: self.id,
             name: self.name,
-            source: Sources::Ckan.id(),
+            source: Sources::Ckan.source_alt().await.unwrap().id,
             icon: None,
             banner: None,
             author: None,

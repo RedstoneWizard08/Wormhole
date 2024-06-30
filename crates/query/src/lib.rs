@@ -1,6 +1,9 @@
 #![feature(associated_type_defaults)]
 #![allow(unused_imports)]
 
+use std::sync::Arc;
+
+use data::prisma::PrismaClient;
 use once_cell::sync::Lazy;
 
 #[macro_use]
@@ -28,8 +31,8 @@ pub(crate) const NEXUS_API_KEY: Lazy<&str> = Lazy::new(|| envc!("NEXUS_API_KEY")
 pub mod nexus;
 
 pub mod ckan;
-pub mod conv;
 pub mod curse;
+pub mod impls;
 pub mod macros;
 pub mod mod_;
 pub mod modrinth;
@@ -46,4 +49,9 @@ pub use thunderstore::Thunderstore;
 #[async_trait]
 pub trait IntoAsync<T> {
     async fn into_async(self) -> T;
+}
+
+#[async_trait]
+pub trait DbIntoAsync<T> {
+    async fn db_into_async(self, client: Arc<PrismaClient>) -> T;
 }

@@ -1,7 +1,10 @@
 use std::{env::consts::OS, fs, path::PathBuf};
 
 use anyhow::{anyhow, Result};
-use data::instance::Instance;
+use data::{
+    prisma::{game::UniqueWhereParam, instance},
+    Instance,
+};
 use java::install::install_java;
 use whcore::{async_trait::async_trait, manager::CoreManager, traits::AsyncDefault};
 
@@ -290,6 +293,23 @@ impl GetLoader for Instance {
         if let Some(loader) = &self.loader {
             Ok(serde_json::from_str(loader)?)
         } else if self.game_id == 432 {
+            let loader = ModLoader::default().await;
+
+            Ok(loader)
+        } else {
+            Ok(ModLoader::None)
+        }
+    }
+}
+
+#[async_trait]
+impl GetLoader for instance::Create {
+    async fn loader(&self) -> Result<ModLoader> {
+        let gid = match self.game {
+            UniqueWhereParam::IdEquals(id) => id,
+        };
+
+        if gid == 432 {
             let loader = ModLoader::default().await;
 
             Ok(loader)

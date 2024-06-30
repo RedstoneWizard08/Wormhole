@@ -36,3 +36,5 @@ futures-util.workspace = true
 tokio-util.workspace = true
 tokio-stream.workspace = true
 axumite.workspace = true
+rspc.workspace = true
+rspc-axum.workspace = true

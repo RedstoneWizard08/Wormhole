@@ -3,7 +3,7 @@
 use std::path::PathBuf;
 
 use anyhow::Result;
-use data::instance::Instance;
+use data::Instance;
 use mcmeta::cmd::modded::ModLoader;
 use query::source::Resolver;
 use tokio::process::{Child, Command};

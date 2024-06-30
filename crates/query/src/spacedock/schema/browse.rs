@@ -1,4 +1,4 @@
-use crate::{mod_::Mod, source::Paginated};
+use crate::{mod_::Mod, source::Paginated, IntoAsync};
 
 use super::info::ModInfo;
 
@@ -30,19 +30,14 @@ impl BrowseResult {
     }
 }
 
-impl From<BrowseResult> for Paginated<Mod> {
-    fn from(val: BrowseResult) -> Self {
-        Self {
-            data: val
-                .result
-                .unwrap_or_default()
-                .iter()
-                .cloned()
-                .map(|v| v.into())
-                .collect::<Vec<_>>(),
-            page: val.page,
-            per_page: val.count,
-            pages: val.pages,
+#[async_trait]
+impl IntoAsync<Paginated<Mod>> for BrowseResult {
+    async fn into_async(self) -> Paginated<Mod> {
+        Paginated {
+            data: self.result.unwrap_or_default().into_async().await,
+            page: self.page,
+            per_page: self.count,
+            pages: self.pages,
         }
     }
 }

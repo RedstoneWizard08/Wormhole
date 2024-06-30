@@ -1,12 +1,11 @@
 #![warn(missing_docs, rustdoc::broken_intra_doc_links)]
 //! # Plugins for Wormhole.
-//! 
+//!
 //! This implements all of Wormhole's plugins and game supports.
 
-use api::{register::register_plugin, tauri::TauriPluginTrait};
-use api::plugin::Plugin;
-use minecraft::MinecraftPlugin;
 use crate::unity::{ContentWarningPlugin, Kerbal1Plugin, Kerbal2Plugin, LethalCompanyPlugin};
+use api::{plugin::{Plugin, PluginExt}, register::register_plugin};
+use minecraft::MinecraftPlugin;
 
 #[macro_use]
 pub extern crate async_trait;
@@ -16,17 +15,16 @@ extern crate tracing;
 
 pub extern crate api;
 pub extern crate base64;
-pub extern crate whcore;
-pub extern crate query;
 pub extern crate const_format;
+pub extern crate query;
+pub extern crate whcore;
 
-pub mod minecraft;
-pub mod ext;
 pub mod macros;
+pub mod minecraft;
 pub mod unity;
 
 /// Default plugins.
-pub fn default_plugins() -> Vec<Box<dyn TauriPluginTrait>> {
+pub fn default_plugins() -> Vec<Box<dyn PluginExt>> {
     vec![
         Box::new(Kerbal1Plugin::new()),
         Box::new(Kerbal2Plugin::new()),

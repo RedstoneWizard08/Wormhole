@@ -1,18 +1,19 @@
 //! Instance commands for the GUI.
 
+use std::sync::Arc;
+
+use anyhow::Result;
 use api::register::PLUGINS;
-use chrono::{DateTime, Utc};
 use data::{
-    diesel::{
-        delete, insert_into, update, ExpressionMethods, QueryDsl, RunQueryDsl, SelectableHelper,
+    prisma::{
+        game,
+        instance::{self, SetParam},
+        PrismaClient,
     },
-    instance::Instance,
-    schema::instances,
+    Instance,
 };
 use mcmeta::cmd::modded::GetLoader;
-use whcore::errors::Stringify;
-
-use crate::{AppState, Result};
+use whcore::traits::Resultify;
 
 /// Gets all instances for the given game.
 ///
@@ -20,34 +21,23 @@ use crate::{AppState, Result};
 /// - `game_id` - The game's ID in the database.
 ///
 /// See: [`Instance`]
-#[whmacros::serde_call]
-#[tauri::command]
-#[specta::specta]
-pub async fn get_instances(game_id: i32, pool: AppState<'_>) -> Result<Vec<Instance>> {
-    let mut db = pool.get().stringify()?;
-
-    let items = instances::table
-        .select(Instance::as_select())
-        .filter(instances::game_id.eq(game_id))
-        .load(&mut db)
-        .stringify()?;
-
-    Ok(items)
+pub async fn get_instances(game_id: i32, db: Arc<PrismaClient>) -> Result<Vec<Instance>> {
+    Ok(db
+        .instance()
+        .find_many(vec![instance::game_id::equals(game_id)])
+        .exec()
+        .await?)
 }
 
 /// Deletes an instance.
 ///
 /// Arguments:
 /// - `instance_id` - The instance's ID in the database.
-#[whmacros::serde_call]
-#[tauri::command]
-#[specta::specta]
-pub async fn delete_instance(instance_id: i32, pool: AppState<'_>) -> Result<()> {
-    let mut db = pool.get().stringify()?;
-
-    delete(instances::table.filter(instances::id.eq(instance_id)))
-        .execute(&mut db)
-        .stringify()?;
+pub async fn delete_instance(instance_id: i32, db: Arc<PrismaClient>) -> Result<()> {
+    db.instance()
+        .delete(instance::id::equals(instance_id))
+        .exec()
+        .await?;
 
     Ok(())
 }
@@ -61,56 +51,62 @@ pub async fn delete_instance(instance_id: i32, pool: AppState<'_>) -> Result<()>
 /// Arguments:
 /// - `name` - The instance's name.
 /// - `game_id` - The game's ID in the database.
-#[whmacros::serde_call]
-#[tauri::command]
-#[specta::specta]
-pub async fn create_instance(name: String, game_id: i32, pool: AppState<'_>) -> Result<Instance> {
+pub async fn create_instance(
+    name: String,
+    game_id: i32,
+    db: Arc<PrismaClient>,
+) -> Result<Instance> {
     let lock = PLUGINS.lock().await;
-    let plugin = lock.get(&game_id).stringify()?;
+    let plugin = lock.get(&game_id).resultify()?;
     let dirs = plugin.dirs();
-    let now = DateTime::<Utc>::default().timestamp_millis();
 
     info!("Creating instance...");
 
-    let mut it = insert_into(instances::table)
-        .values(Instance {
-            id: None,
-            cache_dir: dirs.cache.to_str().unwrap().to_string(),
-            game_id,
-            created: now,
-            updated: now,
-            data_dir: dirs
-                .data
+    let instance = instance::create(
+        name.clone(),
+        game::id::equals(game_id),
+        dirs.data
+            .join("instances")
+            .join(&name)
+            .to_str()
+            .unwrap()
+            .to_string(),
+        dirs.cache.to_str().unwrap().to_string(),
+        plugin.find().resultify()?.to_str().unwrap().to_string(),
+        vec![],
+    );
+
+    info!("Installing loader...");
+
+    let mut setters: Vec<SetParam> = Vec::new();
+
+    setters.push(instance::loader::set(Some(serde_json::to_string(
+        &instance.loader().await?,
+    )?)));
+
+    info!("Updating database...");
+
+    let it = db
+        .instance()
+        .create(
+            name.clone(),
+            game::id::equals(game_id),
+            dirs.data
                 .join("instances")
                 .join(&name)
                 .to_str()
                 .unwrap()
                 .to_string(),
-            install_dir: plugin.find().stringify()?.to_str().unwrap().to_string(),
-            description: String::new(),
-            name,
-            loader: None,
-        })
-        .returning(Instance::as_returning())
-        .get_result(&mut pool.get().stringify()?)
-        .stringify()?;
-
-    info!("Installing loader...");
-
-    it.loader = Some(serde_json::to_string(&it.loader().await.stringify()?).stringify()?);
-
-    info!("Updating database...");
-
-    let it = update(instances::table)
-        .filter(instances::id.eq(it.id))
-        .set(instances::loader.eq(it.loader))
-        .returning(Instance::as_returning())
-        .get_result(&mut pool.get().stringify()?)
-        .stringify()?;
+            dirs.cache.to_str().unwrap().to_string(),
+            plugin.find().resultify()?.to_str().unwrap().to_string(),
+            setters,
+        )
+        .exec()
+        .await?;
 
     info!("Installing instance...");
 
-    plugin.install_instance(&it).await.stringify()?;
+    plugin.install_instance(&it).await?;
 
     Ok(it)
 }
@@ -122,68 +118,29 @@ pub async fn create_instance(name: String, game_id: i32, pool: AppState<'_>) -> 
 /// - `desc` - The new description.
 // Realistically, we won't be updating anything but the description for now.
 // If this changes in the future, I'll expand this.
-#[whmacros::serde_call]
-#[tauri::command]
-#[specta::specta]
 pub async fn update_instance(
     instance_id: i32,
     desc: String,
-    pool: AppState<'_>,
+    db: Arc<PrismaClient>,
 ) -> Result<Instance> {
-    Ok(update(instances::table)
-        .filter(instances::id.eq(instance_id))
-        .set(instances::description.eq(desc))
-        .returning(Instance::as_returning())
-        .get_result(&mut pool.get().stringify()?)
-        .stringify()?)
-}
-
-/// Creates a new instance, without installing a mod loader.
-///
-/// Arguments:
-/// - `instance` - The partial instance to create. This should not have an ID set.
-#[whmacros::serde_call]
-#[tauri::command]
-#[specta::specta]
-pub async fn add_instance(instance: Instance, pool: AppState<'_>) -> Result<Instance> {
-    let mut it = insert_into(instances::table)
-        .values(instance)
-        .returning(Instance::as_returning())
-        .get_result(&mut pool.get().stringify()?)
-        .stringify()?;
-
-    it.loader = Some(serde_json::to_string(&it.loader().await.stringify()?).stringify()?);
-
-    let it = update(instances::table)
-        .filter(instances::id.eq(it.id))
-        .set(instances::loader.eq(it.loader))
-        .returning(Instance::as_returning())
-        .get_result(&mut pool.get().stringify()?)
-        .stringify()?;
-
-    PLUGINS
-        .lock()
-        .await
-        .get(&it.game_id)
-        .stringify()?
-        .install_instance(&it)
-        .await
-        .stringify()?;
-
-    Ok(it)
+    Ok(db
+        .instance()
+        .update(
+            instance::id::equals(instance_id),
+            vec![instance::description::set(desc)],
+        )
+        .exec()
+        .await?)
 }
 
 /// Gets an instance by its ID.
 ///
 /// Arguments:
 /// - `instance_id` - The instance's ID in the database.
-#[whmacros::serde_call]
-#[tauri::command]
-#[specta::specta]
-pub async fn get_instance(instance_id: i32, pool: AppState<'_>) -> Result<Instance> {
-    Ok(instances::table
-        .select(Instance::as_select())
-        .filter(instances::id.eq(instance_id))
-        .get_result(&mut pool.get().stringify()?)
-        .stringify()?)
+pub async fn get_instance(instance_id: i32, db: Arc<PrismaClient>) -> Result<Instance> {
+    db.instance()
+        .find_first(vec![instance::id::equals(instance_id)])
+        .exec()
+        .await?
+        .resultify()
 }

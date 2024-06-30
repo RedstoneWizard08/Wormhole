@@ -1,24 +1,15 @@
 //! The router module.
 
-use axum::{
-    middleware::from_fn,
-    routing::{get, post},
-    Router,
-};
+use axum::{middleware::from_fn, routing::get, Router};
 use glue::{glue::Glue, util::is_debug};
 use midlog::logging_middleware;
 
-use crate::{
-    code::{self, is_openvscode_server},
-    route::route_handler,
-    state::AppState,
-    ws::websocket_handler,
-};
+use crate::code::{self, is_openvscode_server};
 
 /// A builder for the router.
 #[derive(Debug, Clone)]
 pub struct RouterBuilder {
-    router: Router<AppState>,
+    router: Router,
 }
 
 impl RouterBuilder {
@@ -47,8 +38,7 @@ impl RouterBuilder {
     pub fn routes(self) -> Self {
         let mut new = Self::new();
 
-        new.router = self.router.route("/_tauri/invoke", post(route_handler));
-        new.router = new.router.route("/_tauri/events", get(websocket_handler));
+        // TODO: Axum RSPC
 
         if is_openvscode_server().unwrap() {
             new.router = new.router.route("/__open-in-editor", get(code::handler));
@@ -58,8 +48,8 @@ impl RouterBuilder {
     }
 
     /// Build the router.
-    pub fn build(self, state: AppState) -> Router {
-        self.router.with_state(state)
+    pub fn build(self) -> Router {
+        self.router
     }
 }
 

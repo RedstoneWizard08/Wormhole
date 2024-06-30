@@ -9,9 +9,7 @@ authors.workspace = true
 
 [dependencies]
 anyhow.workspace = true
-diesel.workspace = true
-libsqlite3-sys.workspace = true
-async-trait.workspace = true
 serde.workspace = true
 specta.workspace = true
-diesel_migrations.workspace = true
+prisma-client-rust.workspace = true
+tokio.workspace = true

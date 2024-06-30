@@ -1,14 +1,14 @@
+use std::sync::Arc;
+
 use crate::{
     mod_::{Mod, ModVersion as RealModVersion},
     source::{Paginated, QueryOptions, Resolver, WithToken},
+    IntoAsync,
 };
 
 use self::schema::{browse::BrowseResult, info::ModInfo, version::ModVersion};
 use anyhow::Result;
-use data::{
-    instance::Instance,
-    source::{Source, Sources},
-};
+use data::{prisma::PrismaClient, sources::Sources, Source};
 use mcmeta::cmd::modded::ModLoader;
 
 pub mod schema;
@@ -54,7 +54,9 @@ impl Resolver for SpaceDock {
             let data = self.client().get(url).send().await?;
             let text = data.text().await?;
 
-            Ok(serde_json::from_str::<BrowseResult>(&text)?.into())
+            Ok(serde_json::from_str::<BrowseResult>(&text)?
+                .into_async()
+                .await)
         } else {
             let url = format!(
                 "{}/search/mod?query={}&page={}&count={}&game_id={}",
@@ -68,7 +70,9 @@ impl Resolver for SpaceDock {
             let data = self.client().get(url).send().await?;
             let text = data.text().await?;
 
-            Ok(serde_json::from_str::<BrowseResult>(&text)?.into())
+            Ok(serde_json::from_str::<BrowseResult>(&text)?
+                .into_async()
+                .await)
         }
     }
 
@@ -77,7 +81,7 @@ impl Resolver for SpaceDock {
         let data = self.client().get(url).send().await?;
         let text = data.text().await?;
 
-        Ok(serde_json::from_str::<ModInfo>(&text)?.into())
+        Ok(serde_json::from_str::<ModInfo>(&text)?.into_async().await)
     }
 
     async fn get_versions(&self, _loader: &ModLoader, id: String) -> Result<Vec<RealModVersion>> {
@@ -123,7 +127,7 @@ impl Resolver for SpaceDock {
         }
     }
 
-    fn source(&self) -> Source {
-        Sources::SpaceDock.source()
+    async fn source(&self, client: Arc<PrismaClient>) -> Source {
+        Sources::SpaceDock.source(client).await.unwrap()
     }
 }

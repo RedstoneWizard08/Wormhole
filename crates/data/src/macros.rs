@@ -1,102 +1,53 @@
 #[macro_export]
-macro_rules! sources {
-    ($ty: ident => $enum: ident = $mapping: ident: $($var: ident = ($id: expr, $name: expr, $url: expr);)*) => {
-        #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Type)]
-        pub enum $enum {
-            $($var,)*
+macro_rules! sources_enum {
+    ($($source: ident),*) => {
+        pub enum Sources {
+            $($source),*
         }
 
-        impl $enum {
-            pub fn source(&self) -> $ty {
-                match self.clone() {
-                    $(Self::$var => $ty {
-                        id: Some($id),
-                        name: $name.to_string(),
-                        base_url: $url.to_string(),
-                    },)*
+        impl Sources {
+            pub(crate) fn create_source(&self) -> $crate::Source {
+                match self {
+                    $(
+                        Self::$source => $crate::Source {
+                            games: None,
+                            id: -1,
+                            mods: None,
+                            name: String::from(stringify!($source)),
+                        }
+                    ),*
                 }
             }
 
-            pub fn id(&self) -> i32 {
-                self.source().id.unwrap_or(-1)
+            pub fn values() -> Vec<Sources> {
+                vec![
+                    $(Self::$source),*
+                ]
             }
 
-            pub fn name(&self) -> String {
-                self.source().name
+            pub async fn source(&self, client: std::sync::Arc<crate::prisma::PrismaClient>) -> Result<$crate::Source> {
+                client
+                    .source()
+                    .find_first(vec![$crate::prisma::source::name::equals(self.create_source().name)])
+                    .exec()
+                    .await?
+                    .ok_or(anyhow!("Could not find that source in the database!"))
             }
 
-            pub fn base_url(&self) -> String {
-                self.source().base_url
+            pub async fn source_alt(&self) -> Result<$crate::Source> {
+                $crate::client().await?
+                    .source()
+                    .find_first(vec![$crate::prisma::source::name::equals(self.create_source().name)])
+                    .exec()
+                    .await?
+                    .ok_or(anyhow!("Could not find that source in the database!"))
             }
-        }
 
-        #[allow(clippy::from_over_into)]
-        impl Into<i32> for $enum {
-            fn into(self) -> i32 {
-                self.id()
-            }
-        }
-
-        impl Into<$ty> for $enum {
-            fn into(self) -> $ty {
-                self.source()
-            }
-        }
-
-        impl From<$ty> for $enum {
-            fn from(val: $ty) -> Self {
-                match val.id.unwrap_or_default() {
-                    $($id => $enum::$var,)*
-
-                    _ => panic!("Unknown source!"),
-                }
-            }
-        }
-
-        unsafe impl Send for $enum {}
-        unsafe impl Sync for $enum {}
-
-        #[repr(i32)]
-        #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize, Type)]
-        pub enum $mapping {
-            $($var = $id,)*
-        }
-
-        impl $mapping {
             pub fn as_str(&self) -> &'static str {
                 match self {
-                    $(Self::$var => $name,)*
+                    $(Self::$source => stringify!($source)),*
                 }
             }
         }
-
-        impl From<$enum> for $mapping {
-            fn from(val: $enum) -> $mapping {
-                match val {
-                    $($enum::$var => $mapping::$var,)*
-                }
-            }
-        }
-
-        impl From<$mapping> for $enum {
-            fn from(val: $mapping) -> $enum {
-                match val {
-                    $($mapping::$var => $enum::$var,)*
-                }
-            }
-        }
-
-        impl From<i32> for $mapping {
-            fn from(val: i32) -> $mapping {
-                match val {
-                    $($id => $mapping::$var,)*
-
-                    _ => panic!("Unsupported value for {}: {}", stringify!($mapping), val),
-                }
-            }
-        }
-
-        unsafe impl Send for $mapping {}
-        unsafe impl Sync for $mapping {}
     }
 }

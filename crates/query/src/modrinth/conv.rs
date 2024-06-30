@@ -1,4 +1,4 @@
-use data::source::Sources;
+use data::sources::Sources;
 use ferinth::structures::{
     project::Project,
     search::{Response, SearchHit},
@@ -8,51 +8,54 @@ use ferinth::structures::{
 use crate::{
     mod_::{Mod, ModVersion},
     source::Paginated,
+    IntoAsync,
 };
 
-impl From<Project> for Mod {
-    fn from(val: Project) -> Self {
-        Self {
-            url: Some(format!("https://modrinth.com/mod/{}", val.id)),
-            id: val.id,
+#[async_trait]
+impl IntoAsync<Mod> for Project {
+    async fn into_async(self) -> Mod {
+        Mod {
+            url: Some(format!("https://modrinth.com/mod/{}", self.id)),
+            id: self.id,
             game_id: None,
             versions: Vec::new(),
-            name: val.title,
-            source: Sources::Modrinth.id(),
-            icon: val.icon_url.clone().map(|v| v.to_string()),
-            author: Some(val.team),
-            desc: Some(val.body),
-            downloads: val.downloads as u64,
-            followers: val.followers as u64,
-            banner: val
+            name: self.title,
+            source: Sources::Modrinth.source_alt().await.unwrap().id,
+            icon: self.icon_url.clone().map(|v| v.to_string()),
+            author: Some(self.team),
+            desc: Some(self.body),
+            downloads: self.downloads as u64,
+            followers: self.followers as u64,
+            banner: self
                 .gallery
                 .iter()
                 .find(|v| v.featured)
                 .map(|v| Some(v.url.clone()))
-                .unwrap_or(val.icon_url)
+                .unwrap_or(self.icon_url)
                 .map(|v| v.to_string()),
         }
     }
 }
 
-impl From<SearchHit> for Mod {
-    fn from(val: SearchHit) -> Self {
-        Self {
-            url: Some(format!("https://modrinth.com/mod/{}", val.project_id)),
-            id: val.project_id,
+#[async_trait]
+impl IntoAsync<Mod> for SearchHit {
+    async fn into_async(self) -> Mod {
+        Mod {
+            url: Some(format!("https://modrinth.com/mod/{}", self.project_id)),
+            id: self.project_id,
             game_id: None,
             versions: Vec::new(),
-            name: val.title,
-            source: Sources::Modrinth.id(),
-            icon: val.icon_url.clone().map(|v| v.to_string()),
-            author: Some(val.author),
-            desc: Some(val.description),
-            downloads: val.downloads as u64,
-            followers: val.follows as u64,
-            banner: val
+            name: self.title,
+            source: Sources::Modrinth.source_alt().await.unwrap().id,
+            icon: self.icon_url.clone().map(|v| v.to_string()),
+            author: Some(self.author),
+            desc: Some(self.description),
+            downloads: self.downloads as u64,
+            followers: self.follows as u64,
+            banner: self
                 .featured_gallery
                 .map(|v| Some(v))
-                .unwrap_or(val.icon_url)
+                .unwrap_or(self.icon_url)
                 .map(|v| v.to_string()),
         }
     }
@@ -73,17 +76,14 @@ impl From<Version> for ModVersion {
     }
 }
 
-impl From<Response> for Paginated<Mod> {
-    fn from(val: Response) -> Self {
-        Self {
-            page: Some((val.offset / val.limit) as i32),
-            per_page: Some(val.limit as i32),
-            pages: Some((val.total_hits / val.limit) as i32),
-            data: val
-                .hits
-                .iter()
-                .map(|v| v.clone().into())
-                .collect::<Vec<_>>(),
+#[async_trait]
+impl IntoAsync<Paginated<Mod>> for Response {
+    async fn into_async(self) -> Paginated<Mod> {
+        Paginated {
+            page: Some((self.offset / self.limit) as i32),
+            per_page: Some(self.limit as i32),
+            pages: Some((self.total_hits / self.limit) as i32),
+            data: self.hits.into_async().await,
         }
     }
 }

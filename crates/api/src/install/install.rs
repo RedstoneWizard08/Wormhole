@@ -1,9 +1,14 @@
 //! The module responsible for actually installing mods.
 
+use std::sync::Arc;
+
 use anyhow::Result;
-use data::{conv::DbIntoArg, instance::Instance, Conn};
+use data::{
+    prisma::{instance, r#mod, source, PrismaClient},
+    Instance, Mod,
+};
 use install::{extract::extract_file, magic::detect_file_type};
-use query::mod_::{Mod, ModVersion};
+use query::mod_::ModVersion;
 use tokio_stream::StreamExt;
 use whcore::progress::ProgressCallback;
 
@@ -11,7 +16,7 @@ use crate::plugin::Plugin;
 
 /// Install a mod.
 pub async fn install_mod(
-    db: &mut Conn,
+    db: Arc<PrismaClient>,
     item: Mod,
     version: Option<ModVersion>,
     instance: Instance,
@@ -19,12 +24,12 @@ pub async fn install_mod(
     callback: Option<ProgressCallback>,
 ) -> Result<()> {
     let loader = plugin.loader(instance.clone()).await?;
-    let src = plugin.get_source(item.source).await.unwrap();
-    let version = version.unwrap_or(src.get_latest_version(&loader, item.id.clone()).await?);
+    let src = plugin.get_source(item.source_id).await.unwrap();
+    let version = version.unwrap_or(src.get_latest_version(&loader, item.r#mod.clone()).await?);
     let file = version.file_name();
 
     let url = src
-        .get_download_url(&loader, item.id.clone(), Some(version.clone().id))
+        .get_download_url(&loader, item.r#mod.clone(), Some(version.clone().id))
         .await?;
 
     let res = reqwest::get(url).await?;
@@ -50,9 +55,39 @@ pub async fn install_mod(
     let kind = detect_file_type(&data, &file)?;
     let files = extract_file(data, file, kind, instance.clone(), plugin.fallback())?;
 
-    // TODO: Get the path the mod was installed to and provide it
+    let installed_files = serde_json::to_string(
+        &files
+            .iter()
+            .map(|v| {
+                v.strip_prefix(instance.data_dir())
+                    .unwrap()
+                    .to_str()
+                    .unwrap()
+                    .to_string()
+            })
+            .collect::<Vec<_>>(),
+    )?;
 
-    item.db_into_arg(db, (version, instance, files))?;
+    let it = r#mod::create(
+        item.r#mod,
+        item.name,
+        version.file_name(),
+        version
+            .size
+            .clone()
+            .map(|v| v.parse().unwrap())
+            .unwrap_or(0),
+        installed_files,
+        source::id::equals(item.source_id),
+        instance::id::equals(instance.id),
+        vec![r#mod::hash::set(version.hash.clone())],
+    );
+
+    db.r#mod().upsert(
+        r#mod::file::equals(version.file_name()),
+        it.clone(),
+        it.to_params(),
+    );
 
     Ok(())
 }

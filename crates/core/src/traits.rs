@@ -1,4 +1,4 @@
-use anyhow::Result;
+use anyhow::{anyhow, Result};
 
 /// An async version of the [`Default`] trait.
 /// This allows implementors to provide a default method
@@ -21,4 +21,14 @@ impl<T: Default + Send + Sync> AsyncDefault for T {
 #[async_trait]
 pub trait Runnable {
     async fn run(&self) -> Result<()>;
+}
+
+pub trait Resultify<T> {
+    fn resultify(self) -> Result<T>;
+}
+
+impl<T> Resultify<T> for Option<T> {
+    fn resultify(self) -> Result<T> {
+        self.ok_or(anyhow!("Tried to unwrap a None value!"))
+    }
 }

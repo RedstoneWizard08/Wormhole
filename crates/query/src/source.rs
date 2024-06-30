@@ -1,7 +1,9 @@
+use std::sync::Arc;
+
 use anyhow::Result;
 use const_format::formatcp;
 
-use data::{instance::Instance, source::Source};
+use data::{prisma::PrismaClient, Instance, Source};
 use mcmeta::cmd::modded::ModLoader;
 use reqwest::{
     header::{HeaderMap, HeaderValue, AUTHORIZATION},
@@ -128,7 +130,7 @@ pub trait Resolver: WithToken + Send + Sync {
     ) -> Result<String>;
 
     /// Get the source's id (type).
-    fn source(&self) -> Source;
+    async fn source(&self, client: Arc<PrismaClient>) -> Source;
 
     /// Get the latest version.
     async fn get_latest_version(&self, loader: &ModLoader, id: String) -> Result<ModVersion> {

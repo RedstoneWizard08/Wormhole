@@ -1,7 +1,7 @@
-use data::source::Sources;
+use data::sources::Sources;
 
 use super::version::ModVersion;
-use crate::mod_::Mod;
+use crate::{mod_::Mod, IntoAsync};
 
 #[derive(
     Serialize, Deserialize, Type, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Default,
@@ -76,15 +76,16 @@ pub struct SharedAuthor {
     pub user_id: i32,
 }
 
-impl From<ModInfo> for Mod {
-    fn from(mut val: ModInfo) -> Self {
-        val = val.finish(false);
+#[async_trait]
+impl IntoAsync<Mod> for ModInfo {
+    async fn into_async(mut self) -> Mod {
+        let val = self.finish(false);
 
-        Self {
+        Mod {
             url: Some(format!("https://spacedock.info/mod/{}", val.id.unwrap())),
             id: format!("{}", val.id.unwrap()),
             name: val.name.unwrap(),
-            source: Sources::SpaceDock.id(),
+            source: Sources::SpaceDock.source_alt().await.unwrap().id,
             game_id: val.game_id,
             icon: val.background.clone(),
             banner: val.background,

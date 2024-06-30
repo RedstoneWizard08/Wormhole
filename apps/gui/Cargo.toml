@@ -33,7 +33,6 @@ whcore.workspace = true
 install.workspace = true
 anyhow.workspace = true
 specta.workspace = true
-tauri-specta.workspace = true
 futures.workspace = true
 macros.workspace = true
 chrono.workspace = true

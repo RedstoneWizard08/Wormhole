@@ -12,7 +12,7 @@ macro_rules! unity_plugin {
             dir: $dir: expr,
             icon: $icon: expr,
             banner: $banner: expr,
-            
+
             resolvers: [
                 $($resolver: ident),*
             ]

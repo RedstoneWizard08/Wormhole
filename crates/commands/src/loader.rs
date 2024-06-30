@@ -1,10 +1,11 @@
 //! Loader commands for the GUI.
 
+use std::sync::Arc;
+
 use api::register::PLUGINS;
 use data::{
-    diesel::{update, ExpressionMethods, RunQueryDsl, SelectableHelper},
-    instance::Instance,
-    schema::instances,
+    prisma::{instance, PrismaClient},
+    Instance,
 };
 use mcmeta::{
     cmd::modded::{ModLoader, ModLoaderType},
@@ -14,24 +15,21 @@ use mcmeta::{
     piston::manifest::get_manifest,
     quilt::get_quilt_versions,
 };
-use whcore::errors::Stringify;
 
-use crate::{AppState, Result};
+use anyhow::Result;
+use whcore::traits::Resultify;
 
 /// Get a loader's latest version.
 ///
 /// Arguments:
 /// - `loader` - The loader type.
-#[whmacros::serde_call]
-#[tauri::command]
-#[specta::specta]
-pub async fn get_latest_loader(loader: ModLoaderType, _pool: AppState<'_>) -> Result<ModLoader> {
+pub async fn get_latest_loader(loader: ModLoaderType) -> Result<ModLoader> {
     Ok(match loader {
-        ModLoaderType::Forge => ModLoader::forge_latest().await.stringify()?,
-        ModLoaderType::NeoForge => ModLoader::neo_latest().await.stringify()?,
-        ModLoaderType::Fabric => ModLoader::fabric_latest().await.stringify()?,
-        ModLoaderType::Quilt => ModLoader::quilt_latest().await.stringify()?,
-        ModLoaderType::Vanilla => ModLoader::vanilla_latest().await.stringify()?,
+        ModLoaderType::Forge => ModLoader::forge_latest().await?,
+        ModLoaderType::NeoForge => ModLoader::neo_latest().await?,
+        ModLoaderType::Fabric => ModLoader::fabric_latest().await?,
+        ModLoaderType::Quilt => ModLoader::quilt_latest().await?,
+        ModLoaderType::Vanilla => ModLoader::vanilla_latest().await?,
         ModLoaderType::None => ModLoader::None,
     })
 }
@@ -40,14 +38,10 @@ pub async fn get_latest_loader(loader: ModLoaderType, _pool: AppState<'_>) -> Re
 ///
 /// Arguments:
 /// - `loader` - The loader type.
-#[whmacros::serde_call]
-#[tauri::command]
-#[specta::specta]
-pub async fn get_loaders(loader: ModLoaderType, _pool: AppState<'_>) -> Result<Vec<ModLoader>> {
+pub async fn get_loaders(loader: ModLoaderType) -> Result<Vec<ModLoader>> {
     Ok(match loader {
         ModLoaderType::Forge => get_forge_versions()
-            .await
-            .stringify()?
+            .await?
             .versioning
             .versions
             .iter()
@@ -58,8 +52,7 @@ pub async fn get_loaders(loader: ModLoaderType, _pool: AppState<'_>) -> Result<V
             .collect(),
 
         ModLoaderType::NeoForge => get_neoforge_versions()
-            .await
-            .stringify()?
+            .await?
             .0
             .iter()
             .map(|v| {
@@ -69,8 +62,7 @@ pub async fn get_loaders(loader: ModLoaderType, _pool: AppState<'_>) -> Result<V
             .collect(),
 
         ModLoaderType::Fabric => get_fabric_versions()
-            .await
-            .stringify()?
+            .await?
             .versioning
             .versions
             .iter()
@@ -78,8 +70,7 @@ pub async fn get_loaders(loader: ModLoaderType, _pool: AppState<'_>) -> Result<V
             .collect(),
 
         ModLoaderType::Quilt => get_quilt_versions()
-            .await
-            .stringify()?
+            .await?
             .versioning
             .versions
             .iter()
@@ -87,8 +78,7 @@ pub async fn get_loaders(loader: ModLoaderType, _pool: AppState<'_>) -> Result<V
             .collect(),
 
         ModLoaderType::Vanilla => get_manifest()
-            .await
-            .stringify()?
+            .await?
             .versions
             .iter()
             .map(|v| ModLoader::Vanilla(v.id.clone()))
@@ -103,28 +93,24 @@ pub async fn get_loaders(loader: ModLoaderType, _pool: AppState<'_>) -> Result<V
 /// Arguments:
 /// - `loader` - The loader to install.
 /// - `instance` - The instance to install the loader to.
-#[whmacros::serde_call]
-#[tauri::command]
-#[specta::specta]
 pub async fn install_loader(
     loader: ModLoader,
     instance: Instance,
-    pool: AppState<'_>,
+    db: Arc<PrismaClient>,
 ) -> Result<Instance> {
     let mut instance = instance;
     let lock = PLUGINS.lock().await;
-    let plugin = lock.get(&instance.game_id).stringify()?;
+    let plugin = lock.get(&instance.game_id).resultify()?;
 
-    instance.loader = Some(serde_json::to_string(&loader).stringify()?);
-    plugin
-        .install_loader(&instance, &loader)
-        .await
-        .stringify()?;
+    instance.loader = Some(serde_json::to_string(&loader)?);
+    plugin.install_loader(&instance, &loader).await?;
 
-    Ok(update(instances::table)
-        .filter(instances::id.eq(instance.id))
-        .set(instances::loader.eq(instance.loader))
-        .returning(Instance::as_returning())
-        .get_result(&mut pool.get().stringify()?)
-        .stringify()?)
+    Ok(db
+        .instance()
+        .update(
+            instance::id::equals(instance.id),
+            vec![instance::loader::set(instance.loader)],
+        )
+        .exec()
+        .await?)
 }

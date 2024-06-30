@@ -3,21 +3,13 @@
 use std::{collections::HashMap, path::PathBuf, sync::Arc};
 
 use anyhow::Result;
-use data::{
-    instance::Instance,
-    mod_::DbMod,
-    source::{SourceMapping, Sources},
-    Conn,
-};
+use data::{get_or_init_client, prisma::PrismaClient, Instance, Mod, Source};
 use mcmeta::cmd::modded::ModLoader;
-use query::{
-    mod_::{Mod, ModVersion},
-    source::Resolver,
-};
+use query::{mod_::ModVersion, source::Resolver};
 use tokio::{process::Child, sync::Mutex};
 use whcore::{dirs::Dirs, manager::CoreManager};
 
-use crate::install::{install::install_mod, progress::tauri_progress, uninstall::uninstall_mod};
+use crate::install::{install::install_mod, uninstall::uninstall_mod};
 
 lazy_static! {
     /// A map of plugin identifiers to their resolvers.
@@ -29,7 +21,7 @@ lazy_static! {
 
 /// A plugin's metadata. This is useful for getting information
 /// about the plugin on the frontend.
-#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize, Type)]
+#[derive(Debug, Clone, Serialize, Deserialize, Type)]
 pub struct PluginInfo {
     /// The plugin's identifier.
     pub id: &'static str,
@@ -52,7 +44,7 @@ pub struct PluginInfo {
     pub fallback_dir: Option<&'static str>,
 
     /// The plugin's query resolvers (IDs).
-    pub resolvers: Vec<SourceMapping>,
+    pub resolvers: Vec<Source>,
 }
 
 unsafe impl Send for PluginInfo {}
@@ -149,7 +141,7 @@ pub trait Plugin: Send + Sync {
     /// Get a source based on its ID.
     async fn get_source(&self, source: i32) -> Option<Arc<Box<dyn Resolver + Send + Sync>>> {
         for src in self.resolvers().await? {
-            if src.source().id.unwrap() == source {
+            if src.source(get_or_init_client().await.ok()?).await.id == source {
                 return Some(src);
             }
         }
@@ -159,6 +151,12 @@ pub trait Plugin: Send + Sync {
 
     /// Get the plugin as a [`PluginInfo`].
     async fn as_info(&self) -> Option<PluginInfo> {
+        let mut resolvers = Vec::new();
+
+        for resolver in self.resolvers().await? {
+            resolvers.push(resolver.source(get_or_init_client().await.ok()?).await);
+        }
+
         Some(PluginInfo {
             id: self.id(),
             game: self.game(),
@@ -166,13 +164,7 @@ pub trait Plugin: Send + Sync {
             display_name: self.display(),
             icon_url: self.icon(),
             fallback_dir: self.fallback(),
-
-            resolvers: self
-                .resolvers()
-                .await?
-                .iter()
-                .map(|v| Sources::from(v.source()).into())
-                .collect::<Vec<_>>(),
+            resolvers,
         })
     }
 
@@ -182,7 +174,7 @@ pub trait Plugin: Send + Sync {
     /// Install a mod to the provided instance.
     async fn install_mod(
         &self,
-        db: &mut Conn,
+        db: Arc<PrismaClient>,
         item: Mod,
         version: Option<ModVersion>,
         instance: Instance,
@@ -190,23 +182,13 @@ pub trait Plugin: Send + Sync {
     where
         Self: Sized,
     {
-        install_mod(
-            db,
-            item,
-            version,
-            instance,
-            Box::new(self),
-            Some(Box::new(tauri_progress)),
-        )
-        .await?;
+        install_mod(db, item, version, instance, Box::new(self), None).await?;
 
         Ok(())
     }
 
     /// Uninstall a mod from the provided instance.
-    async fn uninstall_mod(&self, db: &mut Conn, item: DbMod, instance: Instance) -> Result<()>
-    where
-        Self: Sized,
+    async fn uninstall_mod(&self, db: Arc<PrismaClient>, item: Mod, instance: Instance) -> Result<()>
     {
         uninstall_mod(db, item, instance).await?;
 
@@ -216,5 +198,32 @@ pub trait Plugin: Send + Sync {
     /// Install an instance after creation.
     async fn install_instance(&self, _inst: &Instance) -> Result<()> {
         Ok(())
+    }
+}
+
+/// Extensions to the [`Plugin`] trait.
+#[async_trait]
+pub trait PluginExt: Plugin {
+    /// Install a mod.
+    /// This needs to exist because of the [`Sized`] requirement.
+    async fn install(
+        &self,
+        db: Arc<PrismaClient>,
+        item: Mod,
+        version: Option<ModVersion>,
+        instance: Instance,
+    ) -> Result<()>;
+}
+
+#[async_trait]
+impl<T: Plugin + Send + Sync> PluginExt for T {
+    async fn install(
+        &self,
+        db: Arc<PrismaClient>,
+        item: Mod,
+        version: Option<ModVersion>,
+        instance: Instance,
+    ) -> Result<()> {
+        self.install_mod(db, item, version, instance).await
     }
 }

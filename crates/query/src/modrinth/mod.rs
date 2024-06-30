@@ -1,6 +1,6 @@
 pub mod conv;
 
-use std::env;
+use std::{env, sync::Arc};
 
 use crate::{
     mod_::{Mod, ModVersion},
@@ -9,10 +9,7 @@ use crate::{
 };
 
 use anyhow::Result;
-use data::{
-    instance::Instance,
-    source::{Source, Sources},
-};
+use data::{prisma::PrismaClient, sources::Sources, Source};
 use ferinth::{
     structures::{
         project::{Project, ProjectType},
@@ -95,15 +92,12 @@ impl Resolver for Modrinth {
             )
             .await
             .map_err(|v| anyhow!(v))?
-            .into())
+            .into_async()
+            .await)
     }
 
     async fn get_mod(&self, id: String) -> Result<Mod> {
-        self.client
-            .get_project(&id)
-            .await
-            .map(|v| v.into())
-            .map_err(|v| anyhow!(v))
+        Ok(self.client.get_project(&id).await?.into_async().await)
     }
 
     async fn get_versions(&self, loader: &ModLoader, id: String) -> Result<Vec<ModVersion>> {
@@ -162,7 +156,7 @@ impl Resolver for Modrinth {
         }
     }
 
-    fn source(&self) -> Source {
-        Sources::Modrinth.source()
+    async fn source(&self, client: Arc<PrismaClient>) -> Source {
+        Sources::Modrinth.source(client).await.unwrap()
     }
 }

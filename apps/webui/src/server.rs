@@ -4,17 +4,13 @@ use std::net::{IpAddr, SocketAddr};
 
 use anyhow::Result;
 use axum::serve;
-use data::{
-    diesel::r2d2::{ConnectionManager, Pool},
-    Conn,
-};
 use glue::{abort::register_exit_handler, util::is_debug};
 use tokio::{join, net::TcpListener};
 
-use crate::{cli::Cli, glue::make_glue, router::RouterBuilder, state::AppState};
+use crate::{cli::Cli, glue::make_glue, router::RouterBuilder};
 
 /// Run the server.
-pub async fn run_server(pool: Pool<ConnectionManager<Conn>>, cli: Cli) -> Result<()> {
+pub async fn run_server(cli: Cli) -> Result<()> {
     info!("Setting up CTRL-C handler...");
 
     register_exit_handler()?;
@@ -23,17 +19,13 @@ pub async fn run_server(pool: Pool<ConnectionManager<Conn>>, cli: Cli) -> Result
 
     let glue = make_glue()?;
 
-    info!("Creating state...");
-
-    let state = AppState::new(cli.clone(), pool).await?;
-
     info!("Creating router...");
 
     let router = RouterBuilder::new()
         .glue(glue.clone())
         .routes()
         .log()
-        .build(state)
+        .build()
         .into_make_service_with_connect_info::<SocketAddr>();
 
     info!("Initializing server...");

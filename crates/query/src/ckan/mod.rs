@@ -1,5 +1,7 @@
 pub mod conv;
 
+use std::sync::Arc;
+
 use crate::{
     mod_::{Mod, ModVersion},
     source::{Paginated, QueryOptions, Resolver, WithToken},
@@ -8,10 +10,7 @@ use crate::{
 
 use anyhow::Result;
 use ckandex::{kref::KrefResolver, refresh_data, CacheClient, IdFilter, NameFilter, Query, KSP};
-use data::{
-    instance::Instance,
-    source::{Source, Sources},
-};
+use data::{prisma::PrismaClient, sources::Sources, Source};
 use mcmeta::cmd::modded::ModLoader;
 use whcore::manager::CoreManager;
 
@@ -134,7 +133,7 @@ impl Resolver for Ckan {
             .unwrap())
     }
 
-    fn source(&self) -> Source {
-        Sources::Ckan.source()
+    async fn source(&self, client: Arc<PrismaClient>) -> Source {
+        Sources::Ckan.source(client).await.unwrap()
     }
 }

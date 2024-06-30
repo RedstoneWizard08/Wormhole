@@ -1,5 +1,5 @@
 [package]
-name = "bindings"
+name = "prisma"
 version.workspace = true
 edition.workspace = true
 license.workspace = true
@@ -8,9 +8,4 @@ homepage.workspace = true
 authors.workspace = true
 
 [dependencies]
-const_format.workspace = true
-tokio.workspace = true
-anyhow.workspace = true
-clap.workspace = true
-whcore.workspace = true
-commands.workspace = true
+prisma-client-rust-cli.workspace = true

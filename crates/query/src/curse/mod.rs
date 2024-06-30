@@ -2,7 +2,7 @@ pub mod conv;
 pub mod furse;
 pub mod query;
 
-use std::env;
+use std::{env, sync::Arc};
 
 use crate::{
     mod_::{Mod, ModVersion},
@@ -11,10 +11,7 @@ use crate::{
 };
 
 use anyhow::Result;
-use data::{
-    instance::Instance,
-    source::{Source, Sources},
-};
+use data::{prisma::PrismaClient, sources::Sources, Source};
 use furse::Furse;
 use mcmeta::cmd::modded::ModLoader;
 use reqwest::{
@@ -98,11 +95,7 @@ impl Resolver for CurseForge {
             .await?;
 
         Ok(Paginated {
-            data: res
-                .data
-                .iter()
-                .map(|v| v.clone().into())
-                .collect::<Vec<_>>(),
+            data: res.data.into_async().await,
             page: Some(res.pagination.index),
             per_page: Some(res.pagination.page_size),
             pages: Some((res.pagination.total_count / res.pagination.page_size) as i32),
@@ -110,12 +103,7 @@ impl Resolver for CurseForge {
     }
 
     async fn get_mod(&self, id: String) -> Result<Mod> {
-        let mut it: Mod = self
-            .client
-            .get_mod(id.parse()?)
-            .await
-            .map(|v| v.into())
-            .map_err(|v| anyhow!(v))?;
+        let mut it: Mod = self.client.get_mod(id.parse()?).await?.into_async().await;
 
         it.desc = self.client.get_mod_description(id.parse()?).await.ok();
 
@@ -177,7 +165,7 @@ impl Resolver for CurseForge {
         }
     }
 
-    fn source(&self) -> Source {
-        Sources::CurseForge.source()
+    async fn source(&self, client: Arc<PrismaClient>) -> Source {
+        Sources::CurseForge.source(client).await.unwrap()
     }
 }

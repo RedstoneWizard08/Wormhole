@@ -5,7 +5,7 @@ use std::{fs, path::PathBuf};
 
 use crate::{cmd::modded::ModLoader, download::DownloadCallbackFn};
 use anyhow::Result;
-use data::instance::Instance;
+use data::Instance;
 use java::install::install_java;
 use msa::state::MsaState;
 use tokio::process::Child;

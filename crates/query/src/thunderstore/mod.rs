@@ -1,13 +1,13 @@
+use std::sync::Arc;
+
 use crate::{
     mod_::{Mod, ModVersion},
     source::{Paginated, QueryOptions, Resolver, WithToken},
+    IntoAsync,
 };
 
 use anyhow::Result;
-use data::{
-    instance::Instance,
-    source::{Source, Sources},
-};
+use data::{prisma::PrismaClient, sources::Sources, Source};
 use mcmeta::cmd::modded::ModLoader;
 
 use self::schema::{
@@ -53,7 +53,9 @@ impl Resolver for Thunderstore {
             let data = self.client().get(url).send().await?;
             let text = data.text().await?;
 
-            Ok(serde_json::from_str::<Vec<PackageListing>>(&text)?.into())
+            Ok(serde_json::from_str::<Vec<PackageListing>>(&text)?
+                .into_async()
+                .await)
         } else {
             let url = format!("{}/c/{}/api/v1/package/", self.base().await, game_id,);
 
@@ -67,7 +69,7 @@ impl Resolver for Thunderstore {
                 .cloned()
                 .collect::<Vec<_>>();
 
-            Ok(res.into())
+            Ok(res.into_async().await)
         }
     }
 
@@ -97,7 +99,8 @@ impl Resolver for Thunderstore {
             .await?
             .json::<Package>()
             .await?
-            .into();
+            .into_async()
+            .await;
 
         let desc_url = format!(
             "{}/api/experimental/package/{}/{}/{}/readme",
@@ -167,7 +170,7 @@ impl Resolver for Thunderstore {
         }
     }
 
-    fn source(&self) -> Source {
-        Sources::Thunderstore.source()
+    async fn source(&self, client: Arc<PrismaClient>) -> Source {
+        Sources::Thunderstore.source(client).await.unwrap()
     }
 }

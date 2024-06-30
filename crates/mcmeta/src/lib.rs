@@ -31,10 +31,10 @@ pub fn type_map() -> TypeMap {
     let mut map = TypeMap::default();
 
     let ty = ModLoader::named_data_type(&mut map, &[]);
-    map.insert(ModLoader::SID, ty);
+    map.insert(ModLoader::sid(), ty);
 
     let ty = ModLoaderType::named_data_type(&mut map, &[]);
-    map.insert(ModLoaderType::SID, ty);
+    map.insert(ModLoaderType::sid(), ty);
 
     map
 }

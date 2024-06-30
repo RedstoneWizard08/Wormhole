@@ -6,9 +6,7 @@ use std::{
 
 use crate::magic::{detect_file_type, FileType};
 use anyhow::Result;
-
-use data::instance::Instance;
-
+use data::Instance;
 use flate2::read::GzDecoder;
 use tar::Archive;
 use walkdir::WalkDir;
@@ -109,7 +107,6 @@ pub fn reprocess_zip(
 
         //     reprocess_zip(data, name, FileType::Zip, instance, fallback)
         // }
-
         FileType::Tar => {
             let data = extract_tar(data, &instance)?;
 

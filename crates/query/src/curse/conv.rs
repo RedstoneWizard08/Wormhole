@@ -1,26 +1,30 @@
+use data::sources::Sources;
+
 use super::furse::structures::{file_structs::File, mod_structs::Mod};
-use data::source::Sources;
+use crate::{
+    mod_::{Mod as RealMod, ModVersion},
+    IntoAsync,
+};
 
-use crate::mod_::{Mod as RealMod, ModVersion};
-
-impl From<Mod> for RealMod {
-    fn from(val: Mod) -> Self {
-        Self {
-            url: Some(val.links.website_url),
-            id: val.id.to_string(),
-            game_id: Some(val.game_id),
-            versions: val
+#[async_trait]
+impl IntoAsync<RealMod> for Mod {
+    async fn into_async(self) -> RealMod {
+        RealMod {
+            url: Some(self.links.website_url),
+            id: self.id.to_string(),
+            game_id: Some(self.game_id),
+            versions: self
                 .latest_files
                 .iter()
                 .map(|v| v.clone().into())
                 .collect::<Vec<ModVersion>>(),
-            name: val.name,
-            source: Sources::CurseForge.id(),
-            icon: val.logo.clone().map(|v| v.url.to_string()),
-            banner: val.logo.map(|v| v.url.to_string()),
-            author: Some(val.authors.first().unwrap().name.clone()),
-            desc: Some(val.summary),
-            downloads: val.download_count as u64,
+            name: self.name,
+            source: Sources::CurseForge.source_alt().await.unwrap().id,
+            icon: self.logo.clone().map(|v| v.url.to_string()),
+            banner: self.logo.map(|v| v.url.to_string()),
+            author: Some(self.authors.first().unwrap().name.clone()),
+            desc: Some(self.summary),
+            downloads: self.download_count as u64,
             followers: 0,
         }
     }

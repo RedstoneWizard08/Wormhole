@@ -1,53 +1,64 @@
-pub extern crate diesel;
+#![allow(unused)]
 
-#[macro_use]
-extern crate serde;
+use std::{path::PathBuf, sync::Arc};
 
-#[macro_use]
-extern crate specta;
+use anyhow::Result;
+use prisma::PrismaClient;
+use prisma_client_rust::specta::{NamedType, TypeMap};
+use tokio::sync::OnceCell;
 
-use diesel::sqlite::SqliteConnection;
-use instance::Instance;
-use mod_::DbMod;
-use specta::{NamedType, TypeMap};
-
-use crate::{
-    game::Game,
-    // mod_::Mod,
-    source::{Source, Sources, SupportedSource},
-};
-
-pub mod conv;
-pub mod game;
-pub mod instance;
 pub mod macros;
-pub mod migrate;
-pub mod mod_;
-pub mod schema;
-pub mod source;
+pub mod prisma;
+pub mod seeder;
+pub mod sources;
 
-pub type Conn = SqliteConnection;
+pub type Game = prisma::game::Data;
+pub type Source = prisma::source::Data;
+pub type Instance = prisma::instance::Data;
+pub type Mod = prisma::r#mod::Data;
+
+pub const CLIENT: OnceCell<Arc<PrismaClient>> = OnceCell::const_new();
+
+pub async fn client() -> Result<PrismaClient> {
+    Ok(PrismaClient::_builder().build().await?)
+}
+
+async fn arc_client() -> Result<Arc<PrismaClient>> {
+    client().await.map(Arc::new)
+}
+
+pub async fn get_or_init_client() -> Result<Arc<PrismaClient>> {
+    CLIENT.get_or_try_init(arc_client).await.cloned()
+}
 
 pub fn type_map() -> TypeMap {
     let mut map = TypeMap::default();
 
-    let ty = Instance::named_data_type(&mut map, &[]);
-    map.insert(Instance::SID, ty);
-
     let ty = Game::named_data_type(&mut map, &[]);
-    map.insert(Game::SID, ty);
+    map.insert(Game::sid(), ty);
 
     let ty = Source::named_data_type(&mut map, &[]);
-    map.insert(Source::SID, ty);
+    map.insert(Source::sid(), ty);
 
-    let ty = Sources::named_data_type(&mut map, &[]);
-    map.insert(Sources::SID, ty);
+    let ty = Instance::named_data_type(&mut map, &[]);
+    map.insert(Instance::sid(), ty);
 
-    let ty = SupportedSource::named_data_type(&mut map, &[]);
-    map.insert(SupportedSource::SID, ty);
-
-    let ty = DbMod::named_data_type(&mut map, &[]);
-    map.insert(DbMod::SID, ty);
+    let ty = Mod::named_data_type(&mut map, &[]);
+    map.insert(Mod::sid(), ty);
 
     map
+}
+
+impl Instance {
+    pub fn data_dir(&self) -> PathBuf {
+        PathBuf::from(&self.data_dir)
+    }
+
+    pub fn cache_dir(&self) -> PathBuf {
+        PathBuf::from(&self.cache_dir)
+    }
+
+    pub fn install_dir(&self) -> PathBuf {
+        PathBuf::from(&self.install_dir)
+    }
 }

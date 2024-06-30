@@ -3,13 +3,13 @@
 use std::path::PathBuf;
 
 use anyhow::Result;
+use api::plugin::Plugin;
 use base64::{engine::general_purpose::STANDARD, Engine};
-use data::instance::Instance;
+use data::Instance;
 use mcmeta::{cmd::modded::ModLoader, manager::MinecraftManager};
 use msa::state::MsaState;
 use query::{curse::CurseForge, modrinth::Modrinth, source::Resolver};
 use tokio::process::Child;
-use api::plugin::Plugin;
 use whcore::manager::CoreManager;
 
 const ICON_BYTES: &[u8] = include_bytes!("../assets/minecraft/icon.svg");
