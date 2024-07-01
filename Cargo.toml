@@ -81,10 +81,9 @@ libc = "0.2.155"
 thiserror = "1.0.61"
 murmur2 = "0.1.0"
 serde_repr = "0.1.19"
-rspc = { path = "./external/rspc", features = ["tauri", "axum"] }
 tungstenite = { features = ["rustls"], git = "https://github.com/snapview/tungstenite-rs", version = "0.20.1", rev = "fc17f73" }
-prisma-client-rust = { git = "https://github.com/Brendonovich/prisma-client-rust", rev = "4f9ef9d", features = ["rspc", "specta", "sqlite"] }
-prisma-client-rust-cli = { git = "https://github.com/Brendonovich/prisma-client-rust", rev = "4f9ef9d", features = ["rspc", "specta", "sqlite"] }
+prisma-client-rust = { git = "https://github.com/Brendonovich/prisma-client-rust", rev = "4f9ef9d", features = ["specta", "sqlite"] }
+prisma-client-rust-cli = { git = "https://github.com/Brendonovich/prisma-client-rust", rev = "4f9ef9d", features = ["specta", "sqlite"] }
 
 wormhole-cli = { path = "./apps/cli" }
 wormhole-gui = { path = "./apps/gui" }
@@ -110,9 +109,6 @@ webui = { path = "./apps/webui" }
 bindings = { path = "./apps/bindings" }
 commands = { path = "./crates/commands" }
 plugins = { path = "./crates/plugins" }
-
-[patch."https://github.com/Brendonovich/prisma-client-rust"]
-rspc = { path = "./external/rspc" }
 
 [workspace]
 resolver = "2"
@@ -143,5 +139,4 @@ members = [
     "crates/plugins",
     "crates/pack",
     "tools/prisma",
-    "external/rspc",
 ]

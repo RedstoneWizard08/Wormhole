@@ -30,4 +30,3 @@ tracing.workspace = true
 install.workspace = true
 reqwest.workspace = true
 tokio-stream.workspace = true
-rspc.workspace = true

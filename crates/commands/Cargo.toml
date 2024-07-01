@@ -33,6 +33,5 @@ tracing-appender.workspace = true
 tracing.workspace = true
 log.workspace = true
 mcmeta.workspace = true
-rspc.workspace = true
 midlog.workspace = true
 prisma-client-rust.workspace = true
