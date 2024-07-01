@@ -24,6 +24,7 @@ pub async fn run_server(cli: Cli) -> Result<()> {
     let router = RouterBuilder::new()
         .glue(glue.clone())
         .routes()
+        .await
         .log()
         .build()
         .into_make_service_with_connect_info::<SocketAddr>();

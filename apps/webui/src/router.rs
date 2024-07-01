@@ -1,6 +1,10 @@
 //! The router module.
 
+use std::sync::Arc;
+
 use axum::{middleware::from_fn, routing::get, Router};
+use commands::router::build_router;
+use data::{get_client, get_or_init_client};
 use glue::{glue::Glue, util::is_debug};
 use midlog::logging_middleware;
 
@@ -35,10 +39,16 @@ impl RouterBuilder {
     }
 
     /// Add the routes.
-    pub fn routes(self) -> Self {
+    pub async fn routes(self) -> Self {
         let mut new = Self::new();
+        let rspc = build_router();
+
+        get_or_init_client().await.unwrap();
+
+        let endpoint = rspc_axum::endpoint(Arc::new(rspc), get_client);
 
         // TODO: Axum RSPC
+        new.router = new.router.nest("/rspc", endpoint);
 
         if is_openvscode_server().unwrap() {
             new.router = new.router.route("/__open-in-editor", get(code::handler));

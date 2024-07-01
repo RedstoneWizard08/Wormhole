@@ -2,7 +2,12 @@
 
 export type Procedures = {
     queries: 
+        { key: "mods", input: number, result: Mod[] } | 
         { key: "version", input: never, result: string },
     mutations: never,
     subscriptions: never
 };
+
+export type Mod = { id: number; mod: string; version: string | null; name: string; file: string; size: number; hash: string | null; installed_files: string; sourceId: number; instanceId: number }
+
+export type String = string

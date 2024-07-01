@@ -17,4 +17,7 @@ pub mod instance;
 pub mod loader;
 pub mod macros;
 pub mod mods;
+pub mod mutation;
+pub mod query;
 pub mod router;
+pub mod subscriptions;

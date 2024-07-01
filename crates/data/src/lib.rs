@@ -19,16 +19,20 @@ pub type Mod = prisma::r#mod::Data;
 
 pub const CLIENT: OnceCell<Arc<PrismaClient>> = OnceCell::const_new();
 
-pub async fn client() -> Result<PrismaClient> {
-    Ok(PrismaClient::_builder().build().await?)
+async fn client() -> Result<Arc<PrismaClient>> {
+    let client = Arc::new(PrismaClient::_builder().build().await?);
+
+    seeder::seed(client.clone()).await?;
+
+    Ok(client)
 }
 
-async fn arc_client() -> Result<Arc<PrismaClient>> {
-    client().await.map(Arc::new)
+pub fn get_client() -> Arc<PrismaClient> {
+    CLIENT.get().unwrap().clone()
 }
 
 pub async fn get_or_init_client() -> Result<Arc<PrismaClient>> {
-    CLIENT.get_or_try_init(arc_client).await.cloned()
+    CLIENT.get_or_try_init(client).await.cloned()
 }
 
 pub fn type_map() -> TypeMap {

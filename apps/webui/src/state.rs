@@ -1,7 +1,7 @@
 //! The state module.
 
-use anyhow::Result;
 use crate::cli::Cli;
+use anyhow::Result;
 
 /// The state for the Web UI.
 #[derive(Clone)]

@@ -63,3 +63,15 @@ macro_rules! plugin_fn_proxy {
         }
     };
 }
+
+/// Apply a methods to an [`rspc::Router`].
+#[macro_export]
+macro_rules! apply {
+    ($r: ident => $p: path) => {
+        let $r = $p($r);
+    };
+
+    ($r: ident: $($p: path),*) => {
+        $(let $r = $p($r);)*
+    };
+}

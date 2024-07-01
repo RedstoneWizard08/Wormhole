@@ -9,16 +9,16 @@ use crate::{
 };
 
 pub async fn seed(client: Arc<PrismaClient>) -> Result<()> {
-    client.source().create_many(
-        Sources::values()
-            .iter()
-            .map(|it| {
-                let src = it.create_source();
+    for source in Sources::values() {
+        let src = source.create_source();
+        let it = source::create(src.name.clone(), vec![source::name::set(src.name.clone())]);
 
-                source::create_unchecked(src.name.clone(), vec![source::name::set(src.name)])
-            })
-            .collect(),
-    ).exec().await?;
+        client
+            .source()
+            .upsert(source::name::equals(src.name), it.clone(), it.to_params())
+            .exec()
+            .await?;
+    }
 
     Ok(())
 }

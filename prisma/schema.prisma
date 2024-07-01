@@ -44,7 +44,7 @@ model Source {
   id Int @id @default(autoincrement())
 
   /// The displayed name of this source.
-  name String
+  name String @unique
 
   /// A list of games that this source supports.
   games Game[]

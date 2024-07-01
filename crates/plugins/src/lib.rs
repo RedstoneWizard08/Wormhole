@@ -4,7 +4,10 @@
 //! This implements all of Wormhole's plugins and game supports.
 
 use crate::unity::{ContentWarningPlugin, Kerbal1Plugin, Kerbal2Plugin, LethalCompanyPlugin};
-use api::{plugin::{Plugin, PluginExt}, register::register_plugin};
+use api::{
+    plugin::{Plugin, PluginExt},
+    register::register_plugin,
+};
 use minecraft::MinecraftPlugin;
 
 #[macro_use]

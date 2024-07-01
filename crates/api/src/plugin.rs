@@ -188,8 +188,12 @@ pub trait Plugin: Send + Sync {
     }
 
     /// Uninstall a mod from the provided instance.
-    async fn uninstall_mod(&self, db: Arc<PrismaClient>, item: Mod, instance: Instance) -> Result<()>
-    {
+    async fn uninstall_mod(
+        &self,
+        db: Arc<PrismaClient>,
+        item: Mod,
+        instance: Instance,
+    ) -> Result<()> {
         uninstall_mod(db, item, instance).await?;
 
         Ok(())

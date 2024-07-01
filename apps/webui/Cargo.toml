@@ -38,3 +38,4 @@ tokio-stream.workspace = true
 axumite.workspace = true
 rspc.workspace = true
 rspc-axum.workspace = true
+commands.workspace = true
