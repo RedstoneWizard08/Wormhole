@@ -1,7 +1,7 @@
 use std::{error, fmt, sync::Arc};
 
 use serde::Serialize;
-use specta::Type;
+use specta::{ts::TsExportError, Type};
 
 use crate::internal::jsonrpc::JsonRPCError;
 
@@ -86,15 +86,30 @@ impl From<ExecError> for JsonRPCError {
 pub enum ExportError {
     #[error("IO error exporting bindings: {0}")]
     IOErr(#[from] std::io::Error),
+    #[error("error exporting ts bindings: {0}")]
+    Error(#[from] TsExportError),
 }
 
-#[derive(Debug, Clone, Serialize, Type)]
+#[derive(Debug, Clone, Serialize)]
+#[cfg_attr(test, derive(specta::Type))]
 #[allow(dead_code)]
 pub struct Error {
     pub(crate) code: ErrorCode,
     pub(crate) message: String,
     #[serde(skip)]
+    #[cfg_attr(test, specta(type = Option<serde_json::Value>))]
     pub(crate) cause: Option<Arc<dyn std::error::Error + Send + Sync>>, // We are using `Arc` instead of `Box` so we can clone the error cause `Clone` isn't dyn safe.
+}
+
+#[cfg(feature = "workers")]
+impl From<worker::Error> for Error {
+    fn from(err: worker::Error) -> Self {
+        Error {
+            code: ErrorCode::InternalServerError,
+            message: err.to_string(),
+            cause: None, // We can't store the original error because it's not `Send + Sync` as it holds raw pointers. We could probs just lie to the compiler about `Send + Sync` but I can't ensure that's safe so it shouldn't be implicit.
+        }
+    }
 }
 
 impl From<Error> for JsonRPCError {

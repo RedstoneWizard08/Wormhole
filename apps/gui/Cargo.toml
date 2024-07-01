@@ -44,7 +44,6 @@ mcmeta.workspace = true
 commands.workspace = true
 plugins.workspace = true
 rspc.workspace = true
-rspc-tauri.workspace = true
 
 [features]
 default = ["custom-protocol"]

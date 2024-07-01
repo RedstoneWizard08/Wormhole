@@ -20,7 +20,6 @@ pub mod jar_mf;
 pub mod launchwrapper;
 pub mod macros;
 pub mod manager;
-pub mod mappings;
 pub mod maven;
 pub mod neoforge;
 pub mod piston;

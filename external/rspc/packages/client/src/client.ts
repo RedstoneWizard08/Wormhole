@@ -1,138 +1,236 @@
-// TODO: Redo this entire system when links are introduced
 import {
-  RSPCError,
-  ProceduresLike,
-  inferQueryResult,
+  HasAnyLinkFlags,
+  HasLinkFlags,
+  inferProcedureResult,
+  JoinLinkFlags,
+  Link,
+  LinkFlags,
+  Operation,
   ProceduresDef,
-  inferMutationResult,
-  inferProcedures,
-  inferSubscriptionResult,
-  _inferInfiniteQueryProcedureHandlerInput,
+  SubscriptionOptions,
   _inferProcedureHandlerInput,
 } from ".";
-import { randomId, Transport } from "./transport";
 
-// TODO
-export interface SubscriptionOptions<TOutput> {
-  onStarted?: () => void;
-  onData: (data: TOutput) => void;
-  onError?: (err: RSPCError) => void;
+/**
+ * TODO
+ */
+export interface InitRspcOpts {
+  /**
+   * TODO
+   */
+  // onError(); // TODO: Make this work with links!
 }
 
-// TODO
-export interface ClientArgs {
-  transport: Transport;
-  onError?: (err: RSPCError) => void | Promise<void>;
+/**
+ * TODO
+ */
+export function initRspc<T extends ProceduresDef>(
+  opts?: InitRspcOpts
+): Rspc<T> {
+  return initRspcInner<T>({ ...opts, links: [] });
 }
 
-// TODO
-export function createClient<TProcedures extends ProceduresLike>(
-  args: ClientArgs
-): Client<inferProcedures<TProcedures>> {
-  return new Client(args);
-}
+// TODO: Utils
+type And<T, U> = T extends true ? (U extends true ? true : false) : false;
+type Or<T, U> = T extends true ? true : U extends true ? true : false;
+type Not<T> = T extends true ? false : true;
 
-// TODO
-export class Client<TProcedures extends ProceduresDef> {
-  public _rspc_def: ProceduresDef = undefined!;
-  private transport: Transport;
-  private subscriptionMap = new Map<string, (data: any) => void>();
-  private onError?: (err: RSPCError) => void | Promise<void>;
+// https://github.com/microsoft/TypeScript/issues/27024#issuecomment-421529650
+// type Equals<X, Y> = (<T>() => T extends X ? 1 : 2) extends <T>() => T extends Y
+//   ? 1
+//   : 2
+//   ? true
+//   : false;
 
-  constructor(args: ClientArgs) {
-    this.transport = args.transport;
-    this.transport.clientSubscriptionCallback = (id, value) => {
-      const func = this.subscriptionMap?.get(id);
-      if (func !== undefined) func(value);
-    };
-    this.subscriptionMap = new Map();
-    this.onError = args.onError;
-  }
+type LinkArg<
+  T extends ProceduresDef,
+  TT extends ProceduresDef,
+  TFlags extends LinkFlags,
+  TNewFlags extends LinkFlags = {}
+> = And<
+  HasLinkFlags<TFlags, "built">,
+  Not<HasLinkFlags<TFlags, "subscriptionsUnsupported">>
+> extends true
+  ? HasLinkFlags<TNewFlags, "subscriptionsUnsupported"> extends true
+    ? "You must provide a link which supports subscriptions!" // TODO: This doesn't work with the args hack below so...
+    : Link<T, TT, TNewFlags>
+  : Link<T, TT, TNewFlags>;
 
-  async query<K extends TProcedures["queries"]["key"] & string>(
-    keyAndInput: [
-      key: K,
-      ...input: _inferProcedureHandlerInput<TProcedures, "queries", K>
-    ]
-  ): Promise<inferQueryResult<TProcedures, K>> {
-    try {
-      return await this.transport.doRequest(
-        "query",
-        keyAndInput[0],
-        keyAndInput[1]
-      );
-    } catch (err) {
-      if (this.onError) {
-        this.onError(err as RSPCError);
-      }
-      throw err;
+type UseFn<T extends ProceduresDef, TFlags extends LinkFlags> = HasAnyLinkFlags<
+  TFlags,
+  "terminatedLink"
+> extends false
+  ? {
+      use<TT extends ProceduresDef, TNewFlags extends LinkFlags>(
+        link: LinkArg<T, TT, TFlags, TNewFlags>
+        // TODO: Can this be done in a different way for a better error message?
+        //   ...cannotUseTypeMappingLinkAfterCallingExportMethod: HasLinkFlags<
+        //     TFlags,
+        //     "built"
+        //   > extends true
+        //     ? Equals<T, TT> extends true
+        //       ? []
+        //       : [never]
+        //     : []
+      ): Rspc<TT, TFlags & TNewFlags>;
     }
-  }
+  : {};
 
-  async mutation<K extends TProcedures["mutations"]["key"] & string>(
-    keyAndInput: [
-      key: K,
-      ...input: _inferProcedureHandlerInput<TProcedures, "mutations", K>
-    ]
-  ): Promise<inferMutationResult<TProcedures, K>> {
-    try {
-      return await this.transport.doRequest(
-        "mutation",
-        keyAndInput[0],
-        keyAndInput[1]
-      );
-    } catch (err) {
-      if (this.onError) {
-        this.onError(err as RSPCError);
-      }
-      throw err;
+type BuildFn<T extends ProceduresDef, TFlags extends LinkFlags> = Or<
+  HasAnyLinkFlags<TFlags, "built">,
+  HasAnyLinkFlags<TFlags, "terminatedLink">
+> extends false
+  ? {
+      // TODO: This is marked as unstable because it's not properly typesafe. Will be stablised in the future.
+      unstable_build<TSupportSubscriptions extends boolean>(opts: {
+        supportsSubscriptions: TSupportSubscriptions;
+      }): Rspc<
+        T,
+        TFlags & {
+          built: true;
+        } & (TSupportSubscriptions extends false
+            ? { subscriptionsUnsupported: true }
+            : {})
+      >;
     }
-  }
+  : {};
 
-  // TODO: Redesign this, i'm sure it probably has race conditions but it works for now
-  addSubscription<
-    K extends TProcedures["subscriptions"]["key"] & string,
-    TData = inferSubscriptionResult<TProcedures, K>
-  >(
-    keyAndInput: [
-      K,
-      _inferProcedureHandlerInput<TProcedures, "subscriptions", K>
-    ],
-    opts: SubscriptionOptions<TData>
-  ): () => void {
-    try {
-      let subscriptionId = randomId();
-      let unsubscribed = false;
+type OperationFns<
+  T extends ProceduresDef,
+  TFlags extends LinkFlags
+> = HasAnyLinkFlags<TFlags, "terminatedLink" | "built"> extends true
+  ? {
+      query<K extends T["queries"]["key"] & string>(
+        keyAndInput: [
+          key: K,
+          ...input: _inferProcedureHandlerInput<T, "queries", K>
+        ]
+      ): Promise<inferProcedureResult<T, "queries", K>>;
+      mutate<K extends T["mutations"]["key"] & string>(
+        keyAndInput: [
+          key: K,
+          ...input: _inferProcedureHandlerInput<T, "queries", K>
+        ]
+      ): Promise<inferProcedureResult<T, "mutations", K>>;
+    } & (HasAnyLinkFlags<TFlags, "subscriptionsUnsupported"> extends true
+      ? {}
+      : {
+          subscribe<
+            K extends T["subscriptions"]["key"] & string,
+            TData = inferProcedureResult<T, "subscriptions", K>
+          >(
+            keyAndInput: [
+              K,
+              _inferProcedureHandlerInput<T, "subscriptions", K>
+            ],
+            opts: SubscriptionOptions<TData>
+          ): () => void;
+          /**
+           * @deprecated use `.subscribe` instead. This will be removed in a future release.
+           */
+          addSubscription<
+            K extends T["subscriptions"]["key"] & string,
+            TData = inferProcedureResult<T, "subscriptions", K>
+          >(
+            keyAndInput: [
+              K,
+              _inferProcedureHandlerInput<T, "subscriptions", K>
+            ],
+            opts: SubscriptionOptions<TData>
+          ): () => void;
+        })
+  : {};
 
-      const cleanup = () => {
-        this.subscriptionMap?.delete(subscriptionId);
-        if (subscriptionId) {
-          this.transport.doRequest(
-            "subscriptionStop",
-            undefined!,
-            subscriptionId
-          );
-        }
-      };
+/**
+ * The type of the rspc instance. This type is what powers all of the advanced type checking.
+ *
+ * @internal
+ */
+export type Rspc<
+  T extends ProceduresDef,
+  TFlags extends LinkFlags = {}
+> = UseFn<T, TFlags> & OperationFns<T, TFlags> & BuildFn<T, TFlags>;
 
-      this.transport.doRequest("subscription", keyAndInput[0], [
-        subscriptionId,
-        keyAndInput[1],
-      ]);
+/**
+ * @internal
+ */
+export type InitRspcInnerArgs = InitRspcOpts & {
+  links: Link<any, any, any>[];
+};
 
-      if (opts.onStarted) opts.onStarted();
-      this.subscriptionMap?.set(subscriptionId, opts.onData);
+// TODO: Expose AbortController through vanilla client
+function initRspcInner<T extends ProceduresDef, TFlag extends LinkFlags = {}>(
+  opts: InitRspcInnerArgs
+): Rspc<T, TFlag> {
+  // TODO: Fix this cringe internal type safety of this function.
+  // TODO: The implication of this setup is that `Command + Click` on a method externally takes you to the type not the method. Try and fix this!
+  return {
+    // @ts-expect-error: TODO: Fix this. It's because of the discriminated union.
+    use<TT extends ProceduresDef, TNewFlag extends Flag>(
+      link: Link<T, TT, TNewFlag>
+    ): Rspc<TT, JoinLinkFlags<TFlag, TNewFlag>> {
+      opts.links.push(link);
+      return initRspcInner<TT, JoinLinkFlags<TFlag, TNewFlag>>(opts);
+    },
+    query<K extends T["queries"]["key"] & string>(
+      keyAndInput: [
+        key: K,
+        ...input: _inferProcedureHandlerInput<T, "queries", K>
+      ]
+    ): Promise<inferProcedureResult<T, "queries", K>> {
+      return exec(opts, {
+        id: 0,
+        type: "query",
+        path: keyAndInput[0] as any,
+        input: keyAndInput[1] as any,
+        context: {},
+      });
+    },
+    mutate<K extends T["mutations"]["key"] & string>(
+      keyAndInput: [
+        key: K,
+        ...input: _inferProcedureHandlerInput<T, "queries", K>
+      ]
+    ): Promise<inferProcedureResult<T, "mutations", K>> {
+      return exec(opts, {
+        id: 0,
+        type: "mutation",
+        path: keyAndInput[0] as any,
+        input: keyAndInput[1] as any,
+        context: {},
+      });
+    },
+    subscribe<
+      K extends T["subscriptions"]["key"] & string,
+      TData = inferProcedureResult<T, "subscriptions", K>
+    >(
+      keyAndInput: [K, _inferProcedureHandlerInput<T, "subscriptions", K>],
+      opts: SubscriptionOptions<TData>
+    ): () => void {
+      // TODO: Support for subscriptions!
+      throw new Error(
+        "TODO: Subscriptions are not yet supported on the alpha client!"
+      );
 
       return () => {
-        unsubscribed = true;
-        cleanup();
+        // TODO: Remove subscription
       };
-    } catch (err) {
-      if (this.onError) {
-        this.onError(err as RSPCError);
-      }
-
-      return () => {};
-    }
-  }
+    },
+  } satisfies Rspc<T, {} /* TODO: Should be default? */> as any;
 }
+
+function exec(opts: InitRspcInnerArgs, op: Operation): Promise<any> {
+  // TODO: Handle executing with multiple links in the observable lite system.
+  // TODO: Move this exec login into the `fakeObservable` function
+  const resp = opts.links[0]!({
+    op,
+    next() {
+      throw new Error("TODO: Probally unreachable"); // TODO: Deal with this
+    },
+  });
+
+  // TODO: Expose `.abort` to the end user like tRPC does
+  return resp.exec().promise.then((v) => v.result.data);
+}
+
+// TODO: export function getQueryKey() {}

@@ -1,8 +1,8 @@
 use std::{path::PathBuf, time::Duration};
 
 use async_stream::stream;
-use axum::{http::request::Parts, routing::get};
-use rspc::Config;
+use axum::routing::get;
+use rspc::{integrations::httpz::Request, Config};
 use tokio::time::sleep;
 use tower_http::cors::{Any, CorsLayer};
 
@@ -67,16 +67,20 @@ async fn main() {
         .route("/", get(|| async { "Hello 'rspc'!" }))
         .nest(
             "/rspc",
-            rspc_axum::endpoint(router.clone(), |parts: Parts| {
-                println!("Client requested operation '{}'", parts.uri.path());
-                Ctx {}
-            }),
+            router
+                .clone()
+                .endpoint(|req: Request| {
+                    println!("Client requested operation '{}'", req.uri().path());
+                    Ctx {}
+                })
+                .axum(),
         )
         .layer(cors);
 
     let addr = "[::]:4000".parse::<std::net::SocketAddr>().unwrap(); // This listens on IPv6 and IPv4
     println!("listening on http://{}/rspc/version", addr);
-    axum::serve(tokio::net::TcpListener::bind(addr).await.unwrap(), app)
+    axum::Server::bind(&addr)
+        .serve(app.into_make_service())
         .await
         .unwrap();
 }

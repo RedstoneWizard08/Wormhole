@@ -38,7 +38,7 @@ base64 = "0.22.1"
 ferinth = "2.11.0"
 furse = "1.5.15"
 tempfile = "3.10.1"
-specta = "2.0.0-rc.12"
+specta = "2.0.0-rc.13"
 futures = { version = "0.3.30", features = ["executor"] }
 axum = { version = "0.7.5", features = ["macros", "ws"] }
 mime_guess = "2.0.4"
@@ -74,24 +74,14 @@ envcrypt = "0.5.0"
 strum = "0.26.2"
 strum_macros = "0.26.2"
 serde_either = "0.2.1"
-indicatif = { version = "0.17.8", features = ["rayon"] }
-rayon = "1.10.0"
-serial_test = "3.1.1"
 quick-xml = { version = "0.31.0", features = ["serialize", "serde-types"] }
-proguard = "5.4.1"
 which = "6.0.1"
 sysinfo = "0.30.12"
-crossbeam = "0.8.4"
-parking_lot = "0.12.2"
 libc = "0.2.155"
-windows-sys = { version = "0.52.0", features = ["Win32", "Win32_System", "Win32_System_Threading", "Win32_Foundation"] }
 thiserror = "1.0.61"
 murmur2 = "0.1.0"
 serde_repr = "0.1.19"
-crossbeam-channel = "0.5.13"
-rspc = { path = "./external/rspc" }
-rspc-axum = { path = "./external/rspc/crates/axum", features = ["ws"] }
-rspc-tauri = { path = "./external/rspc/crates/tauri" }
+rspc = { path = "./external/rspc", features = ["tauri", "axum"] }
 tungstenite = { features = ["rustls"], git = "https://github.com/snapview/tungstenite-rs", version = "0.20.1", rev = "fc17f73" }
 prisma-client-rust = { git = "https://github.com/Brendonovich/prisma-client-rust", rev = "4f9ef9d", features = ["rspc", "specta", "sqlite"] }
 prisma-client-rust-cli = { git = "https://github.com/Brendonovich/prisma-client-rust", rev = "4f9ef9d", features = ["rspc", "specta", "sqlite"] }
@@ -120,9 +110,6 @@ webui = { path = "./apps/webui" }
 bindings = { path = "./apps/bindings" }
 commands = { path = "./crates/commands" }
 plugins = { path = "./crates/plugins" }
-
-[patch.crates-io]
-rspc = { path = "./external/rspc" }
 
 [patch."https://github.com/Brendonovich/prisma-client-rust"]
 rspc = { path = "./external/rspc" }
@@ -157,7 +144,4 @@ members = [
     "crates/pack",
     "tools/prisma",
     "external/rspc",
-    "external/rspc/crates/axum",
-    "external/rspc/crates/httpz",
-    "external/rspc/crates/tauri",
 ]

@@ -2,7 +2,7 @@ use std::{path::PathBuf, time::Duration};
 
 use async_stream::stream;
 use axum::routing::get;
-use rspc::{Config, ErrorCode, MiddlewareContext, Router};
+use rspc::{internal::MiddlewareState, Config, ErrorCode, Router};
 use tokio::time::sleep;
 use tower_http::cors::{Any, CorsLayer};
 
@@ -50,12 +50,68 @@ async fn main() {
                     Ok(result)
                 })
             })
-            .query("version", |t| {
-                t(|_ctx, _: ()| {
-                    println!("ANOTHER QUERY");
-                    env!("CARGO_PKG_VERSION")
-                })
-            })
+            // .query("version", {
+            //     #[derive(Serialize, rspc::Type)]
+            //     struct Bruh<T> {
+            //         meta: String,
+            //         data: T,
+            //     }
+            //     // pub trait Normalize {}
+            //     // #[derive(Object)]
+            //     // pub struct Wrapper {
+            //     //     pub scalar: i32,
+            //     //     #[ref]
+            //     //     pub ref_this: String,
+            //     //     #[ref]
+            //     //     pub wrapper_2: Wrapper2,
+            //     //     pub vec_ref: Vec<AnotherObject>
+            //     // }
+            //     // #[derive(Object)]
+            //     // pub struct Wrapper2 {
+            //     //     #[ref]
+            //     //     pub vec_ref: Vec<AnotherObject>
+            //     // };
+            //     fn typed<TResolver, TLayerCtx, TArg, TResolverMarker, TResultMarker>(
+            //         builder: BuiltProcedureBuilder<TResolver>,
+            //     ) -> BuiltProcedureBuilder<
+            //         impl RequestResolver<
+            //             TLayerCtx,
+            //             DoubleArgMarker<TArg, FutureMarker<ResultMarker>>,
+            //             FutureMarker<ResultMarker>,
+            //             Arg = TArg,
+            //         >,
+            //     >
+            //     where
+            //         TArg: Type + DeserializeOwned,
+            //         TLayerCtx: Send + Sync + 'static,
+            //         TResolver: RequestResolver<TLayerCtx, TResolverMarker, TResultMarker, Arg = TArg>,
+            //     {
+            //         BuiltProcedureBuilder {
+            //             resolver: move |ctx, arg| {
+            //                 let val = builder.resolver.exec(ctx, arg);
+            //                 async {
+            //                     Ok(Bruh {
+            //                         meta: "Bruh".to_string(),
+            //                         data: val?.exec().await?,
+            //                     })
+            //                 }
+            //             },
+            //         }
+            //     }
+            //     |t| {
+            //         t(|_ctx, _: ()| {
+            //             println!("ANOTHER QUERY");
+            //             env!("CARGO_PKG_VERSION")
+            //         })
+            //         .map(typed)
+            //         .map(|_| BuiltProcedureBuilder {
+            //             resolver: |_, _| {
+            //                 println!("This resolver has been overwritten to an int!");
+            //                 0
+            //             },
+            //         })
+            //     }
+            // })
             // Auth middleware
             .middleware(|mw| {
                 mw.middleware(|mw| async move {
@@ -95,7 +151,7 @@ async fn main() {
                     Err(rspc::Error::new(
                         ErrorCode::Unauthorized,
                         "Unauthorized".into(),
-                    )) as Result<MiddlewareContext<_>, _>
+                    )) as Result<MiddlewareState<_>, _>
                 })
             })
             // Plugin middleware // TODO: Coming soon!
@@ -108,9 +164,11 @@ async fn main() {
         // Attach the rspc router to your axum router. The closure is used to generate the request context for each request.
         .nest(
             "/rspc",
-            rspc_axum::endpoint(router, || UnauthenticatedContext {
-                session_id: Some("abc".into()), // Change this line to control whether you are authenticated and can access the "another" query.
-            }),
+            router
+                .endpoint(|| UnauthenticatedContext {
+                    session_id: Some("abc".into()), // Change this line to control whether you are authenticated and can access the "another" query.
+                })
+                .axum(),
         )
         // We disable CORS because this is just an example. DON'T DO THIS IN PRODUCTION!
         .layer(
@@ -122,7 +180,8 @@ async fn main() {
 
     let addr = "[::]:4000".parse::<std::net::SocketAddr>().unwrap(); // This listens on IPv6 and IPv4
     println!("listening on http://{}/rspc/version", addr);
-    axum::serve(tokio::net::TcpListener::bind(addr).await.unwrap(), app)
+    axum::Server::bind(&addr)
+        .serve(app.into_make_service())
         .await
         .unwrap();
 }

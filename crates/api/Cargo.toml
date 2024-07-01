@@ -20,7 +20,6 @@ async-trait.workspace = true
 serde.workspace = true
 specta.workspace = true
 data.workspace = true
-tauri.workspace = true
 const_format.workspace = true
 serde_json.workspace = true
 mcmeta.workspace = true
@@ -29,12 +28,6 @@ tokio.workspace = true
 java.workspace = true
 tracing.workspace = true
 install.workspace = true
-tempfile.workspace = true
 reqwest.workspace = true
-tokio-util.workspace = true
 tokio-stream.workspace = true
-crossbeam-channel.workspace = true
 rspc.workspace = true
-
-[dev-dependencies]
-indicatif.workspace = true

@@ -1,9 +1,10 @@
 ---
 import ReactComponent from "../components/react";
 import SolidComponent from "../components/solid";
+import AlphaComponent from "../components/alpha";
 ---
 
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
@@ -28,5 +29,6 @@ import SolidComponent from "../components/solid";
   <body>
     <ReactComponent client:only="react" />
     <SolidComponent client:only="solid" />
+    <AlphaComponent client:only="solid" />
   </body>
 </html>

@@ -1,10 +1,13 @@
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
-use specta::Type;
 
 pub use super::jsonrpc_exec::*;
 
-#[derive(Debug, Clone, Deserialize, Serialize, Type, PartialEq, Eq, Hash)]
+/// TODO
+///
+/// @internal
+#[derive(Debug, Clone, Deserialize, Serialize, PartialEq, Eq, Hash)]
+#[cfg_attr(test, derive(specta::Type))]
 #[serde(untagged)]
 pub enum RequestId {
     Null,
@@ -12,42 +15,54 @@ pub enum RequestId {
     String(String),
 }
 
-#[derive(Debug, Clone, Deserialize, Serialize)] // TODO: Type on this
+impl RequestId {
+    fn null() -> Self {
+        Self::Null
+    }
+}
+
+/// TODO
+///
+/// @internal
+#[derive(Debug, Clone, Deserialize, Serialize)]
+#[cfg_attr(test, derive(specta::Type))]
 pub struct Request {
     pub jsonrpc: Option<String>, // This is required in the JsonRPC spec but I make it optional.
+    #[serde(default = "RequestId::null")] // TODO: Optional also not part of spec but copying tRPC
     pub id: RequestId,
     #[serde(flatten)]
     pub inner: RequestInner,
 }
 
-#[derive(Debug, Clone, Deserialize, Serialize, Type)]
+/// TODO
+///
+/// @internal
+#[derive(Debug, Clone, Deserialize, Serialize)]
+#[cfg_attr(test, derive(specta::Type))]
 #[serde(tag = "method", content = "params", rename_all = "camelCase")]
 pub enum RequestInner {
-    Query {
-        path: String,
-        input: Option<Value>,
-    },
-    Mutation {
-        path: String,
-        input: Option<Value>,
-    },
-    Subscription {
-        path: String,
-        input: (RequestId, Option<Value>),
-    },
-    SubscriptionStop {
-        input: RequestId,
-    },
+    Query { path: String, input: Option<Value> },
+    Mutation { path: String, input: Option<Value> },
+    Subscription { path: String, input: Option<Value> },
+    SubscriptionStop,
 }
 
-#[derive(Debug, Clone, Serialize)] // TODO: Add `specta::Type` when supported
+/// TODO
+///
+/// @internal
+#[derive(Debug, Clone, Serialize)]
+#[cfg_attr(test, derive(specta::Type))]
 pub struct Response {
     pub jsonrpc: &'static str,
     pub id: RequestId,
     pub result: ResponseInner,
 }
 
-#[derive(Debug, Clone, Serialize, Type)]
+/// TODO
+///
+/// @internal
+#[derive(Debug, Clone, Serialize)]
+#[cfg_attr(test, derive(specta::Type))]
 #[serde(tag = "type", content = "data", rename_all = "camelCase")]
 pub enum ResponseInner {
     Event(Value),
@@ -55,7 +70,11 @@ pub enum ResponseInner {
     Error(JsonRPCError),
 }
 
-#[derive(Debug, Clone, Serialize, Type)]
+/// TODO
+///
+/// @internal
+#[derive(Debug, Clone, Serialize)]
+#[cfg_attr(test, derive(specta::Type))]
 pub struct JsonRPCError {
     pub code: i32,
     pub message: String,

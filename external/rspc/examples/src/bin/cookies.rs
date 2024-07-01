@@ -3,13 +3,15 @@
 use std::{ops::Add, path::PathBuf};
 
 use axum::routing::get;
-use rspc::Config;
+use rspc::{
+    integrations::httpz::{Cookie, CookieJar, Request},
+    Config,
+};
 use time::OffsetDateTime;
-use tower_cookies::{Cookie, CookieManagerLayer, Cookies};
 use tower_http::cors::{Any, CorsLayer};
 
 pub struct Ctx {
-    cookies: Cookies,
+    cookies: CookieJar,
 }
 
 #[tokio::main]
@@ -38,14 +40,22 @@ async fn main() {
             .arced(); // This function is a shortcut to wrap the router in an `Arc`.
 
     let app = axum::Router::new()
-        .with_state(())
         .route("/", get(|| async { "Hello 'rspc'!" }))
         // Attach the rspc router to your axum router. The closure is used to generate the request context for each request.
         .nest(
             "/rspc",
-            rspc_axum::endpoint(router, |cookies: Cookies| Ctx { cookies }),
+            router
+                .endpoint(|mut req: Request| {
+                    println!("Client requested operation '{}'", req.uri().path());
+                    Ctx {
+                        // TODO: Come up with a system for a ready only cookie jar which can be used during a websocket connection -> Probs by using Marker?
+                        cookies: req
+                            .cookies()
+                            .expect("TODO: Websockets don't support the `CookieJar` for now."),
+                    }
+                })
+                .axum(),
         )
-        .layer(CookieManagerLayer::new())
         // We disable CORS because this is just an example. DON'T DO THIS IN PRODUCTION!
         .layer(
             CorsLayer::new()
@@ -55,8 +65,9 @@ async fn main() {
         );
 
     let addr = "[::]:4000".parse::<std::net::SocketAddr>().unwrap(); // This listens on IPv6 and IPv4
-    println!("listening on http://{}/rspc/version", addr);
-    axum::serve(tokio::net::TcpListener::bind(addr).await.unwrap(), app)
+    println!("listening on http://{}/rspc/getCookie", addr);
+    axum::Server::bind(&addr)
+        .serve(app.into_make_service())
         .await
         .unwrap();
 }

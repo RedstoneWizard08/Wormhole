@@ -22,7 +22,6 @@ extern crate async_trait;
 pub extern crate whcore;
 
 pub mod install;
-pub mod macros;
 pub mod plugin;
 pub mod register;
 pub mod res;

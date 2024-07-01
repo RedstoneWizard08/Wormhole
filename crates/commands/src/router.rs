@@ -2,27 +2,21 @@
 
 use std::sync::Arc;
 
-use data::prisma::PrismaClient;
-use midlog::midlog_log;
+use data::prisma::{r#mod, PrismaClient};
 use rspc::Router;
-
-use crate::apply;
 
 /// Create a router.
 pub fn build_router() -> Router<Arc<PrismaClient>> {
-    let router = Router::new()
-        .middleware(|mw| {
-            mw.middleware(|mw| async move {
-                midlog_log!(mw.req.kind.to_str(), mw.req.path.as_str(), 200, 0);
-                Ok(mw)
+    Router::<Arc<PrismaClient>>::new()
+        .query("version", |t| t(|_, _: ()| env!("CARGO_PKG_VERSION")))
+        .query("mods", |t| {
+            t(|db, instance: i32| async move {
+                db.r#mod()
+                    .find_many(vec![r#mod::instance_id::equals(instance)])
+                    .exec()
+                    .await
+                    .unwrap_or_default()
             })
         })
-        .query("version", |t| t(|_, _: ()| env!("CARGO_PKG_VERSION")));
-
-    apply!(
-        router:
-            crate::query::mods
-    );
-
-    router.build()
+        .build()
 }
