@@ -62,7 +62,6 @@ tracing-appender = "0.2.3"
 log = "0.4.21"
 clap-verbosity-flag = "2.2.0"
 colored = "2.1.0"
-diesel_migrations = "2.1.0"
 uuid = { version = "1.8.0", features = ["v4", "fast-rng"] }
 quote = "1.0.36"
 syn = { version = "2.0.65", features = ["full"] }
