@@ -1,0 +1,23 @@
+lockfileVersion: '9.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+importers:
+
+  .:
+    dependencies:
+      '@tauri-apps/api':
+        specifier: ^1.6.0
+        version: 1.6.0
+
+packages:
+
+  '@tauri-apps/api@1.6.0':
+    resolution: {integrity: sha512-rqI++FWClU5I2UBp4HXFvl+sBWkdigBkxnpJDQUWttNyG7IZP4FwQGhTNL5EOw0vI8i6eSAJ5frLqO7n7jbJdg==}
+    engines: {node: '>= 14.6.0', npm: '>= 6.6.0', yarn: '>= 1.19.1'}
+
+snapshots:
+
+  '@tauri-apps/api@1.6.0': {}
