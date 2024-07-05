@@ -4,7 +4,7 @@ import LoadingPage from "$components/LoadingPage.svelte";
 import Pagination from "$components/Pagination.svelte";
 import Mod from "$components/Mod.svelte";
 import { page } from "$app/stores";
-import { commands, type PluginInfo, type SourceMapping, type Mod as ModItem } from "$bindings";
+import type { PluginInfo, SourceMapping, Mod as ModItem } from "$bindings";
 import { unwrap } from "$api/util";
 import Dropdown from "$components/Dropdown.svelte";
 import { onMount } from "svelte";
@@ -25,7 +25,7 @@ onMount(async () => {
     loading = true;
     pages = 0;
 
-    sources = unwrap(await commands.sources(gameId, null)) as SourceMapping[];
+    // sources = unwrap(await commands.sources(gameId, null)) as SourceMapping[];
     source = source || sources[0];
 
     handleSearch("");
@@ -42,25 +42,25 @@ const handleSearch = async (query: string, force = false) => {
     try {
         loading = true;
 
-        const instance = unwrap(await commands.getInstance(instanceId, null));
+        // const instance = unwrap(await commands.getInstance(instanceId, null));
 
-        const data = unwrap(
-            await commands.searchMods(
-                gameId,
-                source,
-                instance,
-                query,
-                { page: pageId, count: perPage },
-                null
-            )
-        );
+        // const data = unwrap(
+        //     await commands.searchMods(
+        //         gameId,
+        //         source,
+        //         instance,
+        //         query,
+        //         { page: pageId, count: perPage },
+        //         null
+        //     )
+        // );
 
-        console.log("Got data:", data);
+        // console.log("Got data:", data);
 
-        results = data.data;
-        pageId = data.page || pageId;
-        perPage = data.per_page || perPage;
-        pages = data.pages || pages;
+        // results = data.data;
+        // pageId = data.page || pageId;
+        // perPage = data.per_page || perPage;
+        // pages = data.pages || pages;
 
         if (pageId > pages) pageId = Math.max(pages - 1, 0);
     } catch (e) {

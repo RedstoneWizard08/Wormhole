@@ -1,7 +1,8 @@
 <script lang="ts">
 import { goto } from "$app/navigation";
 import { onMount } from "svelte";
-import { commands, type SourceMapping, type Mod } from "$bindings";
+// biome-ignore lint/style/useImportType: <explanation>
+import { type SourceMapping, type Mod } from "$bindings";
 import { unwrap } from "$api/util";
 
 export let mod: Mod;
@@ -22,11 +23,11 @@ const fmt = new Intl.NumberFormat("en-US", {
 });
 
 onMount(async () => {
-    source = unwrap(await commands.getSourceId(mod.source, null)) as SourceMapping;
+    // source = unwrap(await commands.getSourceId(mod.source, null)) as SourceMapping;
 
-    const mods = unwrap(await commands.getMods(instance, null));
+    // const mods = unwrap(await commands.getMods(instance, null));
 
-    installed = mods.find((v) => v.mod_id === mod.id) != null;
+    // installed = mods.find((v) => v.mod_id === mod.id) != null;
 });
 
 const download = async (ev: MouseEvent) => {
@@ -35,24 +36,24 @@ const download = async (ev: MouseEvent) => {
 
     installing = true;
 
-    const resolver = unwrap(await commands.getSourceId(mod.source, null)) as SourceMapping;
-    const instanceInfo = unwrap(await commands.getInstance(instance, null));
-    const latest = unwrap(
-        await commands.getLatestVersion(game, resolver, instanceInfo, mod.id, null)
-    );
+    // const resolver = unwrap(await commands.getSourceId(mod.source, null)) as SourceMapping;
+    // const instanceInfo = unwrap(await commands.getInstance(instance, null));
+    // const latest = unwrap(
+    //     await commands.getLatestVersion(game, resolver, instanceInfo, mod.id, null)
+    // );
 
     if (installed) {
-        const mods = unwrap(await commands.getMods(instance, null));
-        const me = mods.find((v) => v.mod_id === mod.id);
+        // const mods = unwrap(await commands.getMods(instance, null));
+        // const me = mods.find((v) => v.mod_id === mod.id);
 
-        unwrap(await commands.uninstallMod(game, me!, instanceInfo, null));
+        // unwrap(await commands.uninstallMod(game, me!, instanceInfo, null));
     } else {
-        unwrap(await commands.installMod(game, mod, latest, instanceInfo, null));
+        // unwrap(await commands.installMod(game, mod, latest, instanceInfo, null));
     }
 
-    const mods = unwrap(await commands.getMods(instance, null));
+    // const mods = unwrap(await commands.getMods(instance, null));
 
-    installed = mods.find((v) => v.mod_id === mod.id) != null;
+    // installed = mods.find((v) => v.mod_id === mod.id) != null;
 
     installing = false;
 };

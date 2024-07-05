@@ -2,7 +2,7 @@
 import { goto } from "$app/navigation";
 import Delete from "./Delete.svelte";
 import { plugins } from "$api/stores";
-import { commands, type Instance } from "$bindings";
+import type { Instance } from "$bindings";
 import { unwrap } from "$api/util";
 
 export let data: Instance;
@@ -17,7 +17,7 @@ const clicked = () => {
 const doLaunch = async (e: MouseEvent) => {
     e.stopPropagation();
 
-    unwrap(await commands.launchGame(data.game_id, data, null));
+    // unwrap(await commands.launchGame(data.game_id, data, null));
 };
 
 const doDelete = async (e: MouseEvent) => {

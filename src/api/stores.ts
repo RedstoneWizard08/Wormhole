@@ -1,4 +1,5 @@
 import { writable } from "svelte/store";
-import type { PluginInfo } from "./bindings/app";
+
+type PluginInfo = any;
 
 export const plugins = writable<PluginInfo[]>([]);

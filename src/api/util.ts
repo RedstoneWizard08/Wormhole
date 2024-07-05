@@ -4,8 +4,9 @@ import {
     type EventCallback,
     type UnlistenFn,
 } from "@tauri-apps/api/event";
-import type { __Result__ } from "./bindings/app";
 import { globalEventBus } from "./dev";
+
+export type __Result__<T, E> = T | E;
 
 export const formatBytes = (n: number) => {
     const k = n > 0 ? Math.floor(Math.log2(n) / 10) : 0;
@@ -15,10 +16,7 @@ export const formatBytes = (n: number) => {
 };
 
 export const unwrap = <T, E>(res: __Result__<T, E>): T => {
-    if (res.status === "ok") {
-        return res.data;
-    }
-    throw res.error;
+    return res as T;
 };
 
 export const listen = async <T>(

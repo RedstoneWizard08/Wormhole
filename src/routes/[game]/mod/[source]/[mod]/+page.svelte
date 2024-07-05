@@ -3,7 +3,7 @@ import DOMPurify from "dompurify";
 import { page } from "$app/stores";
 import LoadingPage from "$components/LoadingPage.svelte";
 import { listen, unwrap } from "$api/util";
-import { commands, type SourceMapping, type Mod, type ModVersion } from "$bindings";
+import type { SourceMapping, Mod, ModVersion } from "$bindings";
 import { marked } from "marked";
 import { onMount } from "svelte";
 import Dropdown from "$components/Dropdown.svelte";
@@ -35,16 +35,16 @@ const fmt = new Intl.NumberFormat("en-US", {
 
 onMount(async () => {
     if (modId || $page.url) {
-        const instance = unwrap(await commands.getInstance(instanceId, null));
+        // const instance = unwrap(await commands.getInstance(instanceId, null));
 
         mods = /\/mods?(\/\d+)?/i.test($page.url.pathname);
-        modInfo = unwrap(await commands.getMod(gameId, source as SourceMapping, modId, null));
-        versions = unwrap(
-            await commands.getModVersions(gameId, source as SourceMapping, instance, modId, null)
-        );
-        latest = unwrap(
-            await commands.getLatestVersion(gameId, source as SourceMapping, instance, modId, null)
-        );
+        // modInfo = unwrap(await commands.getMod(gameId, source as SourceMapping, modId, null));
+        // versions = unwrap(
+        //     await commands.getModVersions(gameId, source as SourceMapping, instance, modId, null)
+        // );
+        // latest = unwrap(
+        //     await commands.getLatestVersion(gameId, source as SourceMapping, instance, modId, null)
+        // );
         isLoading = false;
 
         selected = { id: latest.id, text: latest.name! };
@@ -53,9 +53,9 @@ onMount(async () => {
             ? modInfo.icon?.replace("https://cdn.modrinth.com/", "/__mr_cdn/")
             : modInfo.icon;
 
-        const modsList = unwrap(await commands.getMods(instanceId, null));
+        // const modsList = unwrap(await commands.getMods(instanceId, null));
 
-        installed = modsList.find((v) => v.mod_id === modId) != null;
+        // installed = modsList.find((v) => v.mod_id === modId) != null;
     }
 
     listen("progress_callback", (data) => {
@@ -121,13 +121,13 @@ const install = async () => {
     downloading = true;
 
     const version = versions.find((v) => v.id === selected.id)!;
-    const instance = unwrap(await commands.getInstance(instanceId, null));
+    // const instance = unwrap(await commands.getInstance(instanceId, null));
 
-    unwrap(await commands.installMod(gameId, modInfo!, version, instance, null));
+    // unwrap(await commands.installMod(gameId, modInfo!, version, instance, null));
 
-    const mods = unwrap(await commands.getMods(instance.id!, null));
+    // const mods = unwrap(await commands.getMods(instance.id!, null));
 
-    installed = mods.find((v) => v.mod_id === modId) != null;
+    // installed = mods.find((v) => v.mod_id === modId) != null;
 
     downloading = false;
 };
@@ -135,15 +135,15 @@ const install = async () => {
 const uninstall = async () => {
     downloading = true;
 
-    const instance = unwrap(await commands.getInstance(instanceId, null));
-    const modsNow = unwrap(await commands.getMods(instance.id!, null));
-    const me = modsNow.find((v) => v.mod_id === modId)!;
+    // const instance = unwrap(await commands.getInstance(instanceId, null));
+    // const modsNow = unwrap(await commands.getMods(instance.id!, null));
+    // const me = modsNow.find((v) => v.mod_id === modId)!;
 
-    unwrap(await commands.uninstallMod(gameId, me, instance, null));
+    // unwrap(await commands.uninstallMod(gameId, me, instance, null));
 
-    const mods = unwrap(await commands.getMods(instance.id!, null));
+    // const mods = unwrap(await commands.getMods(instance.id!, null));
 
-    installed = mods.find((v) => v.mod_id === modId) != null;
+    // installed = mods.find((v) => v.mod_id === modId) != null;
 
     downloading = false;
 };

@@ -1,4 +1,4 @@
-import type { ModLoader } from "./bindings/app";
+type ModLoader = string;
 
 export const getLoader = (loader: ModLoader): string => {
     return Object.keys(loader)[0];

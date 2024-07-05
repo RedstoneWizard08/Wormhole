@@ -2,7 +2,7 @@
 import InstanceCard from "$components/InstanceCard.svelte";
 import { onMount } from "svelte";
 import { page } from "$app/stores";
-import { commands, type Instance } from "$bindings";
+import type { Instance } from "$bindings";
 import { unwrap } from "$api/util";
 
 let adding = false;
@@ -15,24 +15,24 @@ let gameId = Number.parseInt($page.params.game);
 let name = "";
 
 onMount(async () => {
-    instances = unwrap(await commands.getInstances(gameId, null));
+    // instances = unwrap(await commands.getInstances(gameId, null));
 });
 
 const addInstance = async () => {
-    unwrap(await commands.createInstance(name, gameId, null));
+    // unwrap(await commands.createInstance(name, gameId, null));
     name = "";
 
     adding = false;
 
-    instances = unwrap(await commands.getInstances(gameId, null));
+    // instances = unwrap(await commands.getInstances(gameId, null));
 };
 
 const deleteInstance = async () => {
-    commands.deleteInstance(current?.id!, null);
+    // commands.deleteInstance(current?.id!, null);
 
     deleteing = false;
 
-    instances = unwrap(await commands.getInstances(gameId, null));
+    // instances = unwrap(await commands.getInstances(gameId, null));
 };
 
 const toggleAdding = () => {

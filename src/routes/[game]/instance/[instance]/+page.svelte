@@ -6,7 +6,7 @@ import { unwrap } from "$api/util";
 import Back from "$components/Back.svelte";
 import { goto } from "$app/navigation";
 import { plugins } from "$api/stores";
-import { commands, type DbMod, type Instance, type ModLoader } from "$bindings";
+import type { DbMod, Instance, ModLoader } from "$bindings";
 import { onMount } from "svelte";
 import LoaderDropdown from "$components/LoaderDropdown.svelte";
 
@@ -24,8 +24,8 @@ $: description = instance?.description;
 const id = $page.params.instance;
 
 const refresh = async () => {
-    instance = unwrap(await commands.getInstance(Number.parseInt(id || "-1", 10), null));
-    mods = unwrap(await commands.getMods(instance.id!, null));
+    // instance = unwrap(await commands.getInstance(Number.parseInt(id || "-1", 10), null));
+    // mods = unwrap(await commands.getMods(instance.id!, null));
 
     background = $plugins.find((v) => v.game === instance.game_id)?.banner_url;
     executable = instance.data_dir;
@@ -38,7 +38,8 @@ onMount(refresh);
 const save = async () => {
     if (instance) {
         instance = unwrap(
-            await commands.updateInstance(instance.id!, editor?.value || instance.description, null)
+            null
+            // await commands.updateInstance(instance.id!, editor?.value || instance.description, null)
         );
     }
 
@@ -56,7 +57,7 @@ const edit = () => {
 const launch = async () => {
     if (instance == null) return;
 
-    console.log(unwrap(await commands.launchGame(instance.game_id, instance, null)));
+    // console.log(unwrap(await commands.launchGame(instance.game_id, instance, null)));
 };
 
 const updateDescription = (ev: Event) => {
@@ -73,7 +74,7 @@ const reinstall = async () => {
     if (instance == null) return;
 
     installing = true;
-    instance = unwrap(await commands.installLoader(loader!, instance, null));
+    // instance = unwrap(await commands.installLoader(loader!, instance, null));
     installing = false;
 };
 </script>

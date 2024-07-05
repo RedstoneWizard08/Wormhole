@@ -1,5 +1,5 @@
 <script lang="ts">
-import { commands, type ModLoader, type ModLoaderType } from "$api/bindings/app";
+import type { ModLoader, ModLoaderType } from "$api/bindings/app";
 import { getLoader, getLoaderVersion, getMinecraft } from "$api/loader";
 import { isRelease, isSnapshot } from "$api/mc";
 import { isChildOf, unwrap } from "$api/util";
@@ -51,10 +51,10 @@ onMount(async () => {
     if (loader) {
         vanillaVer = getMinecraft(loader);
     } else {
-        vanillaVer = getMinecraft(unwrap(await commands.getLatestLoader("Vanilla", null)));
+        // vanillaVer = getMinecraft(unwrap(await commands.getLatestLoader("Vanilla", null)));
     }
 
-    vanilla = unwrap(await commands.getLoaders("Vanilla", null));
+    // vanilla = unwrap(await commands.getLoaders("Vanilla", null));
 
     window.addEventListener("click", (ev) => {
         if (
@@ -84,19 +84,19 @@ const updater = (type: ModLoaderType) => {
 
         switch (type) {
             case "Vanilla":
-                vanilla = unwrap(await commands.getLoaders("Vanilla", null));
+                // vanilla = unwrap(await commands.getLoaders("Vanilla", null));
                 break;
             case "Forge":
-                forge = unwrap(await commands.getLoaders("Forge", null));
+                // forge = unwrap(await commands.getLoaders("Forge", null));
                 break;
             case "NeoForge":
-                neoforge = unwrap(await commands.getLoaders("NeoForge", null));
+                // neoforge = unwrap(await commands.getLoaders("NeoForge", null));
                 break;
             case "Fabric":
-                fabric = unwrap(await commands.getLoaders("Fabric", null));
+                // fabric = unwrap(await commands.getLoaders("Fabric", null));
                 break;
             case "Quilt":
-                quilt = unwrap(await commands.getLoaders("Quilt", null));
+                // quilt = unwrap(await commands.getLoaders("Quilt", null));
                 break;
             case "None":
                 loader = { Vanilla: vanillaVer || "" };
