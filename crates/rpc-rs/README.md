@@ -99,7 +99,6 @@ rpc-rs integrates extremely well with the following libraries and tools:
 
 - `axum`
 - `tauri`
-- `prisma-client-rust`
 - `specta`
 - `serde`
 - `serde_json`

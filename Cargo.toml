@@ -102,13 +102,13 @@ axumite = { path = "./crates/axumite" }
 glue = { path = "./crates/glue" }
 midlog = { path = "./crates/midlog" }
 java = { path = "./crates/java" }
-macros = { path = "./crates/macros" }
 msa = { path = "./crates/msa" }
 mcmeta = { path = "./crates/mcmeta" }
 webui = { path = "./apps/webui" }
 bindings = { path = "./apps/bindings" }
 commands = { path = "./crates/commands" }
 plugins = { path = "./crates/plugins" }
+rpc-rs = { path = "./crates/rpc-rs", features = ["axum", "tauri"] }
 
 [workspace]
 resolver = "2"
@@ -129,8 +129,6 @@ members = [
     "crates/glue",
     "external/anyhow",
     "crates/midlog",
-    "crates/macros",
-    "crates/macro-test",
     "crates/msa",
     "crates/java",
     "crates/mcmeta",
@@ -138,5 +136,5 @@ members = [
     "crates/commands",
     "crates/plugins",
     "crates/pack",
-    "tools/prisma",
+    "tools/prisma", "crates/rpc-rs",
 ]

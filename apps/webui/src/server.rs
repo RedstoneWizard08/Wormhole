@@ -27,6 +27,7 @@ pub async fn run_server(cli: Cli) -> Result<()> {
         .await
         .log()
         .build()
+        .await
         .into_make_service_with_connect_info::<SocketAddr>();
 
     info!("Initializing server...");

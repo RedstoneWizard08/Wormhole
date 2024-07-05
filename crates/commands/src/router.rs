@@ -2,21 +2,20 @@
 
 use std::sync::Arc;
 
-use data::prisma::{r#mod, PrismaClient};
-use rspc::Router;
+use data::prisma::PrismaClient;
+use rpc_rs::{
+    module::module::Module,
+    proc::wrap,
+    router::router::Router,
+};
 
 /// Create a router.
 pub fn build_router() -> Router<Arc<PrismaClient>> {
     Router::<Arc<PrismaClient>>::new()
-        .query("version", |t| t(|_, _: ()| env!("CARGO_PKG_VERSION")))
-        .query("mods", |t| {
-            t(|db, instance: i32| async move {
-                db.r#mod()
-                    .find_many(vec![r#mod::instance_id::equals(instance)])
-                    .exec()
-                    .await
-                    .unwrap_or_default()
-            })
-        })
-        .build()
+        .mount(
+            "version",
+            Module::builder()
+                .read(wrap(|_cx, _: ()| async move { env!("CARGO_PKG_VERSION") }))
+                .build(),
+        )
 }
