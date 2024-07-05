@@ -13,7 +13,6 @@ pub use run::run;
 
 pub extern crate api;
 pub extern crate commands;
-pub extern crate macros as whmacros;
 pub extern crate specta;
 pub extern crate tauri;
 pub extern crate tokio;
