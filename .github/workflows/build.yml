@@ -85,6 +85,7 @@ jobs:
             - name: Build app
               run: |
                   touch .env
+                  cargo prisma generate
                   pnpm run build --target ${{ matrix.target }}
                   pnpm run app:build
                   pnpm run web:build
