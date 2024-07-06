@@ -63,7 +63,6 @@ export const setupTauri = () => {
     });
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const __rpc_call = async <T, O>(
     routePrefix: string,
     method: Method,
@@ -72,15 +71,15 @@ const __rpc_call = async <T, O>(
 ): Promise<O> => {
     if (!("__TAURI__" in window)) {
         if (method === "Read") {
-            return (await fetch(`${routePrefix}/${command}?${serializeQuery(data)}`, {
+            return await fetch(`${routePrefix}/${command}?${serializeQuery(data)}`, {
                 method: "GET",
-            }).then((v) => v.json()));
+            }).then((v) => v.json());
         }
 
-        return (await fetch(`${routePrefix}/${command}`, {
+        return await fetch(`${routePrefix}/${command}`, {
             method: mapMethod(method),
             body: JSON.stringify(data),
-        }).then((v) => v.json()));
+        }).then((v) => v.json());
     }
 
     const id = crypto.randomUUID();
@@ -92,7 +91,6 @@ const __rpc_call = async <T, O>(
         data,
     };
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const promise = new Promise<O>((res, _rej) => {
         responseQueue[input.id] = res as (data: unknown) => void;
     });
@@ -103,36 +101,12 @@ const __rpc_call = async <T, O>(
 };
 
 
-export async function __rpc_call_version_Delete(data: null): Promise<string> {
-return await __rpc_call("/rpc", "Delete", "__rpc_call_version_Delete", data);
-}
-
-export async function __rpc_call_version_Create(data: null): Promise<string> {
-return await __rpc_call("/rpc", "Create", "__rpc_call_version_Create", data);
-}
-
-export async function __rpc_call_version_Update(data: null): Promise<string> {
-return await __rpc_call("/rpc", "Update", "__rpc_call_version_Update", data);
-}
-
-export async function __rpc_call_version_Read(data: null): Promise<string> {
-return await __rpc_call("/rpc", "Read", "__rpc_call_version_Read", data);
-}
-
-const __rpc_module_version = {
-    create: __rpc_call_version_Create,
-    read: __rpc_call_version_Read,
-    update: __rpc_call_version_Update,
-    delete: __rpc_call_version_Delete,
-};
-
-
-export async function __rpc_call_mods_Create(data: null): Promise<string> {
-return await __rpc_call("/rpc", "Create", "__rpc_call_mods_Create", data);
-}
-
 export async function __rpc_call_mods_Read(data: null): Promise<Mod[]> {
 return await __rpc_call("/rpc", "Read", "__rpc_call_mods_Read", data);
+}
+
+export async function __rpc_call_mods_Create(data: ModCreation): Promise<bigint | string> {
+return await __rpc_call("/rpc", "Create", "__rpc_call_mods_Create", data);
 }
 
 export async function __rpc_call_mods_Update(data: null): Promise<string> {
@@ -151,11 +125,37 @@ const __rpc_module_mods = {
 };
 
 
+export async function __rpc_call_version_Read(data: null): Promise<string> {
+return await __rpc_call("/rpc", "Read", "__rpc_call_version_Read", data);
+}
+
+export async function __rpc_call_version_Create(data: null): Promise<string> {
+return await __rpc_call("/rpc", "Create", "__rpc_call_version_Create", data);
+}
+
+export async function __rpc_call_version_Update(data: null): Promise<string> {
+return await __rpc_call("/rpc", "Update", "__rpc_call_version_Update", data);
+}
+
+export async function __rpc_call_version_Delete(data: null): Promise<string> {
+return await __rpc_call("/rpc", "Delete", "__rpc_call_version_Delete", data);
+}
+
+const __rpc_module_version = {
+    create: __rpc_call_version_Create,
+    read: __rpc_call_version_Read,
+    update: __rpc_call_version_Update,
+    delete: __rpc_call_version_Delete,
+};
+
+
 export type Mod = { id: number; mod: string; version: string | null; name: string; file: string; size: number; hash: string | null; installed_files: string; sourceId: number; instanceId: number }
 
+export type ModCreation = { mod: string; name: string; file: string; size: number; installed_files: string; sourceId: number; instanceId: number }
+
 export const RPC = {
-version: __rpc_module_version,
 mods: __rpc_module_mods,
+version: __rpc_module_version,
 };
 
 export default RPC;

@@ -1,0 +1,34 @@
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+generator client {
+    provider = "cargo prisma"
+    output   = "../tests/db"
+
+    module_path = "crate::db"
+    clientFormat = "directory"
+}
+
+model SomeModel {
+    id                 String     @id
+    some_column        Json?
+    some_enum          SomeEnum
+    some_enum_optional SomeEnum?
+    // https://github.com/Brendonovich/prisma-client-rust/issues/303
+    enum_list          SomeEnum[]
+}
+
+model AnotherModel {
+	id        String @id
+    // https://discord.com/channels/1011665225809924136/1129034041363017848/1129038605294252103
+	string_array String[]
+	another_array String[]
+    json Json
+}
+
+enum SomeEnum {
+    A
+    B
+}

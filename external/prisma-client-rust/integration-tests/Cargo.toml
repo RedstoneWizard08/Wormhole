@@ -1,0 +1,28 @@
+[package]
+name = "integration-tests"
+version = "0.1.0"
+authors = ["Brendan Allan <brendonovich@outlook.com>"]
+autotests = false
+autobenches = false
+edition = "2021"
+
+[[test]]
+name = "integration_tests"
+path = "tests/lib.rs"
+harness = true
+
+[dev-dependencies]
+tokio = { version = "1.17.0", features = ["rt", "macros"] }
+serde = { version = "1.0", features = ["derive"] }
+prisma-client-rust = { workspace = true, features = [
+  "sqlite-create-many",
+  "sqlite",
+  "migrations",
+  "specta",
+  # "mutation-callbacks",
+  "mocking",
+] }
+async-trait = "0.1.60"
+thiserror = "1.0.37"
+specta = { workspace = true, features = ["typescript"] }
+serde_json = { version = "1" }

@@ -1,0 +1,127 @@
+datasource db {
+    provider = "sqlite"
+    url      = "file:dev.db"
+}
+
+// datasource db {
+//     provider = "postgresql"
+//     url      = "postgres://postgres:postgrespw@localhost:55000"
+// }
+
+generator client {
+    provider = "cargo prisma"
+    output   = "tests/db"
+
+    // necessary since the generated file won't be at crate::prisma
+    module_path = "db"
+    client_format = "folder"
+}
+
+model Post {
+    id          String     @id @default(cuid())
+    created_at  DateTime   @default(now())
+    updated_at  DateTime   @updatedAt
+    title       String
+    published   Boolean
+    views       Int        @default(0)
+    desc        String?
+    author      User?      @relation("posts", fields: [author_id], references: [id])
+    author_id   String?
+    categories  Category[] @relation
+    favouriters User[]     @relation("favouritePosts")
+
+    @@unique([title, author_id])
+}
+
+model User {
+    id             String     @id @default(cuid())
+    name           String
+    email          String?    @unique
+    createdAt      DateTime   @default(now())
+    posts          Post[]     @relation("posts")
+    favouritePosts Post[]     @relation("favouritePosts") // #53
+    profile        Profile?
+    underscored_   Int?
+    FilePath       FilePath[]
+}
+
+model FilePath {
+    local_id Int
+    path     String
+
+    user_id String
+    user    User   @relation(fields: [user_id], references: [id])
+
+    @@id([user_id, local_id])
+}
+
+model Category {
+    id    Int    @id @default(autoincrement())
+    posts Post[] @relation
+    name  String
+}
+
+model Profile {
+    id      Int     @id @unique @default(autoincrement()) // @unique - #71
+    user    User    @relation(fields: [user_id], references: [id])
+    user_id String  @unique
+    bio     String
+    city    String?
+    country String
+    views   Int     @default(0)
+}
+
+// model that just exists for testing different schema types
+model Types {
+    id       Int      @default(0)
+    bool_    Boolean  @default(false)
+    string   String   @default("")
+    integer  Int      @default(0)
+    datetime DateTime @default(now())
+    float_   Float    @default(0)
+
+    // TODO: Figure out how to deserialize these
+    // bigint   BigInt   @default(0)
+    decimal Decimal?
+
+    @@id([id, string])
+    // #69
+    @@unique([id, string])
+}
+
+// https://discord.com/channels/1011665225809924136/1011666506083487775/1078948688728162384
+model Ref {
+    id   String @id @default(uuid())
+    impl Int
+}
+
+// https://github.com/Brendonovich/prisma-client-rust/issues/282
+model Child {
+    // Fields
+    name                String  @unique
+    primary_parent_name String?
+
+    // Relations
+    primary_parent Parent?  @relation("primary_child", fields: [name, primary_parent_name], references: [primary_child_name, name])
+    parents        Parent[]
+
+    @@unique([name, primary_parent_name])
+}
+
+model Parent {
+    // Fields
+    name               String @default("default")
+    primary_child_name String
+
+    // Relations
+    child             Child  @relation(fields: [primary_child_name], references: [name], onDelete: Cascade)
+    is_primary_parent Child? @relation("primary_child")
+
+    @@unique([primary_child_name, name])
+}
+
+model Unsupported {
+    id Int @id @default(autoincrement())
+
+    unsupprted Unsupported("invalid")
+}

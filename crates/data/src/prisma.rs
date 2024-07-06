@@ -269,6 +269,161 @@ pub mod _prisma {
     pub mod read_filters {
         use super::*;
         #[derive(Debug, Clone)]
+        pub enum BooleanFilter {
+            Equals(Boolean),
+            Not(Boolean),
+        }
+        impl Into<::prisma_client_rust::SerializedWhereValue> for BooleanFilter {
+            fn into(self) -> ::prisma_client_rust::SerializedWhereValue {
+                match self {
+                    Self::Equals(value) => {
+                        ::prisma_client_rust::SerializedWhereValue::Object(vec![(
+                            "equals".to_string(),
+                            ::prisma_client_rust::PrismaValue::Boolean(value),
+                        )])
+                    }
+                    Self::Not(value) => ::prisma_client_rust::SerializedWhereValue::Object(vec![(
+                        "not".to_string(),
+                        ::prisma_client_rust::PrismaValue::Boolean(value),
+                    )]),
+                }
+            }
+        }
+        #[derive(Debug, Clone)]
+        pub enum IntFilter {
+            Equals(Int),
+            InVec(Vec<Int>),
+            NotInVec(Vec<Int>),
+            Lt(Int),
+            Lte(Int),
+            Gt(Int),
+            Gte(Int),
+            Not(Int),
+        }
+        impl Into<::prisma_client_rust::SerializedWhereValue> for IntFilter {
+            fn into(self) -> ::prisma_client_rust::SerializedWhereValue {
+                match self {
+                    Self::Equals(value) => {
+                        ::prisma_client_rust::SerializedWhereValue::Object(vec![(
+                            "equals".to_string(),
+                            ::prisma_client_rust::PrismaValue::Int(value),
+                        )])
+                    }
+                    Self::InVec(value) => {
+                        ::prisma_client_rust::SerializedWhereValue::Object(vec![(
+                            "in".to_string(),
+                            ::prisma_client_rust::PrismaValue::List(
+                                value
+                                    .into_iter()
+                                    .map(|value| ::prisma_client_rust::PrismaValue::Int(value))
+                                    .collect(),
+                            ),
+                        )])
+                    }
+                    Self::NotInVec(value) => {
+                        ::prisma_client_rust::SerializedWhereValue::Object(vec![(
+                            "notIn".to_string(),
+                            ::prisma_client_rust::PrismaValue::List(
+                                value
+                                    .into_iter()
+                                    .map(|value| ::prisma_client_rust::PrismaValue::Int(value))
+                                    .collect(),
+                            ),
+                        )])
+                    }
+                    Self::Lt(value) => ::prisma_client_rust::SerializedWhereValue::Object(vec![(
+                        "lt".to_string(),
+                        ::prisma_client_rust::PrismaValue::Int(value),
+                    )]),
+                    Self::Lte(value) => ::prisma_client_rust::SerializedWhereValue::Object(vec![(
+                        "lte".to_string(),
+                        ::prisma_client_rust::PrismaValue::Int(value),
+                    )]),
+                    Self::Gt(value) => ::prisma_client_rust::SerializedWhereValue::Object(vec![(
+                        "gt".to_string(),
+                        ::prisma_client_rust::PrismaValue::Int(value),
+                    )]),
+                    Self::Gte(value) => ::prisma_client_rust::SerializedWhereValue::Object(vec![(
+                        "gte".to_string(),
+                        ::prisma_client_rust::PrismaValue::Int(value),
+                    )]),
+                    Self::Not(value) => ::prisma_client_rust::SerializedWhereValue::Object(vec![(
+                        "not".to_string(),
+                        ::prisma_client_rust::PrismaValue::Int(value),
+                    )]),
+                }
+            }
+        }
+        #[derive(Debug, Clone)]
+        pub enum IntNullableFilter {
+            Equals(Option<Int>),
+            InVec(Vec<Int>),
+            NotInVec(Vec<Int>),
+            Lt(Int),
+            Lte(Int),
+            Gt(Int),
+            Gte(Int),
+            Not(Option<Int>),
+        }
+        impl Into<::prisma_client_rust::SerializedWhereValue> for IntNullableFilter {
+            fn into(self) -> ::prisma_client_rust::SerializedWhereValue {
+                match self {
+                    Self::Equals(value) => {
+                        ::prisma_client_rust::SerializedWhereValue::Object(vec![(
+                            "equals".to_string(),
+                            value
+                                .map(|value| ::prisma_client_rust::PrismaValue::Int(value))
+                                .unwrap_or_else(|| ::prisma_client_rust::PrismaValue::Null),
+                        )])
+                    }
+                    Self::InVec(value) => {
+                        ::prisma_client_rust::SerializedWhereValue::Object(vec![(
+                            "in".to_string(),
+                            ::prisma_client_rust::PrismaValue::List(
+                                value
+                                    .into_iter()
+                                    .map(|value| ::prisma_client_rust::PrismaValue::Int(value))
+                                    .collect(),
+                            ),
+                        )])
+                    }
+                    Self::NotInVec(value) => {
+                        ::prisma_client_rust::SerializedWhereValue::Object(vec![(
+                            "notIn".to_string(),
+                            ::prisma_client_rust::PrismaValue::List(
+                                value
+                                    .into_iter()
+                                    .map(|value| ::prisma_client_rust::PrismaValue::Int(value))
+                                    .collect(),
+                            ),
+                        )])
+                    }
+                    Self::Lt(value) => ::prisma_client_rust::SerializedWhereValue::Object(vec![(
+                        "lt".to_string(),
+                        ::prisma_client_rust::PrismaValue::Int(value),
+                    )]),
+                    Self::Lte(value) => ::prisma_client_rust::SerializedWhereValue::Object(vec![(
+                        "lte".to_string(),
+                        ::prisma_client_rust::PrismaValue::Int(value),
+                    )]),
+                    Self::Gt(value) => ::prisma_client_rust::SerializedWhereValue::Object(vec![(
+                        "gt".to_string(),
+                        ::prisma_client_rust::PrismaValue::Int(value),
+                    )]),
+                    Self::Gte(value) => ::prisma_client_rust::SerializedWhereValue::Object(vec![(
+                        "gte".to_string(),
+                        ::prisma_client_rust::PrismaValue::Int(value),
+                    )]),
+                    Self::Not(value) => ::prisma_client_rust::SerializedWhereValue::Object(vec![(
+                        "not".to_string(),
+                        value
+                            .map(|value| ::prisma_client_rust::PrismaValue::Int(value))
+                            .unwrap_or_else(|| ::prisma_client_rust::PrismaValue::Null),
+                    )]),
+                }
+            }
+        }
+        #[derive(Debug, Clone)]
         pub enum StringFilter {
             Equals(String),
             InVec(Vec<String>),
@@ -440,161 +595,6 @@ pub mod _prisma {
                         value
                             .map(|value| ::prisma_client_rust::PrismaValue::String(value))
                             .unwrap_or_else(|| ::prisma_client_rust::PrismaValue::Null),
-                    )]),
-                }
-            }
-        }
-        #[derive(Debug, Clone)]
-        pub enum IntFilter {
-            Equals(Int),
-            InVec(Vec<Int>),
-            NotInVec(Vec<Int>),
-            Lt(Int),
-            Lte(Int),
-            Gt(Int),
-            Gte(Int),
-            Not(Int),
-        }
-        impl Into<::prisma_client_rust::SerializedWhereValue> for IntFilter {
-            fn into(self) -> ::prisma_client_rust::SerializedWhereValue {
-                match self {
-                    Self::Equals(value) => {
-                        ::prisma_client_rust::SerializedWhereValue::Object(vec![(
-                            "equals".to_string(),
-                            ::prisma_client_rust::PrismaValue::Int(value),
-                        )])
-                    }
-                    Self::InVec(value) => {
-                        ::prisma_client_rust::SerializedWhereValue::Object(vec![(
-                            "in".to_string(),
-                            ::prisma_client_rust::PrismaValue::List(
-                                value
-                                    .into_iter()
-                                    .map(|value| ::prisma_client_rust::PrismaValue::Int(value))
-                                    .collect(),
-                            ),
-                        )])
-                    }
-                    Self::NotInVec(value) => {
-                        ::prisma_client_rust::SerializedWhereValue::Object(vec![(
-                            "notIn".to_string(),
-                            ::prisma_client_rust::PrismaValue::List(
-                                value
-                                    .into_iter()
-                                    .map(|value| ::prisma_client_rust::PrismaValue::Int(value))
-                                    .collect(),
-                            ),
-                        )])
-                    }
-                    Self::Lt(value) => ::prisma_client_rust::SerializedWhereValue::Object(vec![(
-                        "lt".to_string(),
-                        ::prisma_client_rust::PrismaValue::Int(value),
-                    )]),
-                    Self::Lte(value) => ::prisma_client_rust::SerializedWhereValue::Object(vec![(
-                        "lte".to_string(),
-                        ::prisma_client_rust::PrismaValue::Int(value),
-                    )]),
-                    Self::Gt(value) => ::prisma_client_rust::SerializedWhereValue::Object(vec![(
-                        "gt".to_string(),
-                        ::prisma_client_rust::PrismaValue::Int(value),
-                    )]),
-                    Self::Gte(value) => ::prisma_client_rust::SerializedWhereValue::Object(vec![(
-                        "gte".to_string(),
-                        ::prisma_client_rust::PrismaValue::Int(value),
-                    )]),
-                    Self::Not(value) => ::prisma_client_rust::SerializedWhereValue::Object(vec![(
-                        "not".to_string(),
-                        ::prisma_client_rust::PrismaValue::Int(value),
-                    )]),
-                }
-            }
-        }
-        #[derive(Debug, Clone)]
-        pub enum IntNullableFilter {
-            Equals(Option<Int>),
-            InVec(Vec<Int>),
-            NotInVec(Vec<Int>),
-            Lt(Int),
-            Lte(Int),
-            Gt(Int),
-            Gte(Int),
-            Not(Option<Int>),
-        }
-        impl Into<::prisma_client_rust::SerializedWhereValue> for IntNullableFilter {
-            fn into(self) -> ::prisma_client_rust::SerializedWhereValue {
-                match self {
-                    Self::Equals(value) => {
-                        ::prisma_client_rust::SerializedWhereValue::Object(vec![(
-                            "equals".to_string(),
-                            value
-                                .map(|value| ::prisma_client_rust::PrismaValue::Int(value))
-                                .unwrap_or_else(|| ::prisma_client_rust::PrismaValue::Null),
-                        )])
-                    }
-                    Self::InVec(value) => {
-                        ::prisma_client_rust::SerializedWhereValue::Object(vec![(
-                            "in".to_string(),
-                            ::prisma_client_rust::PrismaValue::List(
-                                value
-                                    .into_iter()
-                                    .map(|value| ::prisma_client_rust::PrismaValue::Int(value))
-                                    .collect(),
-                            ),
-                        )])
-                    }
-                    Self::NotInVec(value) => {
-                        ::prisma_client_rust::SerializedWhereValue::Object(vec![(
-                            "notIn".to_string(),
-                            ::prisma_client_rust::PrismaValue::List(
-                                value
-                                    .into_iter()
-                                    .map(|value| ::prisma_client_rust::PrismaValue::Int(value))
-                                    .collect(),
-                            ),
-                        )])
-                    }
-                    Self::Lt(value) => ::prisma_client_rust::SerializedWhereValue::Object(vec![(
-                        "lt".to_string(),
-                        ::prisma_client_rust::PrismaValue::Int(value),
-                    )]),
-                    Self::Lte(value) => ::prisma_client_rust::SerializedWhereValue::Object(vec![(
-                        "lte".to_string(),
-                        ::prisma_client_rust::PrismaValue::Int(value),
-                    )]),
-                    Self::Gt(value) => ::prisma_client_rust::SerializedWhereValue::Object(vec![(
-                        "gt".to_string(),
-                        ::prisma_client_rust::PrismaValue::Int(value),
-                    )]),
-                    Self::Gte(value) => ::prisma_client_rust::SerializedWhereValue::Object(vec![(
-                        "gte".to_string(),
-                        ::prisma_client_rust::PrismaValue::Int(value),
-                    )]),
-                    Self::Not(value) => ::prisma_client_rust::SerializedWhereValue::Object(vec![(
-                        "not".to_string(),
-                        value
-                            .map(|value| ::prisma_client_rust::PrismaValue::Int(value))
-                            .unwrap_or_else(|| ::prisma_client_rust::PrismaValue::Null),
-                    )]),
-                }
-            }
-        }
-        #[derive(Debug, Clone)]
-        pub enum BooleanFilter {
-            Equals(Boolean),
-            Not(Boolean),
-        }
-        impl Into<::prisma_client_rust::SerializedWhereValue> for BooleanFilter {
-            fn into(self) -> ::prisma_client_rust::SerializedWhereValue {
-                match self {
-                    Self::Equals(value) => {
-                        ::prisma_client_rust::SerializedWhereValue::Object(vec![(
-                            "equals".to_string(),
-                            ::prisma_client_rust::PrismaValue::Boolean(value),
-                        )])
-                    }
-                    Self::Not(value) => ::prisma_client_rust::SerializedWhereValue::Object(vec![(
-                        "not".to_string(),
-                        ::prisma_client_rust::PrismaValue::Boolean(value),
                     )]),
                 }
             }
@@ -1306,9 +1306,18 @@ pub mod game {
     pub fn create(name: String, _params: Vec<SetParam>) -> Create {
         Create { name, _params }
     }
-    #[derive(Debug, Clone)]
+    #[derive(
+        Debug,
+        Clone,
+        :: serde :: Serialize,
+        :: serde :: Deserialize,
+        :: prisma_client_rust :: specta :: Type,
+    )]
+    # [specta (rename = "GameCreation" , crate = prisma_client_rust :: specta)]
     pub struct CreateUnchecked {
+        #[serde(rename = "name")]
         pub name: String,
+        #[serde(skip)]
         pub _params: Vec<UncheckedSetParam>,
     }
     impl CreateUnchecked {
@@ -1322,6 +1331,54 @@ pub mod game {
     }
     pub fn create_unchecked(name: String, _params: Vec<UncheckedSetParam>) -> CreateUnchecked {
         CreateUnchecked { name, _params }
+    }
+    #[derive(
+        Debug,
+        Clone,
+        :: serde :: Serialize,
+        :: serde :: Deserialize,
+        :: prisma_client_rust :: specta :: Type,
+    )]
+    # [specta (rename = "GameUpdate" , crate = prisma_client_rust :: specta)]
+    pub struct Update {
+        #[serde(rename = "id")]
+        pub id: id::Type,
+        #[serde(rename = "name", skip_serializing_if = "Option::is_none")]
+        pub name: Option<name::Type>,
+        #[serde(rename = "curseforge", skip_serializing_if = "Option::is_none")]
+        pub curseforge: curseforge::Type,
+        #[serde(rename = "thunderstore", skip_serializing_if = "Option::is_none")]
+        pub thunderstore: thunderstore::Type,
+        #[serde(rename = "spacedock", skip_serializing_if = "Option::is_none")]
+        pub spacedock: spacedock::Type,
+        #[serde(rename = "ckan", skip_serializing_if = "Option::is_none")]
+        pub ckan: Option<ckan::Type>,
+        #[serde(rename = "modrinth", skip_serializing_if = "Option::is_none")]
+        pub modrinth: Option<modrinth::Type>,
+    }
+    impl Update {
+        pub fn as_params(self) -> Vec<SetParam> {
+            let mut params = Vec::new();
+            if let Some(field) = self.name {
+                params.push(name::set(field));
+            }
+            if let Some(field) = self.curseforge {
+                params.push(curseforge::set(Some(field)));
+            }
+            if let Some(field) = self.thunderstore {
+                params.push(thunderstore::set(Some(field)));
+            }
+            if let Some(field) = self.spacedock {
+                params.push(spacedock::set(Some(field)));
+            }
+            if let Some(field) = self.ckan {
+                params.push(ckan::set(field));
+            }
+            if let Some(field) = self.modrinth {
+                params.push(modrinth::set(field));
+            }
+            params
+        }
     }
     #[derive(Debug, Clone)]
     pub struct Types;
@@ -2920,9 +2977,18 @@ pub mod source {
     pub fn create(name: String, _params: Vec<SetParam>) -> Create {
         Create { name, _params }
     }
-    #[derive(Debug, Clone)]
+    #[derive(
+        Debug,
+        Clone,
+        :: serde :: Serialize,
+        :: serde :: Deserialize,
+        :: prisma_client_rust :: specta :: Type,
+    )]
+    # [specta (rename = "SourceCreation" , crate = prisma_client_rust :: specta)]
     pub struct CreateUnchecked {
+        #[serde(rename = "name")]
         pub name: String,
+        #[serde(skip)]
         pub _params: Vec<UncheckedSetParam>,
     }
     impl CreateUnchecked {
@@ -2936,6 +3002,29 @@ pub mod source {
     }
     pub fn create_unchecked(name: String, _params: Vec<UncheckedSetParam>) -> CreateUnchecked {
         CreateUnchecked { name, _params }
+    }
+    #[derive(
+        Debug,
+        Clone,
+        :: serde :: Serialize,
+        :: serde :: Deserialize,
+        :: prisma_client_rust :: specta :: Type,
+    )]
+    # [specta (rename = "SourceUpdate" , crate = prisma_client_rust :: specta)]
+    pub struct Update {
+        #[serde(rename = "id")]
+        pub id: id::Type,
+        #[serde(rename = "name", skip_serializing_if = "Option::is_none")]
+        pub name: Option<name::Type>,
+    }
+    impl Update {
+        pub fn as_params(self) -> Vec<SetParam> {
+            let mut params = Vec::new();
+            if let Some(field) = self.name {
+                params.push(name::set(field));
+            }
+            params
+        }
     }
     #[derive(Debug, Clone)]
     pub struct Types;
@@ -4178,13 +4267,26 @@ pub mod instance {
             _params,
         }
     }
-    #[derive(Debug, Clone)]
+    #[derive(
+        Debug,
+        Clone,
+        :: serde :: Serialize,
+        :: serde :: Deserialize,
+        :: prisma_client_rust :: specta :: Type,
+    )]
+    # [specta (rename = "InstanceCreation" , crate = prisma_client_rust :: specta)]
     pub struct CreateUnchecked {
+        #[serde(rename = "name")]
         pub name: String,
+        #[serde(rename = "gameId")]
         pub game_id: Int,
+        #[serde(rename = "dataDir")]
         pub data_dir: String,
+        #[serde(rename = "cacheDir")]
         pub cache_dir: String,
+        #[serde(rename = "installDir")]
         pub install_dir: String,
+        #[serde(skip)]
         pub _params: Vec<UncheckedSetParam>,
     }
     impl CreateUnchecked {
@@ -4224,6 +4326,69 @@ pub mod instance {
             cache_dir,
             install_dir,
             _params,
+        }
+    }
+    #[derive(
+        Debug,
+        Clone,
+        :: serde :: Serialize,
+        :: serde :: Deserialize,
+        :: prisma_client_rust :: specta :: Type,
+    )]
+    # [specta (rename = "InstanceUpdate" , crate = prisma_client_rust :: specta)]
+    pub struct Update {
+        #[serde(rename = "id")]
+        pub id: id::Type,
+        #[serde(rename = "name", skip_serializing_if = "Option::is_none")]
+        pub name: Option<name::Type>,
+        #[serde(rename = "gameId", skip_serializing_if = "Option::is_none")]
+        pub game_id: Option<game_id::Type>,
+        #[serde(rename = "dataDir", skip_serializing_if = "Option::is_none")]
+        pub data_dir: Option<data_dir::Type>,
+        #[serde(rename = "cacheDir", skip_serializing_if = "Option::is_none")]
+        pub cache_dir: Option<cache_dir::Type>,
+        #[serde(rename = "installDir", skip_serializing_if = "Option::is_none")]
+        pub install_dir: Option<install_dir::Type>,
+        #[serde(rename = "description", skip_serializing_if = "Option::is_none")]
+        pub description: Option<description::Type>,
+        #[serde(rename = "created", skip_serializing_if = "Option::is_none")]
+        pub created: Option<created::Type>,
+        #[serde(rename = "updated", skip_serializing_if = "Option::is_none")]
+        pub updated: Option<updated::Type>,
+        #[serde(rename = "loader", skip_serializing_if = "Option::is_none")]
+        pub loader: loader::Type,
+    }
+    impl Update {
+        pub fn as_params(self) -> Vec<SetParam> {
+            let mut params = Vec::new();
+            if let Some(field) = self.name {
+                params.push(name::set(field));
+            }
+            if let Some(field) = self.game_id {
+                params.push(game_id::set(field));
+            }
+            if let Some(field) = self.data_dir {
+                params.push(data_dir::set(field));
+            }
+            if let Some(field) = self.cache_dir {
+                params.push(cache_dir::set(field));
+            }
+            if let Some(field) = self.install_dir {
+                params.push(install_dir::set(field));
+            }
+            if let Some(field) = self.description {
+                params.push(description::set(field));
+            }
+            if let Some(field) = self.created {
+                params.push(created::set(field));
+            }
+            if let Some(field) = self.updated {
+                params.push(updated::set(field));
+            }
+            if let Some(field) = self.loader {
+                params.push(loader::set(Some(field)));
+            }
+            params
         }
     }
     #[derive(Debug, Clone)]
@@ -6198,15 +6363,30 @@ pub mod r#mod {
             _params,
         }
     }
-    #[derive(Debug, Clone)]
+    #[derive(
+        Debug,
+        Clone,
+        :: serde :: Serialize,
+        :: serde :: Deserialize,
+        :: prisma_client_rust :: specta :: Type,
+    )]
+    # [specta (rename = "ModCreation" , crate = prisma_client_rust :: specta)]
     pub struct CreateUnchecked {
+        #[serde(rename = "mod")]
         pub r#mod: String,
+        #[serde(rename = "name")]
         pub name: String,
+        #[serde(rename = "file")]
         pub file: String,
+        #[serde(rename = "size")]
         pub size: Int,
+        #[serde(rename = "installed_files")]
         pub installed_files: String,
+        #[serde(rename = "sourceId")]
         pub source_id: Int,
+        #[serde(rename = "instanceId")]
         pub instance_id: Int,
+        #[serde(skip)]
         pub _params: Vec<UncheckedSetParam>,
     }
     impl CreateUnchecked {
@@ -6254,6 +6434,69 @@ pub mod r#mod {
             source_id,
             instance_id,
             _params,
+        }
+    }
+    #[derive(
+        Debug,
+        Clone,
+        :: serde :: Serialize,
+        :: serde :: Deserialize,
+        :: prisma_client_rust :: specta :: Type,
+    )]
+    # [specta (rename = "ModUpdate" , crate = prisma_client_rust :: specta)]
+    pub struct Update {
+        #[serde(rename = "id")]
+        pub id: id::Type,
+        #[serde(rename = "mod", skip_serializing_if = "Option::is_none")]
+        pub r#mod: Option<r#mod::Type>,
+        #[serde(rename = "version", skip_serializing_if = "Option::is_none")]
+        pub version: version::Type,
+        #[serde(rename = "name", skip_serializing_if = "Option::is_none")]
+        pub name: Option<name::Type>,
+        #[serde(rename = "file", skip_serializing_if = "Option::is_none")]
+        pub file: Option<file::Type>,
+        #[serde(rename = "size", skip_serializing_if = "Option::is_none")]
+        pub size: Option<size::Type>,
+        #[serde(rename = "hash", skip_serializing_if = "Option::is_none")]
+        pub hash: hash::Type,
+        #[serde(rename = "installed_files", skip_serializing_if = "Option::is_none")]
+        pub installed_files: Option<installed_files::Type>,
+        #[serde(rename = "sourceId", skip_serializing_if = "Option::is_none")]
+        pub source_id: Option<source_id::Type>,
+        #[serde(rename = "instanceId", skip_serializing_if = "Option::is_none")]
+        pub instance_id: Option<instance_id::Type>,
+    }
+    impl Update {
+        pub fn as_params(self) -> Vec<SetParam> {
+            let mut params = Vec::new();
+            if let Some(field) = self.r#mod {
+                params.push(r#mod::set(field));
+            }
+            if let Some(field) = self.version {
+                params.push(version::set(Some(field)));
+            }
+            if let Some(field) = self.name {
+                params.push(name::set(field));
+            }
+            if let Some(field) = self.file {
+                params.push(file::set(field));
+            }
+            if let Some(field) = self.size {
+                params.push(size::set(field));
+            }
+            if let Some(field) = self.hash {
+                params.push(hash::set(Some(field)));
+            }
+            if let Some(field) = self.installed_files {
+                params.push(installed_files::set(field));
+            }
+            if let Some(field) = self.source_id {
+                params.push(source_id::set(field));
+            }
+            if let Some(field) = self.instance_id {
+                params.push(instance_id::set(field));
+            }
+            params
         }
     }
     #[derive(Debug, Clone)]

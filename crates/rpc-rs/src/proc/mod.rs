@@ -20,7 +20,11 @@ impl<
         Arg: Send + Sync + 'static + DeserializeOwned + Type,
     > GenericProcedure<Cx> for WrappedProcedure<Cx, Output, Arg>
 {
-    async fn run(&self, cx: Cx, data: String) -> Result<String, Error> {
+    async fn run(&self, cx: Cx, mut data: String) -> Result<String, Error> {
+        if data.is_empty() {
+            data = String::from("null");
+        }
+
         serde_json::to_string(&self.0.exec(cx, serde_json::from_str(&data)?).await)
     }
 

@@ -15,7 +15,7 @@ pub struct Cli {
 impl Runnable for Cli {
     async fn run(&self) -> Result<()> {
         println!("Exporting app bindings...");
-        
+
         build_router().export("/rpc", self.path.clone())?;
 
         Ok(())

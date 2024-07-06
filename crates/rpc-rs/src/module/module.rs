@@ -2,7 +2,11 @@ use std::sync::Arc;
 
 use serde_json::Error;
 
-use crate::{router::Method, proc::{wrap, GenericProcedure}, util::TripleS};
+use crate::{
+    proc::{wrap, GenericProcedure},
+    router::Method,
+    util::TripleS,
+};
 
 use super::builder::ModuleBuilder;
 
@@ -17,10 +21,26 @@ pub struct Module<Cx: TripleS + Clone> {
 impl<Cx: TripleS + Clone> Module<Cx> {
     pub(crate) fn new(builder: ModuleBuilder<Cx>) -> Self {
         Self {
-            create: Arc::new(builder.create.unwrap_or(Box::new(wrap(Self::error_responder)))),
-            read: Arc::new(builder.read.unwrap_or(Box::new(wrap(Self::error_responder)))),
-            update: Arc::new(builder.update.unwrap_or(Box::new(wrap(Self::error_responder)))),
-            delete: Arc::new(builder.delete.unwrap_or(Box::new(wrap(Self::error_responder)))),
+            create: Arc::new(
+                builder
+                    .create
+                    .unwrap_or(Box::new(wrap(Self::error_responder))),
+            ),
+            read: Arc::new(
+                builder
+                    .read
+                    .unwrap_or(Box::new(wrap(Self::error_responder))),
+            ),
+            update: Arc::new(
+                builder
+                    .update
+                    .unwrap_or(Box::new(wrap(Self::error_responder))),
+            ),
+            delete: Arc::new(
+                builder
+                    .delete
+                    .unwrap_or(Box::new(wrap(Self::error_responder))),
+            ),
         }
     }
 

@@ -1,9 +1,10 @@
-use specta::{function::FunctionDataType, ts::{datatype, ExportConfig, Result}, TypeMap};
+use specta::{
+    function::FunctionDataType,
+    ts::{datatype, ExportConfig, Result},
+    TypeMap,
+};
 
-pub fn export_function_header(
-    dt: FunctionDataType,
-    config: &ExportConfig,
-) -> Result<String> {
+pub fn export_function_header(dt: FunctionDataType, config: &ExportConfig) -> Result<String> {
     let type_map = TypeMap::default();
     let mut s = String::new();
 
@@ -31,13 +32,13 @@ pub fn export_function_header(
 
     if let Some(ty) = dt.result {
         s.push_str(": ");
-        
+
         if dt.asyncness {
             s.push_str(&format!("Promise<{}>", datatype(config, &ty, &type_map)?));
         } else {
             s.push_str(&datatype(config, &ty, &type_map)?);
         }
     }
-    
+
     Ok(s)
 }

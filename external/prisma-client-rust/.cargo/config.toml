@@ -1,0 +1,4 @@
+[alias]
+run-tests = "test -p integration-tests -- --test-threads 1"
+prisma = "run -p prisma-cli --"
+

@@ -2,8 +2,8 @@ use std::{collections::HashMap, fs, path::PathBuf, sync::Arc};
 
 use specta::ts::{export_named_datatype, Result};
 
-use crate::{proc::GenericProcedure, util::TripleS};
 use super::{func::export_function_header, router::Router, Method};
+use crate::{proc::GenericProcedure, util::TripleS};
 
 pub(crate) const MODULE_STUB: &str = include_str!("./module_stub.ts");
 pub(crate) const CORE: &str = include_str!("./core.ts");

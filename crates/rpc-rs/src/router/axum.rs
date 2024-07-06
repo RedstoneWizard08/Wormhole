@@ -1,13 +1,7 @@
 use std::{future::Future, pin::Pin};
 
 use crate::{module::module::Module, util::TripleS};
-use axum::{
-    body::Body,
-    extract::Request,
-    handler::Handler,
-    response::Response,
-    routing::any,
-};
+use axum::{body::Body, extract::Request, handler::Handler, response::Response, routing::any};
 use http_body_util::BodyExt;
 
 use super::{router::Router, Method};

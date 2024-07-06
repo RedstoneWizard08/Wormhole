@@ -1,6 +1,9 @@
 use std::collections::HashMap;
 
-use specta::{ts::{BigIntExportBehavior, ExportConfig}, TypeMap};
+use specta::{
+    ts::{BigIntExportBehavior, ExportConfig},
+    TypeMap,
+};
 
 use crate::{module::module::Module, util::TripleS};
 
@@ -16,7 +19,7 @@ impl<Cx: TripleS + Clone> Router<Cx> {
     pub(crate) fn export_config() -> ExportConfig {
         ExportConfig::default().bigint(BigIntExportBehavior::BigInt)
     }
-    
+
     pub fn new() -> Self {
         Self {
             modules: HashMap::new(),

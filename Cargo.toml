@@ -4,7 +4,12 @@ edition = "2021"
 license = "MIT"
 repository = "https://github.com/RedstoneWizard08/Wormhole"
 homepage = "https://github.com/RedstoneWizard08/Wormhole"
-authors = ["RedstoneWizard08", "Rexicon226", "cheese3660", "Wormhole Contributors"]
+authors = [
+    "RedstoneWizard08",
+    "Rexicon226",
+    "cheese3660",
+    "Wormhole Contributors",
+]
 
 [workspace.dependencies]
 tokio = { version = "1.37.0", features = ["full"] }
@@ -13,9 +18,19 @@ serde = { version = "1.0.202", features = ["derive"] }
 tauri = { version = "1.6.6", features = ["api-all"] }
 zip-extensions = "0.8.0"
 keyvalues-parser = "0.2.0"
-reqwest = { version = "0.12.4", features = ["json", "stream", "gzip", "rustls-tls"], default-features = false }
+reqwest = { version = "0.12.4", features = [
+    "json",
+    "stream",
+    "gzip",
+    "rustls-tls",
+], default-features = false }
 tokio-util = { version = "0.7.11", features = ["full"] }
-tokio-stream = { version = "0.1.15", features = ["tokio-util", "fs", "net", "sync"] }
+tokio-stream = { version = "0.1.15", features = [
+    "tokio-util",
+    "fs",
+    "net",
+    "sync",
+] }
 tauri-build = "1.5.2"
 clap = { version = "4.5.4", features = ["derive", "env", "string"] }
 rand = "0.8.5"
@@ -29,7 +44,13 @@ phf = { version = "0.11.2", features = ["macros"] }
 flate2 = "1.0.30"
 dirs = "5.0.1"
 tracing = { version = "0.1.40", features = ["log", "async-await"] }
-tracing-subscriber = { version = "0.3.18", features = ["tracing", "env-filter", "json", "chrono", "serde"] }
+tracing-subscriber = { version = "0.3.18", features = [
+    "tracing",
+    "env-filter",
+    "json",
+    "chrono",
+    "serde",
+] }
 cfg-if = "1.0.0"
 tar = "0.4.40"
 xz = "0.1.0"
@@ -38,7 +59,11 @@ base64 = "0.22.1"
 ferinth = "2.11.0"
 furse = "1.5.15"
 tempfile = "3.10.1"
-specta = { version = "2.0.0-rc.13", features = ["function", "typescript", "export"] }
+specta = { version = "2.0.0-rc.13", features = [
+    "function",
+    "typescript",
+    "export",
+] }
 futures = { version = "0.3.30", features = ["executor"] }
 axum = { version = "0.7.5", features = ["macros", "ws"] }
 mime_guess = "2.0.4"
@@ -50,7 +75,9 @@ ctrlc = { version = "3.4.4", features = ["termination"] }
 include_dir = "0.7.4"
 axum-core = "0.4.3"
 bytes = "1.6.0"
-futures-util = { version = "0.3.30", default-features = false, features = ["alloc"] }
+futures-util = { version = "0.3.30", default-features = false, features = [
+    "alloc",
+] }
 hyper = "1.3.1"
 hyper-util = { version = "0.1.5", features = ["tokio"] }
 sha-1 = "0.10.1"
@@ -80,9 +107,26 @@ libc = "0.2.155"
 thiserror = "1.0.61"
 murmur2 = "0.1.0"
 serde_repr = "0.1.19"
-tungstenite = { features = ["rustls"], git = "https://github.com/snapview/tungstenite-rs", version = "0.20.1", rev = "fc17f73" }
-prisma-client-rust = { git = "https://github.com/Brendonovich/prisma-client-rust", rev = "4f9ef9d", features = ["specta", "sqlite"] }
-prisma-client-rust-cli = { git = "https://github.com/Brendonovich/prisma-client-rust", rev = "4f9ef9d", features = ["specta", "sqlite"] }
+tungstenite = { features = [
+    "rustls",
+], git = "https://github.com/snapview/tungstenite-rs", version = "0.20.1", rev = "fc17f73" }
+convert_case = "0.6.0"
+diagnostics = { git = "https://github.com/Brendonovich/prisma-engines", branch = "5.1.0-patched" }
+dmmf = { git = "https://github.com/Brendonovich/prisma-engines", branch = "5.1.0-patched" }
+prisma-models = { git = "https://github.com/Brendonovich/prisma-engines", branch = "5.1.0-patched" }
+psl = { git = "https://github.com/Brendonovich/prisma-engines", branch = "5.1.0-patched" }
+query-core = { git = "https://github.com/Brendonovich/prisma-engines", branch = "5.1.0-patched" }
+schema-core = { git = "https://github.com/Brendonovich/prisma-engines", branch = "5.1.0-patched" }
+request-handlers = { git = "https://github.com/Brendonovich/prisma-engines", branch = "5.1.0-patched" }
+user-facing-errors = { git = "https://github.com/Brendonovich/prisma-engines", branch = "5.1.0-patched" }
+prisma-client-rust = { path = "./external/prisma-client-rust/crates/lib", features = [
+    "specta",
+    "sqlite",
+] }
+prisma-client-rust-cli = { path = "./external/prisma-client-rust/crates/cli", features = [
+    "specta",
+    "sqlite",
+] }
 
 wormhole-cli = { path = "./apps/cli" }
 wormhole-gui = { path = "./apps/gui" }
@@ -135,5 +179,8 @@ members = [
     "crates/commands",
     "crates/plugins",
     "crates/pack",
-    "tools/prisma", "crates/rpc-rs",
+    "tools/prisma",
+    "crates/rpc-rs",
+    "external/prisma-client-rust/crates/lib",
+    "external/prisma-client-rust/crates/cli",
 ]

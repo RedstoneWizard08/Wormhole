@@ -1,0 +1,39 @@
+[package]
+name = "prisma-client-rust-cli"
+version = "0.6.8"
+authors = ["Brendan Allan <brendonovich@outlook.com>"]
+edition = "2021"
+rust-version = "1.62"
+
+[features]
+specta = ["prisma-client-rust-generator/specta"]
+# rspc = ["prisma-client-rust-generator/rspc"]
+migrations = ["prisma-client-rust-generator/migrations"]
+sqlite-create-many = ["prisma-client-rust-generator/sqlite-create-many"]
+# mutation-callbacks = []
+mocking = ["prisma-client-rust-generator/mocking"]
+
+mysql = ["prisma-client-rust-generator/mysql"]
+sqlite = ["prisma-client-rust-generator/sqlite"]
+mssql = ["prisma-client-rust-generator/mssql"]
+postgresql = ["prisma-client-rust-generator/postgresql"]
+mongodb = ["prisma-client-rust-generator/mongodb"]
+
+[dependencies]
+serde_json.workspace = true
+serde.workspace = true
+serde_path_to_error = "0.1.7"
+quote = "1.0.18"
+syn = "1.0.91"
+proc-macro2 = "1.0.39"
+http = "0.2.6"
+directories = "4.0.1"
+flate2 = "1.0.23"
+reqwest = { version = "0.11.10", features = [
+    "blocking",
+    "native-tls-vendored",
+] }
+regex = "1.5.5"
+thiserror = "1.0.37"
+
+prisma-client-rust-generator = { path = "../generator", default-features = false }
