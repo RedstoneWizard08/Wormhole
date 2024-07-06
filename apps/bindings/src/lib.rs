@@ -1,6 +1,6 @@
 use anyhow::Result;
 use clap::Parser;
-// use commands::router::build_router;
+use commands::router::build_router;
 use std::path::PathBuf;
 use whcore::{async_trait::async_trait, traits::Runnable};
 
@@ -15,7 +15,8 @@ pub struct Cli {
 impl Runnable for Cli {
     async fn run(&self) -> Result<()> {
         println!("Exporting app bindings...");
-        // build_router().export_ts(self.path.clone())?;
+        
+        build_router().export("/rpc", self.path.clone())?;
 
         Ok(())
     }

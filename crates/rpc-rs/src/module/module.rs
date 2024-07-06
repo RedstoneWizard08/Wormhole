@@ -8,10 +8,10 @@ use super::builder::ModuleBuilder;
 
 #[derive(Clone)]
 pub struct Module<Cx: TripleS + Clone> {
-    create: Arc<Box<dyn GenericProcedure<Cx> + TripleS>>,
-    read: Arc<Box<dyn GenericProcedure<Cx> + TripleS>>,
-    update: Arc<Box<dyn GenericProcedure<Cx> + TripleS>>,
-    delete: Arc<Box<dyn GenericProcedure<Cx> + TripleS>>,
+    pub(crate) create: Arc<Box<dyn GenericProcedure<Cx> + TripleS>>,
+    pub(crate) read: Arc<Box<dyn GenericProcedure<Cx> + TripleS>>,
+    pub(crate) update: Arc<Box<dyn GenericProcedure<Cx> + TripleS>>,
+    pub(crate) delete: Arc<Box<dyn GenericProcedure<Cx> + TripleS>>,
 }
 
 impl<Cx: TripleS + Clone> Module<Cx> {

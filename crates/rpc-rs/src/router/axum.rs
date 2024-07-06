@@ -17,7 +17,7 @@ impl<Cx: TripleS + Clone> Router<Cx> {
         let mut router = axum::Router::new().with_state(state);
 
         for (name, module) in self.modules {
-            router = router.route(&name, any(module));
+            router = router.route(&format!("/{}", name), any(module));
         }
 
         router

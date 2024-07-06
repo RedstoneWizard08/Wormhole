@@ -38,7 +38,7 @@ base64 = "0.22.1"
 ferinth = "2.11.0"
 furse = "1.5.15"
 tempfile = "3.10.1"
-specta = "2.0.0-rc.13"
+specta = { version = "2.0.0-rc.13", features = ["function", "typescript", "export"] }
 futures = { version = "0.3.30", features = ["executor"] }
 axum = { version = "0.7.5", features = ["macros", "ws"] }
 mime_guess = "2.0.4"

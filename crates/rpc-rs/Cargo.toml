@@ -14,7 +14,6 @@ tauri = ["dep:tauri"]
 
 [dependencies]
 anyhow.workspace = true
-thiserror.workspace = true
 specta.workspace = true
 tokio.workspace = true
 async-trait.workspace = true

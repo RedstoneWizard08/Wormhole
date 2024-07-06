@@ -1,24 +1,22 @@
 import { event } from "@tauri-apps/api";
 
-export type Method = "Create" | "Read" | "Update" | "Delete";
+type Method = "Create" | "Read" | "Update" | "Delete";
 
-export interface TauriInput<T> {
+interface TauriInput<T> {
     command: string;
     method: Method;
     data: T;
     id: string;
 }
 
-export interface TauriOutput<T> {
+interface TauriOutput<T> {
     command: string;
     method: Method;
     result: T;
     id: string;
 }
 
-export type Result<T, E> = T | E;
-
-export const mapMethod = (method: Method) => {
+const mapMethod = (method: Method) => {
     switch (method) {
         case "Create":
             return "PUT";
@@ -32,7 +30,7 @@ export const mapMethod = (method: Method) => {
 };
 
 // Huge thanks to @darkylmnx: https://gist.github.com/tjmehta/9204891?permalink_comment_id=3527084#gistcomment-3527084
-export const serializeQuery = (initialObj: any) => {
+const serializeQuery = (initialObj: any) => {
     const reducer =
         (obj: any, parentPrefix: string | null = null) =>
         (prev: string[], key: string) => {
@@ -57,7 +55,7 @@ export const serializeQuery = (initialObj: any) => {
     return Object.keys(initialObj).reduce(reducer(initialObj), []).join("&");
 };
 
-export const responseQueue: Record<string, (data: unknown) => void> = {};
+const responseQueue: Record<string, (data: unknown) => void> = {};
 
 export const setupTauri = () => {
     event.listen<TauriOutput<unknown>>("plugin:rpc-rs:transport:resp", ({ payload: data }) => {
@@ -65,23 +63,23 @@ export const setupTauri = () => {
     });
 };
 
-export const request = async <T, O>(
+const __rpc_call = async <T, O>(
     routePrefix: string,
     method: Method,
     command: string,
     data: T
-): Promise<Result<O, string>> => {
+): Promise<O> => {
     if (!("__TAURI__" in window)) {
         if (method === "Read") {
-            return (await fetch(`${routePrefix}/${command}?${serializeQuery(data)}`, {
+            return await fetch(`${routePrefix}/${command}?${serializeQuery(data)}`, {
                 method: "GET",
-            }).then((v) => v.json())) as Result<O, string>;
+            }).then((v) => v.json());
         }
 
-        return (await fetch(`${routePrefix}/${command}`, {
+        return await fetch(`${routePrefix}/${command}`, {
             method: mapMethod(method),
             body: JSON.stringify(data),
-        }).then((v) => v.json())) as Result<O, string>;
+        }).then((v) => v.json());
     }
 
     const id = crypto.randomUUID();
@@ -93,8 +91,7 @@ export const request = async <T, O>(
         data,
     };
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const promise = new Promise<Result<O, string>>((res, _rej) => {
+    const promise = new Promise<O>((res, _rej) => {
         responseQueue[input.id] = res as (data: unknown) => void;
     });
 

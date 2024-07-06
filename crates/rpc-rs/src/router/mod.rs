@@ -1,6 +1,8 @@
 use serde::{Deserialize, Serialize};
 
 pub mod router;
+pub mod func;
+pub mod export;
 
 #[cfg(feature = "axum")]
 pub mod axum;
@@ -15,4 +17,16 @@ pub enum Method {
     Update,
     Delete,
     Error,
+}
+
+impl Method {
+    pub fn as_str(&self) -> &'static str {
+        match self {
+            Self::Create => "Create",
+            Self::Read => "Read",
+            Self::Update => "Update",
+            Self::Delete => "Delete",
+            Self::Error => "Error",
+        }
+    }
 }
