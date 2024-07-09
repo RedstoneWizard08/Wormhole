@@ -4,6 +4,7 @@ use commands::router::build_router;
 use std::path::PathBuf;
 use whcore::{async_trait::async_trait, traits::Runnable};
 
+/// TypeScript bindgen CLI tool.
 #[derive(Debug, Clone, Parser)]
 #[command(author, version, about, long_about = None)]
 pub struct Cli {

@@ -101,77 +101,57 @@ const __rpc_call = async <T, O>(
 };
 
 
-export async function __rpc_call_source_Read(data: number): Promise<Source | null> {
-return await __rpc_call("/rpc", "Read", "source", data);
+export async function __rpc_call_mod_Create(data: ModCreation): Promise<bigint | string> {
+return await __rpc_call("/rpc", "Create", "mod", data);
 }
 
-export async function __rpc_call_source_Update(data: SourceUpdate): Promise<Source | string> {
-return await __rpc_call("/rpc", "Update", "source", data);
+export async function __rpc_call_mod_Update(data: ModUpdate): Promise<Mod | string> {
+return await __rpc_call("/rpc", "Update", "mod", data);
 }
 
-export async function __rpc_call_source_Create(data: SourceCreation): Promise<bigint | string> {
-return await __rpc_call("/rpc", "Create", "source", data);
+export async function __rpc_call_mod_Delete(data: number): Promise<Mod | string> {
+return await __rpc_call("/rpc", "Delete", "mod", data);
 }
 
-export async function __rpc_call_source_Delete(data: number): Promise<Source | string> {
-return await __rpc_call("/rpc", "Delete", "source", data);
+export async function __rpc_call_mod_Read(data: number): Promise<Mod | null> {
+return await __rpc_call("/rpc", "Read", "mod", data);
 }
 
-const __rpc_module_source = {
-    create: __rpc_call_source_Create,
-    read: __rpc_call_source_Read,
-    update: __rpc_call_source_Update,
-    delete: __rpc_call_source_Delete,
+const __rpc_module_mod = {
+    create: __rpc_call_mod_Create,
+    read: __rpc_call_mod_Read,
+    update: __rpc_call_mod_Update,
+    delete: __rpc_call_mod_Delete,
 };
 
 
-export async function __rpc_call_version_Update(data: null): Promise<string> {
-return await __rpc_call("/rpc", "Update", "version", data);
+export async function __rpc_call_mods_Create(data: ModCreation[]): Promise<bigint | string> {
+return await __rpc_call("/rpc", "Create", "mods", data);
 }
 
-export async function __rpc_call_version_Create(data: null): Promise<string> {
-return await __rpc_call("/rpc", "Create", "version", data);
+export async function __rpc_call_mods_Delete(data: number[]): Promise<bigint | string> {
+return await __rpc_call("/rpc", "Delete", "mods", data);
 }
 
-export async function __rpc_call_version_Read(data: null): Promise<string> {
-return await __rpc_call("/rpc", "Read", "version", data);
+export async function __rpc_call_mods_Read(data: null): Promise<Mod[]> {
+return await __rpc_call("/rpc", "Read", "mods", data);
 }
 
-export async function __rpc_call_version_Delete(data: null): Promise<string> {
-return await __rpc_call("/rpc", "Delete", "version", data);
+export async function __rpc_call_mods_Update(data: null): Promise<string> {
+return await __rpc_call("/rpc", "Update", "mods", data);
 }
 
-const __rpc_module_version = {
-    create: __rpc_call_version_Create,
-    read: __rpc_call_version_Read,
-    update: __rpc_call_version_Update,
-    delete: __rpc_call_version_Delete,
+const __rpc_module_mods = {
+    create: __rpc_call_mods_Create,
+    read: __rpc_call_mods_Read,
+    update: __rpc_call_mods_Update,
+    delete: __rpc_call_mods_Delete,
 };
 
 
-export async function __rpc_call_instance_Read(data: number): Promise<Instance | null> {
-return await __rpc_call("/rpc", "Read", "instance", data);
+export async function __rpc_call_sources_Read(data: null): Promise<Source[]> {
+return await __rpc_call("/rpc", "Read", "sources", data);
 }
-
-export async function __rpc_call_instance_Update(data: InstanceUpdate): Promise<Instance | string> {
-return await __rpc_call("/rpc", "Update", "instance", data);
-}
-
-export async function __rpc_call_instance_Create(data: InstanceCreation): Promise<bigint | string> {
-return await __rpc_call("/rpc", "Create", "instance", data);
-}
-
-export async function __rpc_call_instance_Delete(data: number): Promise<Instance | string> {
-return await __rpc_call("/rpc", "Delete", "instance", data);
-}
-
-const __rpc_module_instance = {
-    create: __rpc_call_instance_Create,
-    read: __rpc_call_instance_Read,
-    update: __rpc_call_instance_Update,
-    delete: __rpc_call_instance_Delete,
-};
-
 
 export async function __rpc_call_sources_Delete(data: number[]): Promise<bigint | string> {
 return await __rpc_call("/rpc", "Delete", "sources", data);
@@ -179,10 +159,6 @@ return await __rpc_call("/rpc", "Delete", "sources", data);
 
 export async function __rpc_call_sources_Create(data: SourceCreation[]): Promise<bigint | string> {
 return await __rpc_call("/rpc", "Create", "sources", data);
-}
-
-export async function __rpc_call_sources_Read(data: null): Promise<Source[]> {
-return await __rpc_call("/rpc", "Read", "sources", data);
 }
 
 export async function __rpc_call_sources_Update(data: null): Promise<string> {
@@ -197,27 +173,51 @@ const __rpc_module_sources = {
 };
 
 
-export async function __rpc_call_game_Delete(data: number): Promise<Game | string> {
-return await __rpc_call("/rpc", "Delete", "game", data);
+export async function __rpc_call_version_Read(data: null): Promise<string> {
+return await __rpc_call("/rpc", "Read", "version", data);
 }
 
-export async function __rpc_call_game_Read(data: number): Promise<Game | null> {
-return await __rpc_call("/rpc", "Read", "game", data);
+export async function __rpc_call_version_Delete(data: null): Promise<string> {
+return await __rpc_call("/rpc", "Delete", "version", data);
 }
 
-export async function __rpc_call_game_Update(data: GameUpdate): Promise<Game | string> {
-return await __rpc_call("/rpc", "Update", "game", data);
+export async function __rpc_call_version_Update(data: null): Promise<string> {
+return await __rpc_call("/rpc", "Update", "version", data);
 }
 
-export async function __rpc_call_game_Create(data: GameCreation): Promise<bigint | string> {
-return await __rpc_call("/rpc", "Create", "game", data);
+export async function __rpc_call_version_Create(data: null): Promise<string> {
+return await __rpc_call("/rpc", "Create", "version", data);
 }
 
-const __rpc_module_game = {
-    create: __rpc_call_game_Create,
-    read: __rpc_call_game_Read,
-    update: __rpc_call_game_Update,
-    delete: __rpc_call_game_Delete,
+const __rpc_module_version = {
+    create: __rpc_call_version_Create,
+    read: __rpc_call_version_Read,
+    update: __rpc_call_version_Update,
+    delete: __rpc_call_version_Delete,
+};
+
+
+export async function __rpc_call_instance_Update(data: InstanceUpdate): Promise<Instance | string> {
+return await __rpc_call("/rpc", "Update", "instance", data);
+}
+
+export async function __rpc_call_instance_Delete(data: number): Promise<Instance | string> {
+return await __rpc_call("/rpc", "Delete", "instance", data);
+}
+
+export async function __rpc_call_instance_Create(data: InstanceCreation): Promise<bigint | string> {
+return await __rpc_call("/rpc", "Create", "instance", data);
+}
+
+export async function __rpc_call_instance_Read(data: number): Promise<Instance | null> {
+return await __rpc_call("/rpc", "Read", "instance", data);
+}
+
+const __rpc_module_instance = {
+    create: __rpc_call_instance_Create,
+    read: __rpc_call_instance_Read,
+    update: __rpc_call_instance_Update,
+    delete: __rpc_call_instance_Delete,
 };
 
 
@@ -225,16 +225,16 @@ export async function __rpc_call_instances_Read(data: null): Promise<Instance[]>
 return await __rpc_call("/rpc", "Read", "instances", data);
 }
 
-export async function __rpc_call_instances_Delete(data: number[]): Promise<bigint | string> {
-return await __rpc_call("/rpc", "Delete", "instances", data);
+export async function __rpc_call_instances_Create(data: InstanceCreation[]): Promise<bigint | string> {
+return await __rpc_call("/rpc", "Create", "instances", data);
 }
 
 export async function __rpc_call_instances_Update(data: null): Promise<string> {
 return await __rpc_call("/rpc", "Update", "instances", data);
 }
 
-export async function __rpc_call_instances_Create(data: InstanceCreation[]): Promise<bigint | string> {
-return await __rpc_call("/rpc", "Create", "instances", data);
+export async function __rpc_call_instances_Delete(data: number[]): Promise<bigint | string> {
+return await __rpc_call("/rpc", "Delete", "instances", data);
 }
 
 const __rpc_module_instances = {
@@ -242,54 +242,6 @@ const __rpc_module_instances = {
     read: __rpc_call_instances_Read,
     update: __rpc_call_instances_Update,
     delete: __rpc_call_instances_Delete,
-};
-
-
-export async function __rpc_call_mods_Create(data: ModCreation[]): Promise<bigint | string> {
-return await __rpc_call("/rpc", "Create", "mods", data);
-}
-
-export async function __rpc_call_mods_Read(data: null): Promise<Mod[]> {
-return await __rpc_call("/rpc", "Read", "mods", data);
-}
-
-export async function __rpc_call_mods_Update(data: null): Promise<string> {
-return await __rpc_call("/rpc", "Update", "mods", data);
-}
-
-export async function __rpc_call_mods_Delete(data: number[]): Promise<bigint | string> {
-return await __rpc_call("/rpc", "Delete", "mods", data);
-}
-
-const __rpc_module_mods = {
-    create: __rpc_call_mods_Create,
-    read: __rpc_call_mods_Read,
-    update: __rpc_call_mods_Update,
-    delete: __rpc_call_mods_Delete,
-};
-
-
-export async function __rpc_call_mod_Update(data: ModUpdate): Promise<Mod | string> {
-return await __rpc_call("/rpc", "Update", "mod", data);
-}
-
-export async function __rpc_call_mod_Delete(data: number): Promise<Mod | string> {
-return await __rpc_call("/rpc", "Delete", "mod", data);
-}
-
-export async function __rpc_call_mod_Read(data: number): Promise<Mod | null> {
-return await __rpc_call("/rpc", "Read", "mod", data);
-}
-
-export async function __rpc_call_mod_Create(data: ModCreation): Promise<bigint | string> {
-return await __rpc_call("/rpc", "Create", "mod", data);
-}
-
-const __rpc_module_mod = {
-    create: __rpc_call_mod_Create,
-    read: __rpc_call_mod_Read,
-    update: __rpc_call_mod_Update,
-    delete: __rpc_call_mod_Delete,
 };
 
 
@@ -314,6 +266,54 @@ const __rpc_module_games = {
     read: __rpc_call_games_Read,
     update: __rpc_call_games_Update,
     delete: __rpc_call_games_Delete,
+};
+
+
+export async function __rpc_call_game_Update(data: GameUpdate): Promise<Game | string> {
+return await __rpc_call("/rpc", "Update", "game", data);
+}
+
+export async function __rpc_call_game_Read(data: number): Promise<Game | null> {
+return await __rpc_call("/rpc", "Read", "game", data);
+}
+
+export async function __rpc_call_game_Delete(data: number): Promise<Game | string> {
+return await __rpc_call("/rpc", "Delete", "game", data);
+}
+
+export async function __rpc_call_game_Create(data: GameCreation): Promise<bigint | string> {
+return await __rpc_call("/rpc", "Create", "game", data);
+}
+
+const __rpc_module_game = {
+    create: __rpc_call_game_Create,
+    read: __rpc_call_game_Read,
+    update: __rpc_call_game_Update,
+    delete: __rpc_call_game_Delete,
+};
+
+
+export async function __rpc_call_source_Delete(data: number): Promise<Source | string> {
+return await __rpc_call("/rpc", "Delete", "source", data);
+}
+
+export async function __rpc_call_source_Create(data: SourceCreation): Promise<bigint | string> {
+return await __rpc_call("/rpc", "Create", "source", data);
+}
+
+export async function __rpc_call_source_Update(data: SourceUpdate): Promise<Source | string> {
+return await __rpc_call("/rpc", "Update", "source", data);
+}
+
+export async function __rpc_call_source_Read(data: number): Promise<Source | null> {
+return await __rpc_call("/rpc", "Read", "source", data);
+}
+
+const __rpc_module_source = {
+    create: __rpc_call_source_Create,
+    read: __rpc_call_source_Read,
+    update: __rpc_call_source_Update,
+    delete: __rpc_call_source_Delete,
 };
 
 
@@ -342,15 +342,15 @@ export type SourceCreation = { name: string }
 export type SourceUpdate = { id: number; name?: string | null }
 
 export const RPC = {
-source: __rpc_module_source,
+mod: __rpc_module_mod,
+mods: __rpc_module_mods,
+sources: __rpc_module_sources,
 version: __rpc_module_version,
 instance: __rpc_module_instance,
-sources: __rpc_module_sources,
-game: __rpc_module_game,
 instances: __rpc_module_instances,
-mods: __rpc_module_mods,
-mod: __rpc_module_mod,
 games: __rpc_module_games,
+game: __rpc_module_game,
+source: __rpc_module_source,
 };
 
 export default RPC;

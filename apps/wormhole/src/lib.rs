@@ -19,10 +19,16 @@ impl Runnable for Cli {
 
 #[derive(Debug, Clone, Subcommand, Default)]
 pub enum Commands {
+    /// TypeScript bindgen CLI tool.
     Bindgen(bindings::Cli),
+    
+    /// Web UI management CLI.
     Server(webui::cli::Cli),
+
+    /// Wormhole CLI.
     Cli(wormhole_cli::cli::Cli),
     
+    /// Wormhole GUI app.
     #[default]
     Gui,
 }

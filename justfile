@@ -68,4 +68,7 @@ udeps:
     {{ cargo }} udeps
 
 run *args: bin
-    {{ wormhole }} {{args}}
+    {{ wormhole }} {{ args }}
+
+run-nob *args:
+    {{ wormhole }} {{ args }}

@@ -4,6 +4,7 @@ use anyhow::Result;
 use clap::{CommandFactory, Parser, Subcommand};
 use whcore::{async_trait::async_trait, traits::Runnable};
 
+/// Wormhole's CLI.
 #[derive(Parser, Debug, Clone)]
 #[command(author, version, about, long_about = None)]
 pub struct Cli {
