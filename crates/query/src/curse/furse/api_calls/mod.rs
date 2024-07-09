@@ -11,10 +11,3 @@ pub(crate) struct Response<T> {
     data: T,
     pagination: Option<Pagination>,
 }
-
-#[derive(Deserialize, Serialize, Debug, Clone)]
-#[serde(rename_all = "camelCase")]
-pub(crate) struct PaginatedResponse<T> {
-    data: T,
-    pagination: Pagination,
-}

@@ -10,7 +10,6 @@ authors.workspace = true
 [dependencies]
 anyhow = { workspace = true, features = ["axum"] }
 axum.workspace = true
-wormhole-gui.workspace = true
 serde.workspace = true
 serde_json.workspace = true
 tokio.workspace = true

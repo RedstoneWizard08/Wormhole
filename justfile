@@ -14,10 +14,10 @@ cargo := "cargo"
 set windows-shell := ["powershell.exe", "-c"]
 
 bin:
-    cargo build --bin wormhole
+    {{ cargo }} build --bin wormhole
 
 bin_release:
-    cargo build --bin wormhole --release
+    {{ cargo }} build --bin wormhole --release
 
 web_dev: bin
     {{ wormhole }} server
@@ -63,3 +63,9 @@ sync:
 
 bindgen: bin
     {{ wormhole }} bindgen
+
+udeps:
+    {{ cargo }} udeps
+
+run *args: bin
+    {{ wormhole }} {{args}}

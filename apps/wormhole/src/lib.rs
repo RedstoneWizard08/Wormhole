@@ -7,21 +7,24 @@ use whcore::{async_trait::async_trait, traits::Runnable};
 #[command(propagate_version = true)]
 pub struct Cli {
     #[command(subcommand)]
-    pub command: Commands,
+    pub command: Option<Commands>,
 }
 
 #[async_trait]
 impl Runnable for Cli {
     async fn run(&self) -> Result<()> {
-        self.command.run().await
+        self.command.clone().unwrap_or_default().run().await
     }
 }
 
-#[derive(Debug, Clone, Subcommand)]
+#[derive(Debug, Clone, Subcommand, Default)]
 pub enum Commands {
     Bindgen(bindings::Cli),
     Server(webui::cli::Cli),
     Cli(wormhole_cli::cli::Cli),
+    
+    #[default]
+    Gui,
 }
 
 #[async_trait]
@@ -31,6 +34,7 @@ impl Runnable for Commands {
             Self::Bindgen(b) => b.run().await?,
             Self::Server(s) => s.run().await?,
             Self::Cli(c) => c.run().await?,
+            Self::Gui => wormhole_gui::run().await?,
         };
 
         Ok(())

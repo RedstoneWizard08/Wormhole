@@ -13,7 +13,6 @@ axum = ["dep:axum", "dep:http-body-util"]
 tauri = ["dep:tauri"]
 
 [dependencies]
-anyhow.workspace = true
 specta.workspace = true
 tokio.workspace = true
 async-trait.workspace = true

@@ -19,5 +19,4 @@ msa.workspace = true
 tokio.workspace = true
 async-trait.workspace = true
 tracing.workspace = true
-tauri.workspace = true
 const_format.workspace = true
