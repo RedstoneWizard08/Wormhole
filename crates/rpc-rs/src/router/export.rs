@@ -14,6 +14,7 @@ impl<Cx: TripleS + Clone> Router<Cx> {
         script: &mut Vec<String>,
         route_prefix: &String,
         func_name: &String,
+        module_name: &String,
         method: Method,
         func: Arc<Box<dyn GenericProcedure<Cx> + TripleS>>,
     ) -> Result<()> {
@@ -26,7 +27,7 @@ impl<Cx: TripleS + Clone> Router<Cx> {
             data,
             route_prefix,
             method.as_str(),
-            func_name,
+            module_name,
             arg
         );
 
@@ -55,7 +56,7 @@ impl<Cx: TripleS + Clone> Router<Cx> {
             for (method, func) in funcs {
                 let new_name = format!("__rpc_call_{}_{}", &name, method.as_str());
 
-                self.export_func(&mut code, &route_prefix, &new_name, method, func)?;
+                self.export_func(&mut code, &route_prefix, &new_name, &name, method, func)?;
             }
 
             let group = MODULE_STUB.replace("$name$", &name);

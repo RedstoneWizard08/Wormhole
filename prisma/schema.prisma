@@ -14,7 +14,7 @@ model Game {
   id Int @id @default(autoincrement())
 
   /// The displayed name for the game
-  name String
+  name String @unique
 
   /// The game's ID on CurseForge
   curseforge Int?

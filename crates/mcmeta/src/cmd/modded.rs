@@ -307,6 +307,7 @@ impl GetLoader for instance::Create {
     async fn loader(&self) -> Result<ModLoader> {
         let gid = match self.game {
             UniqueWhereParam::IdEquals(id) => id,
+            _ => todo!("This might not even work."),
         };
 
         if gid == 432 {

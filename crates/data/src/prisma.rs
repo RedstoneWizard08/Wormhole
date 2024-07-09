@@ -269,22 +269,66 @@ pub mod _prisma {
     pub mod read_filters {
         use super::*;
         #[derive(Debug, Clone)]
-        pub enum BooleanFilter {
-            Equals(Boolean),
-            Not(Boolean),
+        pub enum DateTimeFilter {
+            Equals(DateTime),
+            InVec(Vec<DateTime>),
+            NotInVec(Vec<DateTime>),
+            Lt(DateTime),
+            Lte(DateTime),
+            Gt(DateTime),
+            Gte(DateTime),
+            Not(DateTime),
         }
-        impl Into<::prisma_client_rust::SerializedWhereValue> for BooleanFilter {
+        impl Into<::prisma_client_rust::SerializedWhereValue> for DateTimeFilter {
             fn into(self) -> ::prisma_client_rust::SerializedWhereValue {
                 match self {
                     Self::Equals(value) => {
                         ::prisma_client_rust::SerializedWhereValue::Object(vec![(
                             "equals".to_string(),
-                            ::prisma_client_rust::PrismaValue::Boolean(value),
+                            ::prisma_client_rust::PrismaValue::DateTime(value),
                         )])
                     }
+                    Self::InVec(value) => {
+                        ::prisma_client_rust::SerializedWhereValue::Object(vec![(
+                            "in".to_string(),
+                            ::prisma_client_rust::PrismaValue::List(
+                                value
+                                    .into_iter()
+                                    .map(|value| ::prisma_client_rust::PrismaValue::DateTime(value))
+                                    .collect(),
+                            ),
+                        )])
+                    }
+                    Self::NotInVec(value) => {
+                        ::prisma_client_rust::SerializedWhereValue::Object(vec![(
+                            "notIn".to_string(),
+                            ::prisma_client_rust::PrismaValue::List(
+                                value
+                                    .into_iter()
+                                    .map(|value| ::prisma_client_rust::PrismaValue::DateTime(value))
+                                    .collect(),
+                            ),
+                        )])
+                    }
+                    Self::Lt(value) => ::prisma_client_rust::SerializedWhereValue::Object(vec![(
+                        "lt".to_string(),
+                        ::prisma_client_rust::PrismaValue::DateTime(value),
+                    )]),
+                    Self::Lte(value) => ::prisma_client_rust::SerializedWhereValue::Object(vec![(
+                        "lte".to_string(),
+                        ::prisma_client_rust::PrismaValue::DateTime(value),
+                    )]),
+                    Self::Gt(value) => ::prisma_client_rust::SerializedWhereValue::Object(vec![(
+                        "gt".to_string(),
+                        ::prisma_client_rust::PrismaValue::DateTime(value),
+                    )]),
+                    Self::Gte(value) => ::prisma_client_rust::SerializedWhereValue::Object(vec![(
+                        "gte".to_string(),
+                        ::prisma_client_rust::PrismaValue::DateTime(value),
+                    )]),
                     Self::Not(value) => ::prisma_client_rust::SerializedWhereValue::Object(vec![(
                         "not".to_string(),
-                        ::prisma_client_rust::PrismaValue::Boolean(value),
+                        ::prisma_client_rust::PrismaValue::DateTime(value),
                     )]),
                 }
             }
@@ -600,66 +644,22 @@ pub mod _prisma {
             }
         }
         #[derive(Debug, Clone)]
-        pub enum DateTimeFilter {
-            Equals(DateTime),
-            InVec(Vec<DateTime>),
-            NotInVec(Vec<DateTime>),
-            Lt(DateTime),
-            Lte(DateTime),
-            Gt(DateTime),
-            Gte(DateTime),
-            Not(DateTime),
+        pub enum BooleanFilter {
+            Equals(Boolean),
+            Not(Boolean),
         }
-        impl Into<::prisma_client_rust::SerializedWhereValue> for DateTimeFilter {
+        impl Into<::prisma_client_rust::SerializedWhereValue> for BooleanFilter {
             fn into(self) -> ::prisma_client_rust::SerializedWhereValue {
                 match self {
                     Self::Equals(value) => {
                         ::prisma_client_rust::SerializedWhereValue::Object(vec![(
                             "equals".to_string(),
-                            ::prisma_client_rust::PrismaValue::DateTime(value),
+                            ::prisma_client_rust::PrismaValue::Boolean(value),
                         )])
                     }
-                    Self::InVec(value) => {
-                        ::prisma_client_rust::SerializedWhereValue::Object(vec![(
-                            "in".to_string(),
-                            ::prisma_client_rust::PrismaValue::List(
-                                value
-                                    .into_iter()
-                                    .map(|value| ::prisma_client_rust::PrismaValue::DateTime(value))
-                                    .collect(),
-                            ),
-                        )])
-                    }
-                    Self::NotInVec(value) => {
-                        ::prisma_client_rust::SerializedWhereValue::Object(vec![(
-                            "notIn".to_string(),
-                            ::prisma_client_rust::PrismaValue::List(
-                                value
-                                    .into_iter()
-                                    .map(|value| ::prisma_client_rust::PrismaValue::DateTime(value))
-                                    .collect(),
-                            ),
-                        )])
-                    }
-                    Self::Lt(value) => ::prisma_client_rust::SerializedWhereValue::Object(vec![(
-                        "lt".to_string(),
-                        ::prisma_client_rust::PrismaValue::DateTime(value),
-                    )]),
-                    Self::Lte(value) => ::prisma_client_rust::SerializedWhereValue::Object(vec![(
-                        "lte".to_string(),
-                        ::prisma_client_rust::PrismaValue::DateTime(value),
-                    )]),
-                    Self::Gt(value) => ::prisma_client_rust::SerializedWhereValue::Object(vec![(
-                        "gt".to_string(),
-                        ::prisma_client_rust::PrismaValue::DateTime(value),
-                    )]),
-                    Self::Gte(value) => ::prisma_client_rust::SerializedWhereValue::Object(vec![(
-                        "gte".to_string(),
-                        ::prisma_client_rust::PrismaValue::DateTime(value),
-                    )]),
                     Self::Not(value) => ::prisma_client_rust::SerializedWhereValue::Object(vec![(
                         "not".to_string(),
-                        ::prisma_client_rust::PrismaValue::DateTime(value),
+                        ::prisma_client_rust::PrismaValue::Boolean(value),
                     )]),
                 }
             }
@@ -929,11 +929,18 @@ pub mod game {
     }
     #[derive(Debug, Clone)]
     pub enum UniqueWhereParam {
+        NameEquals(String),
         IdEquals(Int),
     }
     impl ::prisma_client_rust::WhereInput for UniqueWhereParam {
         fn serialize(self) -> ::prisma_client_rust::SerializedWhereInput {
             let (name, value) = match self {
+                UniqueWhereParam::NameEquals(value) => (
+                    "name",
+                    ::prisma_client_rust::SerializedWhereValue::Value(
+                        ::prisma_client_rust::PrismaValue::String(value),
+                    ),
+                ),
                 UniqueWhereParam::IdEquals(value) => (
                     "id",
                     ::prisma_client_rust::SerializedWhereValue::Value(
@@ -2112,6 +2119,11 @@ pub mod game {
         pub struct Equals(pub String);
         pub fn equals<T: From<Equals>>(value: String) -> T {
             Equals(value).into()
+        }
+        impl From<Equals> for UniqueWhereParam {
+            fn from(Equals(v): Equals) -> Self {
+                UniqueWhereParam::NameEquals(v)
+            }
         }
         impl From<Equals> for WhereParam {
             fn from(Equals(v): Equals) -> Self {
