@@ -148,7 +148,7 @@ webui = { path = "./apps/webui" }
 bindings = { path = "./apps/bindings" }
 commands = { path = "./crates/commands" }
 plugins = { path = "./crates/plugins" }
-rpc-rs = { path = "./crates/rpc-rs", features = ["axum", "tauri"] }
+rpc-rs = { path = "./crates/rpc-rs", features = ["axum", "tauri", "prisma"] }
 
 [workspace]
 resolver = "2"

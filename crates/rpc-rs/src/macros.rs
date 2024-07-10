@@ -8,6 +8,7 @@
 /// - `module` - The path to the module inside the generated `prisma` mod.
 /// - `container` - The module's name. If you use `client.xxx.create(...)`, the container would be `xxx`.
 /// - `primary_key` - The name of the model's primary key.
+#[cfg(feature = "prisma")]
 #[macro_export]
 macro_rules! prisma_single_module {
     {
@@ -64,6 +65,7 @@ macro_rules! prisma_single_module {
 /// - `module` - The path to the module inside the generated `prisma` mod.
 /// - `container` - The module's name. If you use `client.xxx.create(...)`, the container would be `xxx`.
 /// - `primary_key` - The name of the model's primary key.
+#[cfg(feature = "prisma")]
 #[macro_export]
 macro_rules! prisma_multi_module {
     {
@@ -111,6 +113,7 @@ macro_rules! prisma_multi_module {
 /// - `module` - The path to the module inside the generated `prisma` mod.
 /// - `container` - The module's name. If you use `client.xxx.create(...)`, the container would be `xxx`.
 /// - `primary_key` - The name of the model's primary key.
+#[cfg(feature = "prisma")]
 #[macro_export]
 macro_rules! prisma_module {
     ($router: ident += [$single: expr, $multi: expr] {

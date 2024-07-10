@@ -11,6 +11,7 @@ authors.workspace = true
 default = []
 axum = ["dep:axum", "dep:http-body-util"]
 tauri = ["dep:tauri"]
+prisma = []
 
 [dependencies]
 specta.workspace = true
