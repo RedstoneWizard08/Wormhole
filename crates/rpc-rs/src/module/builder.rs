@@ -1,3 +1,5 @@
+//! The [`ModuleBuilder`] module.
+
 use crate::{proc::GenericProcedure, util::TripleS};
 
 use super::module::Module;

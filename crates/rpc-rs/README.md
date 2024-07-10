@@ -1,6 +1,6 @@
 # rpc-rs
 
-A blazingly fast, lightweight, idiomatic, and type-safe RPC/IPC framework for
+A blazingly fast, lightweight, and type-safe RPC/IPC framework for
 Rust and Web/Tauri-based applications, based on `specta`.
 
 ## Introduction

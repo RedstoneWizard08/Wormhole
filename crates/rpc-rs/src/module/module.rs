@@ -1,3 +1,5 @@
+//! The [`Module`] module. module.
+
 use std::sync::Arc;
 
 use serde_json::Error;

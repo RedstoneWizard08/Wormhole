@@ -1,3 +1,5 @@
+//! The modules module. module. module.
+
 pub mod builder;
 pub mod module;
 

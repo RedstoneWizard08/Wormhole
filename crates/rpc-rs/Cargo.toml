@@ -7,6 +7,11 @@ repository.workspace = true
 homepage.workspace = true
 authors.workspace = true
 
+description = """
+A blazingly fast, lightweight, and type-safe RPC/IPC framework for
+Rust and Web/Tauri-based applications, based on `specta`.
+"""
+
 [features]
 default = []
 axum = ["dep:axum", "dep:http-body-util"]
