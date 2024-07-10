@@ -1,5 +1,5 @@
 //! # rpc-rs
-//! 
+//!
 //! A simple IPC/RPC framework for Rust and TypeScript,
 //! built for Tauri and web apps.
 
@@ -12,5 +12,5 @@ pub mod proc;
 pub mod router;
 pub mod util;
 
-pub use router::{Router, Method};
 pub use module::{Module, ModuleBuilder};
+pub use router::{Method, Router};

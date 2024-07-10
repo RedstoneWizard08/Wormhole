@@ -15,7 +15,7 @@ use crate::{module::module::Module, util::TripleS};
 pub struct Router<Cx: TripleS + Clone> {
     /// A map of IDs to modules.
     pub(crate) modules: HashMap<String, Module<Cx>>,
-    
+
     /// The [`TypeMap`] for this router.
     pub(crate) type_map: TypeMap,
 
