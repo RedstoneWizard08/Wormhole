@@ -120,10 +120,6 @@ prisma-client-rust = { path = "./external/prisma-client-rust/crates/lib", featur
     "specta",
     "sqlite",
 ] }
-prisma-client-rust-cli = { path = "./external/prisma-client-rust/crates/cli", features = [
-    "specta",
-    "sqlite",
-] }
 
 wormhole-cli = { path = "./apps/cli" }
 wormhole-gui = { path = "./apps/gui" }
