@@ -5,10 +5,10 @@ Rust and Web/Tauri-based applications, based on `specta`.
 
 ## Introduction
 
-`rpc-rs` is an idiomatic and type-safe Rust framework for building JSON RPCs and IPCs
-for use with Web technologies, such as JavaScript and TypeScript. It follows the basic
-CRUD (Create, Read, Update, Delete) pattern, and its syntax allows developers to easily
-create complex applications with relatively simple code.
+`rpc-rs` is a type-safe Rust framework for building JSON RPCs and IPCs for use with Web
+technologies, such as JavaScript and TypeScript. It follows the basic CRUD (Create, Read,
+Update, Delete) pattern, and its syntax allows developers to easily create complex protocols
+with relatively simple code.
 
 ## Examples
 
