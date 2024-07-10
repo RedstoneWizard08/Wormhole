@@ -4,7 +4,7 @@ version = "0.0.0"
 edition = "2021"
 
 [features]
-default = ["sqlite"]
+default = ["sqlite", "specta"]
 sqlite = ["prisma-client-rust-cli/sqlite", "prisma-client-rust-cli/sqlite-create-many"]
 mongodb = ["prisma-client-rust-cli/mongodb"]
 postgresql = ["prisma-client-rust-cli/postgresql"]
