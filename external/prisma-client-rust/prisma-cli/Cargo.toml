@@ -11,6 +11,10 @@ mssql = ["prisma-client-rust-cli/mssql"]
 specta = ["prisma-client-rust-cli/specta"]
 mocking = ["prisma-client-rust-cli/mocking"]
 
+[[bin]]
+name = "prisma-cli"
+path = "src/bin/prisma.rs"
+
 [dependencies]
 prisma-client-rust-cli = { features = [
   "migrations",
