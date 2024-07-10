@@ -18,6 +18,6 @@ path = "src/bin/prisma.rs"
 
 [dependencies]
 prisma-client-rust-cli = { features = [
-  "migrations",
+#  "migrations",
   # "mutation-callbacks",
 ], default-features = false, path = "../crates/cli" }
