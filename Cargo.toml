@@ -176,7 +176,6 @@ members = [
     "crates/commands",
     "crates/plugins",
     "crates/pack",
-    "tools/prisma",
     "crates/rpc-rs",
     "external/prisma-client-rust/crates/lib",
     "external/prisma-client-rust/crates/cli",
