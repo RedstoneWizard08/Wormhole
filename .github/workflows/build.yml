@@ -88,7 +88,7 @@ jobs:
 
             - name: Run prisma
               if: matrix.os == 'windows-latest'
-              run: cargo run --bin prisma-cli generate
+              run: cargo run -p prisma-cli --release -- generate
 
             - name: Build app
               run: |
