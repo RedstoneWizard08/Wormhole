@@ -86,7 +86,7 @@ jobs:
               if: matrix.os != 'windows-latest'
               run: cargo prisma generate
 
-            - name: Run conf
+            - name: Run prisma
               if: matrix.os == 'windows-latest'
               run: cargo run --bin prisma-cli generate
 
