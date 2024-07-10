@@ -1,3 +1,5 @@
+//! The [`axum`] support module.
+
 use std::{future::Future, pin::Pin};
 
 use crate::{module::module::Module, util::TripleS};
@@ -7,6 +9,7 @@ use http_body_util::BodyExt;
 use super::{router::Router, Method};
 
 impl<Cx: TripleS + Clone> Router<Cx> {
+    /// Convert this router into an [`axum::Router`], consuming it.
     pub fn axum(self, state: Cx) -> axum::Router<Cx> {
         let mut router = axum::Router::new().with_state(state);
 

@@ -1,3 +1,5 @@
+//! The procedure module.
+
 use std::{borrow::Cow, future::Future};
 
 use async_trait::async_trait;
@@ -7,9 +9,15 @@ use specta::{function::FunctionDataType, Type, TypeMap};
 
 use crate::util::TripleS;
 
+/// A generic procedure. This is required to allow for any procedure
+/// to be used in a [`rpc_rs::Module`].
 #[async_trait]
 pub trait GenericProcedure<Cx: Send + Sync> {
+    /// Run this procedure with the context and a JSON-encoded string
+    /// representing the data required.
     async fn run(&self, cx: Cx, data: String) -> Result<String, Error>;
+
+    /// Get the [`FunctionDataType`] of this procedure.
     fn specta_type(&self, name: Cow<'static, str>, map: &mut TypeMap) -> FunctionDataType;
 }
 
@@ -33,12 +41,17 @@ impl<
     }
 }
 
+/// A generic-wrapped [`Procedure`].
+///
+/// This is necessary so the [`GenericProcedure`] trait can be
+/// implemented in an object-safe manner.
 pub struct WrappedProcedure<
     Cx: TripleS + Clone,
     Output: Send + Sync + Serialize + Type,
     Arg: Send + Sync + 'static + DeserializeOwned + Type,
 >(Box<dyn Procedure<Cx, Output, Arg> + Send + Sync>);
 
+/// A procedure.
 #[async_trait]
 pub trait Procedure<
     Cx: TripleS + Clone,
@@ -46,15 +59,18 @@ pub trait Procedure<
     Arg: Send + Sync + DeserializeOwned + Type,
 >
 {
+    /// Run this procedure with its context and data.
     async fn exec(&self, cx: Cx, data: Arg) -> Output;
 }
 
+/// A typed extension to [`Procedure`].
 pub trait TypedProcedure<
     Cx: TripleS + Clone,
     Output: Send + Sync + Serialize + Type,
     Arg: Send + Sync + DeserializeOwned + Type,
 >: Procedure<Cx, Output, Arg>
 {
+    /// Get the [`FunctionDataType`] of this procedure.
     fn specta_type(&self, name: Cow<'static, str>, map: &mut TypeMap) -> FunctionDataType;
 }
 
@@ -91,6 +107,8 @@ impl<
     }
 }
 
+/// Wrap any [`Procedure`], converting it to a [`WrappedProcedure`]
+/// which implements the [`GenericProcedure`] trait.
 pub fn wrap<
     Cx: TripleS + Clone,
     Output: Send + Sync + Serialize + Type,

@@ -1,3 +1,5 @@
+//! Macros for `rpc-rs`.
+
 /// A macro to create a module for a prisma-client-rust module.
 /// Your client must be an `Arc<...>`, as the state of the router.
 ///

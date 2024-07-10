@@ -10,15 +10,24 @@ use crate::{
 
 use super::builder::ModuleBuilder;
 
+/// A module.
 #[derive(Clone)]
 pub struct Module<Cx: TripleS + Clone> {
+    /// The handler for [`rpc_rs::Method::Create`] calls.
     pub(crate) create: Arc<Box<dyn GenericProcedure<Cx> + TripleS>>,
+
+    /// The handler for [`rpc_rs::Method::Read`] calls.
     pub(crate) read: Arc<Box<dyn GenericProcedure<Cx> + TripleS>>,
+
+    /// The handler for [`rpc_rs::Method::Update`] calls.
     pub(crate) update: Arc<Box<dyn GenericProcedure<Cx> + TripleS>>,
+
+    /// The handler for [`rpc_rs::Method::Delete`] calls.
     pub(crate) delete: Arc<Box<dyn GenericProcedure<Cx> + TripleS>>,
 }
 
 impl<Cx: TripleS + Clone> Module<Cx> {
+    /// Create a new [`Module`] from a [`ModuleBuilder`].
     pub(crate) fn new(builder: ModuleBuilder<Cx>) -> Self {
         Self {
             create: Arc::new(
@@ -44,10 +53,12 @@ impl<Cx: TripleS + Clone> Module<Cx> {
         }
     }
 
+    /// The default handler for any unhandled call.
     pub(crate) async fn error_responder(_cx: Cx, _: ()) -> String {
         format!("404 | Route not found")
     }
 
+    /// Try to have this module handle a request.
     pub async fn exec(&self, cx: Cx, method: Method, data: String) -> Result<String, Error> {
         match method {
             Method::Create => self.create.run(cx, data).await,
@@ -58,6 +69,7 @@ impl<Cx: TripleS + Clone> Module<Cx> {
         }
     }
 
+    /// Create a new [`ModuleBuilder`].
     pub fn builder() -> ModuleBuilder<Cx> {
         ModuleBuilder::default()
     }

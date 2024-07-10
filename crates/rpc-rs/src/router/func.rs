@@ -1,9 +1,17 @@
+//! A custom version of the [`specta::ts::export_function_header`] function.
+
 use specta::{
     function::FunctionDataType,
     ts::{datatype, ExportConfig, Result},
     TypeMap,
 };
 
+/// Convert a [FunctionDataType] into a function header like would be used in a `.d.ts` file.
+/// If your function requires a function body you can copy this function into your own codebase.
+///
+/// Eg. `function name()`
+/// 
+/// This had to be modified to support async `Promise`s and to not include the final semicolon.
 pub fn export_function_header(dt: FunctionDataType, config: &ExportConfig) -> Result<String> {
     let type_map = TypeMap::default();
     let mut s = String::new();

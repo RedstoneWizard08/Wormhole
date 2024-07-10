@@ -1,3 +1,5 @@
+//! The [`specta`] export module.
+
 use std::{collections::HashMap, fs, path::PathBuf, sync::Arc};
 
 use specta::ts::{export_named_datatype, Result};
@@ -9,6 +11,7 @@ pub(crate) const MODULE_STUB: &str = include_str!("./module_stub.ts");
 pub(crate) const CORE: &str = include_str!("./core.ts");
 
 impl<Cx: TripleS + Clone> Router<Cx> {
+    /// Export a function's TypeScript version with [`specta`].
     pub(crate) fn export_func(
         &mut self,
         script: &mut Vec<String>,
@@ -36,6 +39,8 @@ impl<Cx: TripleS + Clone> Router<Cx> {
         Ok(())
     }
 
+    /// Export the entire router's bindings.
+    /// Warning: This **does** consume the router!
     pub fn export(mut self, route_prefix: impl AsRef<str>, path: impl Into<PathBuf>) -> Result<()> {
         let path = path.into();
         let route_prefix = route_prefix.as_ref().to_string();

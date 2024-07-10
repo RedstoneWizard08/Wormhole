@@ -1,3 +1,5 @@
+//! The [`tauri`] support module.
+
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use tauri::{
@@ -10,24 +12,44 @@ use crate::util::TripleS;
 
 use super::{router::Router, Method};
 
+/// Command input model for [`tauri`].
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TauriCommandInput {
+    /// The command that was run.
     pub command: String,
+
+    /// The [`Method`].
     pub method: Method,
+
+    /// The data provided.
     pub data: Value,
+
+    /// An ID that represents this invocation.
     pub id: String,
 }
 
+/// Command output model for [`tauri`].
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TauriCommandOutput {
+    /// The command that was run.
     pub command: String,
+
+    /// The [`Method`].
     pub method: Method,
+
+    /// The data returned from the invocation.
     pub result: Value,
+
+    /// An ID that represents this invocation.
     pub id: String,
 }
 
+/// The [`Plugin`] for [`tauri`] which wraps the [`Router`] with its state.
 pub struct RouterPlugin<Cx: TripleS + Clone> {
+    /// The [`Router`].
     pub(crate) router: Router<Cx>,
+
+    /// The state.
     pub(crate) state: Cx,
 }
 
@@ -106,6 +128,7 @@ impl<R: Runtime, Cx: TripleS + Clone> Plugin<R> for RouterPlugin<Cx> {
 }
 
 impl<Cx: TripleS + Clone> Router<Cx> {
+    /// Convert this router into a [`RouterPlugin`], consuming it.
     pub fn tauri(self, cx: Cx) -> RouterPlugin<Cx> {
         RouterPlugin {
             router: self,
