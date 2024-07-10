@@ -1227,7 +1227,7 @@ dependencies = [
  "prisma-client-rust 0.6.8",
  "query 2.0.0",
  "reqwest 0.12.5 (registry+https://github.com/rust-lang/crates.io-index)",
- "rpc-rs 0.1.0",
+ "rpc-rs 0.1.1",
  "serde 1.0.204 (registry+https://github.com/rust-lang/crates.io-index)",
  "serde_json 1.0.120 (registry+https://github.com/rust-lang/crates.io-index)",
  "specta 2.0.0-rc.13 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -5356,6 +5356,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "prisma-cli"
+version = "0.0.0"
+dependencies = [
+ "prisma-client-rust-cli 0.6.8",
+]
+
+[[package]]
 name = "prisma-client-rust"
 version = "0.6.8"
 dependencies = [
@@ -6268,7 +6275,7 @@ dependencies = [
 
 [[package]]
 name = "rpc-rs"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "async-trait 0.1.81 (registry+https://github.com/rust-lang/crates.io-index)",
  "axum 0.7.5 (registry+https://github.com/rust-lang/crates.io-index)",

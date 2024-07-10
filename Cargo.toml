@@ -180,4 +180,9 @@ members = [
     "crates/rpc-rs",
     "external/prisma-client-rust/crates/lib",
     "external/prisma-client-rust/crates/cli",
+    "external/prisma-client-rust/crates/generator",
+    "external/prisma-client-rust/crates/generator-macros",
+    "external/prisma-client-rust/crates/generator-shared",
+    "external/prisma-client-rust/crates/sdk",
+    "external/prisma-client-rust/prisma-cli",
 ]

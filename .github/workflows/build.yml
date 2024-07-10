@@ -81,11 +81,18 @@ jobs:
             - name: Run conf
               if: matrix.os == 'windows-latest'
               run: .\apps\gui\genconf.ps1
+            
+            - name: Run primsa
+              if: matrix.os != 'windows-latest'
+              run: cargo prisma generate
+
+            - name: Run conf
+              if: matrix.os == 'windows-latest'
+              run: cargo run --bin prisma-cli generate
 
             - name: Build app
               run: |
                   touch .env
-                  cargo prisma generate
                   pnpm run build --target ${{ matrix.target }}
                   pnpm run app:build
                   pnpm run web:build
