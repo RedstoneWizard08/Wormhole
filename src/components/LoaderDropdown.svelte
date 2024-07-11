@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { RPC, unwrap, type ModLoader, type ModLoaderType } from "$api/bindings/app";
+import { RPC, unwrap, type ModLoader, type ModLoaderType } from "$api/bindings/app";
 import { getLoader, getLoaderVersion, getMinecraft } from "$api/loader";
 import { isRelease, isSnapshot } from "$api/mc";
 import { isChildOf } from "$api/util";

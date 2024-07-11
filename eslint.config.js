@@ -86,9 +86,7 @@ export default tslint.config(
     },
 
     {
-        files: [
-            "src/api/bindings/**/*.ts",
-        ],
+        files: ["src/api/bindings/**/*.ts"],
 
         rules: {
             semi: "off",

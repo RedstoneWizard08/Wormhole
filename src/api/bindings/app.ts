@@ -166,21 +166,22 @@ export const unwrap = <T>(res: Result<T, any> | Option<T>): T => {
     }
 };
 
-
 export async function __rpc_call_instances_Read(data: number): Promise<Instance[]> {
-return await __rpc_call("/rpc", "Read", "instances", data);
+    return await __rpc_call("/rpc", "Read", "instances", data);
 }
 
 export async function __rpc_call_instances_Update(data: null = null): Promise<string> {
-return await __rpc_call("/rpc", "Update", "instances", data);
+    return await __rpc_call("/rpc", "Update", "instances", data);
 }
 
 export async function __rpc_call_instances_Delete(data: number[]): Promise<Result<bigint, string>> {
-return await __rpc_call("/rpc", "Delete", "instances", data);
+    return await __rpc_call("/rpc", "Delete", "instances", data);
 }
 
-export async function __rpc_call_instances_Create(data: InstanceCreation[]): Promise<Result<bigint, string>> {
-return await __rpc_call("/rpc", "Create", "instances", data);
+export async function __rpc_call_instances_Create(
+    data: InstanceCreation[]
+): Promise<Result<bigint, string>> {
+    return await __rpc_call("/rpc", "Create", "instances", data);
 }
 
 const __rpc_module_instances = {
@@ -190,21 +191,20 @@ const __rpc_module_instances = {
     delete: __rpc_call_instances_Delete,
 };
 
-
 export async function __rpc_call_mod_Create(data: ModCreation): Promise<Result<bigint, string>> {
-return await __rpc_call("/rpc", "Create", "mod", data);
+    return await __rpc_call("/rpc", "Create", "mod", data);
 }
 
 export async function __rpc_call_mod_Read(data: number): Promise<Option<Mod>> {
-return await __rpc_call("/rpc", "Read", "mod", data);
+    return await __rpc_call("/rpc", "Read", "mod", data);
 }
 
 export async function __rpc_call_mod_Update(data: ModUpdate): Promise<Result<Mod, string>> {
-return await __rpc_call("/rpc", "Update", "mod", data);
+    return await __rpc_call("/rpc", "Update", "mod", data);
 }
 
 export async function __rpc_call_mod_Delete(data: number): Promise<Result<Mod, string>> {
-return await __rpc_call("/rpc", "Delete", "mod", data);
+    return await __rpc_call("/rpc", "Delete", "mod", data);
 }
 
 const __rpc_module_mod = {
@@ -214,21 +214,20 @@ const __rpc_module_mod = {
     delete: __rpc_call_mod_Delete,
 };
 
-
 export async function __rpc_call_mods_Create(data: ModCreation[]): Promise<Result<bigint, string>> {
-return await __rpc_call("/rpc", "Create", "mods", data);
+    return await __rpc_call("/rpc", "Create", "mods", data);
 }
 
 export async function __rpc_call_mods_Update(data: null = null): Promise<string> {
-return await __rpc_call("/rpc", "Update", "mods", data);
+    return await __rpc_call("/rpc", "Update", "mods", data);
 }
 
 export async function __rpc_call_mods_Delete(data: number[]): Promise<Result<bigint, string>> {
-return await __rpc_call("/rpc", "Delete", "mods", data);
+    return await __rpc_call("/rpc", "Delete", "mods", data);
 }
 
 export async function __rpc_call_mods_Read(data: number): Promise<Mod[]> {
-return await __rpc_call("/rpc", "Read", "mods", data);
+    return await __rpc_call("/rpc", "Read", "mods", data);
 }
 
 const __rpc_module_mods = {
@@ -238,21 +237,20 @@ const __rpc_module_mods = {
     delete: __rpc_call_mods_Delete,
 };
 
-
 export async function __rpc_call_dirs_Update(data: null = null): Promise<string> {
-return await __rpc_call("/rpc", "Update", "dirs", data);
+    return await __rpc_call("/rpc", "Update", "dirs", data);
 }
 
 export async function __rpc_call_dirs_Create(data: null = null): Promise<string> {
-return await __rpc_call("/rpc", "Create", "dirs", data);
+    return await __rpc_call("/rpc", "Create", "dirs", data);
 }
 
 export async function __rpc_call_dirs_Read(data: string): Promise<Dirs> {
-return await __rpc_call("/rpc", "Read", "dirs", data);
+    return await __rpc_call("/rpc", "Read", "dirs", data);
 }
 
 export async function __rpc_call_dirs_Delete(data: null = null): Promise<string> {
-return await __rpc_call("/rpc", "Delete", "dirs", data);
+    return await __rpc_call("/rpc", "Delete", "dirs", data);
 }
 
 const __rpc_module_dirs = {
@@ -262,21 +260,22 @@ const __rpc_module_dirs = {
     delete: __rpc_call_dirs_Delete,
 };
 
-
 export async function __rpc_call_latestLoader_Create(data: null = null): Promise<string> {
-return await __rpc_call("/rpc", "Create", "latestLoader", data);
+    return await __rpc_call("/rpc", "Create", "latestLoader", data);
 }
 
 export async function __rpc_call_latestLoader_Delete(data: null = null): Promise<string> {
-return await __rpc_call("/rpc", "Delete", "latestLoader", data);
+    return await __rpc_call("/rpc", "Delete", "latestLoader", data);
 }
 
 export async function __rpc_call_latestLoader_Update(data: null = null): Promise<string> {
-return await __rpc_call("/rpc", "Update", "latestLoader", data);
+    return await __rpc_call("/rpc", "Update", "latestLoader", data);
 }
 
-export async function __rpc_call_latestLoader_Read(data: ModLoaderType): Promise<Result<ModLoader, string>> {
-return await __rpc_call("/rpc", "Read", "latestLoader", data);
+export async function __rpc_call_latestLoader_Read(
+    data: ModLoaderType
+): Promise<Result<ModLoader, string>> {
+    return await __rpc_call("/rpc", "Read", "latestLoader", data);
 }
 
 const __rpc_module_latestLoader = {
@@ -286,21 +285,20 @@ const __rpc_module_latestLoader = {
     delete: __rpc_call_latestLoader_Delete,
 };
 
-
 export async function __rpc_call_game_Update(data: GameUpdate): Promise<Result<Game, string>> {
-return await __rpc_call("/rpc", "Update", "game", data);
+    return await __rpc_call("/rpc", "Update", "game", data);
 }
 
 export async function __rpc_call_game_Delete(data: number): Promise<Result<Game, string>> {
-return await __rpc_call("/rpc", "Delete", "game", data);
+    return await __rpc_call("/rpc", "Delete", "game", data);
 }
 
 export async function __rpc_call_game_Read(data: number): Promise<Option<Game>> {
-return await __rpc_call("/rpc", "Read", "game", data);
+    return await __rpc_call("/rpc", "Read", "game", data);
 }
 
 export async function __rpc_call_game_Create(data: GameCreation): Promise<Result<bigint, string>> {
-return await __rpc_call("/rpc", "Create", "game", data);
+    return await __rpc_call("/rpc", "Create", "game", data);
 }
 
 const __rpc_module_game = {
@@ -310,21 +308,22 @@ const __rpc_module_game = {
     delete: __rpc_call_game_Delete,
 };
 
-
 export async function __rpc_call_loaders_Update(data: null = null): Promise<string> {
-return await __rpc_call("/rpc", "Update", "loaders", data);
+    return await __rpc_call("/rpc", "Update", "loaders", data);
 }
 
-export async function __rpc_call_loaders_Read(data: ModLoaderType): Promise<Result<ModLoader[], string>> {
-return await __rpc_call("/rpc", "Read", "loaders", data);
+export async function __rpc_call_loaders_Read(
+    data: ModLoaderType
+): Promise<Result<ModLoader[], string>> {
+    return await __rpc_call("/rpc", "Read", "loaders", data);
 }
 
 export async function __rpc_call_loaders_Create(data: null = null): Promise<string> {
-return await __rpc_call("/rpc", "Create", "loaders", data);
+    return await __rpc_call("/rpc", "Create", "loaders", data);
 }
 
 export async function __rpc_call_loaders_Delete(data: null = null): Promise<string> {
-return await __rpc_call("/rpc", "Delete", "loaders", data);
+    return await __rpc_call("/rpc", "Delete", "loaders", data);
 }
 
 const __rpc_module_loaders = {
@@ -334,21 +333,22 @@ const __rpc_module_loaders = {
     delete: __rpc_call_loaders_Delete,
 };
 
-
 export async function __rpc_call_sources_Read(data: null = null): Promise<Source[]> {
-return await __rpc_call("/rpc", "Read", "sources", data);
+    return await __rpc_call("/rpc", "Read", "sources", data);
 }
 
-export async function __rpc_call_sources_Create(data: SourceCreation[]): Promise<Result<bigint, string>> {
-return await __rpc_call("/rpc", "Create", "sources", data);
+export async function __rpc_call_sources_Create(
+    data: SourceCreation[]
+): Promise<Result<bigint, string>> {
+    return await __rpc_call("/rpc", "Create", "sources", data);
 }
 
 export async function __rpc_call_sources_Update(data: null = null): Promise<string> {
-return await __rpc_call("/rpc", "Update", "sources", data);
+    return await __rpc_call("/rpc", "Update", "sources", data);
 }
 
 export async function __rpc_call_sources_Delete(data: number[]): Promise<Result<bigint, string>> {
-return await __rpc_call("/rpc", "Delete", "sources", data);
+    return await __rpc_call("/rpc", "Delete", "sources", data);
 }
 
 const __rpc_module_sources = {
@@ -358,21 +358,24 @@ const __rpc_module_sources = {
     delete: __rpc_call_sources_Delete,
 };
 
-
-export async function __rpc_call_source_Create(data: SourceCreation): Promise<Result<bigint, string>> {
-return await __rpc_call("/rpc", "Create", "source", data);
+export async function __rpc_call_source_Create(
+    data: SourceCreation
+): Promise<Result<bigint, string>> {
+    return await __rpc_call("/rpc", "Create", "source", data);
 }
 
 export async function __rpc_call_source_Read(data: number): Promise<Option<Source>> {
-return await __rpc_call("/rpc", "Read", "source", data);
+    return await __rpc_call("/rpc", "Read", "source", data);
 }
 
-export async function __rpc_call_source_Update(data: SourceUpdate): Promise<Result<Source, string>> {
-return await __rpc_call("/rpc", "Update", "source", data);
+export async function __rpc_call_source_Update(
+    data: SourceUpdate
+): Promise<Result<Source, string>> {
+    return await __rpc_call("/rpc", "Update", "source", data);
 }
 
 export async function __rpc_call_source_Delete(data: number): Promise<Result<Source, string>> {
-return await __rpc_call("/rpc", "Delete", "source", data);
+    return await __rpc_call("/rpc", "Delete", "source", data);
 }
 
 const __rpc_module_source = {
@@ -382,21 +385,22 @@ const __rpc_module_source = {
     delete: __rpc_call_source_Delete,
 };
 
-
 export async function __rpc_call_games_Update(data: null = null): Promise<string> {
-return await __rpc_call("/rpc", "Update", "games", data);
+    return await __rpc_call("/rpc", "Update", "games", data);
 }
 
 export async function __rpc_call_games_Read(data: null = null): Promise<Game[]> {
-return await __rpc_call("/rpc", "Read", "games", data);
+    return await __rpc_call("/rpc", "Read", "games", data);
 }
 
-export async function __rpc_call_games_Create(data: GameCreation[]): Promise<Result<bigint, string>> {
-return await __rpc_call("/rpc", "Create", "games", data);
+export async function __rpc_call_games_Create(
+    data: GameCreation[]
+): Promise<Result<bigint, string>> {
+    return await __rpc_call("/rpc", "Create", "games", data);
 }
 
 export async function __rpc_call_games_Delete(data: number[]): Promise<Result<bigint, string>> {
-return await __rpc_call("/rpc", "Delete", "games", data);
+    return await __rpc_call("/rpc", "Delete", "games", data);
 }
 
 const __rpc_module_games = {
@@ -406,21 +410,24 @@ const __rpc_module_games = {
     delete: __rpc_call_games_Delete,
 };
 
-
-export async function __rpc_call_instance_Create(data: InstanceCreation): Promise<Result<bigint, string>> {
-return await __rpc_call("/rpc", "Create", "instance", data);
+export async function __rpc_call_instance_Create(
+    data: InstanceCreation
+): Promise<Result<bigint, string>> {
+    return await __rpc_call("/rpc", "Create", "instance", data);
 }
 
-export async function __rpc_call_instance_Update(data: InstanceUpdate): Promise<Result<Instance, string>> {
-return await __rpc_call("/rpc", "Update", "instance", data);
+export async function __rpc_call_instance_Update(
+    data: InstanceUpdate
+): Promise<Result<Instance, string>> {
+    return await __rpc_call("/rpc", "Update", "instance", data);
 }
 
 export async function __rpc_call_instance_Delete(data: number): Promise<Result<Instance, string>> {
-return await __rpc_call("/rpc", "Delete", "instance", data);
+    return await __rpc_call("/rpc", "Delete", "instance", data);
 }
 
 export async function __rpc_call_instance_Read(data: number): Promise<Option<Instance>> {
-return await __rpc_call("/rpc", "Read", "instance", data);
+    return await __rpc_call("/rpc", "Read", "instance", data);
 }
 
 const __rpc_module_instance = {
@@ -430,21 +437,22 @@ const __rpc_module_instance = {
     delete: __rpc_call_instance_Delete,
 };
 
-
 export async function __rpc_call_plugins_Create(data: null = null): Promise<string> {
-return await __rpc_call("/rpc", "Create", "plugins", data);
+    return await __rpc_call("/rpc", "Create", "plugins", data);
 }
 
-export async function __rpc_call_plugins_Read(data: null = null): Promise<Result<PluginInfo[], string>> {
-return await __rpc_call("/rpc", "Read", "plugins", data);
+export async function __rpc_call_plugins_Read(
+    data: null = null
+): Promise<Result<PluginInfo[], string>> {
+    return await __rpc_call("/rpc", "Read", "plugins", data);
 }
 
 export async function __rpc_call_plugins_Delete(data: null = null): Promise<string> {
-return await __rpc_call("/rpc", "Delete", "plugins", data);
+    return await __rpc_call("/rpc", "Delete", "plugins", data);
 }
 
 export async function __rpc_call_plugins_Update(data: null = null): Promise<string> {
-return await __rpc_call("/rpc", "Update", "plugins", data);
+    return await __rpc_call("/rpc", "Update", "plugins", data);
 }
 
 const __rpc_module_plugins = {
@@ -454,105 +462,184 @@ const __rpc_module_plugins = {
     delete: __rpc_call_plugins_Delete,
 };
 
-
 export async function __rpc_invoke_version(data: null = null): Promise<string> {
-return await __rpc_invoke("/rpc", "version", data);
+    return await __rpc_invoke("/rpc", "version", data);
 }
 
 const __rpc_invokers = {
-version: __rpc_invoke_version,
+    version: __rpc_invoke_version,
 };
 
-export type Dirs = { root: string; data: string; cache: string; temp: string }
+export type Dirs = { root: string; data: string; cache: string; temp: string };
 
-export type Game = { id: number; name: string; curseforge: number | null; thunderstore: string | null; spacedock: string | null; ckan: boolean; modrinth: boolean }
+export type Game = {
+    id: number;
+    name: string;
+    curseforge: number | null;
+    thunderstore: string | null;
+    spacedock: string | null;
+    ckan: boolean;
+    modrinth: boolean;
+};
 
-export type GameCreation = { name: string }
+export type GameCreation = { name: string };
 
-export type GameUpdate = { id: number; name?: string | null; curseforge?: number | null; thunderstore?: string | null; spacedock?: string | null; ckan?: boolean | null; modrinth?: boolean | null }
+export type GameUpdate = {
+    id: number;
+    name?: string | null;
+    curseforge?: number | null;
+    thunderstore?: string | null;
+    spacedock?: string | null;
+    ckan?: boolean | null;
+    modrinth?: boolean | null;
+};
 
-export type Instance = { id: number; name: string; gameId: number; dataDir: string; cacheDir: string; installDir: string; description: string; created: string; updated: string; loader: string | null }
+export type Instance = {
+    id: number;
+    name: string;
+    gameId: number;
+    dataDir: string;
+    cacheDir: string;
+    installDir: string;
+    description: string;
+    created: string;
+    updated: string;
+    loader: string | null;
+};
 
-export type InstanceCreation = { name: string; gameId: number; dataDir: string; cacheDir: string; installDir: string }
+export type InstanceCreation = {
+    name: string;
+    gameId: number;
+    dataDir: string;
+    cacheDir: string;
+    installDir: string;
+};
 
-export type InstanceUpdate = { id: number; name?: string | null; gameId?: number | null; dataDir?: string | null; cacheDir?: string | null; installDir?: string | null; description?: string | null; created?: string | null; updated?: string | null; loader?: string | null }
+export type InstanceUpdate = {
+    id: number;
+    name?: string | null;
+    gameId?: number | null;
+    dataDir?: string | null;
+    cacheDir?: string | null;
+    installDir?: string | null;
+    description?: string | null;
+    created?: string | null;
+    updated?: string | null;
+    loader?: string | null;
+};
 
-export type Mod = { id: number; mod: string; version: string | null; name: string; file: string; size: number; hash: string | null; installed_files: string; sourceId: number; instanceId: number }
+export type Mod = {
+    id: number;
+    mod: string;
+    version: string | null;
+    name: string;
+    file: string;
+    size: number;
+    hash: string | null;
+    installed_files: string;
+    sourceId: number;
+    instanceId: number;
+};
 
-export type ModCreation = { mod: string; name: string; file: string; size: number; installed_files: string; sourceId: number; instanceId: number }
+export type ModCreation = {
+    mod: string;
+    name: string;
+    file: string;
+    size: number;
+    installed_files: string;
+    sourceId: number;
+    instanceId: number;
+};
 
 /**
  * The ModLoader type.
  * Each element contains the Minecraft version
  * and then its version.
  */
-export type ModLoader = { Vanilla: string } | { Forge: [string, string] } | { NeoForge: [string, string] } | { Fabric: [string, string] } | { Quilt: [string, string] } | 
-/**
- * This is for any other game, I just didn't feel
- * like dealing with recursive dependencies.
- */
-"None"
+export type ModLoader =
+    | { Vanilla: string }
+    | { Forge: [string, string] }
+    | { NeoForge: [string, string] }
+    | { Fabric: [string, string] }
+    | { Quilt: [string, string] }
+    /**
+     * This is for any other game, I just didn't feel
+     * like dealing with recursive dependencies.
+     */
+    | "None";
 
-export type ModLoaderType = "Vanilla" | "Forge" | "NeoForge" | "Fabric" | "Quilt" | "None"
+export type ModLoaderType = "Vanilla" | "Forge" | "NeoForge" | "Fabric" | "Quilt" | "None";
 
-export type ModUpdate = { id: number; mod?: string | null; version?: string | null; name?: string | null; file?: string | null; size?: number | null; hash?: string | null; installed_files?: string | null; sourceId?: number | null; instanceId?: number | null }
+export type ModUpdate = {
+    id: number;
+    mod?: string | null;
+    version?: string | null;
+    name?: string | null;
+    file?: string | null;
+    size?: number | null;
+    hash?: string | null;
+    installed_files?: string | null;
+    sourceId?: number | null;
+    instanceId?: number | null;
+};
 
 /**
  * A plugin's metadata. This is useful for getting information
  * about the plugin on the frontend.
  */
-export type PluginInfo = { 
-/**
- * The plugin's identifier.
- */
-id: string; 
-/**
- * The plugin's game ID.
- */
-game: number; 
-/**
- * The plugin's display name.
- */
-display_name: string; 
-/**
- * The plugin's icon URL.
- */
-icon_url: string; 
-/**
- * The plugin's banner URL.
- */
-banner_url: string; 
-/**
- * The plugin's fallback mod install directory.
- * If the installer can't automatically determine
- * where to install a mod, this will be used.
- */
-fallback_dir: string | null; 
-/**
- * The plugin's query resolvers (IDs).
- */
-resolvers: Source[] }
+export type PluginInfo = {
+    /**
+     * The plugin's identifier.
+     */
+    id: string;
+    /**
+     * The plugin's game ID.
+     */
+    game: number;
+    /**
+     * The plugin's display name.
+     */
+    display_name: string;
+    /**
+     * The plugin's icon URL.
+     */
+    icon_url: string;
+    /**
+     * The plugin's banner URL.
+     */
+    banner_url: string;
+    /**
+     * The plugin's fallback mod install directory.
+     * If the installer can't automatically determine
+     * where to install a mod, this will be used.
+     */
+    fallback_dir: string | null;
+    /**
+     * The plugin's query resolvers (IDs).
+     */
+    resolvers: Source[];
+};
 
-export type Source = { id: number; name: string }
+export type Source = { id: number; name: string };
 
-export type SourceCreation = { name: string }
+export type SourceCreation = { name: string };
 
-export type SourceUpdate = { id: number; name?: string | null }
+export type SourceUpdate = { id: number; name?: string | null };
 
 export const RPC = {
-instances: __rpc_module_instances,
-mod: __rpc_module_mod,
-mods: __rpc_module_mods,
-dirs: __rpc_module_dirs,
-latestLoader: __rpc_module_latestLoader,
-game: __rpc_module_game,
-loaders: __rpc_module_loaders,
-sources: __rpc_module_sources,
-source: __rpc_module_source,
-games: __rpc_module_games,
-instance: __rpc_module_instance,
-plugins: __rpc_module_plugins,
-invoke: __rpc_invokers,
+    instances: __rpc_module_instances,
+    mod: __rpc_module_mod,
+    mods: __rpc_module_mods,
+    dirs: __rpc_module_dirs,
+    latestLoader: __rpc_module_latestLoader,
+    game: __rpc_module_game,
+    loaders: __rpc_module_loaders,
+    sources: __rpc_module_sources,
+    source: __rpc_module_source,
+    games: __rpc_module_games,
+    instance: __rpc_module_instance,
+    plugins: __rpc_module_plugins,
+    invoke: __rpc_invokers,
 };
 
 export default RPC;

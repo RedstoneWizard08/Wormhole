@@ -43,7 +43,6 @@ const download = async (ev: MouseEvent) => {
     if (installed) {
         // const mods = unwrap(await commands.getMods(instance, null));
         // const me = mods.find((v) => v.mod_id === mod.id);
-
         // unwrap(await commands.uninstallMod(game, me!, instanceInfo, null));
     } else {
         // unwrap(await commands.installMod(game, mod, latest, instanceInfo, null));

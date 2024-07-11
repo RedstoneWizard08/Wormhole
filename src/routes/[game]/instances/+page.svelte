@@ -27,7 +27,7 @@ const addInstance = async () => {
         dataDir: dirs.data,
         installDir: dirs.root,
     });
-    
+
     name = "";
     adding = false;
 
