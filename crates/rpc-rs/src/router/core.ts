@@ -23,6 +23,18 @@ interface TauriOutput<T> {
     id: string;
 }
 
+interface TauriInvokeInput<T> {
+    command: string;
+    data: T;
+    id: string;
+}
+
+interface TauriInvokeOutput<T> {
+    command: string;
+    result: T;
+    id: string;
+}
+
 const mapMethod = (method: Method) => {
     switch (method) {
         case "Create":
@@ -59,7 +71,9 @@ const serializeQuery = (initialObj: any) => {
             return prev;
         };
 
-    return Object.keys(initialObj).reduce(reducer(initialObj), []).join("&");
+    return initialObj === null || initialObj === undefined
+        ? ""
+        : `?${Object.keys(initialObj).reduce(reducer(initialObj), []).join("&")}`;
 };
 
 const responseQueue: Record<string, (data: unknown) => void> = {};
@@ -72,7 +86,7 @@ const __rpc_call = async <T, O>(
 ): Promise<O> => {
     if (!("__TAURI__" in window)) {
         if (method === "Read") {
-            return await fetch(`${routePrefix}/${command}?${serializeQuery(data)}`, {
+            return await fetch(`${routePrefix}/${command}${serializeQuery(data)}`, {
                 method: "GET",
             }).then((v) => v.json());
         }
@@ -101,18 +115,52 @@ const __rpc_call = async <T, O>(
     return promise;
 };
 
+const __rpc_invoke = async <T, O>(routePrefix: string, command: string, data: T): Promise<O> => {
+    if (!("__TAURI__" in window)) {
+        return await fetch(`${routePrefix}/_invoke/${command}`, {
+            method: "POST",
+            body: JSON.stringify(data),
+        }).then((v) => v.json());
+    }
+
+    const id = crypto.randomUUID();
+
+    const input: TauriInvokeInput<T> = {
+        command,
+        id,
+        data,
+    };
+
+    const promise = new Promise<O>((res, _rej) => {
+        responseQueue[input.id] = res as (data: unknown) => void;
+    });
+
+    event.emit("plugin:rpc-rs:transport:invoker", input);
+
+    return promise;
+};
+
 export const setupTauri = () => {
+    if (!("__TAURI__" in window)) return;
+
     event.listen<TauriOutput<unknown>>("plugin:rpc-rs:transport:resp", ({ payload: data }) => {
         responseQueue[data.id]?.(data.result);
     });
+
+    event.listen<TauriOutput<unknown>>(
+        "plugin:rpc-rs:transport:invoker:resp",
+        ({ payload: data }) => {
+            responseQueue[data.id]?.(data.result);
+        }
+    );
 };
 export const unwrap = <T>(res: Result<T, any> | Option<T>): T => {
     if ("None" in res) {
         throw new ReferenceError("Tried to unwrap a 'None' value!");
-    // biome-ignore lint/style/noUselessElse: IT'S NOT REAL
+        // biome-ignore lint/style/noUselessElse: IT'S NOT REAL
     } else if ("Some" in res) {
         return res.Some;
-    // biome-ignore lint/style/noUselessElse: IT'S NOT REAL
+        // biome-ignore lint/style/noUselessElse: IT'S NOT REAL
     } else {
         return (res as __Ok__<T>).Ok;
     }

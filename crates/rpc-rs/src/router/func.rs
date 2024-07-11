@@ -59,7 +59,14 @@ pub fn export_function_header(dt: FunctionDataType, config: &ExportConfig) -> Re
 
         s.push_str(&name);
         s.push_str(": ");
-        s.push_str(&datatype(config, &ty, &type_map)?);
+
+        let t = datatype(config, &ty, &type_map)?;
+
+        s.push_str(&t);
+
+        if t == "null" {
+            s.push_str(" = null");
+        }
     }
 
     s.push_str(")");

@@ -23,6 +23,18 @@ interface TauriOutput<T> {
     id: string;
 }
 
+interface TauriInvokeInput<T> {
+    command: string;
+    data: T;
+    id: string;
+}
+
+interface TauriInvokeOutput<T> {
+    command: string;
+    result: T;
+    id: string;
+}
+
 const mapMethod = (method: Method) => {
     switch (method) {
         case "Create":
@@ -59,7 +71,9 @@ const serializeQuery = (initialObj: any) => {
             return prev;
         };
 
-    return Object.keys(initialObj).reduce(reducer(initialObj), []).join("&");
+    return initialObj === null || initialObj === undefined
+        ? ""
+        : `?${Object.keys(initialObj).reduce(reducer(initialObj), []).join("&")}`;
 };
 
 const responseQueue: Record<string, (data: unknown) => void> = {};
@@ -72,7 +86,7 @@ const __rpc_call = async <T, O>(
 ): Promise<O> => {
     if (!("__TAURI__" in window)) {
         if (method === "Read") {
-            return await fetch(`${routePrefix}/${command}?${serializeQuery(data)}`, {
+            return await fetch(`${routePrefix}/${command}${serializeQuery(data)}`, {
                 method: "GET",
             }).then((v) => v.json());
         }
@@ -101,25 +115,135 @@ const __rpc_call = async <T, O>(
     return promise;
 };
 
+const __rpc_invoke = async <T, O>(routePrefix: string, command: string, data: T): Promise<O> => {
+    if (!("__TAURI__" in window)) {
+        return await fetch(`${routePrefix}/_invoke/${command}`, {
+            method: "POST",
+            body: JSON.stringify(data),
+        }).then((v) => v.json());
+    }
+
+    const id = crypto.randomUUID();
+
+    const input: TauriInvokeInput<T> = {
+        command,
+        id,
+        data,
+    };
+
+    const promise = new Promise<O>((res, _rej) => {
+        responseQueue[input.id] = res as (data: unknown) => void;
+    });
+
+    event.emit("plugin:rpc-rs:transport:invoker", input);
+
+    return promise;
+};
+
 export const setupTauri = () => {
+    if (!("__TAURI__" in window)) return;
+
     event.listen<TauriOutput<unknown>>("plugin:rpc-rs:transport:resp", ({ payload: data }) => {
         responseQueue[data.id]?.(data.result);
     });
+
+    event.listen<TauriOutput<unknown>>(
+        "plugin:rpc-rs:transport:invoker:resp",
+        ({ payload: data }) => {
+            responseQueue[data.id]?.(data.result);
+        }
+    );
 };
 export const unwrap = <T>(res: Result<T, any> | Option<T>): T => {
     if ("None" in res) {
         throw new ReferenceError("Tried to unwrap a 'None' value!");
-    // biome-ignore lint/style/noUselessElse: IT'S NOT REAL
+        // biome-ignore lint/style/noUselessElse: IT'S NOT REAL
     } else if ("Some" in res) {
         return res.Some;
-    // biome-ignore lint/style/noUselessElse: IT'S NOT REAL
+        // biome-ignore lint/style/noUselessElse: IT'S NOT REAL
     } else {
         return (res as __Ok__<T>).Ok;
     }
 };
 
 
-export async function __rpc_call_dirs_Create(data: null): Promise<string> {
+export async function __rpc_call_instances_Read(data: number): Promise<Instance[]> {
+return await __rpc_call("/rpc", "Read", "instances", data);
+}
+
+export async function __rpc_call_instances_Update(data: null = null): Promise<string> {
+return await __rpc_call("/rpc", "Update", "instances", data);
+}
+
+export async function __rpc_call_instances_Delete(data: number[]): Promise<Result<bigint, string>> {
+return await __rpc_call("/rpc", "Delete", "instances", data);
+}
+
+export async function __rpc_call_instances_Create(data: InstanceCreation[]): Promise<Result<bigint, string>> {
+return await __rpc_call("/rpc", "Create", "instances", data);
+}
+
+const __rpc_module_instances = {
+    create: __rpc_call_instances_Create,
+    read: __rpc_call_instances_Read,
+    update: __rpc_call_instances_Update,
+    delete: __rpc_call_instances_Delete,
+};
+
+
+export async function __rpc_call_mod_Create(data: ModCreation): Promise<Result<bigint, string>> {
+return await __rpc_call("/rpc", "Create", "mod", data);
+}
+
+export async function __rpc_call_mod_Read(data: number): Promise<Option<Mod>> {
+return await __rpc_call("/rpc", "Read", "mod", data);
+}
+
+export async function __rpc_call_mod_Update(data: ModUpdate): Promise<Result<Mod, string>> {
+return await __rpc_call("/rpc", "Update", "mod", data);
+}
+
+export async function __rpc_call_mod_Delete(data: number): Promise<Result<Mod, string>> {
+return await __rpc_call("/rpc", "Delete", "mod", data);
+}
+
+const __rpc_module_mod = {
+    create: __rpc_call_mod_Create,
+    read: __rpc_call_mod_Read,
+    update: __rpc_call_mod_Update,
+    delete: __rpc_call_mod_Delete,
+};
+
+
+export async function __rpc_call_mods_Create(data: ModCreation[]): Promise<Result<bigint, string>> {
+return await __rpc_call("/rpc", "Create", "mods", data);
+}
+
+export async function __rpc_call_mods_Update(data: null = null): Promise<string> {
+return await __rpc_call("/rpc", "Update", "mods", data);
+}
+
+export async function __rpc_call_mods_Delete(data: number[]): Promise<Result<bigint, string>> {
+return await __rpc_call("/rpc", "Delete", "mods", data);
+}
+
+export async function __rpc_call_mods_Read(data: number): Promise<Mod[]> {
+return await __rpc_call("/rpc", "Read", "mods", data);
+}
+
+const __rpc_module_mods = {
+    create: __rpc_call_mods_Create,
+    read: __rpc_call_mods_Read,
+    update: __rpc_call_mods_Update,
+    delete: __rpc_call_mods_Delete,
+};
+
+
+export async function __rpc_call_dirs_Update(data: null = null): Promise<string> {
+return await __rpc_call("/rpc", "Update", "dirs", data);
+}
+
+export async function __rpc_call_dirs_Create(data: null = null): Promise<string> {
 return await __rpc_call("/rpc", "Create", "dirs", data);
 }
 
@@ -127,11 +251,7 @@ export async function __rpc_call_dirs_Read(data: string): Promise<Dirs> {
 return await __rpc_call("/rpc", "Read", "dirs", data);
 }
 
-export async function __rpc_call_dirs_Update(data: null): Promise<string> {
-return await __rpc_call("/rpc", "Update", "dirs", data);
-}
-
-export async function __rpc_call_dirs_Delete(data: null): Promise<string> {
+export async function __rpc_call_dirs_Delete(data: null = null): Promise<string> {
 return await __rpc_call("/rpc", "Delete", "dirs", data);
 }
 
@@ -143,112 +263,16 @@ const __rpc_module_dirs = {
 };
 
 
-export async function __rpc_call_mod_Update(data: ModUpdate): Promise<Result<Mod, string>> {
-return await __rpc_call("/rpc", "Update", "mod", data);
-}
-
-export async function __rpc_call_mod_Create(data: ModCreation): Promise<Result<bigint, string>> {
-return await __rpc_call("/rpc", "Create", "mod", data);
-}
-
-export async function __rpc_call_mod_Delete(data: number): Promise<Result<Mod, string>> {
-return await __rpc_call("/rpc", "Delete", "mod", data);
-}
-
-export async function __rpc_call_mod_Read(data: number): Promise<Option<Mod>> {
-return await __rpc_call("/rpc", "Read", "mod", data);
-}
-
-const __rpc_module_mod = {
-    create: __rpc_call_mod_Create,
-    read: __rpc_call_mod_Read,
-    update: __rpc_call_mod_Update,
-    delete: __rpc_call_mod_Delete,
-};
-
-
-export async function __rpc_call_instance_Delete(data: number): Promise<Result<Instance, string>> {
-return await __rpc_call("/rpc", "Delete", "instance", data);
-}
-
-export async function __rpc_call_instance_Update(data: InstanceUpdate): Promise<Result<Instance, string>> {
-return await __rpc_call("/rpc", "Update", "instance", data);
-}
-
-export async function __rpc_call_instance_Create(data: InstanceCreation): Promise<Result<bigint, string>> {
-return await __rpc_call("/rpc", "Create", "instance", data);
-}
-
-export async function __rpc_call_instance_Read(data: number): Promise<Option<Instance>> {
-return await __rpc_call("/rpc", "Read", "instance", data);
-}
-
-const __rpc_module_instance = {
-    create: __rpc_call_instance_Create,
-    read: __rpc_call_instance_Read,
-    update: __rpc_call_instance_Update,
-    delete: __rpc_call_instance_Delete,
-};
-
-
-export async function __rpc_call_loaders_Read(data: ModLoaderType): Promise<Result<ModLoader[], string>> {
-return await __rpc_call("/rpc", "Read", "loaders", data);
-}
-
-export async function __rpc_call_loaders_Update(data: null): Promise<string> {
-return await __rpc_call("/rpc", "Update", "loaders", data);
-}
-
-export async function __rpc_call_loaders_Create(data: null): Promise<string> {
-return await __rpc_call("/rpc", "Create", "loaders", data);
-}
-
-export async function __rpc_call_loaders_Delete(data: null): Promise<string> {
-return await __rpc_call("/rpc", "Delete", "loaders", data);
-}
-
-const __rpc_module_loaders = {
-    create: __rpc_call_loaders_Create,
-    read: __rpc_call_loaders_Read,
-    update: __rpc_call_loaders_Update,
-    delete: __rpc_call_loaders_Delete,
-};
-
-
-export async function __rpc_call_plugins_Delete(data: null): Promise<string> {
-return await __rpc_call("/rpc", "Delete", "plugins", data);
-}
-
-export async function __rpc_call_plugins_Read(data: null): Promise<Result<PluginInfo[], string>> {
-return await __rpc_call("/rpc", "Read", "plugins", data);
-}
-
-export async function __rpc_call_plugins_Update(data: null): Promise<string> {
-return await __rpc_call("/rpc", "Update", "plugins", data);
-}
-
-export async function __rpc_call_plugins_Create(data: null): Promise<string> {
-return await __rpc_call("/rpc", "Create", "plugins", data);
-}
-
-const __rpc_module_plugins = {
-    create: __rpc_call_plugins_Create,
-    read: __rpc_call_plugins_Read,
-    update: __rpc_call_plugins_Update,
-    delete: __rpc_call_plugins_Delete,
-};
-
-
-export async function __rpc_call_latestLoader_Create(data: null): Promise<string> {
+export async function __rpc_call_latestLoader_Create(data: null = null): Promise<string> {
 return await __rpc_call("/rpc", "Create", "latestLoader", data);
 }
 
-export async function __rpc_call_latestLoader_Update(data: null): Promise<string> {
-return await __rpc_call("/rpc", "Update", "latestLoader", data);
+export async function __rpc_call_latestLoader_Delete(data: null = null): Promise<string> {
+return await __rpc_call("/rpc", "Delete", "latestLoader", data);
 }
 
-export async function __rpc_call_latestLoader_Delete(data: null): Promise<string> {
-return await __rpc_call("/rpc", "Delete", "latestLoader", data);
+export async function __rpc_call_latestLoader_Update(data: null = null): Promise<string> {
+return await __rpc_call("/rpc", "Update", "latestLoader", data);
 }
 
 export async function __rpc_call_latestLoader_Read(data: ModLoaderType): Promise<Result<ModLoader, string>> {
@@ -263,101 +287,9 @@ const __rpc_module_latestLoader = {
 };
 
 
-export async function __rpc_call_source_Create(data: SourceCreation): Promise<Result<bigint, string>> {
-return await __rpc_call("/rpc", "Create", "source", data);
+export async function __rpc_call_game_Update(data: GameUpdate): Promise<Result<Game, string>> {
+return await __rpc_call("/rpc", "Update", "game", data);
 }
-
-export async function __rpc_call_source_Delete(data: number): Promise<Result<Source, string>> {
-return await __rpc_call("/rpc", "Delete", "source", data);
-}
-
-export async function __rpc_call_source_Update(data: SourceUpdate): Promise<Result<Source, string>> {
-return await __rpc_call("/rpc", "Update", "source", data);
-}
-
-export async function __rpc_call_source_Read(data: number): Promise<Option<Source>> {
-return await __rpc_call("/rpc", "Read", "source", data);
-}
-
-const __rpc_module_source = {
-    create: __rpc_call_source_Create,
-    read: __rpc_call_source_Read,
-    update: __rpc_call_source_Update,
-    delete: __rpc_call_source_Delete,
-};
-
-
-export async function __rpc_call_sources_Create(data: SourceCreation[]): Promise<Result<bigint, string>> {
-return await __rpc_call("/rpc", "Create", "sources", data);
-}
-
-export async function __rpc_call_sources_Delete(data: number[]): Promise<Result<bigint, string>> {
-return await __rpc_call("/rpc", "Delete", "sources", data);
-}
-
-export async function __rpc_call_sources_Read(data: null): Promise<Source[]> {
-return await __rpc_call("/rpc", "Read", "sources", data);
-}
-
-export async function __rpc_call_sources_Update(data: null): Promise<string> {
-return await __rpc_call("/rpc", "Update", "sources", data);
-}
-
-const __rpc_module_sources = {
-    create: __rpc_call_sources_Create,
-    read: __rpc_call_sources_Read,
-    update: __rpc_call_sources_Update,
-    delete: __rpc_call_sources_Delete,
-};
-
-
-export async function __rpc_call_mods_Update(data: null): Promise<string> {
-return await __rpc_call("/rpc", "Update", "mods", data);
-}
-
-export async function __rpc_call_mods_Read(data: number): Promise<Mod[]> {
-return await __rpc_call("/rpc", "Read", "mods", data);
-}
-
-export async function __rpc_call_mods_Delete(data: number[]): Promise<Result<bigint, string>> {
-return await __rpc_call("/rpc", "Delete", "mods", data);
-}
-
-export async function __rpc_call_mods_Create(data: ModCreation[]): Promise<Result<bigint, string>> {
-return await __rpc_call("/rpc", "Create", "mods", data);
-}
-
-const __rpc_module_mods = {
-    create: __rpc_call_mods_Create,
-    read: __rpc_call_mods_Read,
-    update: __rpc_call_mods_Update,
-    delete: __rpc_call_mods_Delete,
-};
-
-
-export async function __rpc_call_version_Update(data: null): Promise<string> {
-return await __rpc_call("/rpc", "Update", "version", data);
-}
-
-export async function __rpc_call_version_Delete(data: null): Promise<string> {
-return await __rpc_call("/rpc", "Delete", "version", data);
-}
-
-export async function __rpc_call_version_Create(data: null): Promise<string> {
-return await __rpc_call("/rpc", "Create", "version", data);
-}
-
-export async function __rpc_call_version_Read(data: null): Promise<string> {
-return await __rpc_call("/rpc", "Read", "version", data);
-}
-
-const __rpc_module_version = {
-    create: __rpc_call_version_Create,
-    read: __rpc_call_version_Read,
-    update: __rpc_call_version_Update,
-    delete: __rpc_call_version_Delete,
-};
-
 
 export async function __rpc_call_game_Delete(data: number): Promise<Result<Game, string>> {
 return await __rpc_call("/rpc", "Delete", "game", data);
@@ -371,10 +303,6 @@ export async function __rpc_call_game_Create(data: GameCreation): Promise<Result
 return await __rpc_call("/rpc", "Create", "game", data);
 }
 
-export async function __rpc_call_game_Update(data: GameUpdate): Promise<Result<Game, string>> {
-return await __rpc_call("/rpc", "Update", "game", data);
-}
-
 const __rpc_module_game = {
     create: __rpc_call_game_Create,
     read: __rpc_call_game_Read,
@@ -383,20 +311,92 @@ const __rpc_module_game = {
 };
 
 
-export async function __rpc_call_games_Update(data: null): Promise<string> {
+export async function __rpc_call_loaders_Update(data: null = null): Promise<string> {
+return await __rpc_call("/rpc", "Update", "loaders", data);
+}
+
+export async function __rpc_call_loaders_Read(data: ModLoaderType): Promise<Result<ModLoader[], string>> {
+return await __rpc_call("/rpc", "Read", "loaders", data);
+}
+
+export async function __rpc_call_loaders_Create(data: null = null): Promise<string> {
+return await __rpc_call("/rpc", "Create", "loaders", data);
+}
+
+export async function __rpc_call_loaders_Delete(data: null = null): Promise<string> {
+return await __rpc_call("/rpc", "Delete", "loaders", data);
+}
+
+const __rpc_module_loaders = {
+    create: __rpc_call_loaders_Create,
+    read: __rpc_call_loaders_Read,
+    update: __rpc_call_loaders_Update,
+    delete: __rpc_call_loaders_Delete,
+};
+
+
+export async function __rpc_call_sources_Read(data: null = null): Promise<Source[]> {
+return await __rpc_call("/rpc", "Read", "sources", data);
+}
+
+export async function __rpc_call_sources_Create(data: SourceCreation[]): Promise<Result<bigint, string>> {
+return await __rpc_call("/rpc", "Create", "sources", data);
+}
+
+export async function __rpc_call_sources_Update(data: null = null): Promise<string> {
+return await __rpc_call("/rpc", "Update", "sources", data);
+}
+
+export async function __rpc_call_sources_Delete(data: number[]): Promise<Result<bigint, string>> {
+return await __rpc_call("/rpc", "Delete", "sources", data);
+}
+
+const __rpc_module_sources = {
+    create: __rpc_call_sources_Create,
+    read: __rpc_call_sources_Read,
+    update: __rpc_call_sources_Update,
+    delete: __rpc_call_sources_Delete,
+};
+
+
+export async function __rpc_call_source_Create(data: SourceCreation): Promise<Result<bigint, string>> {
+return await __rpc_call("/rpc", "Create", "source", data);
+}
+
+export async function __rpc_call_source_Read(data: number): Promise<Option<Source>> {
+return await __rpc_call("/rpc", "Read", "source", data);
+}
+
+export async function __rpc_call_source_Update(data: SourceUpdate): Promise<Result<Source, string>> {
+return await __rpc_call("/rpc", "Update", "source", data);
+}
+
+export async function __rpc_call_source_Delete(data: number): Promise<Result<Source, string>> {
+return await __rpc_call("/rpc", "Delete", "source", data);
+}
+
+const __rpc_module_source = {
+    create: __rpc_call_source_Create,
+    read: __rpc_call_source_Read,
+    update: __rpc_call_source_Update,
+    delete: __rpc_call_source_Delete,
+};
+
+
+export async function __rpc_call_games_Update(data: null = null): Promise<string> {
 return await __rpc_call("/rpc", "Update", "games", data);
 }
 
-export async function __rpc_call_games_Delete(data: number[]): Promise<Result<bigint, string>> {
-return await __rpc_call("/rpc", "Delete", "games", data);
+export async function __rpc_call_games_Read(data: null = null): Promise<Game[]> {
+return await __rpc_call("/rpc", "Read", "games", data);
 }
 
 export async function __rpc_call_games_Create(data: GameCreation[]): Promise<Result<bigint, string>> {
 return await __rpc_call("/rpc", "Create", "games", data);
 }
 
-export async function __rpc_call_games_Read(data: null): Promise<Game[]> {
-return await __rpc_call("/rpc", "Read", "games", data);
+export async function __rpc_call_games_Delete(data: number[]): Promise<Result<bigint, string>> {
+return await __rpc_call("/rpc", "Delete", "games", data);
 }
 
 const __rpc_module_games = {
@@ -407,29 +407,61 @@ const __rpc_module_games = {
 };
 
 
-export async function __rpc_call_instances_Read(data: number): Promise<Instance[]> {
-return await __rpc_call("/rpc", "Read", "instances", data);
+export async function __rpc_call_instance_Create(data: InstanceCreation): Promise<Result<bigint, string>> {
+return await __rpc_call("/rpc", "Create", "instance", data);
 }
 
-export async function __rpc_call_instances_Create(data: InstanceCreation[]): Promise<Result<bigint, string>> {
-return await __rpc_call("/rpc", "Create", "instances", data);
+export async function __rpc_call_instance_Update(data: InstanceUpdate): Promise<Result<Instance, string>> {
+return await __rpc_call("/rpc", "Update", "instance", data);
 }
 
-export async function __rpc_call_instances_Update(data: null): Promise<string> {
-return await __rpc_call("/rpc", "Update", "instances", data);
+export async function __rpc_call_instance_Delete(data: number): Promise<Result<Instance, string>> {
+return await __rpc_call("/rpc", "Delete", "instance", data);
 }
 
-export async function __rpc_call_instances_Delete(data: number[]): Promise<Result<bigint, string>> {
-return await __rpc_call("/rpc", "Delete", "instances", data);
+export async function __rpc_call_instance_Read(data: number): Promise<Option<Instance>> {
+return await __rpc_call("/rpc", "Read", "instance", data);
 }
 
-const __rpc_module_instances = {
-    create: __rpc_call_instances_Create,
-    read: __rpc_call_instances_Read,
-    update: __rpc_call_instances_Update,
-    delete: __rpc_call_instances_Delete,
+const __rpc_module_instance = {
+    create: __rpc_call_instance_Create,
+    read: __rpc_call_instance_Read,
+    update: __rpc_call_instance_Update,
+    delete: __rpc_call_instance_Delete,
 };
 
+
+export async function __rpc_call_plugins_Create(data: null = null): Promise<string> {
+return await __rpc_call("/rpc", "Create", "plugins", data);
+}
+
+export async function __rpc_call_plugins_Read(data: null = null): Promise<Result<PluginInfo[], string>> {
+return await __rpc_call("/rpc", "Read", "plugins", data);
+}
+
+export async function __rpc_call_plugins_Delete(data: null = null): Promise<string> {
+return await __rpc_call("/rpc", "Delete", "plugins", data);
+}
+
+export async function __rpc_call_plugins_Update(data: null = null): Promise<string> {
+return await __rpc_call("/rpc", "Update", "plugins", data);
+}
+
+const __rpc_module_plugins = {
+    create: __rpc_call_plugins_Create,
+    read: __rpc_call_plugins_Read,
+    update: __rpc_call_plugins_Update,
+    delete: __rpc_call_plugins_Delete,
+};
+
+
+export async function __rpc_invoke_version(data: null = null): Promise<string> {
+return await __rpc_invoke("/rpc", "version", data);
+}
+
+const __rpc_invokers = {
+version: __rpc_invoke_version,
+};
 
 export type Dirs = { root: string; data: string; cache: string; temp: string }
 
@@ -508,19 +540,19 @@ export type SourceCreation = { name: string }
 export type SourceUpdate = { id: number; name?: string | null }
 
 export const RPC = {
-dirs: __rpc_module_dirs,
-mod: __rpc_module_mod,
-instance: __rpc_module_instance,
-loaders: __rpc_module_loaders,
-plugins: __rpc_module_plugins,
-latestLoader: __rpc_module_latestLoader,
-source: __rpc_module_source,
-sources: __rpc_module_sources,
-mods: __rpc_module_mods,
-version: __rpc_module_version,
-game: __rpc_module_game,
-games: __rpc_module_games,
 instances: __rpc_module_instances,
+mod: __rpc_module_mod,
+mods: __rpc_module_mods,
+dirs: __rpc_module_dirs,
+latestLoader: __rpc_module_latestLoader,
+game: __rpc_module_game,
+loaders: __rpc_module_loaders,
+sources: __rpc_module_sources,
+source: __rpc_module_source,
+games: __rpc_module_games,
+instance: __rpc_module_instance,
+plugins: __rpc_module_plugins,
+invoke: __rpc_invokers,
 };
 
 export default RPC;

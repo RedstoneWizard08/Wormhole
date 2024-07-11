@@ -15,11 +15,9 @@ use whcore::{errors::Stringify, manager::CoreManager};
 
 /// Create a router.
 pub fn build_router() -> Router<Arc<PrismaClient>> {
-    let mut router = Router::<Arc<PrismaClient>>::new().mount(
+    let mut router = Router::<Arc<PrismaClient>>::new().invoke(
         "version",
-        Module::builder()
-            .read(wrap(|_cx, _: ()| async move { env!("CARGO_PKG_VERSION") }))
-            .build(),
+        wrap(|_cx, _: ()| async move { env!("CARGO_PKG_VERSION") }),
     );
 
     prisma_module_filtered!(router += ["mod", "mods"] {

@@ -44,6 +44,32 @@ pub struct TauriCommandOutput {
     pub id: String,
 }
 
+/// Invoker input model for [`tauri`].
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct TauriInvokerInput {
+    /// The command that was run.
+    pub command: String,
+
+    /// The data provided.
+    pub data: Value,
+
+    /// An ID that represents this invocation.
+    pub id: String,
+}
+
+/// Invoker output model for [`tauri`].
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct TauriInvokerOutput {
+    /// The command that was run.
+    pub command: String,
+
+    /// The data returned from the invocation.
+    pub result: Value,
+
+    /// An ID that represents this invocation.
+    pub id: String,
+}
+
 /// The [`Plugin`] for [`tauri`] which wraps the [`Router`] with its state.
 pub struct RouterPlugin<Cx: TripleS + Clone> {
     /// The [`Router`].
@@ -53,12 +79,8 @@ pub struct RouterPlugin<Cx: TripleS + Clone> {
     pub(crate) state: Cx,
 }
 
-impl<R: Runtime, Cx: TripleS + Clone> Plugin<R> for RouterPlugin<Cx> {
-    fn name(&self) -> &'static str {
-        "rpc-rs"
-    }
-
-    fn initialize(&mut self, app: &AppHandle<R>, _config: Value) -> Result<()> {
+impl<Cx: TripleS + Clone> RouterPlugin<Cx> {
+    fn initialize_modules<R: Runtime>(&mut self, app: &AppHandle<R>) -> Result<()> {
         let (tx, mut rx) = unbounded_channel::<TauriCommandInput>();
         let (rtx, mut rrx) = unbounded_channel::<TauriCommandOutput>();
 
@@ -122,6 +144,82 @@ impl<R: Runtime, Cx: TripleS + Clone> Plugin<R> for RouterPlugin<Cx> {
                 Err(_) => Ok(()),
             };
         });
+
+        Ok(())
+    }
+
+    fn initialize_invokers<R: Runtime>(&mut self, app: &AppHandle<R>) -> Result<()> {
+        let (tx, mut rx) = unbounded_channel::<TauriInvokerInput>();
+        let (rtx, mut rrx) = unbounded_channel::<TauriInvokerOutput>();
+
+        tokio::spawn({
+            let state = self.state.clone();
+            let router = self.router.clone();
+
+            async move {
+                while let Some(data) = rx.recv().await {
+                    let rtx = rtx.clone();
+                    let state = state.clone();
+                    let router = router.clone();
+                    let invoker = router
+                        .invokers
+                        .iter()
+                        .find(|v| v.0.clone() == data.command)
+                        .map(|v| v.1.clone());
+
+                    if let Some(invoker) = invoker.clone() {
+                        tokio::spawn(async move {
+                            let result = invoker
+                                .run(state, serde_json::to_string(&data.data).unwrap())
+                                .await;
+
+                            if let Ok(result) =
+                                serde_json::to_value(result.map_err(|v| v.to_string()))
+                            {
+                                let _ = rtx.send(TauriInvokerOutput {
+                                    command: data.command,
+                                    id: data.id,
+                                    result,
+                                });
+                            }
+                        });
+                    }
+                }
+            }
+        });
+
+        tokio::spawn({
+            let handle = app.clone();
+
+            async move {
+                while let Some(data) = rrx.recv().await {
+                    let _ = handle.emit_all("plugin:rpc-rs:transport:invoker:resp", data);
+                }
+            }
+        });
+
+        app.listen_global("plugin:rpc-rs:transport:invoker", move |event| {
+            let data =
+                serde_json::from_str::<TauriInvokerInput>(event.payload().unwrap_or_default());
+
+            let _ = match data {
+                Ok(data) => tx.send(data),
+                Err(_) => Ok(()),
+            };
+        });
+
+        Ok(())
+    }
+}
+
+impl<R: Runtime, Cx: TripleS + Clone> Plugin<R> for RouterPlugin<Cx> {
+    fn name(&self) -> &'static str {
+        "rpc-rs"
+    }
+
+    fn initialize(&mut self, app: &AppHandle<R>, _config: Value) -> Result<()> {
+        self.initialize_modules(app)?;
+        self.initialize_invokers(app)?;
 
         Ok(())
     }
