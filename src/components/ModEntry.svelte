@@ -1,10 +1,10 @@
 <script lang="ts">
-import { formatBytes, unwrap } from "$api/util";
+import { formatBytes } from "$api/util";
 import { createEventDispatcher, onMount } from "svelte";
 import Delete from "./Delete.svelte";
-import type { DbMod, Instance } from "$api/bindings/app";
+import { type Mod, type Instance, unwrap, RPC, type Source } from "$api/bindings/app";
 
-export let mod: DbMod | null = null;
+export let mod: Mod | null = null;
 export let instance: Instance;
 export let head = false;
 
@@ -13,7 +13,7 @@ let source: string | null = null;
 const disp = createEventDispatcher();
 
 onMount(async () => {
-    // source = unwrap(await commands.getSourceId(mod?.source_id!, null));
+    source = unwrap(await RPC.source.read(mod?.sourceId!)).name;
 });
 
 const uninstall = async () => {
@@ -31,7 +31,7 @@ const uninstall = async () => {
         <td class="source">Source</td>
         <td class="actions" />
     {:else}<td class="name">{mod?.name}</td>
-        <td class="file">{mod?.file_name}</td>
+        <td class="file">{mod?.file}</td>
         <td class="size">{formatBytes(mod?.size || 0)}</td>
         <td class="source">{source}</td>
 

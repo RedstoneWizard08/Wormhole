@@ -2,8 +2,6 @@
 import DOMPurify from "dompurify";
 import { page } from "$app/stores";
 import LoadingPage from "$components/LoadingPage.svelte";
-import { listen, unwrap } from "$api/util";
-import type { SourceMapping, Mod, ModVersion } from "$bindings";
 import { marked } from "marked";
 import { onMount } from "svelte";
 import Dropdown from "$components/Dropdown.svelte";
@@ -13,7 +11,7 @@ const modId = $page.params.mod;
 const source = $page.params.source;
 const gameId = Number.parseInt($page.params.game);
 
-let modInfo: Mod | null = null;
+let modInfo: QueryMod | null = null;
 let isLoading = true;
 let mods = false;
 let instanceId = Number.parseInt($page.url.searchParams.get("instance") || "-1");
@@ -21,8 +19,8 @@ let downloading = false;
 let total = 0;
 let progress = 0;
 let icon: string | null | undefined = null;
-let versions: ModVersion[] = [];
-let latest: ModVersion | null = null;
+let versions: QueryModVersion[] = [];
+let latest: QueryModVersion | null = null;
 let selected: DropdownItem = { id: "", text: "" };
 let installed = false;
 

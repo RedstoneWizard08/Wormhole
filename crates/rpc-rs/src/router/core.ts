@@ -1,6 +1,13 @@
 import { event } from "@tauri-apps/api";
 
-type Method = "Create" | "Read" | "Update" | "Delete";
+export type Method = "Create" | "Read" | "Update" | "Delete";
+export type Result<T, E> = __Ok__<T> | __Err__<E>;
+export type Option<T> = __Some__<T> | __None__;
+
+type __Ok__<T> = { Ok: T };
+type __Err__<E> = { Err: E };
+type __Some__<T> = { Some: T };
+type __None__ = { None: null };
 
 interface TauriInput<T> {
     command: string;
@@ -57,12 +64,6 @@ const serializeQuery = (initialObj: any) => {
 
 const responseQueue: Record<string, (data: unknown) => void> = {};
 
-export const setupTauri = () => {
-    event.listen<TauriOutput<unknown>>("plugin:rpc-rs:transport:resp", ({ payload: data }) => {
-        responseQueue[data.id]?.(data.result);
-    });
-};
-
 const __rpc_call = async <T, O>(
     routePrefix: string,
     method: Method,
@@ -98,4 +99,21 @@ const __rpc_call = async <T, O>(
     event.emit("plugin:rpc-rs:transport", input);
 
     return promise;
+};
+
+export const setupTauri = () => {
+    event.listen<TauriOutput<unknown>>("plugin:rpc-rs:transport:resp", ({ payload: data }) => {
+        responseQueue[data.id]?.(data.result);
+    });
+};
+export const unwrap = <T>(res: Result<T, any> | Option<T>): T => {
+    if ("None" in res) {
+        throw new ReferenceError("Tried to unwrap a 'None' value!");
+    // biome-ignore lint/style/noUselessElse: IT'S NOT REAL
+    } else if ("Some" in res) {
+        return res.Some;
+    // biome-ignore lint/style/noUselessElse: IT'S NOT REAL
+    } else {
+        return (res as __Ok__<T>).Ok;
+    }
 };

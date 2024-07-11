@@ -74,6 +74,15 @@ impl CoreManager {
         self.temp_dir().join(game.as_ref())
     }
 
+    pub fn game_dirs(&self, game: impl AsRef<str>) -> Dirs {
+        Dirs {
+            cache: self.game_cache_dir(game.as_ref()),
+            data: self.game_data_dir(game.as_ref()),
+            root: PathBuf::new(),
+            temp: self.game_temp_dir(game.as_ref()),
+        }
+    }
+
     fn mem_(&mut self) -> u64 {
         if self.mem == 0 {
             self.mem = (System::new_all().total_memory() / 8).max(4096).min(8192);

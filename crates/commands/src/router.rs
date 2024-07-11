@@ -1,9 +1,17 @@
 //! The router module.
 
-use std::sync::Arc;
-
+use crate::{
+    base::get_plugins,
+    loader::{get_latest_loader, get_loaders},
+};
 use data::prisma::{game, instance, r#mod, source, PrismaClient};
-use rpc_rs::{module::module::Module, prisma_module, proc::wrap, router::router::Router};
+use mcmeta::cmd::modded::ModLoaderType;
+use rpc_rs::{
+    module::module::Module, prisma_module, prisma_module_filtered, proc::wrap,
+    router::router::Router,
+};
+use std::sync::Arc;
+use whcore::{errors::Stringify, manager::CoreManager};
 
 /// Create a router.
 pub fn build_router() -> Router<Arc<PrismaClient>> {
@@ -14,11 +22,12 @@ pub fn build_router() -> Router<Arc<PrismaClient>> {
             .build(),
     );
 
-    prisma_module!(router += ["mod", "mods"] {
+    prisma_module_filtered!(router += ["mod", "mods"] {
         client: PrismaClient,
         module: r#mod,
         container: r#mod,
         primary_key: id,
+        filter: instance_id = i32,
     });
 
     prisma_module!(router += ["game", "games"] {
@@ -35,12 +44,45 @@ pub fn build_router() -> Router<Arc<PrismaClient>> {
         primary_key: id,
     });
 
-    prisma_module!(router += ["instance", "instances"] {
+    prisma_module_filtered!(router += ["instance", "instances"] {
         client: PrismaClient,
         module: instance,
         container: instance,
         primary_key: id,
+        filter: game_id = i32,
     });
 
     router
+        .mount(
+            "plugins",
+            Module::builder()
+                .read(wrap(
+                    |_cx, _: ()| async move { get_plugins().await.stringify() },
+                ))
+                .build(),
+        )
+        .mount(
+            "latestLoader",
+            Module::builder()
+                .read(wrap(|_cx, ty: ModLoaderType| async move {
+                    get_latest_loader(ty).await.stringify()
+                }))
+                .build(),
+        )
+        .mount(
+            "loaders",
+            Module::builder()
+                .read(wrap(|_cx, ty: ModLoaderType| async move {
+                    get_loaders(ty).await.stringify()
+                }))
+                .build(),
+        )
+        .mount(
+            "dirs",
+            Module::builder()
+                .read(wrap(|_cx, game: String| async move {
+                    CoreManager::get().game_dirs(game)
+                }))
+                .build(),
+        )
 }

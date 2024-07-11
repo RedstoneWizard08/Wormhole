@@ -1,8 +1,8 @@
 <script lang="ts">
-import type { ModLoader, ModLoaderType } from "$api/bindings/app";
+    import { RPC, unwrap, type ModLoader, type ModLoaderType } from "$api/bindings/app";
 import { getLoader, getLoaderVersion, getMinecraft } from "$api/loader";
 import { isRelease, isSnapshot } from "$api/mc";
-import { isChildOf, unwrap } from "$api/util";
+import { isChildOf } from "$api/util";
 import { createEventDispatcher, onMount } from "svelte";
 
 export let loader: ModLoader | undefined;
@@ -51,10 +51,10 @@ onMount(async () => {
     if (loader) {
         vanillaVer = getMinecraft(loader);
     } else {
-        // vanillaVer = getMinecraft(unwrap(await commands.getLatestLoader("Vanilla", null)));
+        vanillaVer = getMinecraft(unwrap(await RPC.latestLoader.read("Vanilla")));
     }
 
-    // vanilla = unwrap(await commands.getLoaders("Vanilla", null));
+    vanilla = unwrap(await RPC.loaders.read("Vanilla"));
 
     window.addEventListener("click", (ev) => {
         if (

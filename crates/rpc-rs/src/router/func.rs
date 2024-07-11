@@ -2,9 +2,35 @@
 
 use specta::{
     function::FunctionDataType,
-    ts::{datatype, ExportConfig, Result},
-    TypeMap,
+    ts::{ExportConfig, Result},
+    DataType, LiteralType, TypeMap,
 };
+
+/// A workaround for [`LiteralType::to_ts`] being private.
+pub trait ToTs {
+    /// Get the TypeScript type name.
+    fn to_ts(&self) -> String;
+}
+
+impl ToTs for LiteralType {
+    fn to_ts(&self) -> String {
+        match self.clone() {
+            Self::i8(v) => v.to_string(),
+            Self::i16(v) => v.to_string(),
+            Self::i32(v) => v.to_string(),
+            Self::u8(v) => v.to_string(),
+            Self::u16(v) => v.to_string(),
+            Self::u32(v) => v.to_string(),
+            Self::f32(v) => v.to_string(),
+            Self::f64(v) => v.to_string(),
+            Self::bool(v) => v.to_string(),
+            Self::String(v) => format!(r#""{v}""#),
+            Self::char(v) => format!(r#""{v}""#),
+            Self::None => "null".into(),
+            _ => "unknown".into(),
+        }
+    }
+}
 
 /// Convert a [FunctionDataType] into a function header like would be used in a `.d.ts` file.
 /// If your function requires a function body you can copy this function into your own codebase.
@@ -49,4 +75,20 @@ pub fn export_function_header(dt: FunctionDataType, config: &ExportConfig) -> Re
     }
 
     Ok(s)
+}
+
+/// A wrapper of [`specta::ts::datatype`] to properly format a [`Result`] type.
+pub fn datatype(conf: &ExportConfig, typ: &DataType, type_map: &TypeMap) -> Result<String> {
+    if let DataType::Result(res) = typ {
+        let ok = datatype(conf, &res.0, type_map)?;
+        let err = datatype(conf, &res.1, type_map)?;
+
+        Ok(format!("Result<{}, {}>", ok, err))
+    } else if let DataType::Nullable(res) = typ {
+        let it = datatype(conf, &res, type_map)?;
+
+        Ok(format!("Option<{}>", it))
+    } else {
+        specta::ts::datatype(conf, typ, type_map)
+    }
 }

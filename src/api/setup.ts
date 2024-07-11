@@ -1,5 +1,5 @@
+import { setupTauri } from "./bindings/app";
 import { boot } from "./boot";
-import { createMockAPI } from "./dev";
 
 export const setup = async () => {
     if (import.meta.env.TAURI_WEB_DEV) {
@@ -7,9 +7,8 @@ export const setup = async () => {
 
         eruda.init();
         eruda.position({ x: 10, y: window.innerHeight - 45 });
-
-        createMockAPI();
     }
 
+    setupTauri();
     await boot();
 };

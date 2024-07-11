@@ -1,6 +1,7 @@
 #[derive(
     Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize, Type, Default,
 )]
+#[specta(rename = "QueryMod")]
 pub struct Mod {
     /// The mod's ID in its source.
     /// This could be an integer or a string,
@@ -47,6 +48,7 @@ unsafe impl Send for Mod {}
 unsafe impl Sync for Mod {}
 
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize, Type)]
+#[specta(rename = "QueryModVersion")]
 pub struct ModVersion {
     /// The version ID.
     pub id: String,

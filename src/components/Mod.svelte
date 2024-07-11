@@ -1,15 +1,13 @@
 <script lang="ts">
 import { goto } from "$app/navigation";
 import { onMount } from "svelte";
-// biome-ignore lint/style/useImportType: <explanation>
-import { type SourceMapping, type Mod } from "$bindings";
-import { unwrap } from "$api/util";
+import { RPC, unwrap, type QueryMod, type Source } from "$bindings";
 
-export let mod: Mod;
+export let mod: QueryMod;
 export let game: number;
 export let instance: number;
 
-let source: SourceMapping | null = null;
+let source: Source | null = null;
 let installed = false;
 let installing = false;
 
@@ -23,11 +21,11 @@ const fmt = new Intl.NumberFormat("en-US", {
 });
 
 onMount(async () => {
-    // source = unwrap(await commands.getSourceId(mod.source, null)) as SourceMapping;
+    source = unwrap(await RPC.source.read(mod.sourceId));
 
-    // const mods = unwrap(await commands.getMods(instance, null));
+    const mods = await RPC.mods.read(instance);
 
-    // installed = mods.find((v) => v.mod_id === mod.id) != null;
+    installed = mods.find((v) => v.mod === mod.id) != null;
 });
 
 const download = async (ev: MouseEvent) => {

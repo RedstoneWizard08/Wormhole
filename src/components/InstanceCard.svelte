@@ -3,7 +3,6 @@ import { goto } from "$app/navigation";
 import Delete from "./Delete.svelte";
 import { plugins } from "$api/stores";
 import type { Instance } from "$bindings";
-import { unwrap } from "$api/util";
 
 export let data: Instance;
 // This is just the current instance in the parent for deletion (a reference)
@@ -11,7 +10,7 @@ export let current: Instance | null;
 export let deleteing: boolean;
 
 const clicked = () => {
-    goto(`/${data.game_id}/instance/${data.id}`);
+    goto(`/${data.gameId}/instance/${data.id}`);
 };
 
 const doLaunch = async (e: MouseEvent) => {
@@ -34,7 +33,7 @@ const doDelete = async (e: MouseEvent) => {
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <div class="instance-container" on:click={clicked}>
     <img
-        src={$plugins.find((v) => v.game == data.game_id)?.banner_url}
+        src={$plugins.find((v) => v.game == data.gameId)?.banner_url}
         class="banner"
         alt={"background"} />
 

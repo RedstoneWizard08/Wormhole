@@ -2,11 +2,10 @@
 import ModEntry from "$components/ModEntry.svelte";
 import { marked } from "marked";
 import { page } from "$app/stores";
-import { unwrap } from "$api/util";
 import Back from "$components/Back.svelte";
 import { goto } from "$app/navigation";
 import { plugins } from "$api/stores";
-import type { DbMod, Instance, ModLoader } from "$bindings";
+import { RPC, type Mod, type Instance, type ModLoader, unwrap } from "$bindings";
 import { onMount } from "svelte";
 import LoaderDropdown from "$components/LoaderDropdown.svelte";
 
@@ -14,7 +13,7 @@ let instance: Instance = null!;
 let background: string | undefined;
 let executable: string | undefined;
 let editing = false;
-let mods: DbMod[] = [];
+let mods: Mod[] = [];
 let editor: HTMLTextAreaElement | undefined;
 let loader: ModLoader | undefined;
 let installing = false;
@@ -24,11 +23,11 @@ $: description = instance?.description;
 const id = $page.params.instance;
 
 const refresh = async () => {
-    // instance = unwrap(await commands.getInstance(Number.parseInt(id || "-1", 10), null));
-    // mods = unwrap(await commands.getMods(instance.id!, null));
+    instance = unwrap(await RPC.instance.read(Number.parseInt(id || "-1", 10)));
+    mods = await RPC.mods.read(instance.id);
 
-    background = $plugins.find((v) => v.game === instance.game_id)?.banner_url;
-    executable = instance.data_dir;
+    background = $plugins.find((v) => v.game === instance.gameId)?.banner_url;
+    executable = instance.dataDir;
 
     loader = instance.loader ? JSON.parse(instance.loader) : { Vanilla: "<unknown>" };
 };
@@ -36,10 +35,12 @@ const refresh = async () => {
 onMount(refresh);
 
 const save = async () => {
-    if (instance) {
+    if (instance && editor && editor.value) {
         instance = unwrap(
-            null
-            // await commands.updateInstance(instance.id!, editor?.value || instance.description, null)
+            await RPC.instance.update({
+                id: instance.id,
+                description: editor.value,
+            })
         );
     }
 
@@ -67,7 +68,7 @@ const updateDescription = (ev: Event) => {
 };
 
 const gotoMods = () => {
-    goto(`/${instance?.game_id}/mods?instance=${instance?.id}`);
+    goto(`/${instance?.gameId}/mods?instance=${instance?.id}`);
 };
 
 const reinstall = async () => {
@@ -80,7 +81,7 @@ const reinstall = async () => {
 </script>
 
 <div class="full-instance-container">
-    <Back to="/{instance?.game_id}/instances" />
+    <Back to="/{instance?.gameId}/instances" />
 
     <div class="instance">
         <img src={background} class="background" alt="background" />
@@ -91,7 +92,7 @@ const reinstall = async () => {
             </div>
 
             <div class="right">
-                {#if loader && instance.game_id == 432}
+                {#if loader && instance.gameId == 432}
                     <LoaderDropdown bind:loader on:change={reinstall} bind:loading={installing} />
                 {/if}
 

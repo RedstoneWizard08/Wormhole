@@ -2,8 +2,7 @@
 import InstanceCard from "$components/InstanceCard.svelte";
 import { onMount } from "svelte";
 import { page } from "$app/stores";
-import type { Instance } from "$bindings";
-import { unwrap } from "$api/util";
+import { RPC, unwrap, type Instance } from "$bindings";
 
 let adding = false;
 let deleteing = false;
@@ -15,24 +14,31 @@ let gameId = Number.parseInt($page.params.game);
 let name = "";
 
 onMount(async () => {
-    // instances = unwrap(await commands.getInstances(gameId, null));
+    instances = await RPC.instances.read(gameId);
 });
 
 const addInstance = async () => {
-    // unwrap(await commands.createInstance(name, gameId, null));
-    name = "";
+    const dirs = await RPC.dirs.read(unwrap(await RPC.game.read(gameId)).name);
 
+    RPC.instance.create({
+        name,
+        gameId,
+        cacheDir: dirs.cache,
+        dataDir: dirs.data,
+        installDir: dirs.root,
+    });
+    
+    name = "";
     adding = false;
 
-    // instances = unwrap(await commands.getInstances(gameId, null));
+    instances = await RPC.instances.read(gameId);
 };
 
 const deleteInstance = async () => {
     // commands.deleteInstance(current?.id!, null);
 
     deleteing = false;
-
-    // instances = unwrap(await commands.getInstances(gameId, null));
+    instances = await RPC.instances.read(gameId);
 };
 
 const toggleAdding = () => {
