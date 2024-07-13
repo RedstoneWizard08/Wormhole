@@ -2,6 +2,7 @@
 import InstanceCard from "$components/InstanceCard.svelte";
 import { onMount } from "svelte";
 import { page } from "$app/stores";
+import { plugins } from "../../../api/stores";
 import { RPC, unwrap, type Instance } from "$bindings";
 
 let adding = false;
@@ -18,9 +19,10 @@ onMount(async () => {
 });
 
 const addInstance = async () => {
-    const dirs = await RPC.dirs.read(unwrap(await RPC.game.read(gameId)).name);
+    const game = $plugins.find((v) => v.game === gameId)!
+    const dirs = await RPC.dirs.read(game.display_name);
 
-    RPC.instance.create({
+    await RPC.instance.create({
         name,
         gameId,
         cacheDir: dirs.cache,

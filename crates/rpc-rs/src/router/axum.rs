@@ -34,9 +34,9 @@ impl<Cx: TripleS + Clone> Router<Cx> {
 impl From<axum::http::Method> for Method {
     fn from(value: axum::http::Method) -> Self {
         match value {
-            axum::http::Method::GET => Self::Read,
+            axum::http::Method::POST => Self::Read,
             axum::http::Method::PUT => Self::Create,
-            axum::http::Method::POST => Self::Update,
+            axum::http::Method::PATCH => Self::Update,
             axum::http::Method::DELETE => Self::Delete,
             _ => Self::Error,
         }
@@ -49,23 +49,18 @@ impl<Cx: TripleS + Clone> Handler<((), Request), Cx> for Module<Cx> {
     fn call(self, req: Request, state: Cx) -> Self::Future {
         Box::pin(async move {
             let method = req.method().clone();
+            let mut stream = req.into_body().into_data_stream();
+            let mut data = Vec::new();
 
-            let data = if method == axum::http::Method::GET {
-                req.uri().query().unwrap_or_default().to_string()
-            } else {
-                let mut stream = req.into_body().into_data_stream();
-                let mut data = Vec::new();
+            while let Some(Ok(frame)) = stream.frame().await {
+                if frame.is_data() {
+                    let bytes = frame.into_data().unwrap();
 
-                while let Some(Ok(frame)) = stream.frame().await {
-                    if frame.is_data() {
-                        let bytes = frame.into_data().unwrap();
-
-                        data.extend(bytes);
-                    }
+                    data.extend(bytes);
                 }
+            }
 
-                String::from_utf8(data).unwrap_or_default()
-            };
+            let data = String::from_utf8(data).unwrap_or_default();
 
             match self.exec(state, Method::from(method), data).await {
                 Ok(data) => Response::new(Body::new(data)),

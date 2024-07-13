@@ -26,3 +26,4 @@ pub mod plugin;
 pub mod register;
 pub mod res;
 pub mod unity;
+pub mod seed;
