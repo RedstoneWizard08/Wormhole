@@ -104,6 +104,7 @@ libc = "0.2.155"
 thiserror = "1.0.61"
 murmur2 = "0.1.0"
 serde_repr = "0.1.19"
+serde_derive = "1.0.209"
 tungstenite = { features = [
     "rustls",
 ], git = "https://github.com/snapview/tungstenite-rs", version = "0.20.1", rev = "fc17f73" }
@@ -145,6 +146,7 @@ bindings = { path = "./apps/bindings" }
 commands = { path = "./crates/commands" }
 plugins = { path = "./crates/plugins" }
 rpc-rs = { path = "./crates/rpc-rs", features = ["axum", "tauri", "prisma"] }
+rpc-rs-macros = { path = "./crates/rpc-rs-macros" }
 
 [workspace]
 resolver = "2"
@@ -179,5 +181,5 @@ members = [
     "external/prisma-client-rust/crates/generator-macros",
     "external/prisma-client-rust/crates/generator-shared",
     "external/prisma-client-rust/crates/sdk",
-    "external/prisma-client-rust/prisma-cli",
+    "external/prisma-client-rust/prisma-cli", "crates/rpc-rs-macros",
 ]

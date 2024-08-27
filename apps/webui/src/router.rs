@@ -40,7 +40,6 @@ impl RouterBuilder {
     pub async fn routes(mut self) -> Self {
         let db = get_or_init_client().await.unwrap();
 
-        // TODO: Axum RSPC
         self.router = self.router.nest("/rpc", build_router().axum(db));
 
         if is_openvscode_server().unwrap() {
