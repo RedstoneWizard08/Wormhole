@@ -8,125 +8,25 @@ generator client {
   output   = "../crates/data/src/prisma.rs"
 }
 
-/// A game.
-model Game {
-  /// The game's ID in the database.
-  id Int @id @default(autoincrement())
-
-  /// The displayed name for the game
-  name String @unique
-
-  /// The game's ID on CurseForge
-  curseforge Int?
-
-  /// The game's ID on Thunderstore
-  thunderstore String?
-
-  /// The game's ID on SpaceDock
-  spacedock String?
-
-  /// Does CKAN support this game?
-  ckan Boolean @default(false)
-
-  /// Does Modrinth support this game?
-  modrinth Boolean @default(false)
-
-  /// A list of sources that support this game.
-  sources Source[]
-
-  /// A list of instances assigned to this game.
-  instances Instance[]
-}
-
-/// A mod source.
-model Source {
-  /// The source's ID in the database>
-  id Int @id @default(autoincrement())
-
-  /// The displayed name of this source.
-  name String @unique
-
-  /// A list of games that this source supports.
-  games Game[]
-
-  /// A list of mods that were installed from this source.
-  mods Mod[]
-}
-
-/// An instance.
 model Instance {
-  /// The instance's ID in the database.
-  id Int @id @default(autoincrement())
-
-  /// The display name of this instance.
-  name String
-
-  /// The game that this instance is assigned to.
-  game Game @relation(fields: [gameId], references: [id])
-
-  /// The game's ID that this instance is assigned to.
-  gameId Int
-
-  /// The location to store misc files.
-  dataDir String
-
-  /// The location to store cached files.
-  cacheDir String
-
-  /// The directory this game was installed to.
-  installDir String
-
-  /// The instance's description.
-  description String @default("")
-
-  /// When the instance was created.
-  created DateTime @default(now())
-
-  /// When the instance was last updated.
-  updated DateTime @default(now()) @updatedAt
-
-  /// The JSON-serialized form of the mod loader for this instance.
-  loader String?
-
-  /// A list of mods installed to this instance.
-  mods Mod[]
+    id Int @id @unique @default(autoincrement())
+    name String
+    plugin String // The associated plugin ID for this instance
+    description String
+    updated DateTime @updatedAt
+    iconUrl String? // If this isn't present, just use the game's icon.
+    bannerUrl String? // If this isn't present, just use the game's banner (or none).
+    extraData String // Any extra JSON-serialized data for the plugin/instance.
 }
 
-/// A mod.
-model Mod {
-  /// The mod's ID in the database.
-  id Int @id @default(autoincrement())
-
-  /// The mod or project's ID in it's source.
-  mod String
-
-  /// The installed version of the mod (from it's source).
-  version String?
-
-  /// The mod's display name.
-  name String
-
-  /// The installed file's name.
-  file String @unique
-
-  /// The file's size.
-  size Int
-
-  /// The file's hash, if provided by the source.
-  hash String? @unique
-
-  /// A JSON-serialized list of files created by installing the mod.
-  installed_files String
-
-  /// The source this mod came from.
-  source Source @relation(fields: [sourceId], references: [id])
-
-  /// The source's ID that this mod game from.
-  sourceId Int
-
-  /// The instance the mod was installed to.
-  instance Instance @relation(fields: [instanceId], references: [id])
-
-  /// The instance's ID that this mod was installed to.
-  instanceId Int
+model InstalledMod {
+    id Int @id @unique @default(autoincrement())
+    fileSize Int
+    updated DateTime @updatedAt
+    iconUrl String?
+    source String // The source that this mod comes from
+    projectId String @unique // This is the project ID in the mod's source
+    projectName String
+    projectDesc String?
+    projectVersion String? // If installed manually, for Minecraft mods, we can pull this info from them
 }

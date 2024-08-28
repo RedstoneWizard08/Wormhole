@@ -4,10 +4,27 @@ use std::env::consts::{ARCH, OS};
 
 use anyhow::Result;
 use reqwest::Client;
+use serde::{Deserialize, Serialize};
 use serde_json::Value;
+use specta::Type;
 use strum_macros::{Display, EnumString};
+use whcore::type_map;
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, EnumString, Display)]
+#[derive(
+    Debug,
+    Clone,
+    Copy,
+    PartialEq,
+    Eq,
+    PartialOrd,
+    Ord,
+    Hash,
+    EnumString,
+    Display,
+    Serialize,
+    Deserialize,
+    Type,
+)]
 pub enum OperatingSystem {
     #[strum(serialize = "windows")]
     Windows,
@@ -31,7 +48,21 @@ impl OperatingSystem {
     }
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, EnumString, Display)]
+#[derive(
+    Debug,
+    Clone,
+    Copy,
+    PartialEq,
+    Eq,
+    PartialOrd,
+    Ord,
+    Hash,
+    EnumString,
+    Display,
+    Serialize,
+    Deserialize,
+    Type,
+)]
 pub enum Arch {
     #[strum(serialize = "x64")]
     Amd64,
@@ -104,4 +135,9 @@ pub async fn get_release_name(java: i32, os: OperatingSystem, arch: Arch) -> Res
 
 pub async fn get_release_url(java: i32, os: OperatingSystem, arch: Arch) -> Result<String> {
     Ok(format!("https://api.adoptium.net/v3/binary/version/{}/{}/{}/jre/hotspot/normal/eclipse?project=jdk", get_release_name(java, os, arch).await?, os, arch))
+}
+
+type_map! {
+    OperatingSystem,
+    Arch,
 }

@@ -68,17 +68,11 @@ pub mod _prisma {
         pub fn _transaction(&self) -> ::prisma_client_rust::TransactionBuilder<Self> {
             ::prisma_client_rust::TransactionBuilder::_new(self, &self.0)
         }
-        pub fn game(&self) -> super::game::Actions {
-            super::game::Actions { client: &self.0 }
-        }
-        pub fn source(&self) -> super::source::Actions {
-            super::source::Actions { client: &self.0 }
-        }
         pub fn instance(&self) -> super::instance::Actions {
             super::instance::Actions { client: &self.0 }
         }
-        pub fn r#mod(&self) -> super::r#mod::Actions {
-            super::r#mod::Actions { client: &self.0 }
+        pub fn installed_mod(&self) -> super::installed_mod::Actions {
+            super::installed_mod::Actions { client: &self.0 }
         }
     }
     impl ::prisma_client_rust::PrismaClient for PrismaClient {
@@ -106,125 +100,71 @@ pub mod _prisma {
     }
     impl ::prisma_client_rust::TransactionIsolationLevel for TransactionIsolationLevel {}
     #[derive(Debug, Clone, Copy, :: serde :: Serialize, :: serde :: Deserialize, PartialEq, Eq)]
-    pub enum GameScalarFieldEnum {
-        #[serde(rename = "id")]
-        Id,
-        #[serde(rename = "name")]
-        Name,
-        #[serde(rename = "curseforge")]
-        Curseforge,
-        #[serde(rename = "thunderstore")]
-        Thunderstore,
-        #[serde(rename = "spacedock")]
-        Spacedock,
-        #[serde(rename = "ckan")]
-        Ckan,
-        #[serde(rename = "modrinth")]
-        Modrinth,
-    }
-    impl ToString for GameScalarFieldEnum {
-        fn to_string(&self) -> String {
-            match self {
-                Self::Id => "id".to_string(),
-                Self::Name => "name".to_string(),
-                Self::Curseforge => "curseforge".to_string(),
-                Self::Thunderstore => "thunderstore".to_string(),
-                Self::Spacedock => "spacedock".to_string(),
-                Self::Ckan => "ckan".to_string(),
-                Self::Modrinth => "modrinth".to_string(),
-            }
-        }
-    }
-    #[derive(Debug, Clone, Copy, :: serde :: Serialize, :: serde :: Deserialize, PartialEq, Eq)]
-    pub enum SourceScalarFieldEnum {
-        #[serde(rename = "id")]
-        Id,
-        #[serde(rename = "name")]
-        Name,
-    }
-    impl ToString for SourceScalarFieldEnum {
-        fn to_string(&self) -> String {
-            match self {
-                Self::Id => "id".to_string(),
-                Self::Name => "name".to_string(),
-            }
-        }
-    }
-    #[derive(Debug, Clone, Copy, :: serde :: Serialize, :: serde :: Deserialize, PartialEq, Eq)]
     pub enum InstanceScalarFieldEnum {
         #[serde(rename = "id")]
         Id,
         #[serde(rename = "name")]
         Name,
-        #[serde(rename = "gameId")]
-        GameId,
-        #[serde(rename = "dataDir")]
-        DataDir,
-        #[serde(rename = "cacheDir")]
-        CacheDir,
-        #[serde(rename = "installDir")]
-        InstallDir,
+        #[serde(rename = "plugin")]
+        Plugin,
         #[serde(rename = "description")]
         Description,
-        #[serde(rename = "created")]
-        Created,
         #[serde(rename = "updated")]
         Updated,
-        #[serde(rename = "loader")]
-        Loader,
+        #[serde(rename = "iconUrl")]
+        IconUrl,
+        #[serde(rename = "bannerUrl")]
+        BannerUrl,
+        #[serde(rename = "extraData")]
+        ExtraData,
     }
     impl ToString for InstanceScalarFieldEnum {
         fn to_string(&self) -> String {
             match self {
                 Self::Id => "id".to_string(),
                 Self::Name => "name".to_string(),
-                Self::GameId => "gameId".to_string(),
-                Self::DataDir => "dataDir".to_string(),
-                Self::CacheDir => "cacheDir".to_string(),
-                Self::InstallDir => "installDir".to_string(),
+                Self::Plugin => "plugin".to_string(),
                 Self::Description => "description".to_string(),
-                Self::Created => "created".to_string(),
                 Self::Updated => "updated".to_string(),
-                Self::Loader => "loader".to_string(),
+                Self::IconUrl => "iconUrl".to_string(),
+                Self::BannerUrl => "bannerUrl".to_string(),
+                Self::ExtraData => "extraData".to_string(),
             }
         }
     }
     #[derive(Debug, Clone, Copy, :: serde :: Serialize, :: serde :: Deserialize, PartialEq, Eq)]
-    pub enum ModScalarFieldEnum {
+    pub enum InstalledModScalarFieldEnum {
         #[serde(rename = "id")]
         Id,
-        #[serde(rename = "mod")]
-        Mod,
-        #[serde(rename = "version")]
-        Version,
-        #[serde(rename = "name")]
-        Name,
-        #[serde(rename = "file")]
-        File,
-        #[serde(rename = "size")]
-        Size,
-        #[serde(rename = "hash")]
-        Hash,
-        #[serde(rename = "installed_files")]
-        InstalledFiles,
-        #[serde(rename = "sourceId")]
-        SourceId,
-        #[serde(rename = "instanceId")]
-        InstanceId,
+        #[serde(rename = "fileSize")]
+        FileSize,
+        #[serde(rename = "updated")]
+        Updated,
+        #[serde(rename = "iconUrl")]
+        IconUrl,
+        #[serde(rename = "source")]
+        Source,
+        #[serde(rename = "projectId")]
+        ProjectId,
+        #[serde(rename = "projectName")]
+        ProjectName,
+        #[serde(rename = "projectDesc")]
+        ProjectDesc,
+        #[serde(rename = "projectVersion")]
+        ProjectVersion,
     }
-    impl ToString for ModScalarFieldEnum {
+    impl ToString for InstalledModScalarFieldEnum {
         fn to_string(&self) -> String {
             match self {
                 Self::Id => "id".to_string(),
-                Self::Mod => "mod".to_string(),
-                Self::Version => "version".to_string(),
-                Self::Name => "name".to_string(),
-                Self::File => "file".to_string(),
-                Self::Size => "size".to_string(),
-                Self::Hash => "hash".to_string(),
-                Self::InstalledFiles => "installed_files".to_string(),
-                Self::SourceId => "sourceId".to_string(),
-                Self::InstanceId => "instanceId".to_string(),
+                Self::FileSize => "fileSize".to_string(),
+                Self::Updated => "updated".to_string(),
+                Self::IconUrl => "iconUrl".to_string(),
+                Self::Source => "source".to_string(),
+                Self::ProjectId => "projectId".to_string(),
+                Self::ProjectName => "projectName".to_string(),
+                Self::ProjectDesc => "projectDesc".to_string(),
+                Self::ProjectVersion => "projectVersion".to_string(),
             }
         }
     }
@@ -268,71 +208,6 @@ pub mod _prisma {
     }
     pub mod read_filters {
         use super::*;
-        #[derive(Debug, Clone)]
-        pub enum DateTimeFilter {
-            Equals(DateTime),
-            InVec(Vec<DateTime>),
-            NotInVec(Vec<DateTime>),
-            Lt(DateTime),
-            Lte(DateTime),
-            Gt(DateTime),
-            Gte(DateTime),
-            Not(DateTime),
-        }
-        impl Into<::prisma_client_rust::SerializedWhereValue> for DateTimeFilter {
-            fn into(self) -> ::prisma_client_rust::SerializedWhereValue {
-                match self {
-                    Self::Equals(value) => {
-                        ::prisma_client_rust::SerializedWhereValue::Object(vec![(
-                            "equals".to_string(),
-                            ::prisma_client_rust::PrismaValue::DateTime(value),
-                        )])
-                    }
-                    Self::InVec(value) => {
-                        ::prisma_client_rust::SerializedWhereValue::Object(vec![(
-                            "in".to_string(),
-                            ::prisma_client_rust::PrismaValue::List(
-                                value
-                                    .into_iter()
-                                    .map(|value| ::prisma_client_rust::PrismaValue::DateTime(value))
-                                    .collect(),
-                            ),
-                        )])
-                    }
-                    Self::NotInVec(value) => {
-                        ::prisma_client_rust::SerializedWhereValue::Object(vec![(
-                            "notIn".to_string(),
-                            ::prisma_client_rust::PrismaValue::List(
-                                value
-                                    .into_iter()
-                                    .map(|value| ::prisma_client_rust::PrismaValue::DateTime(value))
-                                    .collect(),
-                            ),
-                        )])
-                    }
-                    Self::Lt(value) => ::prisma_client_rust::SerializedWhereValue::Object(vec![(
-                        "lt".to_string(),
-                        ::prisma_client_rust::PrismaValue::DateTime(value),
-                    )]),
-                    Self::Lte(value) => ::prisma_client_rust::SerializedWhereValue::Object(vec![(
-                        "lte".to_string(),
-                        ::prisma_client_rust::PrismaValue::DateTime(value),
-                    )]),
-                    Self::Gt(value) => ::prisma_client_rust::SerializedWhereValue::Object(vec![(
-                        "gt".to_string(),
-                        ::prisma_client_rust::PrismaValue::DateTime(value),
-                    )]),
-                    Self::Gte(value) => ::prisma_client_rust::SerializedWhereValue::Object(vec![(
-                        "gte".to_string(),
-                        ::prisma_client_rust::PrismaValue::DateTime(value),
-                    )]),
-                    Self::Not(value) => ::prisma_client_rust::SerializedWhereValue::Object(vec![(
-                        "not".to_string(),
-                        ::prisma_client_rust::PrismaValue::DateTime(value),
-                    )]),
-                }
-            }
-        }
         #[derive(Debug, Clone)]
         pub enum IntFilter {
             Equals(Int),
@@ -399,25 +274,23 @@ pub mod _prisma {
             }
         }
         #[derive(Debug, Clone)]
-        pub enum IntNullableFilter {
-            Equals(Option<Int>),
-            InVec(Vec<Int>),
-            NotInVec(Vec<Int>),
-            Lt(Int),
-            Lte(Int),
-            Gt(Int),
-            Gte(Int),
-            Not(Option<Int>),
+        pub enum DateTimeFilter {
+            Equals(DateTime),
+            InVec(Vec<DateTime>),
+            NotInVec(Vec<DateTime>),
+            Lt(DateTime),
+            Lte(DateTime),
+            Gt(DateTime),
+            Gte(DateTime),
+            Not(DateTime),
         }
-        impl Into<::prisma_client_rust::SerializedWhereValue> for IntNullableFilter {
+        impl Into<::prisma_client_rust::SerializedWhereValue> for DateTimeFilter {
             fn into(self) -> ::prisma_client_rust::SerializedWhereValue {
                 match self {
                     Self::Equals(value) => {
                         ::prisma_client_rust::SerializedWhereValue::Object(vec![(
                             "equals".to_string(),
-                            value
-                                .map(|value| ::prisma_client_rust::PrismaValue::Int(value))
-                                .unwrap_or_else(|| ::prisma_client_rust::PrismaValue::Null),
+                            ::prisma_client_rust::PrismaValue::DateTime(value),
                         )])
                     }
                     Self::InVec(value) => {
@@ -426,7 +299,7 @@ pub mod _prisma {
                             ::prisma_client_rust::PrismaValue::List(
                                 value
                                     .into_iter()
-                                    .map(|value| ::prisma_client_rust::PrismaValue::Int(value))
+                                    .map(|value| ::prisma_client_rust::PrismaValue::DateTime(value))
                                     .collect(),
                             ),
                         )])
@@ -437,53 +310,30 @@ pub mod _prisma {
                             ::prisma_client_rust::PrismaValue::List(
                                 value
                                     .into_iter()
-                                    .map(|value| ::prisma_client_rust::PrismaValue::Int(value))
+                                    .map(|value| ::prisma_client_rust::PrismaValue::DateTime(value))
                                     .collect(),
                             ),
                         )])
                     }
                     Self::Lt(value) => ::prisma_client_rust::SerializedWhereValue::Object(vec![(
                         "lt".to_string(),
-                        ::prisma_client_rust::PrismaValue::Int(value),
+                        ::prisma_client_rust::PrismaValue::DateTime(value),
                     )]),
                     Self::Lte(value) => ::prisma_client_rust::SerializedWhereValue::Object(vec![(
                         "lte".to_string(),
-                        ::prisma_client_rust::PrismaValue::Int(value),
+                        ::prisma_client_rust::PrismaValue::DateTime(value),
                     )]),
                     Self::Gt(value) => ::prisma_client_rust::SerializedWhereValue::Object(vec![(
                         "gt".to_string(),
-                        ::prisma_client_rust::PrismaValue::Int(value),
+                        ::prisma_client_rust::PrismaValue::DateTime(value),
                     )]),
                     Self::Gte(value) => ::prisma_client_rust::SerializedWhereValue::Object(vec![(
                         "gte".to_string(),
-                        ::prisma_client_rust::PrismaValue::Int(value),
+                        ::prisma_client_rust::PrismaValue::DateTime(value),
                     )]),
                     Self::Not(value) => ::prisma_client_rust::SerializedWhereValue::Object(vec![(
                         "not".to_string(),
-                        value
-                            .map(|value| ::prisma_client_rust::PrismaValue::Int(value))
-                            .unwrap_or_else(|| ::prisma_client_rust::PrismaValue::Null),
-                    )]),
-                }
-            }
-        }
-        #[derive(Debug, Clone)]
-        pub enum BooleanFilter {
-            Equals(Boolean),
-            Not(Boolean),
-        }
-        impl Into<::prisma_client_rust::SerializedWhereValue> for BooleanFilter {
-            fn into(self) -> ::prisma_client_rust::SerializedWhereValue {
-                match self {
-                    Self::Equals(value) => {
-                        ::prisma_client_rust::SerializedWhereValue::Object(vec![(
-                            "equals".to_string(),
-                            ::prisma_client_rust::PrismaValue::Boolean(value),
-                        )])
-                    }
-                    Self::Not(value) => ::prisma_client_rust::SerializedWhereValue::Object(vec![(
-                        "not".to_string(),
-                        ::prisma_client_rust::PrismaValue::Boolean(value),
+                        ::prisma_client_rust::PrismaValue::DateTime(value),
                     )]),
                 }
             }
@@ -668,17 +518,6 @@ pub mod _prisma {
     pub mod write_params {
         use super::*;
         #[derive(Debug, Clone)]
-        pub enum BooleanParam {
-            Set(Boolean),
-        }
-        impl Into<::prisma_client_rust::PrismaValue> for BooleanParam {
-            fn into(self) -> ::prisma_client_rust::PrismaValue {
-                match self {
-                    Self::Set(value) => ::prisma_client_rust::PrismaValue::Boolean(value),
-                }
-            }
-        }
-        #[derive(Debug, Clone)]
         pub enum DateTimeParam {
             Set(DateTime),
         }
@@ -701,39 +540,6 @@ pub mod _prisma {
             fn into(self) -> ::prisma_client_rust::PrismaValue {
                 match self {
                     Self::Set(value) => ::prisma_client_rust::PrismaValue::Int(value),
-                    Self::Increment(value) => ::prisma_client_rust::PrismaValue::Object(vec![(
-                        "increment".to_string(),
-                        ::prisma_client_rust::PrismaValue::Int(value),
-                    )]),
-                    Self::Decrement(value) => ::prisma_client_rust::PrismaValue::Object(vec![(
-                        "decrement".to_string(),
-                        ::prisma_client_rust::PrismaValue::Int(value),
-                    )]),
-                    Self::Multiply(value) => ::prisma_client_rust::PrismaValue::Object(vec![(
-                        "multiply".to_string(),
-                        ::prisma_client_rust::PrismaValue::Int(value),
-                    )]),
-                    Self::Divide(value) => ::prisma_client_rust::PrismaValue::Object(vec![(
-                        "divide".to_string(),
-                        ::prisma_client_rust::PrismaValue::Int(value),
-                    )]),
-                }
-            }
-        }
-        #[derive(Debug, Clone)]
-        pub enum IntNullableParam {
-            Set(Option<Int>),
-            Increment(Int),
-            Decrement(Int),
-            Multiply(Int),
-            Divide(Int),
-        }
-        impl Into<::prisma_client_rust::PrismaValue> for IntNullableParam {
-            fn into(self) -> ::prisma_client_rust::PrismaValue {
-                match self {
-                    Self::Set(value) => value
-                        .map(|value| ::prisma_client_rust::PrismaValue::Int(value))
-                        .unwrap_or_else(|| ::prisma_client_rust::PrismaValue::Null),
                     Self::Increment(value) => ::prisma_client_rust::PrismaValue::Object(vec![(
                         "increment".to_string(),
                         ::prisma_client_rust::PrismaValue::Int(value),
@@ -779,2941 +585,6 @@ pub mod _prisma {
         }
     }
 }
-pub mod game {
-    use super::{_prisma::*, *};
-    pub const NAME: &str = "Game";
-    #[derive(Debug, Clone)]
-    pub enum WhereParam {
-        Not(Vec<WhereParam>),
-        Or(Vec<WhereParam>),
-        And(Vec<WhereParam>),
-        Id(super::_prisma::read_filters::IntFilter),
-        Name(super::_prisma::read_filters::StringFilter),
-        Curseforge(super::_prisma::read_filters::IntNullableFilter),
-        Thunderstore(super::_prisma::read_filters::StringNullableFilter),
-        Spacedock(super::_prisma::read_filters::StringNullableFilter),
-        Ckan(super::_prisma::read_filters::BooleanFilter),
-        Modrinth(super::_prisma::read_filters::BooleanFilter),
-        SourcesSome(Vec<super::source::WhereParam>),
-        SourcesEvery(Vec<super::source::WhereParam>),
-        SourcesNone(Vec<super::source::WhereParam>),
-        InstancesSome(Vec<super::instance::WhereParam>),
-        InstancesEvery(Vec<super::instance::WhereParam>),
-        InstancesNone(Vec<super::instance::WhereParam>),
-    }
-    impl ::prisma_client_rust::WhereInput for WhereParam {
-        fn serialize(self) -> ::prisma_client_rust::SerializedWhereInput {
-            let (name, value) = match self {
-                Self::Not(value) => (
-                    "NOT",
-                    ::prisma_client_rust::SerializedWhereValue::Object(
-                        ::prisma_client_rust::merge_fields(
-                            value
-                                .into_iter()
-                                .map(::prisma_client_rust::WhereInput::serialize)
-                                .map(Into::into)
-                                .collect(),
-                        ),
-                    ),
-                ),
-                Self::Or(value) => (
-                    "OR",
-                    ::prisma_client_rust::SerializedWhereValue::List(
-                        value
-                            .into_iter()
-                            .map(::prisma_client_rust::WhereInput::serialize)
-                            .map(|p| ::prisma_client_rust::PrismaValue::Object(vec![p.into()]))
-                            .collect(),
-                    ),
-                ),
-                Self::And(value) => (
-                    "AND",
-                    ::prisma_client_rust::SerializedWhereValue::Object(
-                        ::prisma_client_rust::merge_fields(
-                            value
-                                .into_iter()
-                                .map(::prisma_client_rust::WhereInput::serialize)
-                                .map(Into::into)
-                                .collect(),
-                        ),
-                    ),
-                ),
-                Self::Id(value) => (id::NAME, value.into()),
-                Self::Name(value) => (name::NAME, value.into()),
-                Self::Curseforge(value) => (curseforge::NAME, value.into()),
-                Self::Thunderstore(value) => (thunderstore::NAME, value.into()),
-                Self::Spacedock(value) => (spacedock::NAME, value.into()),
-                Self::Ckan(value) => (ckan::NAME, value.into()),
-                Self::Modrinth(value) => (modrinth::NAME, value.into()),
-                Self::SourcesSome(where_params) => (
-                    sources::NAME,
-                    ::prisma_client_rust::SerializedWhereValue::Object(vec![(
-                        "some".to_string(),
-                        ::prisma_client_rust::PrismaValue::Object(
-                            where_params
-                                .into_iter()
-                                .map(::prisma_client_rust::WhereInput::serialize)
-                                .map(::prisma_client_rust::SerializedWhereInput::transform_equals)
-                                .collect(),
-                        ),
-                    )]),
-                ),
-                Self::SourcesEvery(where_params) => (
-                    sources::NAME,
-                    ::prisma_client_rust::SerializedWhereValue::Object(vec![(
-                        "every".to_string(),
-                        ::prisma_client_rust::PrismaValue::Object(
-                            where_params
-                                .into_iter()
-                                .map(::prisma_client_rust::WhereInput::serialize)
-                                .map(::prisma_client_rust::SerializedWhereInput::transform_equals)
-                                .collect(),
-                        ),
-                    )]),
-                ),
-                Self::SourcesNone(where_params) => (
-                    sources::NAME,
-                    ::prisma_client_rust::SerializedWhereValue::Object(vec![(
-                        "none".to_string(),
-                        ::prisma_client_rust::PrismaValue::Object(
-                            where_params
-                                .into_iter()
-                                .map(::prisma_client_rust::WhereInput::serialize)
-                                .map(::prisma_client_rust::SerializedWhereInput::transform_equals)
-                                .collect(),
-                        ),
-                    )]),
-                ),
-                Self::InstancesSome(where_params) => (
-                    instances::NAME,
-                    ::prisma_client_rust::SerializedWhereValue::Object(vec![(
-                        "some".to_string(),
-                        ::prisma_client_rust::PrismaValue::Object(
-                            where_params
-                                .into_iter()
-                                .map(::prisma_client_rust::WhereInput::serialize)
-                                .map(::prisma_client_rust::SerializedWhereInput::transform_equals)
-                                .collect(),
-                        ),
-                    )]),
-                ),
-                Self::InstancesEvery(where_params) => (
-                    instances::NAME,
-                    ::prisma_client_rust::SerializedWhereValue::Object(vec![(
-                        "every".to_string(),
-                        ::prisma_client_rust::PrismaValue::Object(
-                            where_params
-                                .into_iter()
-                                .map(::prisma_client_rust::WhereInput::serialize)
-                                .map(::prisma_client_rust::SerializedWhereInput::transform_equals)
-                                .collect(),
-                        ),
-                    )]),
-                ),
-                Self::InstancesNone(where_params) => (
-                    instances::NAME,
-                    ::prisma_client_rust::SerializedWhereValue::Object(vec![(
-                        "none".to_string(),
-                        ::prisma_client_rust::PrismaValue::Object(
-                            where_params
-                                .into_iter()
-                                .map(::prisma_client_rust::WhereInput::serialize)
-                                .map(::prisma_client_rust::SerializedWhereInput::transform_equals)
-                                .collect(),
-                        ),
-                    )]),
-                ),
-            };
-            ::prisma_client_rust::SerializedWhereInput::new(name.to_string(), value.into())
-        }
-    }
-    #[derive(Debug, Clone)]
-    pub enum UniqueWhereParam {
-        NameEquals(String),
-        IdEquals(Int),
-    }
-    impl ::prisma_client_rust::WhereInput for UniqueWhereParam {
-        fn serialize(self) -> ::prisma_client_rust::SerializedWhereInput {
-            let (name, value) = match self {
-                UniqueWhereParam::NameEquals(value) => (
-                    "name",
-                    ::prisma_client_rust::SerializedWhereValue::Value(
-                        ::prisma_client_rust::PrismaValue::String(value),
-                    ),
-                ),
-                UniqueWhereParam::IdEquals(value) => (
-                    "id",
-                    ::prisma_client_rust::SerializedWhereValue::Value(
-                        ::prisma_client_rust::PrismaValue::Int(value),
-                    ),
-                ),
-            };
-            ::prisma_client_rust::SerializedWhereInput::new(name.to_string(), value.into())
-        }
-    }
-    impl From<::prisma_client_rust::Operator<Self>> for WhereParam {
-        fn from(op: ::prisma_client_rust::Operator<Self>) -> Self {
-            match op {
-                ::prisma_client_rust::Operator::Not(value) => Self::Not(value),
-                ::prisma_client_rust::Operator::And(value) => Self::And(value),
-                ::prisma_client_rust::Operator::Or(value) => Self::Or(value),
-            }
-        }
-    }
-    #[derive(Debug, Clone)]
-    pub enum OrderByWithRelationParam {
-        Id(super::SortOrder),
-        Name(super::SortOrder),
-        Curseforge(super::SortOrder),
-        Thunderstore(super::SortOrder),
-        Spacedock(super::SortOrder),
-        Ckan(super::SortOrder),
-        Modrinth(super::SortOrder),
-        Sources(Vec<super::source::OrderByRelationAggregateParam>),
-        Instances(Vec<super::instance::OrderByRelationAggregateParam>),
-    }
-    impl Into<(String, ::prisma_client_rust::PrismaValue)> for OrderByWithRelationParam {
-        fn into(self) -> (String, ::prisma_client_rust::PrismaValue) {
-            let (k, v) = match self {
-                Self::Id(param) => ("id", param.into()),
-                Self::Name(param) => ("name", param.into()),
-                Self::Curseforge(param) => ("curseforge", param.into()),
-                Self::Thunderstore(param) => ("thunderstore", param.into()),
-                Self::Spacedock(param) => ("spacedock", param.into()),
-                Self::Ckan(param) => ("ckan", param.into()),
-                Self::Modrinth(param) => ("modrinth", param.into()),
-                Self::Sources(param) => (
-                    "sources",
-                    ::prisma_client_rust::PrismaValue::Object(
-                        param.into_iter().map(Into::into).collect(),
-                    ),
-                ),
-                Self::Instances(param) => (
-                    "instances",
-                    ::prisma_client_rust::PrismaValue::Object(
-                        param.into_iter().map(Into::into).collect(),
-                    ),
-                ),
-            };
-            (k.to_string(), v)
-        }
-    }
-    #[derive(Debug, Clone)]
-    pub enum OrderByRelationAggregateParam {
-        _Count(super::SortOrder),
-    }
-    impl Into<(String, ::prisma_client_rust::PrismaValue)> for OrderByRelationAggregateParam {
-        fn into(self) -> (String, ::prisma_client_rust::PrismaValue) {
-            let (k, v) = match self {
-                Self::_Count(param) => ("_count", param.into()),
-            };
-            (k.to_string(), v)
-        }
-    }
-    #[derive(Debug, Clone)]
-    pub enum WithParam {
-        Sources(super::source::ManyArgs),
-        Instances(super::instance::ManyArgs),
-    }
-    impl Into<::prisma_client_rust::Selection> for WithParam {
-        fn into(self) -> ::prisma_client_rust::Selection {
-            match self {
-                Self::Sources(args) => {
-                    let (arguments, mut nested_selections) = args.to_graphql();
-                    nested_selections . extend (< super :: source :: Types as :: prisma_client_rust :: ModelTypes > :: scalar_selections ()) ;
-                    ::prisma_client_rust::Selection::new(
-                        sources::NAME,
-                        None,
-                        arguments,
-                        nested_selections,
-                    )
-                }
-                Self::Instances(args) => {
-                    let (arguments, mut nested_selections) = args.to_graphql();
-                    nested_selections . extend (< super :: instance :: Types as :: prisma_client_rust :: ModelTypes > :: scalar_selections ()) ;
-                    ::prisma_client_rust::Selection::new(
-                        instances::NAME,
-                        None,
-                        arguments,
-                        nested_selections,
-                    )
-                }
-            }
-        }
-    }
-    #[derive(Debug, Clone)]
-    pub enum SetParam {
-        Id(super::_prisma::write_params::IntParam),
-        Name(super::_prisma::write_params::StringParam),
-        Curseforge(super::_prisma::write_params::IntNullableParam),
-        Thunderstore(super::_prisma::write_params::StringNullableParam),
-        Spacedock(super::_prisma::write_params::StringNullableParam),
-        Ckan(super::_prisma::write_params::BooleanParam),
-        Modrinth(super::_prisma::write_params::BooleanParam),
-        ConnectSources(Vec<super::source::UniqueWhereParam>),
-        DisconnectSources(Vec<super::source::UniqueWhereParam>),
-        SetSources(Vec<super::source::UniqueWhereParam>),
-        ConnectInstances(Vec<super::instance::UniqueWhereParam>),
-        DisconnectInstances(Vec<super::instance::UniqueWhereParam>),
-        SetInstances(Vec<super::instance::UniqueWhereParam>),
-    }
-    impl Into<(String, ::prisma_client_rust::PrismaValue)> for SetParam {
-        fn into(self) -> (String, ::prisma_client_rust::PrismaValue) {
-            let (k, v) = match self {
-                Self::Id(value) => (id::NAME, value.into()),
-                Self::Name(value) => (name::NAME, value.into()),
-                Self::Curseforge(value) => (curseforge::NAME, value.into()),
-                Self::Thunderstore(value) => (thunderstore::NAME, value.into()),
-                Self::Spacedock(value) => (spacedock::NAME, value.into()),
-                Self::Ckan(value) => (ckan::NAME, value.into()),
-                Self::Modrinth(value) => (modrinth::NAME, value.into()),
-                Self::ConnectSources(where_params) => (
-                    sources::NAME,
-                    ::prisma_client_rust::PrismaValue::Object(vec![(
-                        "connect".to_string(),
-                        ::prisma_client_rust::PrismaValue::List(
-                            where_params
-                                .into_iter()
-                                .map(::prisma_client_rust::WhereInput::serialize)
-                                .map(::prisma_client_rust::SerializedWhereInput::transform_equals)
-                                .map(|v| ::prisma_client_rust::PrismaValue::Object(vec![v]))
-                                .collect(),
-                        ),
-                    )]),
-                ),
-                Self::DisconnectSources(where_params) => (
-                    sources::NAME,
-                    ::prisma_client_rust::PrismaValue::Object(vec![(
-                        "disconnect".to_string(),
-                        ::prisma_client_rust::PrismaValue::List(
-                            where_params
-                                .into_iter()
-                                .map(::prisma_client_rust::WhereInput::serialize)
-                                .map(::prisma_client_rust::SerializedWhereInput::transform_equals)
-                                .map(|v| ::prisma_client_rust::PrismaValue::Object(vec![v]))
-                                .collect(),
-                        ),
-                    )]),
-                ),
-                Self::SetSources(where_params) => (
-                    sources::NAME,
-                    ::prisma_client_rust::PrismaValue::Object(vec![(
-                        "set".to_string(),
-                        ::prisma_client_rust::PrismaValue::List(
-                            where_params
-                                .into_iter()
-                                .map(::prisma_client_rust::WhereInput::serialize)
-                                .map(::prisma_client_rust::SerializedWhereInput::transform_equals)
-                                .map(|v| ::prisma_client_rust::PrismaValue::Object(vec![v]))
-                                .collect(),
-                        ),
-                    )]),
-                ),
-                Self::ConnectInstances(where_params) => (
-                    instances::NAME,
-                    ::prisma_client_rust::PrismaValue::Object(vec![(
-                        "connect".to_string(),
-                        ::prisma_client_rust::PrismaValue::List(
-                            where_params
-                                .into_iter()
-                                .map(::prisma_client_rust::WhereInput::serialize)
-                                .map(::prisma_client_rust::SerializedWhereInput::transform_equals)
-                                .map(|v| ::prisma_client_rust::PrismaValue::Object(vec![v]))
-                                .collect(),
-                        ),
-                    )]),
-                ),
-                Self::DisconnectInstances(where_params) => (
-                    instances::NAME,
-                    ::prisma_client_rust::PrismaValue::Object(vec![(
-                        "disconnect".to_string(),
-                        ::prisma_client_rust::PrismaValue::List(
-                            where_params
-                                .into_iter()
-                                .map(::prisma_client_rust::WhereInput::serialize)
-                                .map(::prisma_client_rust::SerializedWhereInput::transform_equals)
-                                .map(|v| ::prisma_client_rust::PrismaValue::Object(vec![v]))
-                                .collect(),
-                        ),
-                    )]),
-                ),
-                Self::SetInstances(where_params) => (
-                    instances::NAME,
-                    ::prisma_client_rust::PrismaValue::Object(vec![(
-                        "set".to_string(),
-                        ::prisma_client_rust::PrismaValue::List(
-                            where_params
-                                .into_iter()
-                                .map(::prisma_client_rust::WhereInput::serialize)
-                                .map(::prisma_client_rust::SerializedWhereInput::transform_equals)
-                                .map(|v| ::prisma_client_rust::PrismaValue::Object(vec![v]))
-                                .collect(),
-                        ),
-                    )]),
-                ),
-            };
-            (k.to_string(), v)
-        }
-    }
-    #[derive(Debug, Clone)]
-    pub enum UncheckedSetParam {
-        Id(super::_prisma::write_params::IntParam),
-        Name(super::_prisma::write_params::StringParam),
-        Curseforge(super::_prisma::write_params::IntNullableParam),
-        Thunderstore(super::_prisma::write_params::StringNullableParam),
-        Spacedock(super::_prisma::write_params::StringNullableParam),
-        Ckan(super::_prisma::write_params::BooleanParam),
-        Modrinth(super::_prisma::write_params::BooleanParam),
-    }
-    impl Into<(String, ::prisma_client_rust::PrismaValue)> for UncheckedSetParam {
-        fn into(self) -> (String, ::prisma_client_rust::PrismaValue) {
-            let (k, v) = match self {
-                Self::Id(value) => ("id", value.into()),
-                Self::Name(value) => ("name", value.into()),
-                Self::Curseforge(value) => ("curseforge", value.into()),
-                Self::Thunderstore(value) => ("thunderstore", value.into()),
-                Self::Spacedock(value) => ("spacedock", value.into()),
-                Self::Ckan(value) => ("ckan", value.into()),
-                Self::Modrinth(value) => ("modrinth", value.into()),
-            };
-            (k.to_string(), v)
-        }
-    }
-    ::prisma_client_rust::macros::select_factory!(
-        _select_game,
-        select,
-        prisma::game,
-        struct Data {
-            #[serde(rename = "id")]
-            id: id::Type,
-            #[serde(rename = "name")]
-            name: name::Type,
-            #[serde(rename = "curseforge")]
-            curseforge: curseforge::Type,
-            #[serde(rename = "thunderstore")]
-            thunderstore: thunderstore::Type,
-            #[serde(rename = "spacedock")]
-            spacedock: spacedock::Type,
-            #[serde(rename = "ckan")]
-            ckan: ckan::Type,
-            #[serde(rename = "modrinth")]
-            modrinth: modrinth::Type,
-            #[serde(rename = "sources")]
-            sources: sources::Type,
-            #[serde(rename = "instances")]
-            instances: instances::Type,
-        },
-        [
-            (id, Scalar),
-            (name, Scalar),
-            (curseforge, Scalar),
-            (thunderstore, Scalar),
-            (spacedock, Scalar),
-            (ckan, Scalar),
-            (modrinth, Scalar),
-            (sources, Relation(prisma::source, Many)),
-            (instances, Relation(prisma::instance, Many))
-        ]
-    );
-    pub enum SelectParam {
-        Id(id::Select),
-        Name(name::Select),
-        Curseforge(curseforge::Select),
-        Thunderstore(thunderstore::Select),
-        Spacedock(spacedock::Select),
-        Ckan(ckan::Select),
-        Modrinth(modrinth::Select),
-        Sources(sources::Select),
-        Instances(instances::Select),
-    }
-    impl Into<::prisma_client_rust::Selection> for SelectParam {
-        fn into(self) -> ::prisma_client_rust::Selection {
-            match self {
-                Self::Id(data) => data.into(),
-                Self::Name(data) => data.into(),
-                Self::Curseforge(data) => data.into(),
-                Self::Thunderstore(data) => data.into(),
-                Self::Spacedock(data) => data.into(),
-                Self::Ckan(data) => data.into(),
-                Self::Modrinth(data) => data.into(),
-                Self::Sources(data) => data.into(),
-                Self::Instances(data) => data.into(),
-            }
-        }
-    }
-    ::prisma_client_rust::macros::include_factory!(
-        _include_game,
-        include,
-        prisma::game,
-        struct Data {
-            #[serde(rename = "id")]
-            id: id::Type,
-            #[serde(rename = "name")]
-            name: name::Type,
-            #[serde(rename = "curseforge")]
-            curseforge: curseforge::Type,
-            #[serde(rename = "thunderstore")]
-            thunderstore: thunderstore::Type,
-            #[serde(rename = "spacedock")]
-            spacedock: spacedock::Type,
-            #[serde(rename = "ckan")]
-            ckan: ckan::Type,
-            #[serde(rename = "modrinth")]
-            modrinth: modrinth::Type,
-            #[serde(rename = "sources")]
-            sources: sources::Type,
-            #[serde(rename = "instances")]
-            instances: instances::Type,
-        },
-        [
-            (sources, Relation(prisma::source, Many)),
-            (instances, Relation(prisma::instance, Many))
-        ]
-    );
-    pub enum IncludeParam {
-        Id(id::Include),
-        Name(name::Include),
-        Curseforge(curseforge::Include),
-        Thunderstore(thunderstore::Include),
-        Spacedock(spacedock::Include),
-        Ckan(ckan::Include),
-        Modrinth(modrinth::Include),
-        Sources(sources::Include),
-        Instances(instances::Include),
-    }
-    impl Into<::prisma_client_rust::Selection> for IncludeParam {
-        fn into(self) -> ::prisma_client_rust::Selection {
-            match self {
-                Self::Id(data) => data.into(),
-                Self::Name(data) => data.into(),
-                Self::Curseforge(data) => data.into(),
-                Self::Thunderstore(data) => data.into(),
-                Self::Spacedock(data) => data.into(),
-                Self::Ckan(data) => data.into(),
-                Self::Modrinth(data) => data.into(),
-                Self::Sources(data) => data.into(),
-                Self::Instances(data) => data.into(),
-            }
-        }
-    }
-    #[derive(Debug, Clone)]
-    pub struct Create {
-        pub name: String,
-        pub _params: Vec<SetParam>,
-    }
-    impl Create {
-        pub fn to_query<'a>(self, client: &'a PrismaClient) -> CreateQuery<'a> {
-            client.game().create(self.name, self._params)
-        }
-        pub fn to_params(mut self) -> Vec<SetParam> {
-            self._params.extend([name::set(self.name)]);
-            self._params
-        }
-    }
-    pub fn create(name: String, _params: Vec<SetParam>) -> Create {
-        Create { name, _params }
-    }
-    #[derive(
-        Debug,
-        Clone,
-        :: serde :: Serialize,
-        :: serde :: Deserialize,
-        :: prisma_client_rust :: specta :: Type,
-    )]
-    # [specta (rename = "GameCreation" , crate = prisma_client_rust :: specta)]
-    pub struct CreateUnchecked {
-        #[serde(rename = "name")]
-        pub name: String,
-        #[serde(skip)]
-        pub _params: Vec<UncheckedSetParam>,
-    }
-    impl CreateUnchecked {
-        pub fn to_query<'a>(self, client: &'a PrismaClient) -> CreateUncheckedQuery<'a> {
-            client.game().create_unchecked(self.name, self._params)
-        }
-        pub fn to_params(mut self) -> Vec<UncheckedSetParam> {
-            self._params.extend([name::set(self.name)]);
-            self._params
-        }
-    }
-    pub fn create_unchecked(name: String, _params: Vec<UncheckedSetParam>) -> CreateUnchecked {
-        CreateUnchecked { name, _params }
-    }
-    #[derive(
-        Debug,
-        Clone,
-        :: serde :: Serialize,
-        :: serde :: Deserialize,
-        :: prisma_client_rust :: specta :: Type,
-    )]
-    # [specta (rename = "GameUpdate" , crate = prisma_client_rust :: specta)]
-    pub struct Update {
-        #[serde(rename = "id")]
-        pub id: id::Type,
-        #[serde(rename = "name", skip_serializing_if = "Option::is_none")]
-        pub name: Option<name::Type>,
-        #[serde(rename = "curseforge", skip_serializing_if = "Option::is_none")]
-        pub curseforge: curseforge::Type,
-        #[serde(rename = "thunderstore", skip_serializing_if = "Option::is_none")]
-        pub thunderstore: thunderstore::Type,
-        #[serde(rename = "spacedock", skip_serializing_if = "Option::is_none")]
-        pub spacedock: spacedock::Type,
-        #[serde(rename = "ckan", skip_serializing_if = "Option::is_none")]
-        pub ckan: Option<ckan::Type>,
-        #[serde(rename = "modrinth", skip_serializing_if = "Option::is_none")]
-        pub modrinth: Option<modrinth::Type>,
-    }
-    impl Update {
-        pub fn as_params(self) -> Vec<SetParam> {
-            let mut params = Vec::new();
-            if let Some(field) = self.name {
-                params.push(name::set(field));
-            }
-            if let Some(field) = self.curseforge {
-                params.push(curseforge::set(Some(field)));
-            }
-            if let Some(field) = self.thunderstore {
-                params.push(thunderstore::set(Some(field)));
-            }
-            if let Some(field) = self.spacedock {
-                params.push(spacedock::set(Some(field)));
-            }
-            if let Some(field) = self.ckan {
-                params.push(ckan::set(field));
-            }
-            if let Some(field) = self.modrinth {
-                params.push(modrinth::set(field));
-            }
-            params
-        }
-    }
-    #[derive(Debug, Clone)]
-    pub struct Types;
-    impl ::prisma_client_rust::ModelTypes for Types {
-        type Data = Data;
-        type Where = WhereParam;
-        type WhereUnique = UniqueWhereParam;
-        type UncheckedSet = UncheckedSetParam;
-        type Set = SetParam;
-        type With = WithParam;
-        type OrderBy = OrderByWithRelationParam;
-        type Cursor = UniqueWhereParam;
-        const MODEL: &'static str = NAME;
-        fn scalar_selections() -> Vec<::prisma_client_rust::Selection> {
-            vec![
-                ::prisma_client_rust::sel(id::NAME),
-                ::prisma_client_rust::sel(name::NAME),
-                ::prisma_client_rust::sel(curseforge::NAME),
-                ::prisma_client_rust::sel(thunderstore::NAME),
-                ::prisma_client_rust::sel(spacedock::NAME),
-                ::prisma_client_rust::sel(ckan::NAME),
-                ::prisma_client_rust::sel(modrinth::NAME),
-            ]
-        }
-    }
-    #[derive(
-        Debug,
-        Clone,
-        :: serde :: Serialize,
-        :: serde :: Deserialize,
-        :: prisma_client_rust :: specta :: Type,
-    )]
-    # [specta (rename = "Game" , crate = prisma_client_rust :: specta)]
-    pub struct Data {
-        #[serde(rename = "id")]
-        pub id: id::Type,
-        #[serde(rename = "name")]
-        pub name: name::Type,
-        #[serde(rename = "curseforge")]
-        pub curseforge: curseforge::Type,
-        #[serde(rename = "thunderstore")]
-        pub thunderstore: thunderstore::Type,
-        #[serde(rename = "spacedock")]
-        pub spacedock: spacedock::Type,
-        #[serde(rename = "ckan")]
-        pub ckan: ckan::Type,
-        #[serde(rename = "modrinth")]
-        pub modrinth: modrinth::Type,
-        #[serde(rename = "sources")]
-        #[specta(skip)]
-        pub sources: Option<sources::RecursiveSafeType>,
-        #[serde(rename = "instances")]
-        #[specta(skip)]
-        pub instances: Option<instances::RecursiveSafeType>,
-    }
-    impl Data {
-        pub fn sources(
-            &self,
-        ) -> Result<&sources::Type, ::prisma_client_rust::RelationNotFetchedError> {
-            self.sources
-                .as_ref()
-                .ok_or(::prisma_client_rust::RelationNotFetchedError::new(
-                    stringify!(sources),
-                ))
-        }
-        pub fn instances(
-            &self,
-        ) -> Result<&instances::Type, ::prisma_client_rust::RelationNotFetchedError> {
-            self.instances
-                .as_ref()
-                .ok_or(::prisma_client_rust::RelationNotFetchedError::new(
-                    stringify!(instances),
-                ))
-        }
-    }
-    ::prisma_client_rust::macros::partial_unchecked_factory!(
-        _partial_unchecked_game,
-        prisma::game,
-        struct Data {
-            #[serde(rename = "id")]
-            pub id: prisma::game::id::Type,
-            #[serde(rename = "name")]
-            pub name: prisma::game::name::Type,
-            #[serde(rename = "curseforge")]
-            #[serde(default, with = "::prisma_client_rust::serde::double_option")]
-            pub curseforge: prisma::game::curseforge::Type,
-            #[serde(rename = "thunderstore")]
-            #[serde(default, with = "::prisma_client_rust::serde::double_option")]
-            pub thunderstore: prisma::game::thunderstore::Type,
-            #[serde(rename = "spacedock")]
-            #[serde(default, with = "::prisma_client_rust::serde::double_option")]
-            pub spacedock: prisma::game::spacedock::Type,
-            #[serde(rename = "ckan")]
-            pub ckan: prisma::game::ckan::Type,
-            #[serde(rename = "modrinth")]
-            pub modrinth: prisma::game::modrinth::Type,
-        }
-    );
-    ::prisma_client_rust::macros::filter_factory!(
-        _game_filter,
-        prisma::game,
-        [
-            (id, Scalar),
-            (name, Scalar),
-            (curseforge, Scalar),
-            (thunderstore, Scalar),
-            (spacedock, Scalar),
-            (ckan, Scalar),
-            (modrinth, Scalar),
-            (sources, Relation(prisma::source, Many)),
-            (instances, Relation(prisma::instance, Many))
-        ]
-    );
-    pub type UniqueArgs = ::prisma_client_rust::UniqueArgs<Types>;
-    pub type ManyArgs = ::prisma_client_rust::ManyArgs<Types>;
-    pub type CountQuery<'a> = ::prisma_client_rust::Count<'a, Types>;
-    pub type CreateQuery<'a> = ::prisma_client_rust::Create<'a, Types>;
-    pub type CreateUncheckedQuery<'a> = ::prisma_client_rust::CreateUnchecked<'a, Types>;
-    pub type CreateManyQuery<'a> = ::prisma_client_rust::CreateMany<'a, Types>;
-    pub type FindUniqueQuery<'a> = ::prisma_client_rust::FindUnique<'a, Types>;
-    pub type FindManyQuery<'a> = ::prisma_client_rust::FindMany<'a, Types>;
-    pub type FindFirstQuery<'a> = ::prisma_client_rust::FindFirst<'a, Types>;
-    pub type UpdateQuery<'a> = ::prisma_client_rust::Update<'a, Types>;
-    pub type UpdateUncheckedQuery<'a> = ::prisma_client_rust::UpdateUnchecked<'a, Types>;
-    pub type UpdateManyQuery<'a> = ::prisma_client_rust::UpdateMany<'a, Types>;
-    pub type UpsertQuery<'a> = ::prisma_client_rust::Upsert<'a, Types>;
-    pub type DeleteQuery<'a> = ::prisma_client_rust::Delete<'a, Types>;
-    pub type DeleteManyQuery<'a> = ::prisma_client_rust::DeleteMany<'a, Types>;
-    #[derive(Clone)]
-    pub struct Actions<'a> {
-        pub client: &'a ::prisma_client_rust::PrismaClientInternals,
-    }
-    impl<'a> Actions<'a> {
-        pub fn find_unique(self, _where: UniqueWhereParam) -> FindUniqueQuery<'a> {
-            FindUniqueQuery::new(self.client, _where)
-        }
-        pub fn find_first(self, _where: Vec<WhereParam>) -> FindFirstQuery<'a> {
-            FindFirstQuery::new(self.client, _where)
-        }
-        pub fn find_many(self, _where: Vec<WhereParam>) -> FindManyQuery<'a> {
-            FindManyQuery::new(self.client, _where)
-        }
-        pub fn create(self, name: String, mut _params: Vec<SetParam>) -> CreateQuery<'a> {
-            _params.extend([name::set(name)]);
-            CreateQuery::new(self.client, _params)
-        }
-        pub fn create_unchecked(
-            self,
-            name: String,
-            mut _params: Vec<UncheckedSetParam>,
-        ) -> CreateUncheckedQuery<'a> {
-            _params.extend([name::set(name)]);
-            CreateUncheckedQuery::new(self.client, _params.into_iter().map(Into::into).collect())
-        }
-        pub fn create_many(self, data: Vec<CreateUnchecked>) -> CreateManyQuery<'a> {
-            let data = data.into_iter().map(CreateUnchecked::to_params).collect();
-            CreateManyQuery::new(self.client, data)
-        }
-        pub fn update(self, _where: UniqueWhereParam, _params: Vec<SetParam>) -> UpdateQuery<'a> {
-            UpdateQuery::new(self.client, _where, _params, vec![])
-        }
-        pub fn update_unchecked(
-            self,
-            _where: UniqueWhereParam,
-            _params: Vec<UncheckedSetParam>,
-        ) -> UpdateUncheckedQuery<'a> {
-            UpdateUncheckedQuery::new(
-                self.client,
-                _where,
-                _params.into_iter().map(Into::into).collect(),
-                vec![],
-            )
-        }
-        pub fn update_many(
-            self,
-            _where: Vec<WhereParam>,
-            _params: Vec<SetParam>,
-        ) -> UpdateManyQuery<'a> {
-            UpdateManyQuery::new(self.client, _where, _params)
-        }
-        pub fn upsert(
-            self,
-            _where: UniqueWhereParam,
-            _create: Create,
-            _update: Vec<SetParam>,
-        ) -> UpsertQuery<'a> {
-            UpsertQuery::new(self.client, _where, _create.to_params(), _update)
-        }
-        pub fn delete(self, _where: UniqueWhereParam) -> DeleteQuery<'a> {
-            DeleteQuery::new(self.client, _where, vec![])
-        }
-        pub fn delete_many(self, _where: Vec<WhereParam>) -> DeleteManyQuery<'a> {
-            DeleteManyQuery::new(self.client, _where)
-        }
-        pub fn count(self, _where: Vec<WhereParam>) -> CountQuery<'a> {
-            CountQuery::new(self.client, _where)
-        }
-    }
-    pub mod _count {
-        use super::super::{_prisma::*, *};
-        use super::{SetParam, UncheckedSetParam, UniqueWhereParam, WhereParam, WithParam};
-        pub const NAME: &str = "_count";
-        pub struct Order(super::SortOrder);
-        pub fn order<T: From<Order>>(v: super::SortOrder) -> T {
-            Order(v).into()
-        }
-        impl From<Order> for super::OrderByRelationAggregateParam {
-            fn from(Order(v): Order) -> Self {
-                Self::_Count(v)
-            }
-        }
-    }
-    pub mod ckan {
-        use super::super::{_prisma::*, *};
-        use super::{SetParam, UncheckedSetParam, UniqueWhereParam, WhereParam, WithParam};
-        pub const NAME: &str = "ckan";
-        pub type Type = Boolean;
-        pub type RecursiveSafeType = Type;
-        pub struct Equals(pub Boolean);
-        pub fn equals<T: From<Equals>>(value: Boolean) -> T {
-            Equals(value).into()
-        }
-        impl From<Equals> for WhereParam {
-            fn from(Equals(v): Equals) -> Self {
-                WhereParam::Ckan(_prisma::read_filters::BooleanFilter::Equals(v))
-            }
-        }
-        ::prisma_client_rust::scalar_where_param_fns!(
-            _prisma::read_filters::BooleanFilter,
-            Ckan,
-            {
-                fn not(_: Boolean) -> Not;
-            }
-        );
-        pub struct Order(SortOrder);
-        pub fn order<T: From<Order>>(v: SortOrder) -> T {
-            Order(v).into()
-        }
-        impl From<Order> for super::OrderByWithRelationParam {
-            fn from(Order(v): Order) -> Self {
-                Self::Ckan(v)
-            }
-        }
-        pub struct Set(pub Boolean);
-        impl From<Set> for SetParam {
-            fn from(Set(v): Set) -> Self {
-                Self::Ckan(_prisma::write_params::BooleanParam::Set(v))
-            }
-        }
-        pub fn set<T: From<Set>>(value: Boolean) -> T {
-            Set(value).into()
-        }
-        pub struct UpdateOperation(pub _prisma::write_params::BooleanParam);
-        impl From<UpdateOperation> for SetParam {
-            fn from(UpdateOperation(v): UpdateOperation) -> Self {
-                Self::Ckan(v)
-            }
-        }
-        impl From<Set> for UncheckedSetParam {
-            fn from(Set(v): Set) -> Self {
-                Self::Ckan(_prisma::write_params::BooleanParam::Set(v))
-            }
-        }
-        impl From<UpdateOperation> for UncheckedSetParam {
-            fn from(UpdateOperation(v): UpdateOperation) -> Self {
-                Self::Ckan(v)
-            }
-        }
-        pub struct Select;
-        impl Into<super::SelectParam> for Select {
-            fn into(self) -> super::SelectParam {
-                super::SelectParam::Ckan(self)
-            }
-        }
-        impl Into<::prisma_client_rust::Selection> for Select {
-            fn into(self) -> ::prisma_client_rust::Selection {
-                ::prisma_client_rust::sel(NAME)
-            }
-        }
-        pub struct Include;
-        impl Into<super::IncludeParam> for Include {
-            fn into(self) -> super::IncludeParam {
-                super::IncludeParam::Ckan(self)
-            }
-        }
-        impl Into<::prisma_client_rust::Selection> for Include {
-            fn into(self) -> ::prisma_client_rust::Selection {
-                ::prisma_client_rust::sel(NAME)
-            }
-        }
-    }
-    pub mod curseforge {
-        use super::super::{_prisma::*, *};
-        use super::{SetParam, UncheckedSetParam, UniqueWhereParam, WhereParam, WithParam};
-        pub const NAME: &str = "curseforge";
-        pub type Type = Option<Int>;
-        pub type RecursiveSafeType = Type;
-        pub struct Equals(pub Option<Int>);
-        pub fn equals<T: From<Equals>>(value: Option<Int>) -> T {
-            Equals(value).into()
-        }
-        impl From<Equals> for WhereParam {
-            fn from(Equals(v): Equals) -> Self {
-                WhereParam::Curseforge(_prisma::read_filters::IntNullableFilter::Equals(v))
-            }
-        }
-        ::prisma_client_rust::scalar_where_param_fns!(
-            _prisma::read_filters::IntNullableFilter,
-            Curseforge,
-            {
-                fn in_vec(_: Vec<Int>) -> InVec;
-                fn not_in_vec(_: Vec<Int>) -> NotInVec;
-                fn lt(_: Int) -> Lt;
-                fn lte(_: Int) -> Lte;
-                fn gt(_: Int) -> Gt;
-                fn gte(_: Int) -> Gte;
-                fn not(_: Option<Int>) -> Not;
-            }
-        );
-        pub struct Order(SortOrder);
-        pub fn order<T: From<Order>>(v: SortOrder) -> T {
-            Order(v).into()
-        }
-        impl From<Order> for super::OrderByWithRelationParam {
-            fn from(Order(v): Order) -> Self {
-                Self::Curseforge(v)
-            }
-        }
-        pub struct Set(pub Option<Int>);
-        impl From<Set> for SetParam {
-            fn from(Set(v): Set) -> Self {
-                Self::Curseforge(_prisma::write_params::IntNullableParam::Set(v))
-            }
-        }
-        pub fn set<T: From<Set>>(value: Option<Int>) -> T {
-            Set(value).into()
-        }
-        pub struct UpdateOperation(pub _prisma::write_params::IntNullableParam);
-        impl From<UpdateOperation> for SetParam {
-            fn from(UpdateOperation(v): UpdateOperation) -> Self {
-                Self::Curseforge(v)
-            }
-        }
-        pub fn increment<T: From<UpdateOperation>>(value: Int) -> T {
-            UpdateOperation(_prisma::write_params::IntNullableParam::Increment(value)).into()
-        }
-        pub fn decrement<T: From<UpdateOperation>>(value: Int) -> T {
-            UpdateOperation(_prisma::write_params::IntNullableParam::Decrement(value)).into()
-        }
-        pub fn multiply<T: From<UpdateOperation>>(value: Int) -> T {
-            UpdateOperation(_prisma::write_params::IntNullableParam::Multiply(value)).into()
-        }
-        pub fn divide<T: From<UpdateOperation>>(value: Int) -> T {
-            UpdateOperation(_prisma::write_params::IntNullableParam::Divide(value)).into()
-        }
-        impl From<Set> for UncheckedSetParam {
-            fn from(Set(v): Set) -> Self {
-                Self::Curseforge(_prisma::write_params::IntNullableParam::Set(v))
-            }
-        }
-        impl From<UpdateOperation> for UncheckedSetParam {
-            fn from(UpdateOperation(v): UpdateOperation) -> Self {
-                Self::Curseforge(v)
-            }
-        }
-        pub struct Select;
-        impl Into<super::SelectParam> for Select {
-            fn into(self) -> super::SelectParam {
-                super::SelectParam::Curseforge(self)
-            }
-        }
-        impl Into<::prisma_client_rust::Selection> for Select {
-            fn into(self) -> ::prisma_client_rust::Selection {
-                ::prisma_client_rust::sel(NAME)
-            }
-        }
-        pub struct Include;
-        impl Into<super::IncludeParam> for Include {
-            fn into(self) -> super::IncludeParam {
-                super::IncludeParam::Curseforge(self)
-            }
-        }
-        impl Into<::prisma_client_rust::Selection> for Include {
-            fn into(self) -> ::prisma_client_rust::Selection {
-                ::prisma_client_rust::sel(NAME)
-            }
-        }
-    }
-    pub mod id {
-        use super::super::{_prisma::*, *};
-        use super::{SetParam, UncheckedSetParam, UniqueWhereParam, WhereParam, WithParam};
-        pub const NAME: &str = "id";
-        pub type Type = Int;
-        pub type RecursiveSafeType = Type;
-        pub struct Equals(pub Int);
-        pub fn equals<T: From<Equals>>(value: Int) -> T {
-            Equals(value).into()
-        }
-        impl From<Equals> for UniqueWhereParam {
-            fn from(Equals(v): Equals) -> Self {
-                UniqueWhereParam::IdEquals(v)
-            }
-        }
-        impl From<Equals> for WhereParam {
-            fn from(Equals(v): Equals) -> Self {
-                WhereParam::Id(_prisma::read_filters::IntFilter::Equals(v))
-            }
-        }
-        ::prisma_client_rust::scalar_where_param_fns!(_prisma::read_filters::IntFilter, Id, {
-            fn in_vec(_: Vec<Int>) -> InVec;
-            fn not_in_vec(_: Vec<Int>) -> NotInVec;
-            fn lt(_: Int) -> Lt;
-            fn lte(_: Int) -> Lte;
-            fn gt(_: Int) -> Gt;
-            fn gte(_: Int) -> Gte;
-            fn not(_: Int) -> Not;
-        });
-        pub struct Order(SortOrder);
-        pub fn order<T: From<Order>>(v: SortOrder) -> T {
-            Order(v).into()
-        }
-        impl From<Order> for super::OrderByWithRelationParam {
-            fn from(Order(v): Order) -> Self {
-                Self::Id(v)
-            }
-        }
-        pub struct Set(pub Int);
-        impl From<Set> for SetParam {
-            fn from(Set(v): Set) -> Self {
-                Self::Id(_prisma::write_params::IntParam::Set(v))
-            }
-        }
-        pub fn set<T: From<Set>>(value: Int) -> T {
-            Set(value).into()
-        }
-        pub struct UpdateOperation(pub _prisma::write_params::IntParam);
-        impl From<UpdateOperation> for SetParam {
-            fn from(UpdateOperation(v): UpdateOperation) -> Self {
-                Self::Id(v)
-            }
-        }
-        pub fn increment<T: From<UpdateOperation>>(value: Int) -> T {
-            UpdateOperation(_prisma::write_params::IntParam::Increment(value)).into()
-        }
-        pub fn decrement<T: From<UpdateOperation>>(value: Int) -> T {
-            UpdateOperation(_prisma::write_params::IntParam::Decrement(value)).into()
-        }
-        pub fn multiply<T: From<UpdateOperation>>(value: Int) -> T {
-            UpdateOperation(_prisma::write_params::IntParam::Multiply(value)).into()
-        }
-        pub fn divide<T: From<UpdateOperation>>(value: Int) -> T {
-            UpdateOperation(_prisma::write_params::IntParam::Divide(value)).into()
-        }
-        impl From<Set> for UncheckedSetParam {
-            fn from(Set(v): Set) -> Self {
-                Self::Id(_prisma::write_params::IntParam::Set(v))
-            }
-        }
-        impl From<UpdateOperation> for UncheckedSetParam {
-            fn from(UpdateOperation(v): UpdateOperation) -> Self {
-                Self::Id(v)
-            }
-        }
-        pub struct Select;
-        impl Into<super::SelectParam> for Select {
-            fn into(self) -> super::SelectParam {
-                super::SelectParam::Id(self)
-            }
-        }
-        impl Into<::prisma_client_rust::Selection> for Select {
-            fn into(self) -> ::prisma_client_rust::Selection {
-                ::prisma_client_rust::sel(NAME)
-            }
-        }
-        pub struct Include;
-        impl Into<super::IncludeParam> for Include {
-            fn into(self) -> super::IncludeParam {
-                super::IncludeParam::Id(self)
-            }
-        }
-        impl Into<::prisma_client_rust::Selection> for Include {
-            fn into(self) -> ::prisma_client_rust::Selection {
-                ::prisma_client_rust::sel(NAME)
-            }
-        }
-    }
-    pub mod instances {
-        use super::super::{_prisma::*, *};
-        use super::{SetParam, UncheckedSetParam, UniqueWhereParam, WhereParam, WithParam};
-        pub const NAME: &str = "instances";
-        pub type Type = Vec<instance::Data>;
-        pub type RecursiveSafeType = Type;
-        pub fn some(value: Vec<instance::WhereParam>) -> WhereParam {
-            WhereParam::InstancesSome(value)
-        }
-        pub fn every(value: Vec<instance::WhereParam>) -> WhereParam {
-            WhereParam::InstancesEvery(value)
-        }
-        pub fn none(value: Vec<instance::WhereParam>) -> WhereParam {
-            WhereParam::InstancesNone(value)
-        }
-        pub struct Order(Vec<instance::OrderByRelationAggregateParam>);
-        pub fn order<T: From<Order>>(v: Vec<instance::OrderByRelationAggregateParam>) -> T {
-            Order(v).into()
-        }
-        impl From<Order> for super::OrderByWithRelationParam {
-            fn from(Order(v): Order) -> Self {
-                Self::Instances(v)
-            }
-        }
-        pub struct Fetch(pub instance::ManyArgs);
-        impl Fetch {
-            pub fn with(mut self, params: impl Into<instance::WithParam>) -> Self {
-                self.0 = self.0.with(params.into());
-                self
-            }
-            pub fn order_by(mut self, param: instance::OrderByWithRelationParam) -> Self {
-                self.0 = self.0.order_by(param);
-                self
-            }
-            pub fn skip(mut self, value: i64) -> Self {
-                self.0 = self.0.skip(value);
-                self
-            }
-            pub fn take(mut self, value: i64) -> Self {
-                self.0 = self.0.take(value);
-                self
-            }
-            pub fn cursor(mut self, value: instance::UniqueWhereParam) -> Self {
-                self.0 = self.0.cursor(value.into());
-                self
-            }
-        }
-        impl From<Fetch> for WithParam {
-            fn from(Fetch(v): Fetch) -> Self {
-                WithParam::Instances(v)
-            }
-        }
-        pub fn fetch(params: Vec<instance::WhereParam>) -> Fetch {
-            Fetch(instance::ManyArgs::new(params))
-        }
-        pub struct Connect(pub Vec<instance::UniqueWhereParam>);
-        impl From<Connect> for SetParam {
-            fn from(Connect(v): Connect) -> Self {
-                Self::ConnectInstances(v)
-            }
-        }
-        pub fn connect<T: From<Connect>>(params: Vec<instance::UniqueWhereParam>) -> T {
-            Connect(params).into()
-        }
-        pub fn disconnect(params: Vec<instance::UniqueWhereParam>) -> SetParam {
-            SetParam::DisconnectInstances(params)
-        }
-        pub fn set(params: Vec<instance::UniqueWhereParam>) -> SetParam {
-            SetParam::SetInstances(params)
-        }
-        pub enum Select {
-            Select(instance::ManyArgs, Vec<instance::SelectParam>),
-            Include(instance::ManyArgs, Vec<instance::IncludeParam>),
-            Fetch(instance::ManyArgs),
-        }
-        impl Into<super::SelectParam> for Select {
-            fn into(self) -> super::SelectParam {
-                super::SelectParam::Instances(self)
-            }
-        }
-        impl Select {
-            pub fn select(
-                args: instance::ManyArgs,
-                nested_selections: Vec<instance::SelectParam>,
-            ) -> Self {
-                Self::Select(args, nested_selections)
-            }
-            pub fn include(
-                args: instance::ManyArgs,
-                nested_selections: Vec<instance::IncludeParam>,
-            ) -> Self {
-                Self::Include(args, nested_selections)
-            }
-        }
-        impl Into<::prisma_client_rust::Selection> for Select {
-            fn into(self) -> ::prisma_client_rust::Selection {
-                let (args, selections) = match self {
-                    Self::Select(args, selections) => (
-                        args.to_graphql().0,
-                        selections.into_iter().map(Into::into).collect(),
-                    ),
-                    Self::Include(args, selections) => (args.to_graphql().0, {
-                        let mut nested_selections = vec![];
-                        nested_selections.extend(selections.into_iter().map(Into::into));
-                        nested_selections
-                    }),
-                    Self::Fetch(args) => (
-                        args.to_graphql().0,
-                        <instance::Types as ::prisma_client_rust::ModelTypes>::scalar_selections(),
-                    ),
-                };
-                ::prisma_client_rust::Selection::new(NAME, None, args, selections)
-            }
-        }
-        pub enum Include {
-            Select(instance::ManyArgs, Vec<instance::SelectParam>),
-            Include(instance::ManyArgs, Vec<instance::IncludeParam>),
-            Fetch(instance::ManyArgs),
-        }
-        impl Into<super::IncludeParam> for Include {
-            fn into(self) -> super::IncludeParam {
-                super::IncludeParam::Instances(self)
-            }
-        }
-        impl Include {
-            pub fn select(
-                args: instance::ManyArgs,
-                nested_selections: Vec<instance::SelectParam>,
-            ) -> Self {
-                Self::Select(args, nested_selections)
-            }
-            pub fn include(
-                args: instance::ManyArgs,
-                nested_selections: Vec<instance::IncludeParam>,
-            ) -> Self {
-                Self::Include(args, nested_selections)
-            }
-        }
-        impl Into<::prisma_client_rust::Selection> for Include {
-            fn into(self) -> ::prisma_client_rust::Selection {
-                let (args, selections) = match self {
-                    Self::Select(args, selections) => (
-                        args.to_graphql().0,
-                        selections.into_iter().map(Into::into).collect(),
-                    ),
-                    Self::Include(args, selections) => (args.to_graphql().0, {
-                        let mut nested_selections = < instance :: Types as :: prisma_client_rust :: ModelTypes > :: scalar_selections () ;
-                        nested_selections.extend(selections.into_iter().map(Into::into));
-                        nested_selections
-                    }),
-                    Self::Fetch(args) => (
-                        args.to_graphql().0,
-                        <instance::Types as ::prisma_client_rust::ModelTypes>::scalar_selections(),
-                    ),
-                };
-                ::prisma_client_rust::Selection::new(NAME, None, args, selections)
-            }
-        }
-    }
-    pub mod modrinth {
-        use super::super::{_prisma::*, *};
-        use super::{SetParam, UncheckedSetParam, UniqueWhereParam, WhereParam, WithParam};
-        pub const NAME: &str = "modrinth";
-        pub type Type = Boolean;
-        pub type RecursiveSafeType = Type;
-        pub struct Equals(pub Boolean);
-        pub fn equals<T: From<Equals>>(value: Boolean) -> T {
-            Equals(value).into()
-        }
-        impl From<Equals> for WhereParam {
-            fn from(Equals(v): Equals) -> Self {
-                WhereParam::Modrinth(_prisma::read_filters::BooleanFilter::Equals(v))
-            }
-        }
-        ::prisma_client_rust::scalar_where_param_fns!(
-            _prisma::read_filters::BooleanFilter,
-            Modrinth,
-            {
-                fn not(_: Boolean) -> Not;
-            }
-        );
-        pub struct Order(SortOrder);
-        pub fn order<T: From<Order>>(v: SortOrder) -> T {
-            Order(v).into()
-        }
-        impl From<Order> for super::OrderByWithRelationParam {
-            fn from(Order(v): Order) -> Self {
-                Self::Modrinth(v)
-            }
-        }
-        pub struct Set(pub Boolean);
-        impl From<Set> for SetParam {
-            fn from(Set(v): Set) -> Self {
-                Self::Modrinth(_prisma::write_params::BooleanParam::Set(v))
-            }
-        }
-        pub fn set<T: From<Set>>(value: Boolean) -> T {
-            Set(value).into()
-        }
-        pub struct UpdateOperation(pub _prisma::write_params::BooleanParam);
-        impl From<UpdateOperation> for SetParam {
-            fn from(UpdateOperation(v): UpdateOperation) -> Self {
-                Self::Modrinth(v)
-            }
-        }
-        impl From<Set> for UncheckedSetParam {
-            fn from(Set(v): Set) -> Self {
-                Self::Modrinth(_prisma::write_params::BooleanParam::Set(v))
-            }
-        }
-        impl From<UpdateOperation> for UncheckedSetParam {
-            fn from(UpdateOperation(v): UpdateOperation) -> Self {
-                Self::Modrinth(v)
-            }
-        }
-        pub struct Select;
-        impl Into<super::SelectParam> for Select {
-            fn into(self) -> super::SelectParam {
-                super::SelectParam::Modrinth(self)
-            }
-        }
-        impl Into<::prisma_client_rust::Selection> for Select {
-            fn into(self) -> ::prisma_client_rust::Selection {
-                ::prisma_client_rust::sel(NAME)
-            }
-        }
-        pub struct Include;
-        impl Into<super::IncludeParam> for Include {
-            fn into(self) -> super::IncludeParam {
-                super::IncludeParam::Modrinth(self)
-            }
-        }
-        impl Into<::prisma_client_rust::Selection> for Include {
-            fn into(self) -> ::prisma_client_rust::Selection {
-                ::prisma_client_rust::sel(NAME)
-            }
-        }
-    }
-    pub mod name {
-        use super::super::{_prisma::*, *};
-        use super::{SetParam, UncheckedSetParam, UniqueWhereParam, WhereParam, WithParam};
-        pub const NAME: &str = "name";
-        pub type Type = String;
-        pub type RecursiveSafeType = Type;
-        pub struct Equals(pub String);
-        pub fn equals<T: From<Equals>>(value: String) -> T {
-            Equals(value).into()
-        }
-        impl From<Equals> for UniqueWhereParam {
-            fn from(Equals(v): Equals) -> Self {
-                UniqueWhereParam::NameEquals(v)
-            }
-        }
-        impl From<Equals> for WhereParam {
-            fn from(Equals(v): Equals) -> Self {
-                WhereParam::Name(_prisma::read_filters::StringFilter::Equals(v))
-            }
-        }
-        ::prisma_client_rust::scalar_where_param_fns!(_prisma::read_filters::StringFilter, Name, {
-            fn in_vec(_: Vec<String>) -> InVec;
-            fn not_in_vec(_: Vec<String>) -> NotInVec;
-            fn lt(_: String) -> Lt;
-            fn lte(_: String) -> Lte;
-            fn gt(_: String) -> Gt;
-            fn gte(_: String) -> Gte;
-            fn contains(_: String) -> Contains;
-            fn starts_with(_: String) -> StartsWith;
-            fn ends_with(_: String) -> EndsWith;
-            fn not(_: String) -> Not;
-        });
-        pub struct Order(SortOrder);
-        pub fn order<T: From<Order>>(v: SortOrder) -> T {
-            Order(v).into()
-        }
-        impl From<Order> for super::OrderByWithRelationParam {
-            fn from(Order(v): Order) -> Self {
-                Self::Name(v)
-            }
-        }
-        pub struct Set(pub String);
-        impl From<Set> for SetParam {
-            fn from(Set(v): Set) -> Self {
-                Self::Name(_prisma::write_params::StringParam::Set(v))
-            }
-        }
-        pub fn set<T: From<Set>>(value: String) -> T {
-            Set(value).into()
-        }
-        pub struct UpdateOperation(pub _prisma::write_params::StringParam);
-        impl From<UpdateOperation> for SetParam {
-            fn from(UpdateOperation(v): UpdateOperation) -> Self {
-                Self::Name(v)
-            }
-        }
-        impl From<Set> for UncheckedSetParam {
-            fn from(Set(v): Set) -> Self {
-                Self::Name(_prisma::write_params::StringParam::Set(v))
-            }
-        }
-        impl From<UpdateOperation> for UncheckedSetParam {
-            fn from(UpdateOperation(v): UpdateOperation) -> Self {
-                Self::Name(v)
-            }
-        }
-        pub struct Select;
-        impl Into<super::SelectParam> for Select {
-            fn into(self) -> super::SelectParam {
-                super::SelectParam::Name(self)
-            }
-        }
-        impl Into<::prisma_client_rust::Selection> for Select {
-            fn into(self) -> ::prisma_client_rust::Selection {
-                ::prisma_client_rust::sel(NAME)
-            }
-        }
-        pub struct Include;
-        impl Into<super::IncludeParam> for Include {
-            fn into(self) -> super::IncludeParam {
-                super::IncludeParam::Name(self)
-            }
-        }
-        impl Into<::prisma_client_rust::Selection> for Include {
-            fn into(self) -> ::prisma_client_rust::Selection {
-                ::prisma_client_rust::sel(NAME)
-            }
-        }
-    }
-    pub mod sources {
-        use super::super::{_prisma::*, *};
-        use super::{SetParam, UncheckedSetParam, UniqueWhereParam, WhereParam, WithParam};
-        pub const NAME: &str = "sources";
-        pub type Type = Vec<source::Data>;
-        pub type RecursiveSafeType = Type;
-        pub fn some(value: Vec<source::WhereParam>) -> WhereParam {
-            WhereParam::SourcesSome(value)
-        }
-        pub fn every(value: Vec<source::WhereParam>) -> WhereParam {
-            WhereParam::SourcesEvery(value)
-        }
-        pub fn none(value: Vec<source::WhereParam>) -> WhereParam {
-            WhereParam::SourcesNone(value)
-        }
-        pub struct Order(Vec<source::OrderByRelationAggregateParam>);
-        pub fn order<T: From<Order>>(v: Vec<source::OrderByRelationAggregateParam>) -> T {
-            Order(v).into()
-        }
-        impl From<Order> for super::OrderByWithRelationParam {
-            fn from(Order(v): Order) -> Self {
-                Self::Sources(v)
-            }
-        }
-        pub struct Fetch(pub source::ManyArgs);
-        impl Fetch {
-            pub fn with(mut self, params: impl Into<source::WithParam>) -> Self {
-                self.0 = self.0.with(params.into());
-                self
-            }
-            pub fn order_by(mut self, param: source::OrderByWithRelationParam) -> Self {
-                self.0 = self.0.order_by(param);
-                self
-            }
-            pub fn skip(mut self, value: i64) -> Self {
-                self.0 = self.0.skip(value);
-                self
-            }
-            pub fn take(mut self, value: i64) -> Self {
-                self.0 = self.0.take(value);
-                self
-            }
-            pub fn cursor(mut self, value: source::UniqueWhereParam) -> Self {
-                self.0 = self.0.cursor(value.into());
-                self
-            }
-        }
-        impl From<Fetch> for WithParam {
-            fn from(Fetch(v): Fetch) -> Self {
-                WithParam::Sources(v)
-            }
-        }
-        pub fn fetch(params: Vec<source::WhereParam>) -> Fetch {
-            Fetch(source::ManyArgs::new(params))
-        }
-        pub struct Connect(pub Vec<source::UniqueWhereParam>);
-        impl From<Connect> for SetParam {
-            fn from(Connect(v): Connect) -> Self {
-                Self::ConnectSources(v)
-            }
-        }
-        pub fn connect<T: From<Connect>>(params: Vec<source::UniqueWhereParam>) -> T {
-            Connect(params).into()
-        }
-        pub fn disconnect(params: Vec<source::UniqueWhereParam>) -> SetParam {
-            SetParam::DisconnectSources(params)
-        }
-        pub fn set(params: Vec<source::UniqueWhereParam>) -> SetParam {
-            SetParam::SetSources(params)
-        }
-        pub enum Select {
-            Select(source::ManyArgs, Vec<source::SelectParam>),
-            Include(source::ManyArgs, Vec<source::IncludeParam>),
-            Fetch(source::ManyArgs),
-        }
-        impl Into<super::SelectParam> for Select {
-            fn into(self) -> super::SelectParam {
-                super::SelectParam::Sources(self)
-            }
-        }
-        impl Select {
-            pub fn select(
-                args: source::ManyArgs,
-                nested_selections: Vec<source::SelectParam>,
-            ) -> Self {
-                Self::Select(args, nested_selections)
-            }
-            pub fn include(
-                args: source::ManyArgs,
-                nested_selections: Vec<source::IncludeParam>,
-            ) -> Self {
-                Self::Include(args, nested_selections)
-            }
-        }
-        impl Into<::prisma_client_rust::Selection> for Select {
-            fn into(self) -> ::prisma_client_rust::Selection {
-                let (args, selections) = match self {
-                    Self::Select(args, selections) => (
-                        args.to_graphql().0,
-                        selections.into_iter().map(Into::into).collect(),
-                    ),
-                    Self::Include(args, selections) => (args.to_graphql().0, {
-                        let mut nested_selections = vec![];
-                        nested_selections.extend(selections.into_iter().map(Into::into));
-                        nested_selections
-                    }),
-                    Self::Fetch(args) => (
-                        args.to_graphql().0,
-                        <source::Types as ::prisma_client_rust::ModelTypes>::scalar_selections(),
-                    ),
-                };
-                ::prisma_client_rust::Selection::new(NAME, None, args, selections)
-            }
-        }
-        pub enum Include {
-            Select(source::ManyArgs, Vec<source::SelectParam>),
-            Include(source::ManyArgs, Vec<source::IncludeParam>),
-            Fetch(source::ManyArgs),
-        }
-        impl Into<super::IncludeParam> for Include {
-            fn into(self) -> super::IncludeParam {
-                super::IncludeParam::Sources(self)
-            }
-        }
-        impl Include {
-            pub fn select(
-                args: source::ManyArgs,
-                nested_selections: Vec<source::SelectParam>,
-            ) -> Self {
-                Self::Select(args, nested_selections)
-            }
-            pub fn include(
-                args: source::ManyArgs,
-                nested_selections: Vec<source::IncludeParam>,
-            ) -> Self {
-                Self::Include(args, nested_selections)
-            }
-        }
-        impl Into<::prisma_client_rust::Selection> for Include {
-            fn into(self) -> ::prisma_client_rust::Selection {
-                let (args, selections) = match self {
-                    Self::Select(args, selections) => (
-                        args.to_graphql().0,
-                        selections.into_iter().map(Into::into).collect(),
-                    ),
-                    Self::Include(args, selections) => {
-                        (args.to_graphql().0, {
-                            let mut nested_selections = < source :: Types as :: prisma_client_rust :: ModelTypes > :: scalar_selections () ;
-                            nested_selections.extend(selections.into_iter().map(Into::into));
-                            nested_selections
-                        })
-                    }
-                    Self::Fetch(args) => (
-                        args.to_graphql().0,
-                        <source::Types as ::prisma_client_rust::ModelTypes>::scalar_selections(),
-                    ),
-                };
-                ::prisma_client_rust::Selection::new(NAME, None, args, selections)
-            }
-        }
-    }
-    pub mod spacedock {
-        use super::super::{_prisma::*, *};
-        use super::{SetParam, UncheckedSetParam, UniqueWhereParam, WhereParam, WithParam};
-        pub const NAME: &str = "spacedock";
-        pub type Type = Option<String>;
-        pub type RecursiveSafeType = Type;
-        pub struct Equals(pub Option<String>);
-        pub fn equals<T: From<Equals>>(value: Option<String>) -> T {
-            Equals(value).into()
-        }
-        impl From<Equals> for WhereParam {
-            fn from(Equals(v): Equals) -> Self {
-                WhereParam::Spacedock(_prisma::read_filters::StringNullableFilter::Equals(v))
-            }
-        }
-        ::prisma_client_rust::scalar_where_param_fns!(
-            _prisma::read_filters::StringNullableFilter,
-            Spacedock,
-            {
-                fn in_vec(_: Vec<String>) -> InVec;
-                fn not_in_vec(_: Vec<String>) -> NotInVec;
-                fn lt(_: String) -> Lt;
-                fn lte(_: String) -> Lte;
-                fn gt(_: String) -> Gt;
-                fn gte(_: String) -> Gte;
-                fn contains(_: String) -> Contains;
-                fn starts_with(_: String) -> StartsWith;
-                fn ends_with(_: String) -> EndsWith;
-                fn not(_: Option<String>) -> Not;
-            }
-        );
-        pub struct Order(SortOrder);
-        pub fn order<T: From<Order>>(v: SortOrder) -> T {
-            Order(v).into()
-        }
-        impl From<Order> for super::OrderByWithRelationParam {
-            fn from(Order(v): Order) -> Self {
-                Self::Spacedock(v)
-            }
-        }
-        pub struct Set(pub Option<String>);
-        impl From<Set> for SetParam {
-            fn from(Set(v): Set) -> Self {
-                Self::Spacedock(_prisma::write_params::StringNullableParam::Set(v))
-            }
-        }
-        pub fn set<T: From<Set>>(value: Option<String>) -> T {
-            Set(value).into()
-        }
-        pub struct UpdateOperation(pub _prisma::write_params::StringNullableParam);
-        impl From<UpdateOperation> for SetParam {
-            fn from(UpdateOperation(v): UpdateOperation) -> Self {
-                Self::Spacedock(v)
-            }
-        }
-        impl From<Set> for UncheckedSetParam {
-            fn from(Set(v): Set) -> Self {
-                Self::Spacedock(_prisma::write_params::StringNullableParam::Set(v))
-            }
-        }
-        impl From<UpdateOperation> for UncheckedSetParam {
-            fn from(UpdateOperation(v): UpdateOperation) -> Self {
-                Self::Spacedock(v)
-            }
-        }
-        pub struct Select;
-        impl Into<super::SelectParam> for Select {
-            fn into(self) -> super::SelectParam {
-                super::SelectParam::Spacedock(self)
-            }
-        }
-        impl Into<::prisma_client_rust::Selection> for Select {
-            fn into(self) -> ::prisma_client_rust::Selection {
-                ::prisma_client_rust::sel(NAME)
-            }
-        }
-        pub struct Include;
-        impl Into<super::IncludeParam> for Include {
-            fn into(self) -> super::IncludeParam {
-                super::IncludeParam::Spacedock(self)
-            }
-        }
-        impl Into<::prisma_client_rust::Selection> for Include {
-            fn into(self) -> ::prisma_client_rust::Selection {
-                ::prisma_client_rust::sel(NAME)
-            }
-        }
-    }
-    pub mod thunderstore {
-        use super::super::{_prisma::*, *};
-        use super::{SetParam, UncheckedSetParam, UniqueWhereParam, WhereParam, WithParam};
-        pub const NAME: &str = "thunderstore";
-        pub type Type = Option<String>;
-        pub type RecursiveSafeType = Type;
-        pub struct Equals(pub Option<String>);
-        pub fn equals<T: From<Equals>>(value: Option<String>) -> T {
-            Equals(value).into()
-        }
-        impl From<Equals> for WhereParam {
-            fn from(Equals(v): Equals) -> Self {
-                WhereParam::Thunderstore(_prisma::read_filters::StringNullableFilter::Equals(v))
-            }
-        }
-        ::prisma_client_rust::scalar_where_param_fns!(
-            _prisma::read_filters::StringNullableFilter,
-            Thunderstore,
-            {
-                fn in_vec(_: Vec<String>) -> InVec;
-                fn not_in_vec(_: Vec<String>) -> NotInVec;
-                fn lt(_: String) -> Lt;
-                fn lte(_: String) -> Lte;
-                fn gt(_: String) -> Gt;
-                fn gte(_: String) -> Gte;
-                fn contains(_: String) -> Contains;
-                fn starts_with(_: String) -> StartsWith;
-                fn ends_with(_: String) -> EndsWith;
-                fn not(_: Option<String>) -> Not;
-            }
-        );
-        pub struct Order(SortOrder);
-        pub fn order<T: From<Order>>(v: SortOrder) -> T {
-            Order(v).into()
-        }
-        impl From<Order> for super::OrderByWithRelationParam {
-            fn from(Order(v): Order) -> Self {
-                Self::Thunderstore(v)
-            }
-        }
-        pub struct Set(pub Option<String>);
-        impl From<Set> for SetParam {
-            fn from(Set(v): Set) -> Self {
-                Self::Thunderstore(_prisma::write_params::StringNullableParam::Set(v))
-            }
-        }
-        pub fn set<T: From<Set>>(value: Option<String>) -> T {
-            Set(value).into()
-        }
-        pub struct UpdateOperation(pub _prisma::write_params::StringNullableParam);
-        impl From<UpdateOperation> for SetParam {
-            fn from(UpdateOperation(v): UpdateOperation) -> Self {
-                Self::Thunderstore(v)
-            }
-        }
-        impl From<Set> for UncheckedSetParam {
-            fn from(Set(v): Set) -> Self {
-                Self::Thunderstore(_prisma::write_params::StringNullableParam::Set(v))
-            }
-        }
-        impl From<UpdateOperation> for UncheckedSetParam {
-            fn from(UpdateOperation(v): UpdateOperation) -> Self {
-                Self::Thunderstore(v)
-            }
-        }
-        pub struct Select;
-        impl Into<super::SelectParam> for Select {
-            fn into(self) -> super::SelectParam {
-                super::SelectParam::Thunderstore(self)
-            }
-        }
-        impl Into<::prisma_client_rust::Selection> for Select {
-            fn into(self) -> ::prisma_client_rust::Selection {
-                ::prisma_client_rust::sel(NAME)
-            }
-        }
-        pub struct Include;
-        impl Into<super::IncludeParam> for Include {
-            fn into(self) -> super::IncludeParam {
-                super::IncludeParam::Thunderstore(self)
-            }
-        }
-        impl Into<::prisma_client_rust::Selection> for Include {
-            fn into(self) -> ::prisma_client_rust::Selection {
-                ::prisma_client_rust::sel(NAME)
-            }
-        }
-    }
-}
-pub mod source {
-    use super::{_prisma::*, *};
-    pub const NAME: &str = "Source";
-    #[derive(Debug, Clone)]
-    pub enum WhereParam {
-        Not(Vec<WhereParam>),
-        Or(Vec<WhereParam>),
-        And(Vec<WhereParam>),
-        Id(super::_prisma::read_filters::IntFilter),
-        Name(super::_prisma::read_filters::StringFilter),
-        GamesSome(Vec<super::game::WhereParam>),
-        GamesEvery(Vec<super::game::WhereParam>),
-        GamesNone(Vec<super::game::WhereParam>),
-        ModsSome(Vec<super::r#mod::WhereParam>),
-        ModsEvery(Vec<super::r#mod::WhereParam>),
-        ModsNone(Vec<super::r#mod::WhereParam>),
-    }
-    impl ::prisma_client_rust::WhereInput for WhereParam {
-        fn serialize(self) -> ::prisma_client_rust::SerializedWhereInput {
-            let (name, value) = match self {
-                Self::Not(value) => (
-                    "NOT",
-                    ::prisma_client_rust::SerializedWhereValue::Object(
-                        ::prisma_client_rust::merge_fields(
-                            value
-                                .into_iter()
-                                .map(::prisma_client_rust::WhereInput::serialize)
-                                .map(Into::into)
-                                .collect(),
-                        ),
-                    ),
-                ),
-                Self::Or(value) => (
-                    "OR",
-                    ::prisma_client_rust::SerializedWhereValue::List(
-                        value
-                            .into_iter()
-                            .map(::prisma_client_rust::WhereInput::serialize)
-                            .map(|p| ::prisma_client_rust::PrismaValue::Object(vec![p.into()]))
-                            .collect(),
-                    ),
-                ),
-                Self::And(value) => (
-                    "AND",
-                    ::prisma_client_rust::SerializedWhereValue::Object(
-                        ::prisma_client_rust::merge_fields(
-                            value
-                                .into_iter()
-                                .map(::prisma_client_rust::WhereInput::serialize)
-                                .map(Into::into)
-                                .collect(),
-                        ),
-                    ),
-                ),
-                Self::Id(value) => (id::NAME, value.into()),
-                Self::Name(value) => (name::NAME, value.into()),
-                Self::GamesSome(where_params) => (
-                    games::NAME,
-                    ::prisma_client_rust::SerializedWhereValue::Object(vec![(
-                        "some".to_string(),
-                        ::prisma_client_rust::PrismaValue::Object(
-                            where_params
-                                .into_iter()
-                                .map(::prisma_client_rust::WhereInput::serialize)
-                                .map(::prisma_client_rust::SerializedWhereInput::transform_equals)
-                                .collect(),
-                        ),
-                    )]),
-                ),
-                Self::GamesEvery(where_params) => (
-                    games::NAME,
-                    ::prisma_client_rust::SerializedWhereValue::Object(vec![(
-                        "every".to_string(),
-                        ::prisma_client_rust::PrismaValue::Object(
-                            where_params
-                                .into_iter()
-                                .map(::prisma_client_rust::WhereInput::serialize)
-                                .map(::prisma_client_rust::SerializedWhereInput::transform_equals)
-                                .collect(),
-                        ),
-                    )]),
-                ),
-                Self::GamesNone(where_params) => (
-                    games::NAME,
-                    ::prisma_client_rust::SerializedWhereValue::Object(vec![(
-                        "none".to_string(),
-                        ::prisma_client_rust::PrismaValue::Object(
-                            where_params
-                                .into_iter()
-                                .map(::prisma_client_rust::WhereInput::serialize)
-                                .map(::prisma_client_rust::SerializedWhereInput::transform_equals)
-                                .collect(),
-                        ),
-                    )]),
-                ),
-                Self::ModsSome(where_params) => (
-                    mods::NAME,
-                    ::prisma_client_rust::SerializedWhereValue::Object(vec![(
-                        "some".to_string(),
-                        ::prisma_client_rust::PrismaValue::Object(
-                            where_params
-                                .into_iter()
-                                .map(::prisma_client_rust::WhereInput::serialize)
-                                .map(::prisma_client_rust::SerializedWhereInput::transform_equals)
-                                .collect(),
-                        ),
-                    )]),
-                ),
-                Self::ModsEvery(where_params) => (
-                    mods::NAME,
-                    ::prisma_client_rust::SerializedWhereValue::Object(vec![(
-                        "every".to_string(),
-                        ::prisma_client_rust::PrismaValue::Object(
-                            where_params
-                                .into_iter()
-                                .map(::prisma_client_rust::WhereInput::serialize)
-                                .map(::prisma_client_rust::SerializedWhereInput::transform_equals)
-                                .collect(),
-                        ),
-                    )]),
-                ),
-                Self::ModsNone(where_params) => (
-                    mods::NAME,
-                    ::prisma_client_rust::SerializedWhereValue::Object(vec![(
-                        "none".to_string(),
-                        ::prisma_client_rust::PrismaValue::Object(
-                            where_params
-                                .into_iter()
-                                .map(::prisma_client_rust::WhereInput::serialize)
-                                .map(::prisma_client_rust::SerializedWhereInput::transform_equals)
-                                .collect(),
-                        ),
-                    )]),
-                ),
-            };
-            ::prisma_client_rust::SerializedWhereInput::new(name.to_string(), value.into())
-        }
-    }
-    #[derive(Debug, Clone)]
-    pub enum UniqueWhereParam {
-        NameEquals(String),
-        IdEquals(Int),
-    }
-    impl ::prisma_client_rust::WhereInput for UniqueWhereParam {
-        fn serialize(self) -> ::prisma_client_rust::SerializedWhereInput {
-            let (name, value) = match self {
-                UniqueWhereParam::NameEquals(value) => (
-                    "name",
-                    ::prisma_client_rust::SerializedWhereValue::Value(
-                        ::prisma_client_rust::PrismaValue::String(value),
-                    ),
-                ),
-                UniqueWhereParam::IdEquals(value) => (
-                    "id",
-                    ::prisma_client_rust::SerializedWhereValue::Value(
-                        ::prisma_client_rust::PrismaValue::Int(value),
-                    ),
-                ),
-            };
-            ::prisma_client_rust::SerializedWhereInput::new(name.to_string(), value.into())
-        }
-    }
-    impl From<::prisma_client_rust::Operator<Self>> for WhereParam {
-        fn from(op: ::prisma_client_rust::Operator<Self>) -> Self {
-            match op {
-                ::prisma_client_rust::Operator::Not(value) => Self::Not(value),
-                ::prisma_client_rust::Operator::And(value) => Self::And(value),
-                ::prisma_client_rust::Operator::Or(value) => Self::Or(value),
-            }
-        }
-    }
-    #[derive(Debug, Clone)]
-    pub enum OrderByWithRelationParam {
-        Id(super::SortOrder),
-        Name(super::SortOrder),
-        Games(Vec<super::game::OrderByRelationAggregateParam>),
-        Mods(Vec<super::r#mod::OrderByRelationAggregateParam>),
-    }
-    impl Into<(String, ::prisma_client_rust::PrismaValue)> for OrderByWithRelationParam {
-        fn into(self) -> (String, ::prisma_client_rust::PrismaValue) {
-            let (k, v) = match self {
-                Self::Id(param) => ("id", param.into()),
-                Self::Name(param) => ("name", param.into()),
-                Self::Games(param) => (
-                    "games",
-                    ::prisma_client_rust::PrismaValue::Object(
-                        param.into_iter().map(Into::into).collect(),
-                    ),
-                ),
-                Self::Mods(param) => (
-                    "mods",
-                    ::prisma_client_rust::PrismaValue::Object(
-                        param.into_iter().map(Into::into).collect(),
-                    ),
-                ),
-            };
-            (k.to_string(), v)
-        }
-    }
-    #[derive(Debug, Clone)]
-    pub enum OrderByRelationAggregateParam {
-        _Count(super::SortOrder),
-    }
-    impl Into<(String, ::prisma_client_rust::PrismaValue)> for OrderByRelationAggregateParam {
-        fn into(self) -> (String, ::prisma_client_rust::PrismaValue) {
-            let (k, v) = match self {
-                Self::_Count(param) => ("_count", param.into()),
-            };
-            (k.to_string(), v)
-        }
-    }
-    #[derive(Debug, Clone)]
-    pub enum WithParam {
-        Games(super::game::ManyArgs),
-        Mods(super::r#mod::ManyArgs),
-    }
-    impl Into<::prisma_client_rust::Selection> for WithParam {
-        fn into(self) -> ::prisma_client_rust::Selection {
-            match self {
-                Self::Games(args) => {
-                    let (arguments, mut nested_selections) = args.to_graphql();
-                    nested_selections.extend(
-                        <super::game::Types as ::prisma_client_rust::ModelTypes>::scalar_selections(
-                        ),
-                    );
-                    ::prisma_client_rust::Selection::new(
-                        games::NAME,
-                        None,
-                        arguments,
-                        nested_selections,
-                    )
-                }
-                Self::Mods(args) => {
-                    let (arguments, mut nested_selections) = args.to_graphql();
-                    nested_selections . extend (< super :: r#mod :: Types as :: prisma_client_rust :: ModelTypes > :: scalar_selections ()) ;
-                    ::prisma_client_rust::Selection::new(
-                        mods::NAME,
-                        None,
-                        arguments,
-                        nested_selections,
-                    )
-                }
-            }
-        }
-    }
-    #[derive(Debug, Clone)]
-    pub enum SetParam {
-        Id(super::_prisma::write_params::IntParam),
-        Name(super::_prisma::write_params::StringParam),
-        ConnectGames(Vec<super::game::UniqueWhereParam>),
-        DisconnectGames(Vec<super::game::UniqueWhereParam>),
-        SetGames(Vec<super::game::UniqueWhereParam>),
-        ConnectMods(Vec<super::r#mod::UniqueWhereParam>),
-        DisconnectMods(Vec<super::r#mod::UniqueWhereParam>),
-        SetMods(Vec<super::r#mod::UniqueWhereParam>),
-    }
-    impl Into<(String, ::prisma_client_rust::PrismaValue)> for SetParam {
-        fn into(self) -> (String, ::prisma_client_rust::PrismaValue) {
-            let (k, v) = match self {
-                Self::Id(value) => (id::NAME, value.into()),
-                Self::Name(value) => (name::NAME, value.into()),
-                Self::ConnectGames(where_params) => (
-                    games::NAME,
-                    ::prisma_client_rust::PrismaValue::Object(vec![(
-                        "connect".to_string(),
-                        ::prisma_client_rust::PrismaValue::List(
-                            where_params
-                                .into_iter()
-                                .map(::prisma_client_rust::WhereInput::serialize)
-                                .map(::prisma_client_rust::SerializedWhereInput::transform_equals)
-                                .map(|v| ::prisma_client_rust::PrismaValue::Object(vec![v]))
-                                .collect(),
-                        ),
-                    )]),
-                ),
-                Self::DisconnectGames(where_params) => (
-                    games::NAME,
-                    ::prisma_client_rust::PrismaValue::Object(vec![(
-                        "disconnect".to_string(),
-                        ::prisma_client_rust::PrismaValue::List(
-                            where_params
-                                .into_iter()
-                                .map(::prisma_client_rust::WhereInput::serialize)
-                                .map(::prisma_client_rust::SerializedWhereInput::transform_equals)
-                                .map(|v| ::prisma_client_rust::PrismaValue::Object(vec![v]))
-                                .collect(),
-                        ),
-                    )]),
-                ),
-                Self::SetGames(where_params) => (
-                    games::NAME,
-                    ::prisma_client_rust::PrismaValue::Object(vec![(
-                        "set".to_string(),
-                        ::prisma_client_rust::PrismaValue::List(
-                            where_params
-                                .into_iter()
-                                .map(::prisma_client_rust::WhereInput::serialize)
-                                .map(::prisma_client_rust::SerializedWhereInput::transform_equals)
-                                .map(|v| ::prisma_client_rust::PrismaValue::Object(vec![v]))
-                                .collect(),
-                        ),
-                    )]),
-                ),
-                Self::ConnectMods(where_params) => (
-                    mods::NAME,
-                    ::prisma_client_rust::PrismaValue::Object(vec![(
-                        "connect".to_string(),
-                        ::prisma_client_rust::PrismaValue::List(
-                            where_params
-                                .into_iter()
-                                .map(::prisma_client_rust::WhereInput::serialize)
-                                .map(::prisma_client_rust::SerializedWhereInput::transform_equals)
-                                .map(|v| ::prisma_client_rust::PrismaValue::Object(vec![v]))
-                                .collect(),
-                        ),
-                    )]),
-                ),
-                Self::DisconnectMods(where_params) => (
-                    mods::NAME,
-                    ::prisma_client_rust::PrismaValue::Object(vec![(
-                        "disconnect".to_string(),
-                        ::prisma_client_rust::PrismaValue::List(
-                            where_params
-                                .into_iter()
-                                .map(::prisma_client_rust::WhereInput::serialize)
-                                .map(::prisma_client_rust::SerializedWhereInput::transform_equals)
-                                .map(|v| ::prisma_client_rust::PrismaValue::Object(vec![v]))
-                                .collect(),
-                        ),
-                    )]),
-                ),
-                Self::SetMods(where_params) => (
-                    mods::NAME,
-                    ::prisma_client_rust::PrismaValue::Object(vec![(
-                        "set".to_string(),
-                        ::prisma_client_rust::PrismaValue::List(
-                            where_params
-                                .into_iter()
-                                .map(::prisma_client_rust::WhereInput::serialize)
-                                .map(::prisma_client_rust::SerializedWhereInput::transform_equals)
-                                .map(|v| ::prisma_client_rust::PrismaValue::Object(vec![v]))
-                                .collect(),
-                        ),
-                    )]),
-                ),
-            };
-            (k.to_string(), v)
-        }
-    }
-    #[derive(Debug, Clone)]
-    pub enum UncheckedSetParam {
-        Id(super::_prisma::write_params::IntParam),
-        Name(super::_prisma::write_params::StringParam),
-    }
-    impl Into<(String, ::prisma_client_rust::PrismaValue)> for UncheckedSetParam {
-        fn into(self) -> (String, ::prisma_client_rust::PrismaValue) {
-            let (k, v) = match self {
-                Self::Id(value) => ("id", value.into()),
-                Self::Name(value) => ("name", value.into()),
-            };
-            (k.to_string(), v)
-        }
-    }
-    ::prisma_client_rust::macros::select_factory!(
-        _select_source,
-        select,
-        prisma::source,
-        struct Data {
-            #[serde(rename = "id")]
-            id: id::Type,
-            #[serde(rename = "name")]
-            name: name::Type,
-            #[serde(rename = "games")]
-            games: games::Type,
-            #[serde(rename = "mods")]
-            mods: mods::Type,
-        },
-        [
-            (id, Scalar),
-            (name, Scalar),
-            (games, Relation(prisma::game, Many)),
-            (mods, Relation(prisma::r#mod, Many))
-        ]
-    );
-    pub enum SelectParam {
-        Id(id::Select),
-        Name(name::Select),
-        Games(games::Select),
-        Mods(mods::Select),
-    }
-    impl Into<::prisma_client_rust::Selection> for SelectParam {
-        fn into(self) -> ::prisma_client_rust::Selection {
-            match self {
-                Self::Id(data) => data.into(),
-                Self::Name(data) => data.into(),
-                Self::Games(data) => data.into(),
-                Self::Mods(data) => data.into(),
-            }
-        }
-    }
-    ::prisma_client_rust::macros::include_factory!(
-        _include_source,
-        include,
-        prisma::source,
-        struct Data {
-            #[serde(rename = "id")]
-            id: id::Type,
-            #[serde(rename = "name")]
-            name: name::Type,
-            #[serde(rename = "games")]
-            games: games::Type,
-            #[serde(rename = "mods")]
-            mods: mods::Type,
-        },
-        [
-            (games, Relation(prisma::game, Many)),
-            (mods, Relation(prisma::r#mod, Many))
-        ]
-    );
-    pub enum IncludeParam {
-        Id(id::Include),
-        Name(name::Include),
-        Games(games::Include),
-        Mods(mods::Include),
-    }
-    impl Into<::prisma_client_rust::Selection> for IncludeParam {
-        fn into(self) -> ::prisma_client_rust::Selection {
-            match self {
-                Self::Id(data) => data.into(),
-                Self::Name(data) => data.into(),
-                Self::Games(data) => data.into(),
-                Self::Mods(data) => data.into(),
-            }
-        }
-    }
-    #[derive(Debug, Clone)]
-    pub struct Create {
-        pub name: String,
-        pub _params: Vec<SetParam>,
-    }
-    impl Create {
-        pub fn to_query<'a>(self, client: &'a PrismaClient) -> CreateQuery<'a> {
-            client.source().create(self.name, self._params)
-        }
-        pub fn to_params(mut self) -> Vec<SetParam> {
-            self._params.extend([name::set(self.name)]);
-            self._params
-        }
-    }
-    pub fn create(name: String, _params: Vec<SetParam>) -> Create {
-        Create { name, _params }
-    }
-    #[derive(
-        Debug,
-        Clone,
-        :: serde :: Serialize,
-        :: serde :: Deserialize,
-        :: prisma_client_rust :: specta :: Type,
-    )]
-    # [specta (rename = "SourceCreation" , crate = prisma_client_rust :: specta)]
-    pub struct CreateUnchecked {
-        #[serde(rename = "name")]
-        pub name: String,
-        #[serde(skip)]
-        pub _params: Vec<UncheckedSetParam>,
-    }
-    impl CreateUnchecked {
-        pub fn to_query<'a>(self, client: &'a PrismaClient) -> CreateUncheckedQuery<'a> {
-            client.source().create_unchecked(self.name, self._params)
-        }
-        pub fn to_params(mut self) -> Vec<UncheckedSetParam> {
-            self._params.extend([name::set(self.name)]);
-            self._params
-        }
-    }
-    pub fn create_unchecked(name: String, _params: Vec<UncheckedSetParam>) -> CreateUnchecked {
-        CreateUnchecked { name, _params }
-    }
-    #[derive(
-        Debug,
-        Clone,
-        :: serde :: Serialize,
-        :: serde :: Deserialize,
-        :: prisma_client_rust :: specta :: Type,
-    )]
-    # [specta (rename = "SourceUpdate" , crate = prisma_client_rust :: specta)]
-    pub struct Update {
-        #[serde(rename = "id")]
-        pub id: id::Type,
-        #[serde(rename = "name", skip_serializing_if = "Option::is_none")]
-        pub name: Option<name::Type>,
-    }
-    impl Update {
-        pub fn as_params(self) -> Vec<SetParam> {
-            let mut params = Vec::new();
-            if let Some(field) = self.name {
-                params.push(name::set(field));
-            }
-            params
-        }
-    }
-    #[derive(Debug, Clone)]
-    pub struct Types;
-    impl ::prisma_client_rust::ModelTypes for Types {
-        type Data = Data;
-        type Where = WhereParam;
-        type WhereUnique = UniqueWhereParam;
-        type UncheckedSet = UncheckedSetParam;
-        type Set = SetParam;
-        type With = WithParam;
-        type OrderBy = OrderByWithRelationParam;
-        type Cursor = UniqueWhereParam;
-        const MODEL: &'static str = NAME;
-        fn scalar_selections() -> Vec<::prisma_client_rust::Selection> {
-            vec![
-                ::prisma_client_rust::sel(id::NAME),
-                ::prisma_client_rust::sel(name::NAME),
-            ]
-        }
-    }
-    #[derive(
-        Debug,
-        Clone,
-        :: serde :: Serialize,
-        :: serde :: Deserialize,
-        :: prisma_client_rust :: specta :: Type,
-    )]
-    # [specta (rename = "Source" , crate = prisma_client_rust :: specta)]
-    pub struct Data {
-        #[serde(rename = "id")]
-        pub id: id::Type,
-        #[serde(rename = "name")]
-        pub name: name::Type,
-        #[serde(rename = "games")]
-        #[specta(skip)]
-        pub games: Option<games::RecursiveSafeType>,
-        #[serde(rename = "mods")]
-        #[specta(skip)]
-        pub mods: Option<mods::RecursiveSafeType>,
-    }
-    impl Data {
-        pub fn games(&self) -> Result<&games::Type, ::prisma_client_rust::RelationNotFetchedError> {
-            self.games
-                .as_ref()
-                .ok_or(::prisma_client_rust::RelationNotFetchedError::new(
-                    stringify!(games),
-                ))
-        }
-        pub fn mods(&self) -> Result<&mods::Type, ::prisma_client_rust::RelationNotFetchedError> {
-            self.mods
-                .as_ref()
-                .ok_or(::prisma_client_rust::RelationNotFetchedError::new(
-                    stringify!(mods),
-                ))
-        }
-    }
-    ::prisma_client_rust::macros::partial_unchecked_factory!(
-        _partial_unchecked_source,
-        prisma::source,
-        struct Data {
-            #[serde(rename = "id")]
-            pub id: prisma::source::id::Type,
-            #[serde(rename = "name")]
-            pub name: prisma::source::name::Type,
-        }
-    );
-    ::prisma_client_rust::macros::filter_factory!(
-        _source_filter,
-        prisma::source,
-        [
-            (id, Scalar),
-            (name, Scalar),
-            (games, Relation(prisma::game, Many)),
-            (mods, Relation(prisma::r#mod, Many))
-        ]
-    );
-    pub type UniqueArgs = ::prisma_client_rust::UniqueArgs<Types>;
-    pub type ManyArgs = ::prisma_client_rust::ManyArgs<Types>;
-    pub type CountQuery<'a> = ::prisma_client_rust::Count<'a, Types>;
-    pub type CreateQuery<'a> = ::prisma_client_rust::Create<'a, Types>;
-    pub type CreateUncheckedQuery<'a> = ::prisma_client_rust::CreateUnchecked<'a, Types>;
-    pub type CreateManyQuery<'a> = ::prisma_client_rust::CreateMany<'a, Types>;
-    pub type FindUniqueQuery<'a> = ::prisma_client_rust::FindUnique<'a, Types>;
-    pub type FindManyQuery<'a> = ::prisma_client_rust::FindMany<'a, Types>;
-    pub type FindFirstQuery<'a> = ::prisma_client_rust::FindFirst<'a, Types>;
-    pub type UpdateQuery<'a> = ::prisma_client_rust::Update<'a, Types>;
-    pub type UpdateUncheckedQuery<'a> = ::prisma_client_rust::UpdateUnchecked<'a, Types>;
-    pub type UpdateManyQuery<'a> = ::prisma_client_rust::UpdateMany<'a, Types>;
-    pub type UpsertQuery<'a> = ::prisma_client_rust::Upsert<'a, Types>;
-    pub type DeleteQuery<'a> = ::prisma_client_rust::Delete<'a, Types>;
-    pub type DeleteManyQuery<'a> = ::prisma_client_rust::DeleteMany<'a, Types>;
-    #[derive(Clone)]
-    pub struct Actions<'a> {
-        pub client: &'a ::prisma_client_rust::PrismaClientInternals,
-    }
-    impl<'a> Actions<'a> {
-        pub fn find_unique(self, _where: UniqueWhereParam) -> FindUniqueQuery<'a> {
-            FindUniqueQuery::new(self.client, _where)
-        }
-        pub fn find_first(self, _where: Vec<WhereParam>) -> FindFirstQuery<'a> {
-            FindFirstQuery::new(self.client, _where)
-        }
-        pub fn find_many(self, _where: Vec<WhereParam>) -> FindManyQuery<'a> {
-            FindManyQuery::new(self.client, _where)
-        }
-        pub fn create(self, name: String, mut _params: Vec<SetParam>) -> CreateQuery<'a> {
-            _params.extend([name::set(name)]);
-            CreateQuery::new(self.client, _params)
-        }
-        pub fn create_unchecked(
-            self,
-            name: String,
-            mut _params: Vec<UncheckedSetParam>,
-        ) -> CreateUncheckedQuery<'a> {
-            _params.extend([name::set(name)]);
-            CreateUncheckedQuery::new(self.client, _params.into_iter().map(Into::into).collect())
-        }
-        pub fn create_many(self, data: Vec<CreateUnchecked>) -> CreateManyQuery<'a> {
-            let data = data.into_iter().map(CreateUnchecked::to_params).collect();
-            CreateManyQuery::new(self.client, data)
-        }
-        pub fn update(self, _where: UniqueWhereParam, _params: Vec<SetParam>) -> UpdateQuery<'a> {
-            UpdateQuery::new(self.client, _where, _params, vec![])
-        }
-        pub fn update_unchecked(
-            self,
-            _where: UniqueWhereParam,
-            _params: Vec<UncheckedSetParam>,
-        ) -> UpdateUncheckedQuery<'a> {
-            UpdateUncheckedQuery::new(
-                self.client,
-                _where,
-                _params.into_iter().map(Into::into).collect(),
-                vec![],
-            )
-        }
-        pub fn update_many(
-            self,
-            _where: Vec<WhereParam>,
-            _params: Vec<SetParam>,
-        ) -> UpdateManyQuery<'a> {
-            UpdateManyQuery::new(self.client, _where, _params)
-        }
-        pub fn upsert(
-            self,
-            _where: UniqueWhereParam,
-            _create: Create,
-            _update: Vec<SetParam>,
-        ) -> UpsertQuery<'a> {
-            UpsertQuery::new(self.client, _where, _create.to_params(), _update)
-        }
-        pub fn delete(self, _where: UniqueWhereParam) -> DeleteQuery<'a> {
-            DeleteQuery::new(self.client, _where, vec![])
-        }
-        pub fn delete_many(self, _where: Vec<WhereParam>) -> DeleteManyQuery<'a> {
-            DeleteManyQuery::new(self.client, _where)
-        }
-        pub fn count(self, _where: Vec<WhereParam>) -> CountQuery<'a> {
-            CountQuery::new(self.client, _where)
-        }
-    }
-    pub mod _count {
-        use super::super::{_prisma::*, *};
-        use super::{SetParam, UncheckedSetParam, UniqueWhereParam, WhereParam, WithParam};
-        pub const NAME: &str = "_count";
-        pub struct Order(super::SortOrder);
-        pub fn order<T: From<Order>>(v: super::SortOrder) -> T {
-            Order(v).into()
-        }
-        impl From<Order> for super::OrderByRelationAggregateParam {
-            fn from(Order(v): Order) -> Self {
-                Self::_Count(v)
-            }
-        }
-    }
-    pub mod games {
-        use super::super::{_prisma::*, *};
-        use super::{SetParam, UncheckedSetParam, UniqueWhereParam, WhereParam, WithParam};
-        pub const NAME: &str = "games";
-        pub type Type = Vec<game::Data>;
-        pub type RecursiveSafeType = Type;
-        pub fn some(value: Vec<game::WhereParam>) -> WhereParam {
-            WhereParam::GamesSome(value)
-        }
-        pub fn every(value: Vec<game::WhereParam>) -> WhereParam {
-            WhereParam::GamesEvery(value)
-        }
-        pub fn none(value: Vec<game::WhereParam>) -> WhereParam {
-            WhereParam::GamesNone(value)
-        }
-        pub struct Order(Vec<game::OrderByRelationAggregateParam>);
-        pub fn order<T: From<Order>>(v: Vec<game::OrderByRelationAggregateParam>) -> T {
-            Order(v).into()
-        }
-        impl From<Order> for super::OrderByWithRelationParam {
-            fn from(Order(v): Order) -> Self {
-                Self::Games(v)
-            }
-        }
-        pub struct Fetch(pub game::ManyArgs);
-        impl Fetch {
-            pub fn with(mut self, params: impl Into<game::WithParam>) -> Self {
-                self.0 = self.0.with(params.into());
-                self
-            }
-            pub fn order_by(mut self, param: game::OrderByWithRelationParam) -> Self {
-                self.0 = self.0.order_by(param);
-                self
-            }
-            pub fn skip(mut self, value: i64) -> Self {
-                self.0 = self.0.skip(value);
-                self
-            }
-            pub fn take(mut self, value: i64) -> Self {
-                self.0 = self.0.take(value);
-                self
-            }
-            pub fn cursor(mut self, value: game::UniqueWhereParam) -> Self {
-                self.0 = self.0.cursor(value.into());
-                self
-            }
-        }
-        impl From<Fetch> for WithParam {
-            fn from(Fetch(v): Fetch) -> Self {
-                WithParam::Games(v)
-            }
-        }
-        pub fn fetch(params: Vec<game::WhereParam>) -> Fetch {
-            Fetch(game::ManyArgs::new(params))
-        }
-        pub struct Connect(pub Vec<game::UniqueWhereParam>);
-        impl From<Connect> for SetParam {
-            fn from(Connect(v): Connect) -> Self {
-                Self::ConnectGames(v)
-            }
-        }
-        pub fn connect<T: From<Connect>>(params: Vec<game::UniqueWhereParam>) -> T {
-            Connect(params).into()
-        }
-        pub fn disconnect(params: Vec<game::UniqueWhereParam>) -> SetParam {
-            SetParam::DisconnectGames(params)
-        }
-        pub fn set(params: Vec<game::UniqueWhereParam>) -> SetParam {
-            SetParam::SetGames(params)
-        }
-        pub enum Select {
-            Select(game::ManyArgs, Vec<game::SelectParam>),
-            Include(game::ManyArgs, Vec<game::IncludeParam>),
-            Fetch(game::ManyArgs),
-        }
-        impl Into<super::SelectParam> for Select {
-            fn into(self) -> super::SelectParam {
-                super::SelectParam::Games(self)
-            }
-        }
-        impl Select {
-            pub fn select(args: game::ManyArgs, nested_selections: Vec<game::SelectParam>) -> Self {
-                Self::Select(args, nested_selections)
-            }
-            pub fn include(
-                args: game::ManyArgs,
-                nested_selections: Vec<game::IncludeParam>,
-            ) -> Self {
-                Self::Include(args, nested_selections)
-            }
-        }
-        impl Into<::prisma_client_rust::Selection> for Select {
-            fn into(self) -> ::prisma_client_rust::Selection {
-                let (args, selections) = match self {
-                    Self::Select(args, selections) => (
-                        args.to_graphql().0,
-                        selections.into_iter().map(Into::into).collect(),
-                    ),
-                    Self::Include(args, selections) => (args.to_graphql().0, {
-                        let mut nested_selections = vec![];
-                        nested_selections.extend(selections.into_iter().map(Into::into));
-                        nested_selections
-                    }),
-                    Self::Fetch(args) => (
-                        args.to_graphql().0,
-                        <game::Types as ::prisma_client_rust::ModelTypes>::scalar_selections(),
-                    ),
-                };
-                ::prisma_client_rust::Selection::new(NAME, None, args, selections)
-            }
-        }
-        pub enum Include {
-            Select(game::ManyArgs, Vec<game::SelectParam>),
-            Include(game::ManyArgs, Vec<game::IncludeParam>),
-            Fetch(game::ManyArgs),
-        }
-        impl Into<super::IncludeParam> for Include {
-            fn into(self) -> super::IncludeParam {
-                super::IncludeParam::Games(self)
-            }
-        }
-        impl Include {
-            pub fn select(args: game::ManyArgs, nested_selections: Vec<game::SelectParam>) -> Self {
-                Self::Select(args, nested_selections)
-            }
-            pub fn include(
-                args: game::ManyArgs,
-                nested_selections: Vec<game::IncludeParam>,
-            ) -> Self {
-                Self::Include(args, nested_selections)
-            }
-        }
-        impl Into<::prisma_client_rust::Selection> for Include {
-            fn into(self) -> ::prisma_client_rust::Selection {
-                let (args, selections) = match self {
-                    Self::Select(args, selections) => (
-                        args.to_graphql().0,
-                        selections.into_iter().map(Into::into).collect(),
-                    ),
-                    Self::Include(args, selections) => (args.to_graphql().0, {
-                        let mut nested_selections =
-                            <game::Types as ::prisma_client_rust::ModelTypes>::scalar_selections();
-                        nested_selections.extend(selections.into_iter().map(Into::into));
-                        nested_selections
-                    }),
-                    Self::Fetch(args) => (
-                        args.to_graphql().0,
-                        <game::Types as ::prisma_client_rust::ModelTypes>::scalar_selections(),
-                    ),
-                };
-                ::prisma_client_rust::Selection::new(NAME, None, args, selections)
-            }
-        }
-    }
-    pub mod id {
-        use super::super::{_prisma::*, *};
-        use super::{SetParam, UncheckedSetParam, UniqueWhereParam, WhereParam, WithParam};
-        pub const NAME: &str = "id";
-        pub type Type = Int;
-        pub type RecursiveSafeType = Type;
-        pub struct Equals(pub Int);
-        pub fn equals<T: From<Equals>>(value: Int) -> T {
-            Equals(value).into()
-        }
-        impl From<Equals> for UniqueWhereParam {
-            fn from(Equals(v): Equals) -> Self {
-                UniqueWhereParam::IdEquals(v)
-            }
-        }
-        impl From<Equals> for WhereParam {
-            fn from(Equals(v): Equals) -> Self {
-                WhereParam::Id(_prisma::read_filters::IntFilter::Equals(v))
-            }
-        }
-        ::prisma_client_rust::scalar_where_param_fns!(_prisma::read_filters::IntFilter, Id, {
-            fn in_vec(_: Vec<Int>) -> InVec;
-            fn not_in_vec(_: Vec<Int>) -> NotInVec;
-            fn lt(_: Int) -> Lt;
-            fn lte(_: Int) -> Lte;
-            fn gt(_: Int) -> Gt;
-            fn gte(_: Int) -> Gte;
-            fn not(_: Int) -> Not;
-        });
-        pub struct Order(SortOrder);
-        pub fn order<T: From<Order>>(v: SortOrder) -> T {
-            Order(v).into()
-        }
-        impl From<Order> for super::OrderByWithRelationParam {
-            fn from(Order(v): Order) -> Self {
-                Self::Id(v)
-            }
-        }
-        pub struct Set(pub Int);
-        impl From<Set> for SetParam {
-            fn from(Set(v): Set) -> Self {
-                Self::Id(_prisma::write_params::IntParam::Set(v))
-            }
-        }
-        pub fn set<T: From<Set>>(value: Int) -> T {
-            Set(value).into()
-        }
-        pub struct UpdateOperation(pub _prisma::write_params::IntParam);
-        impl From<UpdateOperation> for SetParam {
-            fn from(UpdateOperation(v): UpdateOperation) -> Self {
-                Self::Id(v)
-            }
-        }
-        pub fn increment<T: From<UpdateOperation>>(value: Int) -> T {
-            UpdateOperation(_prisma::write_params::IntParam::Increment(value)).into()
-        }
-        pub fn decrement<T: From<UpdateOperation>>(value: Int) -> T {
-            UpdateOperation(_prisma::write_params::IntParam::Decrement(value)).into()
-        }
-        pub fn multiply<T: From<UpdateOperation>>(value: Int) -> T {
-            UpdateOperation(_prisma::write_params::IntParam::Multiply(value)).into()
-        }
-        pub fn divide<T: From<UpdateOperation>>(value: Int) -> T {
-            UpdateOperation(_prisma::write_params::IntParam::Divide(value)).into()
-        }
-        impl From<Set> for UncheckedSetParam {
-            fn from(Set(v): Set) -> Self {
-                Self::Id(_prisma::write_params::IntParam::Set(v))
-            }
-        }
-        impl From<UpdateOperation> for UncheckedSetParam {
-            fn from(UpdateOperation(v): UpdateOperation) -> Self {
-                Self::Id(v)
-            }
-        }
-        pub struct Select;
-        impl Into<super::SelectParam> for Select {
-            fn into(self) -> super::SelectParam {
-                super::SelectParam::Id(self)
-            }
-        }
-        impl Into<::prisma_client_rust::Selection> for Select {
-            fn into(self) -> ::prisma_client_rust::Selection {
-                ::prisma_client_rust::sel(NAME)
-            }
-        }
-        pub struct Include;
-        impl Into<super::IncludeParam> for Include {
-            fn into(self) -> super::IncludeParam {
-                super::IncludeParam::Id(self)
-            }
-        }
-        impl Into<::prisma_client_rust::Selection> for Include {
-            fn into(self) -> ::prisma_client_rust::Selection {
-                ::prisma_client_rust::sel(NAME)
-            }
-        }
-    }
-    pub mod mods {
-        use super::super::{_prisma::*, *};
-        use super::{SetParam, UncheckedSetParam, UniqueWhereParam, WhereParam, WithParam};
-        pub const NAME: &str = "mods";
-        pub type Type = Vec<r#mod::Data>;
-        pub type RecursiveSafeType = Type;
-        pub fn some(value: Vec<r#mod::WhereParam>) -> WhereParam {
-            WhereParam::ModsSome(value)
-        }
-        pub fn every(value: Vec<r#mod::WhereParam>) -> WhereParam {
-            WhereParam::ModsEvery(value)
-        }
-        pub fn none(value: Vec<r#mod::WhereParam>) -> WhereParam {
-            WhereParam::ModsNone(value)
-        }
-        pub struct Order(Vec<r#mod::OrderByRelationAggregateParam>);
-        pub fn order<T: From<Order>>(v: Vec<r#mod::OrderByRelationAggregateParam>) -> T {
-            Order(v).into()
-        }
-        impl From<Order> for super::OrderByWithRelationParam {
-            fn from(Order(v): Order) -> Self {
-                Self::Mods(v)
-            }
-        }
-        pub struct Fetch(pub r#mod::ManyArgs);
-        impl Fetch {
-            pub fn with(mut self, params: impl Into<r#mod::WithParam>) -> Self {
-                self.0 = self.0.with(params.into());
-                self
-            }
-            pub fn order_by(mut self, param: r#mod::OrderByWithRelationParam) -> Self {
-                self.0 = self.0.order_by(param);
-                self
-            }
-            pub fn skip(mut self, value: i64) -> Self {
-                self.0 = self.0.skip(value);
-                self
-            }
-            pub fn take(mut self, value: i64) -> Self {
-                self.0 = self.0.take(value);
-                self
-            }
-            pub fn cursor(mut self, value: r#mod::UniqueWhereParam) -> Self {
-                self.0 = self.0.cursor(value.into());
-                self
-            }
-        }
-        impl From<Fetch> for WithParam {
-            fn from(Fetch(v): Fetch) -> Self {
-                WithParam::Mods(v)
-            }
-        }
-        pub fn fetch(params: Vec<r#mod::WhereParam>) -> Fetch {
-            Fetch(r#mod::ManyArgs::new(params))
-        }
-        pub struct Connect(pub Vec<r#mod::UniqueWhereParam>);
-        impl From<Connect> for SetParam {
-            fn from(Connect(v): Connect) -> Self {
-                Self::ConnectMods(v)
-            }
-        }
-        pub fn connect<T: From<Connect>>(params: Vec<r#mod::UniqueWhereParam>) -> T {
-            Connect(params).into()
-        }
-        pub fn disconnect(params: Vec<r#mod::UniqueWhereParam>) -> SetParam {
-            SetParam::DisconnectMods(params)
-        }
-        pub fn set(params: Vec<r#mod::UniqueWhereParam>) -> SetParam {
-            SetParam::SetMods(params)
-        }
-        pub enum Select {
-            Select(r#mod::ManyArgs, Vec<r#mod::SelectParam>),
-            Include(r#mod::ManyArgs, Vec<r#mod::IncludeParam>),
-            Fetch(r#mod::ManyArgs),
-        }
-        impl Into<super::SelectParam> for Select {
-            fn into(self) -> super::SelectParam {
-                super::SelectParam::Mods(self)
-            }
-        }
-        impl Select {
-            pub fn select(
-                args: r#mod::ManyArgs,
-                nested_selections: Vec<r#mod::SelectParam>,
-            ) -> Self {
-                Self::Select(args, nested_selections)
-            }
-            pub fn include(
-                args: r#mod::ManyArgs,
-                nested_selections: Vec<r#mod::IncludeParam>,
-            ) -> Self {
-                Self::Include(args, nested_selections)
-            }
-        }
-        impl Into<::prisma_client_rust::Selection> for Select {
-            fn into(self) -> ::prisma_client_rust::Selection {
-                let (args, selections) = match self {
-                    Self::Select(args, selections) => (
-                        args.to_graphql().0,
-                        selections.into_iter().map(Into::into).collect(),
-                    ),
-                    Self::Include(args, selections) => (args.to_graphql().0, {
-                        let mut nested_selections = vec![];
-                        nested_selections.extend(selections.into_iter().map(Into::into));
-                        nested_selections
-                    }),
-                    Self::Fetch(args) => (
-                        args.to_graphql().0,
-                        <r#mod::Types as ::prisma_client_rust::ModelTypes>::scalar_selections(),
-                    ),
-                };
-                ::prisma_client_rust::Selection::new(NAME, None, args, selections)
-            }
-        }
-        pub enum Include {
-            Select(r#mod::ManyArgs, Vec<r#mod::SelectParam>),
-            Include(r#mod::ManyArgs, Vec<r#mod::IncludeParam>),
-            Fetch(r#mod::ManyArgs),
-        }
-        impl Into<super::IncludeParam> for Include {
-            fn into(self) -> super::IncludeParam {
-                super::IncludeParam::Mods(self)
-            }
-        }
-        impl Include {
-            pub fn select(
-                args: r#mod::ManyArgs,
-                nested_selections: Vec<r#mod::SelectParam>,
-            ) -> Self {
-                Self::Select(args, nested_selections)
-            }
-            pub fn include(
-                args: r#mod::ManyArgs,
-                nested_selections: Vec<r#mod::IncludeParam>,
-            ) -> Self {
-                Self::Include(args, nested_selections)
-            }
-        }
-        impl Into<::prisma_client_rust::Selection> for Include {
-            fn into(self) -> ::prisma_client_rust::Selection {
-                let (args, selections) = match self {
-                    Self::Select(args, selections) => (
-                        args.to_graphql().0,
-                        selections.into_iter().map(Into::into).collect(),
-                    ),
-                    Self::Include(args, selections) => (args.to_graphql().0, {
-                        let mut nested_selections =
-                            <r#mod::Types as ::prisma_client_rust::ModelTypes>::scalar_selections();
-                        nested_selections.extend(selections.into_iter().map(Into::into));
-                        nested_selections
-                    }),
-                    Self::Fetch(args) => (
-                        args.to_graphql().0,
-                        <r#mod::Types as ::prisma_client_rust::ModelTypes>::scalar_selections(),
-                    ),
-                };
-                ::prisma_client_rust::Selection::new(NAME, None, args, selections)
-            }
-        }
-    }
-    pub mod name {
-        use super::super::{_prisma::*, *};
-        use super::{SetParam, UncheckedSetParam, UniqueWhereParam, WhereParam, WithParam};
-        pub const NAME: &str = "name";
-        pub type Type = String;
-        pub type RecursiveSafeType = Type;
-        pub struct Equals(pub String);
-        pub fn equals<T: From<Equals>>(value: String) -> T {
-            Equals(value).into()
-        }
-        impl From<Equals> for UniqueWhereParam {
-            fn from(Equals(v): Equals) -> Self {
-                UniqueWhereParam::NameEquals(v)
-            }
-        }
-        impl From<Equals> for WhereParam {
-            fn from(Equals(v): Equals) -> Self {
-                WhereParam::Name(_prisma::read_filters::StringFilter::Equals(v))
-            }
-        }
-        ::prisma_client_rust::scalar_where_param_fns!(_prisma::read_filters::StringFilter, Name, {
-            fn in_vec(_: Vec<String>) -> InVec;
-            fn not_in_vec(_: Vec<String>) -> NotInVec;
-            fn lt(_: String) -> Lt;
-            fn lte(_: String) -> Lte;
-            fn gt(_: String) -> Gt;
-            fn gte(_: String) -> Gte;
-            fn contains(_: String) -> Contains;
-            fn starts_with(_: String) -> StartsWith;
-            fn ends_with(_: String) -> EndsWith;
-            fn not(_: String) -> Not;
-        });
-        pub struct Order(SortOrder);
-        pub fn order<T: From<Order>>(v: SortOrder) -> T {
-            Order(v).into()
-        }
-        impl From<Order> for super::OrderByWithRelationParam {
-            fn from(Order(v): Order) -> Self {
-                Self::Name(v)
-            }
-        }
-        pub struct Set(pub String);
-        impl From<Set> for SetParam {
-            fn from(Set(v): Set) -> Self {
-                Self::Name(_prisma::write_params::StringParam::Set(v))
-            }
-        }
-        pub fn set<T: From<Set>>(value: String) -> T {
-            Set(value).into()
-        }
-        pub struct UpdateOperation(pub _prisma::write_params::StringParam);
-        impl From<UpdateOperation> for SetParam {
-            fn from(UpdateOperation(v): UpdateOperation) -> Self {
-                Self::Name(v)
-            }
-        }
-        impl From<Set> for UncheckedSetParam {
-            fn from(Set(v): Set) -> Self {
-                Self::Name(_prisma::write_params::StringParam::Set(v))
-            }
-        }
-        impl From<UpdateOperation> for UncheckedSetParam {
-            fn from(UpdateOperation(v): UpdateOperation) -> Self {
-                Self::Name(v)
-            }
-        }
-        pub struct Select;
-        impl Into<super::SelectParam> for Select {
-            fn into(self) -> super::SelectParam {
-                super::SelectParam::Name(self)
-            }
-        }
-        impl Into<::prisma_client_rust::Selection> for Select {
-            fn into(self) -> ::prisma_client_rust::Selection {
-                ::prisma_client_rust::sel(NAME)
-            }
-        }
-        pub struct Include;
-        impl Into<super::IncludeParam> for Include {
-            fn into(self) -> super::IncludeParam {
-                super::IncludeParam::Name(self)
-            }
-        }
-        impl Into<::prisma_client_rust::Selection> for Include {
-            fn into(self) -> ::prisma_client_rust::Selection {
-                ::prisma_client_rust::sel(NAME)
-            }
-        }
-    }
-}
 pub mod instance {
     use super::{_prisma::*, *};
     pub const NAME: &str = "Instance";
@@ -3724,19 +595,12 @@ pub mod instance {
         And(Vec<WhereParam>),
         Id(super::_prisma::read_filters::IntFilter),
         Name(super::_prisma::read_filters::StringFilter),
-        GameIs(Vec<super::game::WhereParam>),
-        GameIsNot(Vec<super::game::WhereParam>),
-        GameId(super::_prisma::read_filters::IntFilter),
-        DataDir(super::_prisma::read_filters::StringFilter),
-        CacheDir(super::_prisma::read_filters::StringFilter),
-        InstallDir(super::_prisma::read_filters::StringFilter),
+        Plugin(super::_prisma::read_filters::StringFilter),
         Description(super::_prisma::read_filters::StringFilter),
-        Created(super::_prisma::read_filters::DateTimeFilter),
         Updated(super::_prisma::read_filters::DateTimeFilter),
-        Loader(super::_prisma::read_filters::StringNullableFilter),
-        ModsSome(Vec<super::r#mod::WhereParam>),
-        ModsEvery(Vec<super::r#mod::WhereParam>),
-        ModsNone(Vec<super::r#mod::WhereParam>),
+        IconUrl(super::_prisma::read_filters::StringNullableFilter),
+        BannerUrl(super::_prisma::read_filters::StringNullableFilter),
+        ExtraData(super::_prisma::read_filters::StringFilter),
     }
     impl ::prisma_client_rust::WhereInput for WhereParam {
         fn serialize(self) -> ::prisma_client_rust::SerializedWhereInput {
@@ -3777,79 +641,12 @@ pub mod instance {
                 ),
                 Self::Id(value) => (id::NAME, value.into()),
                 Self::Name(value) => (name::NAME, value.into()),
-                Self::GameIs(where_params) => (
-                    game::NAME,
-                    ::prisma_client_rust::SerializedWhereValue::Object(vec![(
-                        "is".to_string(),
-                        ::prisma_client_rust::PrismaValue::Object(
-                            where_params
-                                .into_iter()
-                                .map(::prisma_client_rust::WhereInput::serialize)
-                                .map(::prisma_client_rust::SerializedWhereInput::transform_equals)
-                                .collect(),
-                        ),
-                    )]),
-                ),
-                Self::GameIsNot(where_params) => (
-                    game::NAME,
-                    ::prisma_client_rust::SerializedWhereValue::Object(vec![(
-                        "isNot".to_string(),
-                        ::prisma_client_rust::PrismaValue::Object(
-                            where_params
-                                .into_iter()
-                                .map(::prisma_client_rust::WhereInput::serialize)
-                                .map(::prisma_client_rust::SerializedWhereInput::transform_equals)
-                                .collect(),
-                        ),
-                    )]),
-                ),
-                Self::GameId(value) => (game_id::NAME, value.into()),
-                Self::DataDir(value) => (data_dir::NAME, value.into()),
-                Self::CacheDir(value) => (cache_dir::NAME, value.into()),
-                Self::InstallDir(value) => (install_dir::NAME, value.into()),
+                Self::Plugin(value) => (plugin::NAME, value.into()),
                 Self::Description(value) => (description::NAME, value.into()),
-                Self::Created(value) => (created::NAME, value.into()),
                 Self::Updated(value) => (updated::NAME, value.into()),
-                Self::Loader(value) => (loader::NAME, value.into()),
-                Self::ModsSome(where_params) => (
-                    mods::NAME,
-                    ::prisma_client_rust::SerializedWhereValue::Object(vec![(
-                        "some".to_string(),
-                        ::prisma_client_rust::PrismaValue::Object(
-                            where_params
-                                .into_iter()
-                                .map(::prisma_client_rust::WhereInput::serialize)
-                                .map(::prisma_client_rust::SerializedWhereInput::transform_equals)
-                                .collect(),
-                        ),
-                    )]),
-                ),
-                Self::ModsEvery(where_params) => (
-                    mods::NAME,
-                    ::prisma_client_rust::SerializedWhereValue::Object(vec![(
-                        "every".to_string(),
-                        ::prisma_client_rust::PrismaValue::Object(
-                            where_params
-                                .into_iter()
-                                .map(::prisma_client_rust::WhereInput::serialize)
-                                .map(::prisma_client_rust::SerializedWhereInput::transform_equals)
-                                .collect(),
-                        ),
-                    )]),
-                ),
-                Self::ModsNone(where_params) => (
-                    mods::NAME,
-                    ::prisma_client_rust::SerializedWhereValue::Object(vec![(
-                        "none".to_string(),
-                        ::prisma_client_rust::PrismaValue::Object(
-                            where_params
-                                .into_iter()
-                                .map(::prisma_client_rust::WhereInput::serialize)
-                                .map(::prisma_client_rust::SerializedWhereInput::transform_equals)
-                                .collect(),
-                        ),
-                    )]),
-                ),
+                Self::IconUrl(value) => (icon_url::NAME, value.into()),
+                Self::BannerUrl(value) => (banner_url::NAME, value.into()),
+                Self::ExtraData(value) => (extra_data::NAME, value.into()),
             };
             ::prisma_client_rust::SerializedWhereInput::new(name.to_string(), value.into())
         }
@@ -3884,175 +681,57 @@ pub mod instance {
     pub enum OrderByWithRelationParam {
         Id(super::SortOrder),
         Name(super::SortOrder),
-        GameId(super::SortOrder),
-        DataDir(super::SortOrder),
-        CacheDir(super::SortOrder),
-        InstallDir(super::SortOrder),
+        Plugin(super::SortOrder),
         Description(super::SortOrder),
-        Created(super::SortOrder),
         Updated(super::SortOrder),
-        Loader(super::SortOrder),
-        Game(Vec<super::game::OrderByWithRelationParam>),
-        Mods(Vec<super::r#mod::OrderByRelationAggregateParam>),
+        IconUrl(super::SortOrder),
+        BannerUrl(super::SortOrder),
+        ExtraData(super::SortOrder),
     }
     impl Into<(String, ::prisma_client_rust::PrismaValue)> for OrderByWithRelationParam {
         fn into(self) -> (String, ::prisma_client_rust::PrismaValue) {
             let (k, v) = match self {
                 Self::Id(param) => ("id", param.into()),
                 Self::Name(param) => ("name", param.into()),
-                Self::GameId(param) => ("gameId", param.into()),
-                Self::DataDir(param) => ("dataDir", param.into()),
-                Self::CacheDir(param) => ("cacheDir", param.into()),
-                Self::InstallDir(param) => ("installDir", param.into()),
+                Self::Plugin(param) => ("plugin", param.into()),
                 Self::Description(param) => ("description", param.into()),
-                Self::Created(param) => ("created", param.into()),
                 Self::Updated(param) => ("updated", param.into()),
-                Self::Loader(param) => ("loader", param.into()),
-                Self::Game(param) => (
-                    "game",
-                    ::prisma_client_rust::PrismaValue::Object(
-                        param.into_iter().map(Into::into).collect(),
-                    ),
-                ),
-                Self::Mods(param) => (
-                    "mods",
-                    ::prisma_client_rust::PrismaValue::Object(
-                        param.into_iter().map(Into::into).collect(),
-                    ),
-                ),
+                Self::IconUrl(param) => ("iconUrl", param.into()),
+                Self::BannerUrl(param) => ("bannerUrl", param.into()),
+                Self::ExtraData(param) => ("extraData", param.into()),
             };
             (k.to_string(), v)
         }
     }
     #[derive(Debug, Clone)]
-    pub enum OrderByRelationAggregateParam {
-        _Count(super::SortOrder),
-    }
-    impl Into<(String, ::prisma_client_rust::PrismaValue)> for OrderByRelationAggregateParam {
-        fn into(self) -> (String, ::prisma_client_rust::PrismaValue) {
-            let (k, v) = match self {
-                Self::_Count(param) => ("_count", param.into()),
-            };
-            (k.to_string(), v)
-        }
-    }
-    #[derive(Debug, Clone)]
-    pub enum WithParam {
-        Game(super::game::UniqueArgs),
-        Mods(super::r#mod::ManyArgs),
-    }
+    pub enum WithParam {}
     impl Into<::prisma_client_rust::Selection> for WithParam {
         fn into(self) -> ::prisma_client_rust::Selection {
-            match self {
-                Self::Game(args) => {
-                    let mut selections =
-                        <super::game::Types as ::prisma_client_rust::ModelTypes>::scalar_selections(
-                        );
-                    selections.extend(
-                        args.with_params
-                            .into_iter()
-                            .map(Into::<::prisma_client_rust::Selection>::into),
-                    );
-                    ::prisma_client_rust::Selection::new(game::NAME, None, [], selections)
-                }
-                Self::Mods(args) => {
-                    let (arguments, mut nested_selections) = args.to_graphql();
-                    nested_selections . extend (< super :: r#mod :: Types as :: prisma_client_rust :: ModelTypes > :: scalar_selections ()) ;
-                    ::prisma_client_rust::Selection::new(
-                        mods::NAME,
-                        None,
-                        arguments,
-                        nested_selections,
-                    )
-                }
-            }
+            match self {}
         }
     }
     #[derive(Debug, Clone)]
     pub enum SetParam {
         Id(super::_prisma::write_params::IntParam),
         Name(super::_prisma::write_params::StringParam),
-        ConnectGame(super::game::UniqueWhereParam),
-        GameId(super::_prisma::write_params::IntParam),
-        DataDir(super::_prisma::write_params::StringParam),
-        CacheDir(super::_prisma::write_params::StringParam),
-        InstallDir(super::_prisma::write_params::StringParam),
+        Plugin(super::_prisma::write_params::StringParam),
         Description(super::_prisma::write_params::StringParam),
-        Created(super::_prisma::write_params::DateTimeParam),
         Updated(super::_prisma::write_params::DateTimeParam),
-        Loader(super::_prisma::write_params::StringNullableParam),
-        ConnectMods(Vec<super::r#mod::UniqueWhereParam>),
-        DisconnectMods(Vec<super::r#mod::UniqueWhereParam>),
-        SetMods(Vec<super::r#mod::UniqueWhereParam>),
+        IconUrl(super::_prisma::write_params::StringNullableParam),
+        BannerUrl(super::_prisma::write_params::StringNullableParam),
+        ExtraData(super::_prisma::write_params::StringParam),
     }
     impl Into<(String, ::prisma_client_rust::PrismaValue)> for SetParam {
         fn into(self) -> (String, ::prisma_client_rust::PrismaValue) {
             let (k, v) = match self {
                 Self::Id(value) => (id::NAME, value.into()),
                 Self::Name(value) => (name::NAME, value.into()),
-                Self::ConnectGame(where_param) => (
-                    game::NAME,
-                    ::prisma_client_rust::PrismaValue::Object(vec![(
-                        "connect".to_string(),
-                        ::prisma_client_rust::PrismaValue::Object(
-                            [where_param]
-                                .into_iter()
-                                .map(::prisma_client_rust::WhereInput::serialize)
-                                .map(::prisma_client_rust::SerializedWhereInput::transform_equals)
-                                .collect(),
-                        ),
-                    )]),
-                ),
-                Self::GameId(value) => (game_id::NAME, value.into()),
-                Self::DataDir(value) => (data_dir::NAME, value.into()),
-                Self::CacheDir(value) => (cache_dir::NAME, value.into()),
-                Self::InstallDir(value) => (install_dir::NAME, value.into()),
+                Self::Plugin(value) => (plugin::NAME, value.into()),
                 Self::Description(value) => (description::NAME, value.into()),
-                Self::Created(value) => (created::NAME, value.into()),
                 Self::Updated(value) => (updated::NAME, value.into()),
-                Self::Loader(value) => (loader::NAME, value.into()),
-                Self::ConnectMods(where_params) => (
-                    mods::NAME,
-                    ::prisma_client_rust::PrismaValue::Object(vec![(
-                        "connect".to_string(),
-                        ::prisma_client_rust::PrismaValue::List(
-                            where_params
-                                .into_iter()
-                                .map(::prisma_client_rust::WhereInput::serialize)
-                                .map(::prisma_client_rust::SerializedWhereInput::transform_equals)
-                                .map(|v| ::prisma_client_rust::PrismaValue::Object(vec![v]))
-                                .collect(),
-                        ),
-                    )]),
-                ),
-                Self::DisconnectMods(where_params) => (
-                    mods::NAME,
-                    ::prisma_client_rust::PrismaValue::Object(vec![(
-                        "disconnect".to_string(),
-                        ::prisma_client_rust::PrismaValue::List(
-                            where_params
-                                .into_iter()
-                                .map(::prisma_client_rust::WhereInput::serialize)
-                                .map(::prisma_client_rust::SerializedWhereInput::transform_equals)
-                                .map(|v| ::prisma_client_rust::PrismaValue::Object(vec![v]))
-                                .collect(),
-                        ),
-                    )]),
-                ),
-                Self::SetMods(where_params) => (
-                    mods::NAME,
-                    ::prisma_client_rust::PrismaValue::Object(vec![(
-                        "set".to_string(),
-                        ::prisma_client_rust::PrismaValue::List(
-                            where_params
-                                .into_iter()
-                                .map(::prisma_client_rust::WhereInput::serialize)
-                                .map(::prisma_client_rust::SerializedWhereInput::transform_equals)
-                                .map(|v| ::prisma_client_rust::PrismaValue::Object(vec![v]))
-                                .collect(),
-                        ),
-                    )]),
-                ),
+                Self::IconUrl(value) => (icon_url::NAME, value.into()),
+                Self::BannerUrl(value) => (banner_url::NAME, value.into()),
+                Self::ExtraData(value) => (extra_data::NAME, value.into()),
             };
             (k.to_string(), v)
         }
@@ -4061,28 +740,24 @@ pub mod instance {
     pub enum UncheckedSetParam {
         Id(super::_prisma::write_params::IntParam),
         Name(super::_prisma::write_params::StringParam),
-        GameId(super::_prisma::write_params::IntParam),
-        DataDir(super::_prisma::write_params::StringParam),
-        CacheDir(super::_prisma::write_params::StringParam),
-        InstallDir(super::_prisma::write_params::StringParam),
+        Plugin(super::_prisma::write_params::StringParam),
         Description(super::_prisma::write_params::StringParam),
-        Created(super::_prisma::write_params::DateTimeParam),
         Updated(super::_prisma::write_params::DateTimeParam),
-        Loader(super::_prisma::write_params::StringNullableParam),
+        IconUrl(super::_prisma::write_params::StringNullableParam),
+        BannerUrl(super::_prisma::write_params::StringNullableParam),
+        ExtraData(super::_prisma::write_params::StringParam),
     }
     impl Into<(String, ::prisma_client_rust::PrismaValue)> for UncheckedSetParam {
         fn into(self) -> (String, ::prisma_client_rust::PrismaValue) {
             let (k, v) = match self {
                 Self::Id(value) => ("id", value.into()),
                 Self::Name(value) => ("name", value.into()),
-                Self::GameId(value) => ("gameId", value.into()),
-                Self::DataDir(value) => ("dataDir", value.into()),
-                Self::CacheDir(value) => ("cacheDir", value.into()),
-                Self::InstallDir(value) => ("installDir", value.into()),
+                Self::Plugin(value) => ("plugin", value.into()),
                 Self::Description(value) => ("description", value.into()),
-                Self::Created(value) => ("created", value.into()),
                 Self::Updated(value) => ("updated", value.into()),
-                Self::Loader(value) => ("loader", value.into()),
+                Self::IconUrl(value) => ("iconUrl", value.into()),
+                Self::BannerUrl(value) => ("bannerUrl", value.into()),
+                Self::ExtraData(value) => ("extraData", value.into()),
             };
             (k.to_string(), v)
         }
@@ -4096,71 +771,51 @@ pub mod instance {
             id: id::Type,
             #[serde(rename = "name")]
             name: name::Type,
-            #[serde(rename = "game")]
-            game: game::Type,
-            #[serde(rename = "gameId")]
-            game_id: game_id::Type,
-            #[serde(rename = "dataDir")]
-            data_dir: data_dir::Type,
-            #[serde(rename = "cacheDir")]
-            cache_dir: cache_dir::Type,
-            #[serde(rename = "installDir")]
-            install_dir: install_dir::Type,
+            #[serde(rename = "plugin")]
+            plugin: plugin::Type,
             #[serde(rename = "description")]
             description: description::Type,
-            #[serde(rename = "created")]
-            created: created::Type,
             #[serde(rename = "updated")]
             updated: updated::Type,
-            #[serde(rename = "loader")]
-            loader: loader::Type,
-            #[serde(rename = "mods")]
-            mods: mods::Type,
+            #[serde(rename = "iconUrl")]
+            icon_url: icon_url::Type,
+            #[serde(rename = "bannerUrl")]
+            banner_url: banner_url::Type,
+            #[serde(rename = "extraData")]
+            extra_data: extra_data::Type,
         },
         [
             (id, Scalar),
             (name, Scalar),
-            (game, Relation(prisma::game, One)),
-            (game_id, Scalar),
-            (data_dir, Scalar),
-            (cache_dir, Scalar),
-            (install_dir, Scalar),
+            (plugin, Scalar),
             (description, Scalar),
-            (created, Scalar),
             (updated, Scalar),
-            (loader, Scalar),
-            (mods, Relation(prisma::r#mod, Many))
+            (icon_url, Scalar),
+            (banner_url, Scalar),
+            (extra_data, Scalar)
         ]
     );
     pub enum SelectParam {
         Id(id::Select),
         Name(name::Select),
-        Game(game::Select),
-        GameId(game_id::Select),
-        DataDir(data_dir::Select),
-        CacheDir(cache_dir::Select),
-        InstallDir(install_dir::Select),
+        Plugin(plugin::Select),
         Description(description::Select),
-        Created(created::Select),
         Updated(updated::Select),
-        Loader(loader::Select),
-        Mods(mods::Select),
+        IconUrl(icon_url::Select),
+        BannerUrl(banner_url::Select),
+        ExtraData(extra_data::Select),
     }
     impl Into<::prisma_client_rust::Selection> for SelectParam {
         fn into(self) -> ::prisma_client_rust::Selection {
             match self {
                 Self::Id(data) => data.into(),
                 Self::Name(data) => data.into(),
-                Self::Game(data) => data.into(),
-                Self::GameId(data) => data.into(),
-                Self::DataDir(data) => data.into(),
-                Self::CacheDir(data) => data.into(),
-                Self::InstallDir(data) => data.into(),
+                Self::Plugin(data) => data.into(),
                 Self::Description(data) => data.into(),
-                Self::Created(data) => data.into(),
                 Self::Updated(data) => data.into(),
-                Self::Loader(data) => data.into(),
-                Self::Mods(data) => data.into(),
+                Self::IconUrl(data) => data.into(),
+                Self::BannerUrl(data) => data.into(),
+                Self::ExtraData(data) => data.into(),
             }
         }
     }
@@ -4173,109 +828,85 @@ pub mod instance {
             id: id::Type,
             #[serde(rename = "name")]
             name: name::Type,
-            #[serde(rename = "game")]
-            game: game::Type,
-            #[serde(rename = "gameId")]
-            game_id: game_id::Type,
-            #[serde(rename = "dataDir")]
-            data_dir: data_dir::Type,
-            #[serde(rename = "cacheDir")]
-            cache_dir: cache_dir::Type,
-            #[serde(rename = "installDir")]
-            install_dir: install_dir::Type,
+            #[serde(rename = "plugin")]
+            plugin: plugin::Type,
             #[serde(rename = "description")]
             description: description::Type,
-            #[serde(rename = "created")]
-            created: created::Type,
             #[serde(rename = "updated")]
             updated: updated::Type,
-            #[serde(rename = "loader")]
-            loader: loader::Type,
-            #[serde(rename = "mods")]
-            mods: mods::Type,
+            #[serde(rename = "iconUrl")]
+            icon_url: icon_url::Type,
+            #[serde(rename = "bannerUrl")]
+            banner_url: banner_url::Type,
+            #[serde(rename = "extraData")]
+            extra_data: extra_data::Type,
         },
-        [
-            (game, Relation(prisma::game, One)),
-            (mods, Relation(prisma::r#mod, Many))
-        ]
+        []
     );
     pub enum IncludeParam {
         Id(id::Include),
         Name(name::Include),
-        Game(game::Include),
-        GameId(game_id::Include),
-        DataDir(data_dir::Include),
-        CacheDir(cache_dir::Include),
-        InstallDir(install_dir::Include),
+        Plugin(plugin::Include),
         Description(description::Include),
-        Created(created::Include),
         Updated(updated::Include),
-        Loader(loader::Include),
-        Mods(mods::Include),
+        IconUrl(icon_url::Include),
+        BannerUrl(banner_url::Include),
+        ExtraData(extra_data::Include),
     }
     impl Into<::prisma_client_rust::Selection> for IncludeParam {
         fn into(self) -> ::prisma_client_rust::Selection {
             match self {
                 Self::Id(data) => data.into(),
                 Self::Name(data) => data.into(),
-                Self::Game(data) => data.into(),
-                Self::GameId(data) => data.into(),
-                Self::DataDir(data) => data.into(),
-                Self::CacheDir(data) => data.into(),
-                Self::InstallDir(data) => data.into(),
+                Self::Plugin(data) => data.into(),
                 Self::Description(data) => data.into(),
-                Self::Created(data) => data.into(),
                 Self::Updated(data) => data.into(),
-                Self::Loader(data) => data.into(),
-                Self::Mods(data) => data.into(),
+                Self::IconUrl(data) => data.into(),
+                Self::BannerUrl(data) => data.into(),
+                Self::ExtraData(data) => data.into(),
             }
         }
     }
     #[derive(Debug, Clone)]
     pub struct Create {
         pub name: String,
-        pub game: super::game::UniqueWhereParam,
-        pub data_dir: String,
-        pub cache_dir: String,
-        pub install_dir: String,
+        pub plugin: String,
+        pub description: String,
+        pub extra_data: String,
         pub _params: Vec<SetParam>,
     }
     impl Create {
         pub fn to_query<'a>(self, client: &'a PrismaClient) -> CreateQuery<'a> {
             client.instance().create(
                 self.name,
-                self.game,
-                self.data_dir,
-                self.cache_dir,
-                self.install_dir,
+                self.plugin,
+                self.description,
+                self.extra_data,
                 self._params,
             )
         }
         pub fn to_params(mut self) -> Vec<SetParam> {
             self._params.extend([
                 name::set(self.name),
-                game::connect(self.game),
-                data_dir::set(self.data_dir),
-                cache_dir::set(self.cache_dir),
-                install_dir::set(self.install_dir),
+                plugin::set(self.plugin),
+                description::set(self.description),
+                extra_data::set(self.extra_data),
             ]);
             self._params
         }
     }
     pub fn create(
         name: String,
-        game: super::game::UniqueWhereParam,
-        data_dir: String,
-        cache_dir: String,
-        install_dir: String,
+        plugin: String,
+        description: String,
+        extra_data: String,
         _params: Vec<SetParam>,
     ) -> Create {
         Create {
             name,
-            game,
-            data_dir,
-            cache_dir,
-            install_dir,
+            plugin,
+            description,
+            extra_data,
             _params,
         }
     }
@@ -4290,14 +921,12 @@ pub mod instance {
     pub struct CreateUnchecked {
         #[serde(rename = "name")]
         pub name: String,
-        #[serde(rename = "gameId")]
-        pub game_id: Int,
-        #[serde(rename = "dataDir")]
-        pub data_dir: String,
-        #[serde(rename = "cacheDir")]
-        pub cache_dir: String,
-        #[serde(rename = "installDir")]
-        pub install_dir: String,
+        #[serde(rename = "plugin")]
+        pub plugin: String,
+        #[serde(rename = "description")]
+        pub description: String,
+        #[serde(rename = "extraData")]
+        pub extra_data: String,
         #[serde(skip)]
         pub _params: Vec<UncheckedSetParam>,
     }
@@ -4305,38 +934,34 @@ pub mod instance {
         pub fn to_query<'a>(self, client: &'a PrismaClient) -> CreateUncheckedQuery<'a> {
             client.instance().create_unchecked(
                 self.name,
-                self.game_id,
-                self.data_dir,
-                self.cache_dir,
-                self.install_dir,
+                self.plugin,
+                self.description,
+                self.extra_data,
                 self._params,
             )
         }
         pub fn to_params(mut self) -> Vec<UncheckedSetParam> {
             self._params.extend([
                 name::set(self.name),
-                game_id::set(self.game_id),
-                data_dir::set(self.data_dir),
-                cache_dir::set(self.cache_dir),
-                install_dir::set(self.install_dir),
+                plugin::set(self.plugin),
+                description::set(self.description),
+                extra_data::set(self.extra_data),
             ]);
             self._params
         }
     }
     pub fn create_unchecked(
         name: String,
-        game_id: Int,
-        data_dir: String,
-        cache_dir: String,
-        install_dir: String,
+        plugin: String,
+        description: String,
+        extra_data: String,
         _params: Vec<UncheckedSetParam>,
     ) -> CreateUnchecked {
         CreateUnchecked {
             name,
-            game_id,
-            data_dir,
-            cache_dir,
-            install_dir,
+            plugin,
+            description,
+            extra_data,
             _params,
         }
     }
@@ -4353,22 +978,18 @@ pub mod instance {
         pub id: id::Type,
         #[serde(rename = "name", skip_serializing_if = "Option::is_none")]
         pub name: Option<name::Type>,
-        #[serde(rename = "gameId", skip_serializing_if = "Option::is_none")]
-        pub game_id: Option<game_id::Type>,
-        #[serde(rename = "dataDir", skip_serializing_if = "Option::is_none")]
-        pub data_dir: Option<data_dir::Type>,
-        #[serde(rename = "cacheDir", skip_serializing_if = "Option::is_none")]
-        pub cache_dir: Option<cache_dir::Type>,
-        #[serde(rename = "installDir", skip_serializing_if = "Option::is_none")]
-        pub install_dir: Option<install_dir::Type>,
+        #[serde(rename = "plugin", skip_serializing_if = "Option::is_none")]
+        pub plugin: Option<plugin::Type>,
         #[serde(rename = "description", skip_serializing_if = "Option::is_none")]
         pub description: Option<description::Type>,
-        #[serde(rename = "created", skip_serializing_if = "Option::is_none")]
-        pub created: Option<created::Type>,
         #[serde(rename = "updated", skip_serializing_if = "Option::is_none")]
         pub updated: Option<updated::Type>,
-        #[serde(rename = "loader", skip_serializing_if = "Option::is_none")]
-        pub loader: loader::Type,
+        #[serde(rename = "iconUrl", skip_serializing_if = "Option::is_none")]
+        pub icon_url: icon_url::Type,
+        #[serde(rename = "bannerUrl", skip_serializing_if = "Option::is_none")]
+        pub banner_url: banner_url::Type,
+        #[serde(rename = "extraData", skip_serializing_if = "Option::is_none")]
+        pub extra_data: Option<extra_data::Type>,
     }
     impl Update {
         pub fn as_params(self) -> Vec<SetParam> {
@@ -4376,29 +997,23 @@ pub mod instance {
             if let Some(field) = self.name {
                 params.push(name::set(field));
             }
-            if let Some(field) = self.game_id {
-                params.push(game_id::set(field));
-            }
-            if let Some(field) = self.data_dir {
-                params.push(data_dir::set(field));
-            }
-            if let Some(field) = self.cache_dir {
-                params.push(cache_dir::set(field));
-            }
-            if let Some(field) = self.install_dir {
-                params.push(install_dir::set(field));
+            if let Some(field) = self.plugin {
+                params.push(plugin::set(field));
             }
             if let Some(field) = self.description {
                 params.push(description::set(field));
             }
-            if let Some(field) = self.created {
-                params.push(created::set(field));
-            }
             if let Some(field) = self.updated {
                 params.push(updated::set(field));
             }
-            if let Some(field) = self.loader {
-                params.push(loader::set(Some(field)));
+            if let Some(field) = self.icon_url {
+                params.push(icon_url::set(Some(field)));
+            }
+            if let Some(field) = self.banner_url {
+                params.push(banner_url::set(Some(field)));
+            }
+            if let Some(field) = self.extra_data {
+                params.push(extra_data::set(field));
             }
             params
         }
@@ -4419,14 +1034,12 @@ pub mod instance {
             vec![
                 ::prisma_client_rust::sel(id::NAME),
                 ::prisma_client_rust::sel(name::NAME),
-                ::prisma_client_rust::sel(game_id::NAME),
-                ::prisma_client_rust::sel(data_dir::NAME),
-                ::prisma_client_rust::sel(cache_dir::NAME),
-                ::prisma_client_rust::sel(install_dir::NAME),
+                ::prisma_client_rust::sel(plugin::NAME),
                 ::prisma_client_rust::sel(description::NAME),
-                ::prisma_client_rust::sel(created::NAME),
                 ::prisma_client_rust::sel(updated::NAME),
-                ::prisma_client_rust::sel(loader::NAME),
+                ::prisma_client_rust::sel(icon_url::NAME),
+                ::prisma_client_rust::sel(banner_url::NAME),
+                ::prisma_client_rust::sel(extra_data::NAME),
             ]
         }
     }
@@ -4443,48 +1056,20 @@ pub mod instance {
         pub id: id::Type,
         #[serde(rename = "name")]
         pub name: name::Type,
-        #[serde(rename = "game")]
-        #[specta(skip)]
-        pub game: Option<game::RecursiveSafeType>,
-        #[serde(rename = "gameId")]
-        pub game_id: game_id::Type,
-        #[serde(rename = "dataDir")]
-        pub data_dir: data_dir::Type,
-        #[serde(rename = "cacheDir")]
-        pub cache_dir: cache_dir::Type,
-        #[serde(rename = "installDir")]
-        pub install_dir: install_dir::Type,
+        #[serde(rename = "plugin")]
+        pub plugin: plugin::Type,
         #[serde(rename = "description")]
         pub description: description::Type,
-        #[serde(rename = "created")]
-        pub created: created::Type,
         #[serde(rename = "updated")]
         pub updated: updated::Type,
-        #[serde(rename = "loader")]
-        pub loader: loader::Type,
-        #[serde(rename = "mods")]
-        #[specta(skip)]
-        pub mods: Option<mods::RecursiveSafeType>,
+        #[serde(rename = "iconUrl")]
+        pub icon_url: icon_url::Type,
+        #[serde(rename = "bannerUrl")]
+        pub banner_url: banner_url::Type,
+        #[serde(rename = "extraData")]
+        pub extra_data: extra_data::Type,
     }
-    impl Data {
-        pub fn game(
-            &self,
-        ) -> Result<&super::game::Data, ::prisma_client_rust::RelationNotFetchedError> {
-            self.game
-                .as_ref()
-                .ok_or(::prisma_client_rust::RelationNotFetchedError::new(
-                    stringify!(game),
-                ))
-                .map(|v| v.as_ref())
-        }
-        pub fn mods(&self) -> Result<&mods::Type, ::prisma_client_rust::RelationNotFetchedError> {
-            self.mods
-                .as_ref()
-                .ok_or(::prisma_client_rust::RelationNotFetchedError::new(
-                    stringify!(mods),
-                ))
-        }
-    }
+    impl Data {}
     ::prisma_client_rust::macros::partial_unchecked_factory!(
         _partial_unchecked_instance,
         prisma::instance,
@@ -4493,23 +1078,20 @@ pub mod instance {
             pub id: prisma::instance::id::Type,
             #[serde(rename = "name")]
             pub name: prisma::instance::name::Type,
-            #[serde(rename = "gameId")]
-            pub game_id: prisma::instance::game_id::Type,
-            #[serde(rename = "dataDir")]
-            pub data_dir: prisma::instance::data_dir::Type,
-            #[serde(rename = "cacheDir")]
-            pub cache_dir: prisma::instance::cache_dir::Type,
-            #[serde(rename = "installDir")]
-            pub install_dir: prisma::instance::install_dir::Type,
+            #[serde(rename = "plugin")]
+            pub plugin: prisma::instance::plugin::Type,
             #[serde(rename = "description")]
             pub description: prisma::instance::description::Type,
-            #[serde(rename = "created")]
-            pub created: prisma::instance::created::Type,
             #[serde(rename = "updated")]
             pub updated: prisma::instance::updated::Type,
-            #[serde(rename = "loader")]
+            #[serde(rename = "iconUrl")]
             #[serde(default, with = "::prisma_client_rust::serde::double_option")]
-            pub loader: prisma::instance::loader::Type,
+            pub icon_url: prisma::instance::icon_url::Type,
+            #[serde(rename = "bannerUrl")]
+            #[serde(default, with = "::prisma_client_rust::serde::double_option")]
+            pub banner_url: prisma::instance::banner_url::Type,
+            #[serde(rename = "extraData")]
+            pub extra_data: prisma::instance::extra_data::Type,
         }
     );
     ::prisma_client_rust::macros::filter_factory!(
@@ -4518,16 +1100,12 @@ pub mod instance {
         [
             (id, Scalar),
             (name, Scalar),
-            (game, Relation(prisma::game, One)),
-            (game_id, Scalar),
-            (data_dir, Scalar),
-            (cache_dir, Scalar),
-            (install_dir, Scalar),
+            (plugin, Scalar),
             (description, Scalar),
-            (created, Scalar),
             (updated, Scalar),
-            (loader, Scalar),
-            (mods, Relation(prisma::r#mod, Many))
+            (icon_url, Scalar),
+            (banner_url, Scalar),
+            (extra_data, Scalar)
         ]
     );
     pub type UniqueArgs = ::prisma_client_rust::UniqueArgs<Types>;
@@ -4562,36 +1140,32 @@ pub mod instance {
         pub fn create(
             self,
             name: String,
-            game: super::game::UniqueWhereParam,
-            data_dir: String,
-            cache_dir: String,
-            install_dir: String,
+            plugin: String,
+            description: String,
+            extra_data: String,
             mut _params: Vec<SetParam>,
         ) -> CreateQuery<'a> {
             _params.extend([
                 name::set(name),
-                game::connect(game),
-                data_dir::set(data_dir),
-                cache_dir::set(cache_dir),
-                install_dir::set(install_dir),
+                plugin::set(plugin),
+                description::set(description),
+                extra_data::set(extra_data),
             ]);
             CreateQuery::new(self.client, _params)
         }
         pub fn create_unchecked(
             self,
             name: String,
-            game_id: Int,
-            data_dir: String,
-            cache_dir: String,
-            install_dir: String,
+            plugin: String,
+            description: String,
+            extra_data: String,
             mut _params: Vec<UncheckedSetParam>,
         ) -> CreateUncheckedQuery<'a> {
             _params.extend([
                 name::set(name),
-                game_id::set(game_id),
-                data_dir::set(data_dir),
-                cache_dir::set(cache_dir),
-                install_dir::set(install_dir),
+                plugin::set(plugin),
+                description::set(description),
+                extra_data::set(extra_data),
             ]);
             CreateUncheckedQuery::new(self.client, _params.into_iter().map(Into::into).collect())
         }
@@ -4639,38 +1213,24 @@ pub mod instance {
             CountQuery::new(self.client, _where)
         }
     }
-    pub mod _count {
+    pub mod banner_url {
         use super::super::{_prisma::*, *};
         use super::{SetParam, UncheckedSetParam, UniqueWhereParam, WhereParam, WithParam};
-        pub const NAME: &str = "_count";
-        pub struct Order(super::SortOrder);
-        pub fn order<T: From<Order>>(v: super::SortOrder) -> T {
-            Order(v).into()
-        }
-        impl From<Order> for super::OrderByRelationAggregateParam {
-            fn from(Order(v): Order) -> Self {
-                Self::_Count(v)
-            }
-        }
-    }
-    pub mod cache_dir {
-        use super::super::{_prisma::*, *};
-        use super::{SetParam, UncheckedSetParam, UniqueWhereParam, WhereParam, WithParam};
-        pub const NAME: &str = "cacheDir";
-        pub type Type = String;
+        pub const NAME: &str = "bannerUrl";
+        pub type Type = Option<String>;
         pub type RecursiveSafeType = Type;
-        pub struct Equals(pub String);
-        pub fn equals<T: From<Equals>>(value: String) -> T {
+        pub struct Equals(pub Option<String>);
+        pub fn equals<T: From<Equals>>(value: Option<String>) -> T {
             Equals(value).into()
         }
         impl From<Equals> for WhereParam {
             fn from(Equals(v): Equals) -> Self {
-                WhereParam::CacheDir(_prisma::read_filters::StringFilter::Equals(v))
+                WhereParam::BannerUrl(_prisma::read_filters::StringNullableFilter::Equals(v))
             }
         }
         ::prisma_client_rust::scalar_where_param_fns!(
-            _prisma::read_filters::StringFilter,
-            CacheDir,
+            _prisma::read_filters::StringNullableFilter,
+            BannerUrl,
             {
                 fn in_vec(_: Vec<String>) -> InVec;
                 fn not_in_vec(_: Vec<String>) -> NotInVec;
@@ -4681,7 +1241,7 @@ pub mod instance {
                 fn contains(_: String) -> Contains;
                 fn starts_with(_: String) -> StartsWith;
                 fn ends_with(_: String) -> EndsWith;
-                fn not(_: String) -> Not;
+                fn not(_: Option<String>) -> Not;
             }
         );
         pub struct Order(SortOrder);
@@ -4690,38 +1250,38 @@ pub mod instance {
         }
         impl From<Order> for super::OrderByWithRelationParam {
             fn from(Order(v): Order) -> Self {
-                Self::CacheDir(v)
+                Self::BannerUrl(v)
             }
         }
-        pub struct Set(pub String);
+        pub struct Set(pub Option<String>);
         impl From<Set> for SetParam {
             fn from(Set(v): Set) -> Self {
-                Self::CacheDir(_prisma::write_params::StringParam::Set(v))
+                Self::BannerUrl(_prisma::write_params::StringNullableParam::Set(v))
             }
         }
-        pub fn set<T: From<Set>>(value: String) -> T {
+        pub fn set<T: From<Set>>(value: Option<String>) -> T {
             Set(value).into()
         }
-        pub struct UpdateOperation(pub _prisma::write_params::StringParam);
+        pub struct UpdateOperation(pub _prisma::write_params::StringNullableParam);
         impl From<UpdateOperation> for SetParam {
             fn from(UpdateOperation(v): UpdateOperation) -> Self {
-                Self::CacheDir(v)
+                Self::BannerUrl(v)
             }
         }
         impl From<Set> for UncheckedSetParam {
             fn from(Set(v): Set) -> Self {
-                Self::CacheDir(_prisma::write_params::StringParam::Set(v))
+                Self::BannerUrl(_prisma::write_params::StringNullableParam::Set(v))
             }
         }
         impl From<UpdateOperation> for UncheckedSetParam {
             fn from(UpdateOperation(v): UpdateOperation) -> Self {
-                Self::CacheDir(v)
+                Self::BannerUrl(v)
             }
         }
         pub struct Select;
         impl Into<super::SelectParam> for Select {
             fn into(self) -> super::SelectParam {
-                super::SelectParam::CacheDir(self)
+                super::SelectParam::BannerUrl(self)
             }
         }
         impl Into<::prisma_client_rust::Selection> for Select {
@@ -4732,180 +1292,7 @@ pub mod instance {
         pub struct Include;
         impl Into<super::IncludeParam> for Include {
             fn into(self) -> super::IncludeParam {
-                super::IncludeParam::CacheDir(self)
-            }
-        }
-        impl Into<::prisma_client_rust::Selection> for Include {
-            fn into(self) -> ::prisma_client_rust::Selection {
-                ::prisma_client_rust::sel(NAME)
-            }
-        }
-    }
-    pub mod created {
-        use super::super::{_prisma::*, *};
-        use super::{SetParam, UncheckedSetParam, UniqueWhereParam, WhereParam, WithParam};
-        pub const NAME: &str = "created";
-        pub type Type = DateTime;
-        pub type RecursiveSafeType = Type;
-        pub struct Equals(pub DateTime);
-        pub fn equals<T: From<Equals>>(value: DateTime) -> T {
-            Equals(value).into()
-        }
-        impl From<Equals> for WhereParam {
-            fn from(Equals(v): Equals) -> Self {
-                WhereParam::Created(_prisma::read_filters::DateTimeFilter::Equals(v))
-            }
-        }
-        ::prisma_client_rust::scalar_where_param_fns!(
-            _prisma::read_filters::DateTimeFilter,
-            Created,
-            {
-                fn in_vec(_: Vec<DateTime>) -> InVec;
-                fn not_in_vec(_: Vec<DateTime>) -> NotInVec;
-                fn lt(_: DateTime) -> Lt;
-                fn lte(_: DateTime) -> Lte;
-                fn gt(_: DateTime) -> Gt;
-                fn gte(_: DateTime) -> Gte;
-                fn not(_: DateTime) -> Not;
-            }
-        );
-        pub struct Order(SortOrder);
-        pub fn order<T: From<Order>>(v: SortOrder) -> T {
-            Order(v).into()
-        }
-        impl From<Order> for super::OrderByWithRelationParam {
-            fn from(Order(v): Order) -> Self {
-                Self::Created(v)
-            }
-        }
-        pub struct Set(pub DateTime);
-        impl From<Set> for SetParam {
-            fn from(Set(v): Set) -> Self {
-                Self::Created(_prisma::write_params::DateTimeParam::Set(v))
-            }
-        }
-        pub fn set<T: From<Set>>(value: DateTime) -> T {
-            Set(value).into()
-        }
-        pub struct UpdateOperation(pub _prisma::write_params::DateTimeParam);
-        impl From<UpdateOperation> for SetParam {
-            fn from(UpdateOperation(v): UpdateOperation) -> Self {
-                Self::Created(v)
-            }
-        }
-        impl From<Set> for UncheckedSetParam {
-            fn from(Set(v): Set) -> Self {
-                Self::Created(_prisma::write_params::DateTimeParam::Set(v))
-            }
-        }
-        impl From<UpdateOperation> for UncheckedSetParam {
-            fn from(UpdateOperation(v): UpdateOperation) -> Self {
-                Self::Created(v)
-            }
-        }
-        pub struct Select;
-        impl Into<super::SelectParam> for Select {
-            fn into(self) -> super::SelectParam {
-                super::SelectParam::Created(self)
-            }
-        }
-        impl Into<::prisma_client_rust::Selection> for Select {
-            fn into(self) -> ::prisma_client_rust::Selection {
-                ::prisma_client_rust::sel(NAME)
-            }
-        }
-        pub struct Include;
-        impl Into<super::IncludeParam> for Include {
-            fn into(self) -> super::IncludeParam {
-                super::IncludeParam::Created(self)
-            }
-        }
-        impl Into<::prisma_client_rust::Selection> for Include {
-            fn into(self) -> ::prisma_client_rust::Selection {
-                ::prisma_client_rust::sel(NAME)
-            }
-        }
-    }
-    pub mod data_dir {
-        use super::super::{_prisma::*, *};
-        use super::{SetParam, UncheckedSetParam, UniqueWhereParam, WhereParam, WithParam};
-        pub const NAME: &str = "dataDir";
-        pub type Type = String;
-        pub type RecursiveSafeType = Type;
-        pub struct Equals(pub String);
-        pub fn equals<T: From<Equals>>(value: String) -> T {
-            Equals(value).into()
-        }
-        impl From<Equals> for WhereParam {
-            fn from(Equals(v): Equals) -> Self {
-                WhereParam::DataDir(_prisma::read_filters::StringFilter::Equals(v))
-            }
-        }
-        ::prisma_client_rust::scalar_where_param_fns!(
-            _prisma::read_filters::StringFilter,
-            DataDir,
-            {
-                fn in_vec(_: Vec<String>) -> InVec;
-                fn not_in_vec(_: Vec<String>) -> NotInVec;
-                fn lt(_: String) -> Lt;
-                fn lte(_: String) -> Lte;
-                fn gt(_: String) -> Gt;
-                fn gte(_: String) -> Gte;
-                fn contains(_: String) -> Contains;
-                fn starts_with(_: String) -> StartsWith;
-                fn ends_with(_: String) -> EndsWith;
-                fn not(_: String) -> Not;
-            }
-        );
-        pub struct Order(SortOrder);
-        pub fn order<T: From<Order>>(v: SortOrder) -> T {
-            Order(v).into()
-        }
-        impl From<Order> for super::OrderByWithRelationParam {
-            fn from(Order(v): Order) -> Self {
-                Self::DataDir(v)
-            }
-        }
-        pub struct Set(pub String);
-        impl From<Set> for SetParam {
-            fn from(Set(v): Set) -> Self {
-                Self::DataDir(_prisma::write_params::StringParam::Set(v))
-            }
-        }
-        pub fn set<T: From<Set>>(value: String) -> T {
-            Set(value).into()
-        }
-        pub struct UpdateOperation(pub _prisma::write_params::StringParam);
-        impl From<UpdateOperation> for SetParam {
-            fn from(UpdateOperation(v): UpdateOperation) -> Self {
-                Self::DataDir(v)
-            }
-        }
-        impl From<Set> for UncheckedSetParam {
-            fn from(Set(v): Set) -> Self {
-                Self::DataDir(_prisma::write_params::StringParam::Set(v))
-            }
-        }
-        impl From<UpdateOperation> for UncheckedSetParam {
-            fn from(UpdateOperation(v): UpdateOperation) -> Self {
-                Self::DataDir(v)
-            }
-        }
-        pub struct Select;
-        impl Into<super::SelectParam> for Select {
-            fn into(self) -> super::SelectParam {
-                super::SelectParam::DataDir(self)
-            }
-        }
-        impl Into<::prisma_client_rust::Selection> for Select {
-            fn into(self) -> ::prisma_client_rust::Selection {
-                ::prisma_client_rust::sel(NAME)
-            }
-        }
-        pub struct Include;
-        impl Into<super::IncludeParam> for Include {
-            fn into(self) -> super::IncludeParam {
-                super::IncludeParam::DataDir(self)
+                super::IncludeParam::BannerUrl(self)
             }
         }
         impl Into<::prisma_client_rust::Selection> for Include {
@@ -5002,195 +1389,75 @@ pub mod instance {
             }
         }
     }
-    pub mod game {
+    pub mod extra_data {
         use super::super::{_prisma::*, *};
         use super::{SetParam, UncheckedSetParam, UniqueWhereParam, WhereParam, WithParam};
-        pub const NAME: &str = "game";
-        pub type Type = game::Data;
-        pub type RecursiveSafeType = Box<game::Data>;
-        pub fn is(value: Vec<game::WhereParam>) -> WhereParam {
-            WhereParam::GameIs(value)
-        }
-        pub fn is_not(value: Vec<game::WhereParam>) -> WhereParam {
-            WhereParam::GameIsNot(value)
-        }
-        pub struct Order(Vec<game::OrderByWithRelationParam>);
-        pub fn order<T: From<Order>>(v: Vec<game::OrderByWithRelationParam>) -> T {
-            Order(v).into()
-        }
-        impl From<Order> for super::OrderByWithRelationParam {
-            fn from(Order(v): Order) -> Self {
-                Self::Game(v)
-            }
-        }
-        pub struct Fetch(pub game::UniqueArgs);
-        impl Fetch {
-            pub fn with(mut self, params: impl Into<game::WithParam>) -> Self {
-                self.0 = self.0.with(params.into());
-                self
-            }
-        }
-        impl From<Fetch> for WithParam {
-            fn from(Fetch(v): Fetch) -> Self {
-                WithParam::Game(v)
-            }
-        }
-        pub fn fetch() -> Fetch {
-            Fetch(game::UniqueArgs::new())
-        }
-        pub struct Connect(game::UniqueWhereParam);
-        impl From<Connect> for SetParam {
-            fn from(Connect(v): Connect) -> Self {
-                Self::ConnectGame(v)
-            }
-        }
-        pub fn connect<T: From<Connect>>(value: game::UniqueWhereParam) -> T {
-            Connect(value).into()
-        }
-        pub enum Select {
-            Select(Vec<game::SelectParam>),
-            Include(Vec<game::IncludeParam>),
-            Fetch,
-        }
-        impl Into<super::SelectParam> for Select {
-            fn into(self) -> super::SelectParam {
-                super::SelectParam::Game(self)
-            }
-        }
-        impl Select {
-            pub fn select(nested_selections: Vec<game::SelectParam>) -> Self {
-                Self::Select(nested_selections)
-            }
-            pub fn include(nested_selections: Vec<game::IncludeParam>) -> Self {
-                Self::Include(nested_selections)
-            }
-        }
-        impl Into<::prisma_client_rust::Selection> for Select {
-            fn into(self) -> ::prisma_client_rust::Selection {
-                let selections = match self {
-                    Self::Select(selections) => selections.into_iter().map(Into::into).collect(),
-                    Self::Include(selections) => {
-                        let mut nested_selections = vec![];
-                        nested_selections.extend(selections.into_iter().map(Into::into));
-                        nested_selections
-                    }
-                    Self::Fetch => {
-                        <game::Types as ::prisma_client_rust::ModelTypes>::scalar_selections()
-                    }
-                };
-                ::prisma_client_rust::Selection::new("game", None, [], selections)
-            }
-        }
-        pub enum Include {
-            Select(Vec<game::SelectParam>),
-            Include(Vec<game::IncludeParam>),
-            Fetch,
-        }
-        impl Into<super::IncludeParam> for Include {
-            fn into(self) -> super::IncludeParam {
-                super::IncludeParam::Game(self)
-            }
-        }
-        impl Include {
-            pub fn select(nested_selections: Vec<game::SelectParam>) -> Self {
-                Self::Select(nested_selections)
-            }
-            pub fn include(nested_selections: Vec<game::IncludeParam>) -> Self {
-                Self::Include(nested_selections)
-            }
-        }
-        impl Into<::prisma_client_rust::Selection> for Include {
-            fn into(self) -> ::prisma_client_rust::Selection {
-                let selections = match self {
-                    Self::Select(selections) => selections.into_iter().map(Into::into).collect(),
-                    Self::Include(selections) => {
-                        let mut nested_selections =
-                            <game::Types as ::prisma_client_rust::ModelTypes>::scalar_selections();
-                        nested_selections.extend(selections.into_iter().map(Into::into));
-                        nested_selections
-                    }
-                    Self::Fetch => {
-                        <game::Types as ::prisma_client_rust::ModelTypes>::scalar_selections()
-                    }
-                };
-                ::prisma_client_rust::Selection::new("game", None, [], selections)
-            }
-        }
-    }
-    pub mod game_id {
-        use super::super::{_prisma::*, *};
-        use super::{SetParam, UncheckedSetParam, UniqueWhereParam, WhereParam, WithParam};
-        pub const NAME: &str = "gameId";
-        pub type Type = Int;
+        pub const NAME: &str = "extraData";
+        pub type Type = String;
         pub type RecursiveSafeType = Type;
-        pub struct Equals(pub Int);
-        pub fn equals<T: From<Equals>>(value: Int) -> T {
+        pub struct Equals(pub String);
+        pub fn equals<T: From<Equals>>(value: String) -> T {
             Equals(value).into()
         }
         impl From<Equals> for WhereParam {
             fn from(Equals(v): Equals) -> Self {
-                WhereParam::GameId(_prisma::read_filters::IntFilter::Equals(v))
+                WhereParam::ExtraData(_prisma::read_filters::StringFilter::Equals(v))
             }
         }
-        ::prisma_client_rust::scalar_where_param_fns!(_prisma::read_filters::IntFilter, GameId, {
-            fn in_vec(_: Vec<Int>) -> InVec;
-            fn not_in_vec(_: Vec<Int>) -> NotInVec;
-            fn lt(_: Int) -> Lt;
-            fn lte(_: Int) -> Lte;
-            fn gt(_: Int) -> Gt;
-            fn gte(_: Int) -> Gte;
-            fn not(_: Int) -> Not;
-        });
+        ::prisma_client_rust::scalar_where_param_fns!(
+            _prisma::read_filters::StringFilter,
+            ExtraData,
+            {
+                fn in_vec(_: Vec<String>) -> InVec;
+                fn not_in_vec(_: Vec<String>) -> NotInVec;
+                fn lt(_: String) -> Lt;
+                fn lte(_: String) -> Lte;
+                fn gt(_: String) -> Gt;
+                fn gte(_: String) -> Gte;
+                fn contains(_: String) -> Contains;
+                fn starts_with(_: String) -> StartsWith;
+                fn ends_with(_: String) -> EndsWith;
+                fn not(_: String) -> Not;
+            }
+        );
         pub struct Order(SortOrder);
         pub fn order<T: From<Order>>(v: SortOrder) -> T {
             Order(v).into()
         }
         impl From<Order> for super::OrderByWithRelationParam {
             fn from(Order(v): Order) -> Self {
-                Self::GameId(v)
+                Self::ExtraData(v)
             }
         }
-        pub struct Set(pub Int);
+        pub struct Set(pub String);
         impl From<Set> for SetParam {
             fn from(Set(v): Set) -> Self {
-                Self::GameId(_prisma::write_params::IntParam::Set(v))
+                Self::ExtraData(_prisma::write_params::StringParam::Set(v))
             }
         }
-        pub fn set<T: From<Set>>(value: Int) -> T {
+        pub fn set<T: From<Set>>(value: String) -> T {
             Set(value).into()
         }
-        pub struct UpdateOperation(pub _prisma::write_params::IntParam);
+        pub struct UpdateOperation(pub _prisma::write_params::StringParam);
         impl From<UpdateOperation> for SetParam {
             fn from(UpdateOperation(v): UpdateOperation) -> Self {
-                Self::GameId(v)
+                Self::ExtraData(v)
             }
-        }
-        pub fn increment<T: From<UpdateOperation>>(value: Int) -> T {
-            UpdateOperation(_prisma::write_params::IntParam::Increment(value)).into()
-        }
-        pub fn decrement<T: From<UpdateOperation>>(value: Int) -> T {
-            UpdateOperation(_prisma::write_params::IntParam::Decrement(value)).into()
-        }
-        pub fn multiply<T: From<UpdateOperation>>(value: Int) -> T {
-            UpdateOperation(_prisma::write_params::IntParam::Multiply(value)).into()
-        }
-        pub fn divide<T: From<UpdateOperation>>(value: Int) -> T {
-            UpdateOperation(_prisma::write_params::IntParam::Divide(value)).into()
         }
         impl From<Set> for UncheckedSetParam {
             fn from(Set(v): Set) -> Self {
-                Self::GameId(_prisma::write_params::IntParam::Set(v))
+                Self::ExtraData(_prisma::write_params::StringParam::Set(v))
             }
         }
         impl From<UpdateOperation> for UncheckedSetParam {
             fn from(UpdateOperation(v): UpdateOperation) -> Self {
-                Self::GameId(v)
+                Self::ExtraData(v)
             }
         }
         pub struct Select;
         impl Into<super::SelectParam> for Select {
             fn into(self) -> super::SelectParam {
-                super::SelectParam::GameId(self)
+                super::SelectParam::ExtraData(self)
             }
         }
         impl Into<::prisma_client_rust::Selection> for Select {
@@ -5201,7 +1468,95 @@ pub mod instance {
         pub struct Include;
         impl Into<super::IncludeParam> for Include {
             fn into(self) -> super::IncludeParam {
-                super::IncludeParam::GameId(self)
+                super::IncludeParam::ExtraData(self)
+            }
+        }
+        impl Into<::prisma_client_rust::Selection> for Include {
+            fn into(self) -> ::prisma_client_rust::Selection {
+                ::prisma_client_rust::sel(NAME)
+            }
+        }
+    }
+    pub mod icon_url {
+        use super::super::{_prisma::*, *};
+        use super::{SetParam, UncheckedSetParam, UniqueWhereParam, WhereParam, WithParam};
+        pub const NAME: &str = "iconUrl";
+        pub type Type = Option<String>;
+        pub type RecursiveSafeType = Type;
+        pub struct Equals(pub Option<String>);
+        pub fn equals<T: From<Equals>>(value: Option<String>) -> T {
+            Equals(value).into()
+        }
+        impl From<Equals> for WhereParam {
+            fn from(Equals(v): Equals) -> Self {
+                WhereParam::IconUrl(_prisma::read_filters::StringNullableFilter::Equals(v))
+            }
+        }
+        ::prisma_client_rust::scalar_where_param_fns!(
+            _prisma::read_filters::StringNullableFilter,
+            IconUrl,
+            {
+                fn in_vec(_: Vec<String>) -> InVec;
+                fn not_in_vec(_: Vec<String>) -> NotInVec;
+                fn lt(_: String) -> Lt;
+                fn lte(_: String) -> Lte;
+                fn gt(_: String) -> Gt;
+                fn gte(_: String) -> Gte;
+                fn contains(_: String) -> Contains;
+                fn starts_with(_: String) -> StartsWith;
+                fn ends_with(_: String) -> EndsWith;
+                fn not(_: Option<String>) -> Not;
+            }
+        );
+        pub struct Order(SortOrder);
+        pub fn order<T: From<Order>>(v: SortOrder) -> T {
+            Order(v).into()
+        }
+        impl From<Order> for super::OrderByWithRelationParam {
+            fn from(Order(v): Order) -> Self {
+                Self::IconUrl(v)
+            }
+        }
+        pub struct Set(pub Option<String>);
+        impl From<Set> for SetParam {
+            fn from(Set(v): Set) -> Self {
+                Self::IconUrl(_prisma::write_params::StringNullableParam::Set(v))
+            }
+        }
+        pub fn set<T: From<Set>>(value: Option<String>) -> T {
+            Set(value).into()
+        }
+        pub struct UpdateOperation(pub _prisma::write_params::StringNullableParam);
+        impl From<UpdateOperation> for SetParam {
+            fn from(UpdateOperation(v): UpdateOperation) -> Self {
+                Self::IconUrl(v)
+            }
+        }
+        impl From<Set> for UncheckedSetParam {
+            fn from(Set(v): Set) -> Self {
+                Self::IconUrl(_prisma::write_params::StringNullableParam::Set(v))
+            }
+        }
+        impl From<UpdateOperation> for UncheckedSetParam {
+            fn from(UpdateOperation(v): UpdateOperation) -> Self {
+                Self::IconUrl(v)
+            }
+        }
+        pub struct Select;
+        impl Into<super::SelectParam> for Select {
+            fn into(self) -> super::SelectParam {
+                super::SelectParam::IconUrl(self)
+            }
+        }
+        impl Into<::prisma_client_rust::Selection> for Select {
+            fn into(self) -> ::prisma_client_rust::Selection {
+                ::prisma_client_rust::sel(NAME)
+            }
+        }
+        pub struct Include;
+        impl Into<super::IncludeParam> for Include {
+            fn into(self) -> super::IncludeParam {
+                super::IncludeParam::IconUrl(self)
             }
         }
         impl Into<::prisma_client_rust::Selection> for Include {
@@ -5308,342 +1663,6 @@ pub mod instance {
             }
         }
     }
-    pub mod install_dir {
-        use super::super::{_prisma::*, *};
-        use super::{SetParam, UncheckedSetParam, UniqueWhereParam, WhereParam, WithParam};
-        pub const NAME: &str = "installDir";
-        pub type Type = String;
-        pub type RecursiveSafeType = Type;
-        pub struct Equals(pub String);
-        pub fn equals<T: From<Equals>>(value: String) -> T {
-            Equals(value).into()
-        }
-        impl From<Equals> for WhereParam {
-            fn from(Equals(v): Equals) -> Self {
-                WhereParam::InstallDir(_prisma::read_filters::StringFilter::Equals(v))
-            }
-        }
-        ::prisma_client_rust::scalar_where_param_fns!(
-            _prisma::read_filters::StringFilter,
-            InstallDir,
-            {
-                fn in_vec(_: Vec<String>) -> InVec;
-                fn not_in_vec(_: Vec<String>) -> NotInVec;
-                fn lt(_: String) -> Lt;
-                fn lte(_: String) -> Lte;
-                fn gt(_: String) -> Gt;
-                fn gte(_: String) -> Gte;
-                fn contains(_: String) -> Contains;
-                fn starts_with(_: String) -> StartsWith;
-                fn ends_with(_: String) -> EndsWith;
-                fn not(_: String) -> Not;
-            }
-        );
-        pub struct Order(SortOrder);
-        pub fn order<T: From<Order>>(v: SortOrder) -> T {
-            Order(v).into()
-        }
-        impl From<Order> for super::OrderByWithRelationParam {
-            fn from(Order(v): Order) -> Self {
-                Self::InstallDir(v)
-            }
-        }
-        pub struct Set(pub String);
-        impl From<Set> for SetParam {
-            fn from(Set(v): Set) -> Self {
-                Self::InstallDir(_prisma::write_params::StringParam::Set(v))
-            }
-        }
-        pub fn set<T: From<Set>>(value: String) -> T {
-            Set(value).into()
-        }
-        pub struct UpdateOperation(pub _prisma::write_params::StringParam);
-        impl From<UpdateOperation> for SetParam {
-            fn from(UpdateOperation(v): UpdateOperation) -> Self {
-                Self::InstallDir(v)
-            }
-        }
-        impl From<Set> for UncheckedSetParam {
-            fn from(Set(v): Set) -> Self {
-                Self::InstallDir(_prisma::write_params::StringParam::Set(v))
-            }
-        }
-        impl From<UpdateOperation> for UncheckedSetParam {
-            fn from(UpdateOperation(v): UpdateOperation) -> Self {
-                Self::InstallDir(v)
-            }
-        }
-        pub struct Select;
-        impl Into<super::SelectParam> for Select {
-            fn into(self) -> super::SelectParam {
-                super::SelectParam::InstallDir(self)
-            }
-        }
-        impl Into<::prisma_client_rust::Selection> for Select {
-            fn into(self) -> ::prisma_client_rust::Selection {
-                ::prisma_client_rust::sel(NAME)
-            }
-        }
-        pub struct Include;
-        impl Into<super::IncludeParam> for Include {
-            fn into(self) -> super::IncludeParam {
-                super::IncludeParam::InstallDir(self)
-            }
-        }
-        impl Into<::prisma_client_rust::Selection> for Include {
-            fn into(self) -> ::prisma_client_rust::Selection {
-                ::prisma_client_rust::sel(NAME)
-            }
-        }
-    }
-    pub mod loader {
-        use super::super::{_prisma::*, *};
-        use super::{SetParam, UncheckedSetParam, UniqueWhereParam, WhereParam, WithParam};
-        pub const NAME: &str = "loader";
-        pub type Type = Option<String>;
-        pub type RecursiveSafeType = Type;
-        pub struct Equals(pub Option<String>);
-        pub fn equals<T: From<Equals>>(value: Option<String>) -> T {
-            Equals(value).into()
-        }
-        impl From<Equals> for WhereParam {
-            fn from(Equals(v): Equals) -> Self {
-                WhereParam::Loader(_prisma::read_filters::StringNullableFilter::Equals(v))
-            }
-        }
-        ::prisma_client_rust::scalar_where_param_fns!(
-            _prisma::read_filters::StringNullableFilter,
-            Loader,
-            {
-                fn in_vec(_: Vec<String>) -> InVec;
-                fn not_in_vec(_: Vec<String>) -> NotInVec;
-                fn lt(_: String) -> Lt;
-                fn lte(_: String) -> Lte;
-                fn gt(_: String) -> Gt;
-                fn gte(_: String) -> Gte;
-                fn contains(_: String) -> Contains;
-                fn starts_with(_: String) -> StartsWith;
-                fn ends_with(_: String) -> EndsWith;
-                fn not(_: Option<String>) -> Not;
-            }
-        );
-        pub struct Order(SortOrder);
-        pub fn order<T: From<Order>>(v: SortOrder) -> T {
-            Order(v).into()
-        }
-        impl From<Order> for super::OrderByWithRelationParam {
-            fn from(Order(v): Order) -> Self {
-                Self::Loader(v)
-            }
-        }
-        pub struct Set(pub Option<String>);
-        impl From<Set> for SetParam {
-            fn from(Set(v): Set) -> Self {
-                Self::Loader(_prisma::write_params::StringNullableParam::Set(v))
-            }
-        }
-        pub fn set<T: From<Set>>(value: Option<String>) -> T {
-            Set(value).into()
-        }
-        pub struct UpdateOperation(pub _prisma::write_params::StringNullableParam);
-        impl From<UpdateOperation> for SetParam {
-            fn from(UpdateOperation(v): UpdateOperation) -> Self {
-                Self::Loader(v)
-            }
-        }
-        impl From<Set> for UncheckedSetParam {
-            fn from(Set(v): Set) -> Self {
-                Self::Loader(_prisma::write_params::StringNullableParam::Set(v))
-            }
-        }
-        impl From<UpdateOperation> for UncheckedSetParam {
-            fn from(UpdateOperation(v): UpdateOperation) -> Self {
-                Self::Loader(v)
-            }
-        }
-        pub struct Select;
-        impl Into<super::SelectParam> for Select {
-            fn into(self) -> super::SelectParam {
-                super::SelectParam::Loader(self)
-            }
-        }
-        impl Into<::prisma_client_rust::Selection> for Select {
-            fn into(self) -> ::prisma_client_rust::Selection {
-                ::prisma_client_rust::sel(NAME)
-            }
-        }
-        pub struct Include;
-        impl Into<super::IncludeParam> for Include {
-            fn into(self) -> super::IncludeParam {
-                super::IncludeParam::Loader(self)
-            }
-        }
-        impl Into<::prisma_client_rust::Selection> for Include {
-            fn into(self) -> ::prisma_client_rust::Selection {
-                ::prisma_client_rust::sel(NAME)
-            }
-        }
-    }
-    pub mod mods {
-        use super::super::{_prisma::*, *};
-        use super::{SetParam, UncheckedSetParam, UniqueWhereParam, WhereParam, WithParam};
-        pub const NAME: &str = "mods";
-        pub type Type = Vec<r#mod::Data>;
-        pub type RecursiveSafeType = Type;
-        pub fn some(value: Vec<r#mod::WhereParam>) -> WhereParam {
-            WhereParam::ModsSome(value)
-        }
-        pub fn every(value: Vec<r#mod::WhereParam>) -> WhereParam {
-            WhereParam::ModsEvery(value)
-        }
-        pub fn none(value: Vec<r#mod::WhereParam>) -> WhereParam {
-            WhereParam::ModsNone(value)
-        }
-        pub struct Order(Vec<r#mod::OrderByRelationAggregateParam>);
-        pub fn order<T: From<Order>>(v: Vec<r#mod::OrderByRelationAggregateParam>) -> T {
-            Order(v).into()
-        }
-        impl From<Order> for super::OrderByWithRelationParam {
-            fn from(Order(v): Order) -> Self {
-                Self::Mods(v)
-            }
-        }
-        pub struct Fetch(pub r#mod::ManyArgs);
-        impl Fetch {
-            pub fn with(mut self, params: impl Into<r#mod::WithParam>) -> Self {
-                self.0 = self.0.with(params.into());
-                self
-            }
-            pub fn order_by(mut self, param: r#mod::OrderByWithRelationParam) -> Self {
-                self.0 = self.0.order_by(param);
-                self
-            }
-            pub fn skip(mut self, value: i64) -> Self {
-                self.0 = self.0.skip(value);
-                self
-            }
-            pub fn take(mut self, value: i64) -> Self {
-                self.0 = self.0.take(value);
-                self
-            }
-            pub fn cursor(mut self, value: r#mod::UniqueWhereParam) -> Self {
-                self.0 = self.0.cursor(value.into());
-                self
-            }
-        }
-        impl From<Fetch> for WithParam {
-            fn from(Fetch(v): Fetch) -> Self {
-                WithParam::Mods(v)
-            }
-        }
-        pub fn fetch(params: Vec<r#mod::WhereParam>) -> Fetch {
-            Fetch(r#mod::ManyArgs::new(params))
-        }
-        pub struct Connect(pub Vec<r#mod::UniqueWhereParam>);
-        impl From<Connect> for SetParam {
-            fn from(Connect(v): Connect) -> Self {
-                Self::ConnectMods(v)
-            }
-        }
-        pub fn connect<T: From<Connect>>(params: Vec<r#mod::UniqueWhereParam>) -> T {
-            Connect(params).into()
-        }
-        pub fn disconnect(params: Vec<r#mod::UniqueWhereParam>) -> SetParam {
-            SetParam::DisconnectMods(params)
-        }
-        pub fn set(params: Vec<r#mod::UniqueWhereParam>) -> SetParam {
-            SetParam::SetMods(params)
-        }
-        pub enum Select {
-            Select(r#mod::ManyArgs, Vec<r#mod::SelectParam>),
-            Include(r#mod::ManyArgs, Vec<r#mod::IncludeParam>),
-            Fetch(r#mod::ManyArgs),
-        }
-        impl Into<super::SelectParam> for Select {
-            fn into(self) -> super::SelectParam {
-                super::SelectParam::Mods(self)
-            }
-        }
-        impl Select {
-            pub fn select(
-                args: r#mod::ManyArgs,
-                nested_selections: Vec<r#mod::SelectParam>,
-            ) -> Self {
-                Self::Select(args, nested_selections)
-            }
-            pub fn include(
-                args: r#mod::ManyArgs,
-                nested_selections: Vec<r#mod::IncludeParam>,
-            ) -> Self {
-                Self::Include(args, nested_selections)
-            }
-        }
-        impl Into<::prisma_client_rust::Selection> for Select {
-            fn into(self) -> ::prisma_client_rust::Selection {
-                let (args, selections) = match self {
-                    Self::Select(args, selections) => (
-                        args.to_graphql().0,
-                        selections.into_iter().map(Into::into).collect(),
-                    ),
-                    Self::Include(args, selections) => (args.to_graphql().0, {
-                        let mut nested_selections = vec![];
-                        nested_selections.extend(selections.into_iter().map(Into::into));
-                        nested_selections
-                    }),
-                    Self::Fetch(args) => (
-                        args.to_graphql().0,
-                        <r#mod::Types as ::prisma_client_rust::ModelTypes>::scalar_selections(),
-                    ),
-                };
-                ::prisma_client_rust::Selection::new(NAME, None, args, selections)
-            }
-        }
-        pub enum Include {
-            Select(r#mod::ManyArgs, Vec<r#mod::SelectParam>),
-            Include(r#mod::ManyArgs, Vec<r#mod::IncludeParam>),
-            Fetch(r#mod::ManyArgs),
-        }
-        impl Into<super::IncludeParam> for Include {
-            fn into(self) -> super::IncludeParam {
-                super::IncludeParam::Mods(self)
-            }
-        }
-        impl Include {
-            pub fn select(
-                args: r#mod::ManyArgs,
-                nested_selections: Vec<r#mod::SelectParam>,
-            ) -> Self {
-                Self::Select(args, nested_selections)
-            }
-            pub fn include(
-                args: r#mod::ManyArgs,
-                nested_selections: Vec<r#mod::IncludeParam>,
-            ) -> Self {
-                Self::Include(args, nested_selections)
-            }
-        }
-        impl Into<::prisma_client_rust::Selection> for Include {
-            fn into(self) -> ::prisma_client_rust::Selection {
-                let (args, selections) = match self {
-                    Self::Select(args, selections) => (
-                        args.to_graphql().0,
-                        selections.into_iter().map(Into::into).collect(),
-                    ),
-                    Self::Include(args, selections) => (args.to_graphql().0, {
-                        let mut nested_selections =
-                            <r#mod::Types as ::prisma_client_rust::ModelTypes>::scalar_selections();
-                        nested_selections.extend(selections.into_iter().map(Into::into));
-                        nested_selections
-                    }),
-                    Self::Fetch(args) => (
-                        args.to_graphql().0,
-                        <r#mod::Types as ::prisma_client_rust::ModelTypes>::scalar_selections(),
-                    ),
-                };
-                ::prisma_client_rust::Selection::new(NAME, None, args, selections)
-            }
-        }
-    }
     pub mod name {
         use super::super::{_prisma::*, *};
         use super::{SetParam, UncheckedSetParam, UniqueWhereParam, WhereParam, WithParam};
@@ -5720,6 +1739,94 @@ pub mod instance {
         impl Into<super::IncludeParam> for Include {
             fn into(self) -> super::IncludeParam {
                 super::IncludeParam::Name(self)
+            }
+        }
+        impl Into<::prisma_client_rust::Selection> for Include {
+            fn into(self) -> ::prisma_client_rust::Selection {
+                ::prisma_client_rust::sel(NAME)
+            }
+        }
+    }
+    pub mod plugin {
+        use super::super::{_prisma::*, *};
+        use super::{SetParam, UncheckedSetParam, UniqueWhereParam, WhereParam, WithParam};
+        pub const NAME: &str = "plugin";
+        pub type Type = String;
+        pub type RecursiveSafeType = Type;
+        pub struct Equals(pub String);
+        pub fn equals<T: From<Equals>>(value: String) -> T {
+            Equals(value).into()
+        }
+        impl From<Equals> for WhereParam {
+            fn from(Equals(v): Equals) -> Self {
+                WhereParam::Plugin(_prisma::read_filters::StringFilter::Equals(v))
+            }
+        }
+        ::prisma_client_rust::scalar_where_param_fns!(
+            _prisma::read_filters::StringFilter,
+            Plugin,
+            {
+                fn in_vec(_: Vec<String>) -> InVec;
+                fn not_in_vec(_: Vec<String>) -> NotInVec;
+                fn lt(_: String) -> Lt;
+                fn lte(_: String) -> Lte;
+                fn gt(_: String) -> Gt;
+                fn gte(_: String) -> Gte;
+                fn contains(_: String) -> Contains;
+                fn starts_with(_: String) -> StartsWith;
+                fn ends_with(_: String) -> EndsWith;
+                fn not(_: String) -> Not;
+            }
+        );
+        pub struct Order(SortOrder);
+        pub fn order<T: From<Order>>(v: SortOrder) -> T {
+            Order(v).into()
+        }
+        impl From<Order> for super::OrderByWithRelationParam {
+            fn from(Order(v): Order) -> Self {
+                Self::Plugin(v)
+            }
+        }
+        pub struct Set(pub String);
+        impl From<Set> for SetParam {
+            fn from(Set(v): Set) -> Self {
+                Self::Plugin(_prisma::write_params::StringParam::Set(v))
+            }
+        }
+        pub fn set<T: From<Set>>(value: String) -> T {
+            Set(value).into()
+        }
+        pub struct UpdateOperation(pub _prisma::write_params::StringParam);
+        impl From<UpdateOperation> for SetParam {
+            fn from(UpdateOperation(v): UpdateOperation) -> Self {
+                Self::Plugin(v)
+            }
+        }
+        impl From<Set> for UncheckedSetParam {
+            fn from(Set(v): Set) -> Self {
+                Self::Plugin(_prisma::write_params::StringParam::Set(v))
+            }
+        }
+        impl From<UpdateOperation> for UncheckedSetParam {
+            fn from(UpdateOperation(v): UpdateOperation) -> Self {
+                Self::Plugin(v)
+            }
+        }
+        pub struct Select;
+        impl Into<super::SelectParam> for Select {
+            fn into(self) -> super::SelectParam {
+                super::SelectParam::Plugin(self)
+            }
+        }
+        impl Into<::prisma_client_rust::Selection> for Select {
+            fn into(self) -> ::prisma_client_rust::Selection {
+                ::prisma_client_rust::sel(NAME)
+            }
+        }
+        pub struct Include;
+        impl Into<super::IncludeParam> for Include {
+            fn into(self) -> super::IncludeParam {
+                super::IncludeParam::Plugin(self)
             }
         }
         impl Into<::prisma_client_rust::Selection> for Include {
@@ -5814,28 +1921,23 @@ pub mod instance {
         }
     }
 }
-pub mod r#mod {
+pub mod installed_mod {
     use super::{_prisma::*, *};
-    pub const NAME: &str = "Mod";
+    pub const NAME: &str = "InstalledMod";
     #[derive(Debug, Clone)]
     pub enum WhereParam {
         Not(Vec<WhereParam>),
         Or(Vec<WhereParam>),
         And(Vec<WhereParam>),
         Id(super::_prisma::read_filters::IntFilter),
-        Mod(super::_prisma::read_filters::StringFilter),
-        Version(super::_prisma::read_filters::StringNullableFilter),
-        Name(super::_prisma::read_filters::StringFilter),
-        File(super::_prisma::read_filters::StringFilter),
-        Size(super::_prisma::read_filters::IntFilter),
-        Hash(super::_prisma::read_filters::StringNullableFilter),
-        InstalledFiles(super::_prisma::read_filters::StringFilter),
-        SourceIs(Vec<super::source::WhereParam>),
-        SourceIsNot(Vec<super::source::WhereParam>),
-        SourceId(super::_prisma::read_filters::IntFilter),
-        InstanceIs(Vec<super::instance::WhereParam>),
-        InstanceIsNot(Vec<super::instance::WhereParam>),
-        InstanceId(super::_prisma::read_filters::IntFilter),
+        FileSize(super::_prisma::read_filters::IntFilter),
+        Updated(super::_prisma::read_filters::DateTimeFilter),
+        IconUrl(super::_prisma::read_filters::StringNullableFilter),
+        Source(super::_prisma::read_filters::StringFilter),
+        ProjectId(super::_prisma::read_filters::StringFilter),
+        ProjectName(super::_prisma::read_filters::StringFilter),
+        ProjectDesc(super::_prisma::read_filters::StringNullableFilter),
+        ProjectVersion(super::_prisma::read_filters::StringNullableFilter),
     }
     impl ::prisma_client_rust::WhereInput for WhereParam {
         fn serialize(self) -> ::prisma_client_rust::SerializedWhereInput {
@@ -5875,120 +1977,40 @@ pub mod r#mod {
                     ),
                 ),
                 Self::Id(value) => (id::NAME, value.into()),
-                Self::Mod(value) => (r#mod::NAME, value.into()),
-                Self::Version(value) => (version::NAME, value.into()),
-                Self::Name(value) => (name::NAME, value.into()),
-                Self::File(value) => (file::NAME, value.into()),
-                Self::Size(value) => (size::NAME, value.into()),
-                Self::Hash(value) => (hash::NAME, value.into()),
-                Self::InstalledFiles(value) => (installed_files::NAME, value.into()),
-                Self::SourceIs(where_params) => (
-                    source::NAME,
-                    ::prisma_client_rust::SerializedWhereValue::Object(vec![(
-                        "is".to_string(),
-                        ::prisma_client_rust::PrismaValue::Object(
-                            where_params
-                                .into_iter()
-                                .map(::prisma_client_rust::WhereInput::serialize)
-                                .map(::prisma_client_rust::SerializedWhereInput::transform_equals)
-                                .collect(),
-                        ),
-                    )]),
-                ),
-                Self::SourceIsNot(where_params) => (
-                    source::NAME,
-                    ::prisma_client_rust::SerializedWhereValue::Object(vec![(
-                        "isNot".to_string(),
-                        ::prisma_client_rust::PrismaValue::Object(
-                            where_params
-                                .into_iter()
-                                .map(::prisma_client_rust::WhereInput::serialize)
-                                .map(::prisma_client_rust::SerializedWhereInput::transform_equals)
-                                .collect(),
-                        ),
-                    )]),
-                ),
-                Self::SourceId(value) => (source_id::NAME, value.into()),
-                Self::InstanceIs(where_params) => (
-                    instance::NAME,
-                    ::prisma_client_rust::SerializedWhereValue::Object(vec![(
-                        "is".to_string(),
-                        ::prisma_client_rust::PrismaValue::Object(
-                            where_params
-                                .into_iter()
-                                .map(::prisma_client_rust::WhereInput::serialize)
-                                .map(::prisma_client_rust::SerializedWhereInput::transform_equals)
-                                .collect(),
-                        ),
-                    )]),
-                ),
-                Self::InstanceIsNot(where_params) => (
-                    instance::NAME,
-                    ::prisma_client_rust::SerializedWhereValue::Object(vec![(
-                        "isNot".to_string(),
-                        ::prisma_client_rust::PrismaValue::Object(
-                            where_params
-                                .into_iter()
-                                .map(::prisma_client_rust::WhereInput::serialize)
-                                .map(::prisma_client_rust::SerializedWhereInput::transform_equals)
-                                .collect(),
-                        ),
-                    )]),
-                ),
-                Self::InstanceId(value) => (instance_id::NAME, value.into()),
+                Self::FileSize(value) => (file_size::NAME, value.into()),
+                Self::Updated(value) => (updated::NAME, value.into()),
+                Self::IconUrl(value) => (icon_url::NAME, value.into()),
+                Self::Source(value) => (source::NAME, value.into()),
+                Self::ProjectId(value) => (project_id::NAME, value.into()),
+                Self::ProjectName(value) => (project_name::NAME, value.into()),
+                Self::ProjectDesc(value) => (project_desc::NAME, value.into()),
+                Self::ProjectVersion(value) => (project_version::NAME, value.into()),
             };
             ::prisma_client_rust::SerializedWhereInput::new(name.to_string(), value.into())
         }
     }
     #[derive(Debug, Clone)]
     pub enum UniqueWhereParam {
-        FileEquals(String),
-        HashEquals(String),
         IdEquals(Int),
+        ProjectIdEquals(String),
     }
     impl ::prisma_client_rust::WhereInput for UniqueWhereParam {
         fn serialize(self) -> ::prisma_client_rust::SerializedWhereInput {
             let (name, value) = match self {
-                UniqueWhereParam::FileEquals(value) => (
-                    "file",
-                    ::prisma_client_rust::SerializedWhereValue::Value(
-                        ::prisma_client_rust::PrismaValue::String(value),
-                    ),
-                ),
-                UniqueWhereParam::HashEquals(value) => (
-                    "hash",
-                    ::prisma_client_rust::SerializedWhereValue::Value(
-                        ::prisma_client_rust::PrismaValue::String(value),
-                    ),
-                ),
                 UniqueWhereParam::IdEquals(value) => (
                     "id",
                     ::prisma_client_rust::SerializedWhereValue::Value(
                         ::prisma_client_rust::PrismaValue::Int(value),
                     ),
                 ),
+                UniqueWhereParam::ProjectIdEquals(value) => (
+                    "projectId",
+                    ::prisma_client_rust::SerializedWhereValue::Value(
+                        ::prisma_client_rust::PrismaValue::String(value),
+                    ),
+                ),
             };
             ::prisma_client_rust::SerializedWhereInput::new(name.to_string(), value.into())
-        }
-    }
-    impl ::prisma_client_rust::FromOptionalUniqueArg<hash::Equals> for WhereParam {
-        type Arg = Option<String>;
-        fn from_arg(arg: Self::Arg) -> Self
-        where
-            Self: Sized,
-        {
-            Self::Hash(super::_prisma::read_filters::StringNullableFilter::Equals(
-                arg,
-            ))
-        }
-    }
-    impl ::prisma_client_rust::FromOptionalUniqueArg<hash::Equals> for UniqueWhereParam {
-        type Arg = String;
-        fn from_arg(arg: Self::Arg) -> Self
-        where
-            Self: Sized,
-        {
-            Self::HashEquals(arg)
         }
     }
     impl From<::prisma_client_rust::Operator<Self>> for WhereParam {
@@ -6003,142 +2025,62 @@ pub mod r#mod {
     #[derive(Debug, Clone)]
     pub enum OrderByWithRelationParam {
         Id(super::SortOrder),
-        Mod(super::SortOrder),
-        Version(super::SortOrder),
-        Name(super::SortOrder),
-        File(super::SortOrder),
-        Size(super::SortOrder),
-        Hash(super::SortOrder),
-        InstalledFiles(super::SortOrder),
-        SourceId(super::SortOrder),
-        InstanceId(super::SortOrder),
-        Source(Vec<super::source::OrderByWithRelationParam>),
-        Instance(Vec<super::instance::OrderByWithRelationParam>),
+        FileSize(super::SortOrder),
+        Updated(super::SortOrder),
+        IconUrl(super::SortOrder),
+        Source(super::SortOrder),
+        ProjectId(super::SortOrder),
+        ProjectName(super::SortOrder),
+        ProjectDesc(super::SortOrder),
+        ProjectVersion(super::SortOrder),
     }
     impl Into<(String, ::prisma_client_rust::PrismaValue)> for OrderByWithRelationParam {
         fn into(self) -> (String, ::prisma_client_rust::PrismaValue) {
             let (k, v) = match self {
                 Self::Id(param) => ("id", param.into()),
-                Self::Mod(param) => ("mod", param.into()),
-                Self::Version(param) => ("version", param.into()),
-                Self::Name(param) => ("name", param.into()),
-                Self::File(param) => ("file", param.into()),
-                Self::Size(param) => ("size", param.into()),
-                Self::Hash(param) => ("hash", param.into()),
-                Self::InstalledFiles(param) => ("installed_files", param.into()),
-                Self::SourceId(param) => ("sourceId", param.into()),
-                Self::InstanceId(param) => ("instanceId", param.into()),
-                Self::Source(param) => (
-                    "source",
-                    ::prisma_client_rust::PrismaValue::Object(
-                        param.into_iter().map(Into::into).collect(),
-                    ),
-                ),
-                Self::Instance(param) => (
-                    "instance",
-                    ::prisma_client_rust::PrismaValue::Object(
-                        param.into_iter().map(Into::into).collect(),
-                    ),
-                ),
+                Self::FileSize(param) => ("fileSize", param.into()),
+                Self::Updated(param) => ("updated", param.into()),
+                Self::IconUrl(param) => ("iconUrl", param.into()),
+                Self::Source(param) => ("source", param.into()),
+                Self::ProjectId(param) => ("projectId", param.into()),
+                Self::ProjectName(param) => ("projectName", param.into()),
+                Self::ProjectDesc(param) => ("projectDesc", param.into()),
+                Self::ProjectVersion(param) => ("projectVersion", param.into()),
             };
             (k.to_string(), v)
         }
     }
     #[derive(Debug, Clone)]
-    pub enum OrderByRelationAggregateParam {
-        _Count(super::SortOrder),
-    }
-    impl Into<(String, ::prisma_client_rust::PrismaValue)> for OrderByRelationAggregateParam {
-        fn into(self) -> (String, ::prisma_client_rust::PrismaValue) {
-            let (k, v) = match self {
-                Self::_Count(param) => ("_count", param.into()),
-            };
-            (k.to_string(), v)
-        }
-    }
-    #[derive(Debug, Clone)]
-    pub enum WithParam {
-        Source(super::source::UniqueArgs),
-        Instance(super::instance::UniqueArgs),
-    }
+    pub enum WithParam {}
     impl Into<::prisma_client_rust::Selection> for WithParam {
         fn into(self) -> ::prisma_client_rust::Selection {
-            match self {
-                Self::Source(args) => {
-                    let mut selections = < super :: source :: Types as :: prisma_client_rust :: ModelTypes > :: scalar_selections () ;
-                    selections.extend(
-                        args.with_params
-                            .into_iter()
-                            .map(Into::<::prisma_client_rust::Selection>::into),
-                    );
-                    ::prisma_client_rust::Selection::new(source::NAME, None, [], selections)
-                }
-                Self::Instance(args) => {
-                    let mut selections = < super :: instance :: Types as :: prisma_client_rust :: ModelTypes > :: scalar_selections () ;
-                    selections.extend(
-                        args.with_params
-                            .into_iter()
-                            .map(Into::<::prisma_client_rust::Selection>::into),
-                    );
-                    ::prisma_client_rust::Selection::new(instance::NAME, None, [], selections)
-                }
-            }
+            match self {}
         }
     }
     #[derive(Debug, Clone)]
     pub enum SetParam {
         Id(super::_prisma::write_params::IntParam),
-        Mod(super::_prisma::write_params::StringParam),
-        Version(super::_prisma::write_params::StringNullableParam),
-        Name(super::_prisma::write_params::StringParam),
-        File(super::_prisma::write_params::StringParam),
-        Size(super::_prisma::write_params::IntParam),
-        Hash(super::_prisma::write_params::StringNullableParam),
-        InstalledFiles(super::_prisma::write_params::StringParam),
-        ConnectSource(super::source::UniqueWhereParam),
-        SourceId(super::_prisma::write_params::IntParam),
-        ConnectInstance(super::instance::UniqueWhereParam),
-        InstanceId(super::_prisma::write_params::IntParam),
+        FileSize(super::_prisma::write_params::IntParam),
+        Updated(super::_prisma::write_params::DateTimeParam),
+        IconUrl(super::_prisma::write_params::StringNullableParam),
+        Source(super::_prisma::write_params::StringParam),
+        ProjectId(super::_prisma::write_params::StringParam),
+        ProjectName(super::_prisma::write_params::StringParam),
+        ProjectDesc(super::_prisma::write_params::StringNullableParam),
+        ProjectVersion(super::_prisma::write_params::StringNullableParam),
     }
     impl Into<(String, ::prisma_client_rust::PrismaValue)> for SetParam {
         fn into(self) -> (String, ::prisma_client_rust::PrismaValue) {
             let (k, v) = match self {
                 Self::Id(value) => (id::NAME, value.into()),
-                Self::Mod(value) => (r#mod::NAME, value.into()),
-                Self::Version(value) => (version::NAME, value.into()),
-                Self::Name(value) => (name::NAME, value.into()),
-                Self::File(value) => (file::NAME, value.into()),
-                Self::Size(value) => (size::NAME, value.into()),
-                Self::Hash(value) => (hash::NAME, value.into()),
-                Self::InstalledFiles(value) => (installed_files::NAME, value.into()),
-                Self::ConnectSource(where_param) => (
-                    source::NAME,
-                    ::prisma_client_rust::PrismaValue::Object(vec![(
-                        "connect".to_string(),
-                        ::prisma_client_rust::PrismaValue::Object(
-                            [where_param]
-                                .into_iter()
-                                .map(::prisma_client_rust::WhereInput::serialize)
-                                .map(::prisma_client_rust::SerializedWhereInput::transform_equals)
-                                .collect(),
-                        ),
-                    )]),
-                ),
-                Self::SourceId(value) => (source_id::NAME, value.into()),
-                Self::ConnectInstance(where_param) => (
-                    instance::NAME,
-                    ::prisma_client_rust::PrismaValue::Object(vec![(
-                        "connect".to_string(),
-                        ::prisma_client_rust::PrismaValue::Object(
-                            [where_param]
-                                .into_iter()
-                                .map(::prisma_client_rust::WhereInput::serialize)
-                                .map(::prisma_client_rust::SerializedWhereInput::transform_equals)
-                                .collect(),
-                        ),
-                    )]),
-                ),
-                Self::InstanceId(value) => (instance_id::NAME, value.into()),
+                Self::FileSize(value) => (file_size::NAME, value.into()),
+                Self::Updated(value) => (updated::NAME, value.into()),
+                Self::IconUrl(value) => (icon_url::NAME, value.into()),
+                Self::Source(value) => (source::NAME, value.into()),
+                Self::ProjectId(value) => (project_id::NAME, value.into()),
+                Self::ProjectName(value) => (project_name::NAME, value.into()),
+                Self::ProjectDesc(value) => (project_desc::NAME, value.into()),
+                Self::ProjectVersion(value) => (project_version::NAME, value.into()),
             };
             (k.to_string(), v)
         }
@@ -6146,232 +2088,185 @@ pub mod r#mod {
     #[derive(Debug, Clone)]
     pub enum UncheckedSetParam {
         Id(super::_prisma::write_params::IntParam),
-        Mod(super::_prisma::write_params::StringParam),
-        Version(super::_prisma::write_params::StringNullableParam),
-        Name(super::_prisma::write_params::StringParam),
-        File(super::_prisma::write_params::StringParam),
-        Size(super::_prisma::write_params::IntParam),
-        Hash(super::_prisma::write_params::StringNullableParam),
-        InstalledFiles(super::_prisma::write_params::StringParam),
-        SourceId(super::_prisma::write_params::IntParam),
-        InstanceId(super::_prisma::write_params::IntParam),
+        FileSize(super::_prisma::write_params::IntParam),
+        Updated(super::_prisma::write_params::DateTimeParam),
+        IconUrl(super::_prisma::write_params::StringNullableParam),
+        Source(super::_prisma::write_params::StringParam),
+        ProjectId(super::_prisma::write_params::StringParam),
+        ProjectName(super::_prisma::write_params::StringParam),
+        ProjectDesc(super::_prisma::write_params::StringNullableParam),
+        ProjectVersion(super::_prisma::write_params::StringNullableParam),
     }
     impl Into<(String, ::prisma_client_rust::PrismaValue)> for UncheckedSetParam {
         fn into(self) -> (String, ::prisma_client_rust::PrismaValue) {
             let (k, v) = match self {
                 Self::Id(value) => ("id", value.into()),
-                Self::Mod(value) => ("mod", value.into()),
-                Self::Version(value) => ("version", value.into()),
-                Self::Name(value) => ("name", value.into()),
-                Self::File(value) => ("file", value.into()),
-                Self::Size(value) => ("size", value.into()),
-                Self::Hash(value) => ("hash", value.into()),
-                Self::InstalledFiles(value) => ("installed_files", value.into()),
-                Self::SourceId(value) => ("sourceId", value.into()),
-                Self::InstanceId(value) => ("instanceId", value.into()),
+                Self::FileSize(value) => ("fileSize", value.into()),
+                Self::Updated(value) => ("updated", value.into()),
+                Self::IconUrl(value) => ("iconUrl", value.into()),
+                Self::Source(value) => ("source", value.into()),
+                Self::ProjectId(value) => ("projectId", value.into()),
+                Self::ProjectName(value) => ("projectName", value.into()),
+                Self::ProjectDesc(value) => ("projectDesc", value.into()),
+                Self::ProjectVersion(value) => ("projectVersion", value.into()),
             };
             (k.to_string(), v)
         }
     }
     ::prisma_client_rust::macros::select_factory!(
-        _select_mod,
+        _select_installed_mod,
         select,
-        prisma::r#mod,
+        prisma::installed_mod,
         struct Data {
             #[serde(rename = "id")]
             id: id::Type,
-            #[serde(rename = "mod")]
-            r#mod: r#mod::Type,
-            #[serde(rename = "version")]
-            version: version::Type,
-            #[serde(rename = "name")]
-            name: name::Type,
-            #[serde(rename = "file")]
-            file: file::Type,
-            #[serde(rename = "size")]
-            size: size::Type,
-            #[serde(rename = "hash")]
-            hash: hash::Type,
-            #[serde(rename = "installed_files")]
-            installed_files: installed_files::Type,
+            #[serde(rename = "fileSize")]
+            file_size: file_size::Type,
+            #[serde(rename = "updated")]
+            updated: updated::Type,
+            #[serde(rename = "iconUrl")]
+            icon_url: icon_url::Type,
             #[serde(rename = "source")]
             source: source::Type,
-            #[serde(rename = "sourceId")]
-            source_id: source_id::Type,
-            #[serde(rename = "instance")]
-            instance: instance::Type,
-            #[serde(rename = "instanceId")]
-            instance_id: instance_id::Type,
+            #[serde(rename = "projectId")]
+            project_id: project_id::Type,
+            #[serde(rename = "projectName")]
+            project_name: project_name::Type,
+            #[serde(rename = "projectDesc")]
+            project_desc: project_desc::Type,
+            #[serde(rename = "projectVersion")]
+            project_version: project_version::Type,
         },
         [
             (id, Scalar),
-            (r#mod, Scalar),
-            (version, Scalar),
-            (name, Scalar),
-            (file, Scalar),
-            (size, Scalar),
-            (hash, Scalar),
-            (installed_files, Scalar),
-            (source, Relation(prisma::source, One)),
-            (source_id, Scalar),
-            (instance, Relation(prisma::instance, One)),
-            (instance_id, Scalar)
+            (file_size, Scalar),
+            (updated, Scalar),
+            (icon_url, Scalar),
+            (source, Scalar),
+            (project_id, Scalar),
+            (project_name, Scalar),
+            (project_desc, Scalar),
+            (project_version, Scalar)
         ]
     );
     pub enum SelectParam {
         Id(id::Select),
-        Mod(r#mod::Select),
-        Version(version::Select),
-        Name(name::Select),
-        File(file::Select),
-        Size(size::Select),
-        Hash(hash::Select),
-        InstalledFiles(installed_files::Select),
+        FileSize(file_size::Select),
+        Updated(updated::Select),
+        IconUrl(icon_url::Select),
         Source(source::Select),
-        SourceId(source_id::Select),
-        Instance(instance::Select),
-        InstanceId(instance_id::Select),
+        ProjectId(project_id::Select),
+        ProjectName(project_name::Select),
+        ProjectDesc(project_desc::Select),
+        ProjectVersion(project_version::Select),
     }
     impl Into<::prisma_client_rust::Selection> for SelectParam {
         fn into(self) -> ::prisma_client_rust::Selection {
             match self {
                 Self::Id(data) => data.into(),
-                Self::Mod(data) => data.into(),
-                Self::Version(data) => data.into(),
-                Self::Name(data) => data.into(),
-                Self::File(data) => data.into(),
-                Self::Size(data) => data.into(),
-                Self::Hash(data) => data.into(),
-                Self::InstalledFiles(data) => data.into(),
+                Self::FileSize(data) => data.into(),
+                Self::Updated(data) => data.into(),
+                Self::IconUrl(data) => data.into(),
                 Self::Source(data) => data.into(),
-                Self::SourceId(data) => data.into(),
-                Self::Instance(data) => data.into(),
-                Self::InstanceId(data) => data.into(),
+                Self::ProjectId(data) => data.into(),
+                Self::ProjectName(data) => data.into(),
+                Self::ProjectDesc(data) => data.into(),
+                Self::ProjectVersion(data) => data.into(),
             }
         }
     }
     ::prisma_client_rust::macros::include_factory!(
-        _include_mod,
+        _include_installed_mod,
         include,
-        prisma::r#mod,
+        prisma::installed_mod,
         struct Data {
             #[serde(rename = "id")]
             id: id::Type,
-            #[serde(rename = "mod")]
-            r#mod: r#mod::Type,
-            #[serde(rename = "version")]
-            version: version::Type,
-            #[serde(rename = "name")]
-            name: name::Type,
-            #[serde(rename = "file")]
-            file: file::Type,
-            #[serde(rename = "size")]
-            size: size::Type,
-            #[serde(rename = "hash")]
-            hash: hash::Type,
-            #[serde(rename = "installed_files")]
-            installed_files: installed_files::Type,
+            #[serde(rename = "fileSize")]
+            file_size: file_size::Type,
+            #[serde(rename = "updated")]
+            updated: updated::Type,
+            #[serde(rename = "iconUrl")]
+            icon_url: icon_url::Type,
             #[serde(rename = "source")]
             source: source::Type,
-            #[serde(rename = "sourceId")]
-            source_id: source_id::Type,
-            #[serde(rename = "instance")]
-            instance: instance::Type,
-            #[serde(rename = "instanceId")]
-            instance_id: instance_id::Type,
+            #[serde(rename = "projectId")]
+            project_id: project_id::Type,
+            #[serde(rename = "projectName")]
+            project_name: project_name::Type,
+            #[serde(rename = "projectDesc")]
+            project_desc: project_desc::Type,
+            #[serde(rename = "projectVersion")]
+            project_version: project_version::Type,
         },
-        [
-            (source, Relation(prisma::source, One)),
-            (instance, Relation(prisma::instance, One))
-        ]
+        []
     );
     pub enum IncludeParam {
         Id(id::Include),
-        Mod(r#mod::Include),
-        Version(version::Include),
-        Name(name::Include),
-        File(file::Include),
-        Size(size::Include),
-        Hash(hash::Include),
-        InstalledFiles(installed_files::Include),
+        FileSize(file_size::Include),
+        Updated(updated::Include),
+        IconUrl(icon_url::Include),
         Source(source::Include),
-        SourceId(source_id::Include),
-        Instance(instance::Include),
-        InstanceId(instance_id::Include),
+        ProjectId(project_id::Include),
+        ProjectName(project_name::Include),
+        ProjectDesc(project_desc::Include),
+        ProjectVersion(project_version::Include),
     }
     impl Into<::prisma_client_rust::Selection> for IncludeParam {
         fn into(self) -> ::prisma_client_rust::Selection {
             match self {
                 Self::Id(data) => data.into(),
-                Self::Mod(data) => data.into(),
-                Self::Version(data) => data.into(),
-                Self::Name(data) => data.into(),
-                Self::File(data) => data.into(),
-                Self::Size(data) => data.into(),
-                Self::Hash(data) => data.into(),
-                Self::InstalledFiles(data) => data.into(),
+                Self::FileSize(data) => data.into(),
+                Self::Updated(data) => data.into(),
+                Self::IconUrl(data) => data.into(),
                 Self::Source(data) => data.into(),
-                Self::SourceId(data) => data.into(),
-                Self::Instance(data) => data.into(),
-                Self::InstanceId(data) => data.into(),
+                Self::ProjectId(data) => data.into(),
+                Self::ProjectName(data) => data.into(),
+                Self::ProjectDesc(data) => data.into(),
+                Self::ProjectVersion(data) => data.into(),
             }
         }
     }
     #[derive(Debug, Clone)]
     pub struct Create {
-        pub r#mod: String,
-        pub name: String,
-        pub file: String,
-        pub size: Int,
-        pub installed_files: String,
-        pub source: super::source::UniqueWhereParam,
-        pub instance: super::instance::UniqueWhereParam,
+        pub file_size: Int,
+        pub source: String,
+        pub project_id: String,
+        pub project_name: String,
         pub _params: Vec<SetParam>,
     }
     impl Create {
         pub fn to_query<'a>(self, client: &'a PrismaClient) -> CreateQuery<'a> {
-            client.r#mod().create(
-                self.r#mod,
-                self.name,
-                self.file,
-                self.size,
-                self.installed_files,
+            client.installed_mod().create(
+                self.file_size,
                 self.source,
-                self.instance,
+                self.project_id,
+                self.project_name,
                 self._params,
             )
         }
         pub fn to_params(mut self) -> Vec<SetParam> {
             self._params.extend([
-                r#mod::set(self.r#mod),
-                name::set(self.name),
-                file::set(self.file),
-                size::set(self.size),
-                installed_files::set(self.installed_files),
-                source::connect(self.source),
-                instance::connect(self.instance),
+                file_size::set(self.file_size),
+                source::set(self.source),
+                project_id::set(self.project_id),
+                project_name::set(self.project_name),
             ]);
             self._params
         }
     }
     pub fn create(
-        r#mod: String,
-        name: String,
-        file: String,
-        size: Int,
-        installed_files: String,
-        source: super::source::UniqueWhereParam,
-        instance: super::instance::UniqueWhereParam,
+        file_size: Int,
+        source: String,
+        project_id: String,
+        project_name: String,
         _params: Vec<SetParam>,
     ) -> Create {
         Create {
-            r#mod,
-            name,
-            file,
-            size,
-            installed_files,
+            file_size,
             source,
-            instance,
+            project_id,
+            project_name,
             _params,
         }
     }
@@ -6382,69 +2277,51 @@ pub mod r#mod {
         :: serde :: Deserialize,
         :: prisma_client_rust :: specta :: Type,
     )]
-    # [specta (rename = "ModCreation" , crate = prisma_client_rust :: specta)]
+    # [specta (rename = "InstalledModCreation" , crate = prisma_client_rust :: specta)]
     pub struct CreateUnchecked {
-        #[serde(rename = "mod")]
-        pub r#mod: String,
-        #[serde(rename = "name")]
-        pub name: String,
-        #[serde(rename = "file")]
-        pub file: String,
-        #[serde(rename = "size")]
-        pub size: Int,
-        #[serde(rename = "installed_files")]
-        pub installed_files: String,
-        #[serde(rename = "sourceId")]
-        pub source_id: Int,
-        #[serde(rename = "instanceId")]
-        pub instance_id: Int,
+        #[serde(rename = "fileSize")]
+        pub file_size: Int,
+        #[serde(rename = "source")]
+        pub source: String,
+        #[serde(rename = "projectId")]
+        pub project_id: String,
+        #[serde(rename = "projectName")]
+        pub project_name: String,
         #[serde(skip)]
         pub _params: Vec<UncheckedSetParam>,
     }
     impl CreateUnchecked {
         pub fn to_query<'a>(self, client: &'a PrismaClient) -> CreateUncheckedQuery<'a> {
-            client.r#mod().create_unchecked(
-                self.r#mod,
-                self.name,
-                self.file,
-                self.size,
-                self.installed_files,
-                self.source_id,
-                self.instance_id,
+            client.installed_mod().create_unchecked(
+                self.file_size,
+                self.source,
+                self.project_id,
+                self.project_name,
                 self._params,
             )
         }
         pub fn to_params(mut self) -> Vec<UncheckedSetParam> {
             self._params.extend([
-                r#mod::set(self.r#mod),
-                name::set(self.name),
-                file::set(self.file),
-                size::set(self.size),
-                installed_files::set(self.installed_files),
-                source_id::set(self.source_id),
-                instance_id::set(self.instance_id),
+                file_size::set(self.file_size),
+                source::set(self.source),
+                project_id::set(self.project_id),
+                project_name::set(self.project_name),
             ]);
             self._params
         }
     }
     pub fn create_unchecked(
-        r#mod: String,
-        name: String,
-        file: String,
-        size: Int,
-        installed_files: String,
-        source_id: Int,
-        instance_id: Int,
+        file_size: Int,
+        source: String,
+        project_id: String,
+        project_name: String,
         _params: Vec<UncheckedSetParam>,
     ) -> CreateUnchecked {
         CreateUnchecked {
-            r#mod,
-            name,
-            file,
-            size,
-            installed_files,
-            source_id,
-            instance_id,
+            file_size,
+            source,
+            project_id,
+            project_name,
             _params,
         }
     }
@@ -6455,58 +2332,53 @@ pub mod r#mod {
         :: serde :: Deserialize,
         :: prisma_client_rust :: specta :: Type,
     )]
-    # [specta (rename = "ModUpdate" , crate = prisma_client_rust :: specta)]
+    # [specta (rename = "InstalledModUpdate" , crate = prisma_client_rust :: specta)]
     pub struct Update {
         #[serde(rename = "id")]
         pub id: id::Type,
-        #[serde(rename = "mod", skip_serializing_if = "Option::is_none")]
-        pub r#mod: Option<r#mod::Type>,
-        #[serde(rename = "version", skip_serializing_if = "Option::is_none")]
-        pub version: version::Type,
-        #[serde(rename = "name", skip_serializing_if = "Option::is_none")]
-        pub name: Option<name::Type>,
-        #[serde(rename = "file", skip_serializing_if = "Option::is_none")]
-        pub file: Option<file::Type>,
-        #[serde(rename = "size", skip_serializing_if = "Option::is_none")]
-        pub size: Option<size::Type>,
-        #[serde(rename = "hash", skip_serializing_if = "Option::is_none")]
-        pub hash: hash::Type,
-        #[serde(rename = "installed_files", skip_serializing_if = "Option::is_none")]
-        pub installed_files: Option<installed_files::Type>,
-        #[serde(rename = "sourceId", skip_serializing_if = "Option::is_none")]
-        pub source_id: Option<source_id::Type>,
-        #[serde(rename = "instanceId", skip_serializing_if = "Option::is_none")]
-        pub instance_id: Option<instance_id::Type>,
+        #[serde(rename = "fileSize", skip_serializing_if = "Option::is_none")]
+        pub file_size: Option<file_size::Type>,
+        #[serde(rename = "updated", skip_serializing_if = "Option::is_none")]
+        pub updated: Option<updated::Type>,
+        #[serde(rename = "iconUrl", skip_serializing_if = "Option::is_none")]
+        pub icon_url: icon_url::Type,
+        #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
+        pub source: Option<source::Type>,
+        #[serde(rename = "projectId", skip_serializing_if = "Option::is_none")]
+        pub project_id: Option<project_id::Type>,
+        #[serde(rename = "projectName", skip_serializing_if = "Option::is_none")]
+        pub project_name: Option<project_name::Type>,
+        #[serde(rename = "projectDesc", skip_serializing_if = "Option::is_none")]
+        pub project_desc: project_desc::Type,
+        #[serde(rename = "projectVersion", skip_serializing_if = "Option::is_none")]
+        pub project_version: project_version::Type,
     }
     impl Update {
         pub fn as_params(self) -> Vec<SetParam> {
             let mut params = Vec::new();
-            if let Some(field) = self.r#mod {
-                params.push(r#mod::set(field));
+            if let Some(field) = self.file_size {
+                params.push(file_size::set(field));
             }
-            if let Some(field) = self.version {
-                params.push(version::set(Some(field)));
+            if let Some(field) = self.updated {
+                params.push(updated::set(field));
             }
-            if let Some(field) = self.name {
-                params.push(name::set(field));
+            if let Some(field) = self.icon_url {
+                params.push(icon_url::set(Some(field)));
             }
-            if let Some(field) = self.file {
-                params.push(file::set(field));
+            if let Some(field) = self.source {
+                params.push(source::set(field));
             }
-            if let Some(field) = self.size {
-                params.push(size::set(field));
+            if let Some(field) = self.project_id {
+                params.push(project_id::set(field));
             }
-            if let Some(field) = self.hash {
-                params.push(hash::set(Some(field)));
+            if let Some(field) = self.project_name {
+                params.push(project_name::set(field));
             }
-            if let Some(field) = self.installed_files {
-                params.push(installed_files::set(field));
+            if let Some(field) = self.project_desc {
+                params.push(project_desc::set(Some(field)));
             }
-            if let Some(field) = self.source_id {
-                params.push(source_id::set(field));
-            }
-            if let Some(field) = self.instance_id {
-                params.push(instance_id::set(field));
+            if let Some(field) = self.project_version {
+                params.push(project_version::set(Some(field)));
             }
             params
         }
@@ -6526,15 +2398,14 @@ pub mod r#mod {
         fn scalar_selections() -> Vec<::prisma_client_rust::Selection> {
             vec![
                 ::prisma_client_rust::sel(id::NAME),
-                ::prisma_client_rust::sel(r#mod::NAME),
-                ::prisma_client_rust::sel(version::NAME),
-                ::prisma_client_rust::sel(name::NAME),
-                ::prisma_client_rust::sel(file::NAME),
-                ::prisma_client_rust::sel(size::NAME),
-                ::prisma_client_rust::sel(hash::NAME),
-                ::prisma_client_rust::sel(installed_files::NAME),
-                ::prisma_client_rust::sel(source_id::NAME),
-                ::prisma_client_rust::sel(instance_id::NAME),
+                ::prisma_client_rust::sel(file_size::NAME),
+                ::prisma_client_rust::sel(updated::NAME),
+                ::prisma_client_rust::sel(icon_url::NAME),
+                ::prisma_client_rust::sel(source::NAME),
+                ::prisma_client_rust::sel(project_id::NAME),
+                ::prisma_client_rust::sel(project_name::NAME),
+                ::prisma_client_rust::sel(project_desc::NAME),
+                ::prisma_client_rust::sel(project_version::NAME),
             ]
         }
     }
@@ -6545,101 +2416,68 @@ pub mod r#mod {
         :: serde :: Deserialize,
         :: prisma_client_rust :: specta :: Type,
     )]
-    # [specta (rename = "Mod" , crate = prisma_client_rust :: specta)]
+    # [specta (rename = "InstalledMod" , crate = prisma_client_rust :: specta)]
     pub struct Data {
         #[serde(rename = "id")]
         pub id: id::Type,
-        #[serde(rename = "mod")]
-        pub r#mod: r#mod::Type,
-        #[serde(rename = "version")]
-        pub version: version::Type,
-        #[serde(rename = "name")]
-        pub name: name::Type,
-        #[serde(rename = "file")]
-        pub file: file::Type,
-        #[serde(rename = "size")]
-        pub size: size::Type,
-        #[serde(rename = "hash")]
-        pub hash: hash::Type,
-        #[serde(rename = "installed_files")]
-        pub installed_files: installed_files::Type,
+        #[serde(rename = "fileSize")]
+        pub file_size: file_size::Type,
+        #[serde(rename = "updated")]
+        pub updated: updated::Type,
+        #[serde(rename = "iconUrl")]
+        pub icon_url: icon_url::Type,
         #[serde(rename = "source")]
-        #[specta(skip)]
-        pub source: Option<source::RecursiveSafeType>,
-        #[serde(rename = "sourceId")]
-        pub source_id: source_id::Type,
-        #[serde(rename = "instance")]
-        #[specta(skip)]
-        pub instance: Option<instance::RecursiveSafeType>,
-        #[serde(rename = "instanceId")]
-        pub instance_id: instance_id::Type,
+        pub source: source::Type,
+        #[serde(rename = "projectId")]
+        pub project_id: project_id::Type,
+        #[serde(rename = "projectName")]
+        pub project_name: project_name::Type,
+        #[serde(rename = "projectDesc")]
+        pub project_desc: project_desc::Type,
+        #[serde(rename = "projectVersion")]
+        pub project_version: project_version::Type,
     }
-    impl Data {
-        pub fn source(
-            &self,
-        ) -> Result<&super::source::Data, ::prisma_client_rust::RelationNotFetchedError> {
-            self.source
-                .as_ref()
-                .ok_or(::prisma_client_rust::RelationNotFetchedError::new(
-                    stringify!(source),
-                ))
-                .map(|v| v.as_ref())
-        }
-        pub fn instance(
-            &self,
-        ) -> Result<&super::instance::Data, ::prisma_client_rust::RelationNotFetchedError> {
-            self.instance
-                .as_ref()
-                .ok_or(::prisma_client_rust::RelationNotFetchedError::new(
-                    stringify!(instance),
-                ))
-                .map(|v| v.as_ref())
-        }
-    }
+    impl Data {}
     ::prisma_client_rust::macros::partial_unchecked_factory!(
-        _partial_unchecked_mod,
-        prisma::r#mod,
+        _partial_unchecked_installed_mod,
+        prisma::installed_mod,
         struct Data {
             #[serde(rename = "id")]
-            pub id: prisma::r#mod::id::Type,
-            #[serde(rename = "mod")]
-            pub r#mod: prisma::r#mod::r#mod::Type,
-            #[serde(rename = "version")]
+            pub id: prisma::installed_mod::id::Type,
+            #[serde(rename = "fileSize")]
+            pub file_size: prisma::installed_mod::file_size::Type,
+            #[serde(rename = "updated")]
+            pub updated: prisma::installed_mod::updated::Type,
+            #[serde(rename = "iconUrl")]
             #[serde(default, with = "::prisma_client_rust::serde::double_option")]
-            pub version: prisma::r#mod::version::Type,
-            #[serde(rename = "name")]
-            pub name: prisma::r#mod::name::Type,
-            #[serde(rename = "file")]
-            pub file: prisma::r#mod::file::Type,
-            #[serde(rename = "size")]
-            pub size: prisma::r#mod::size::Type,
-            #[serde(rename = "hash")]
+            pub icon_url: prisma::installed_mod::icon_url::Type,
+            #[serde(rename = "source")]
+            pub source: prisma::installed_mod::source::Type,
+            #[serde(rename = "projectId")]
+            pub project_id: prisma::installed_mod::project_id::Type,
+            #[serde(rename = "projectName")]
+            pub project_name: prisma::installed_mod::project_name::Type,
+            #[serde(rename = "projectDesc")]
             #[serde(default, with = "::prisma_client_rust::serde::double_option")]
-            pub hash: prisma::r#mod::hash::Type,
-            #[serde(rename = "installed_files")]
-            pub installed_files: prisma::r#mod::installed_files::Type,
-            #[serde(rename = "sourceId")]
-            pub source_id: prisma::r#mod::source_id::Type,
-            #[serde(rename = "instanceId")]
-            pub instance_id: prisma::r#mod::instance_id::Type,
+            pub project_desc: prisma::installed_mod::project_desc::Type,
+            #[serde(rename = "projectVersion")]
+            #[serde(default, with = "::prisma_client_rust::serde::double_option")]
+            pub project_version: prisma::installed_mod::project_version::Type,
         }
     );
     ::prisma_client_rust::macros::filter_factory!(
-        _mod_filter,
-        prisma::r#mod,
+        _installed_mod_filter,
+        prisma::installed_mod,
         [
             (id, Scalar),
-            (r#mod, Scalar),
-            (version, Scalar),
-            (name, Scalar),
-            (file, Scalar),
-            (size, Scalar),
-            (hash, Scalar),
-            (installed_files, Scalar),
-            (source, Relation(prisma::source, One)),
-            (source_id, Scalar),
-            (instance, Relation(prisma::instance, One)),
-            (instance_id, Scalar)
+            (file_size, Scalar),
+            (updated, Scalar),
+            (icon_url, Scalar),
+            (source, Scalar),
+            (project_id, Scalar),
+            (project_name, Scalar),
+            (project_desc, Scalar),
+            (project_version, Scalar)
         ]
     );
     pub type UniqueArgs = ::prisma_client_rust::UniqueArgs<Types>;
@@ -6673,45 +2511,33 @@ pub mod r#mod {
         }
         pub fn create(
             self,
-            r#mod: String,
-            name: String,
-            file: String,
-            size: Int,
-            installed_files: String,
-            source: super::source::UniqueWhereParam,
-            instance: super::instance::UniqueWhereParam,
+            file_size: Int,
+            source: String,
+            project_id: String,
+            project_name: String,
             mut _params: Vec<SetParam>,
         ) -> CreateQuery<'a> {
             _params.extend([
-                r#mod::set(r#mod),
-                name::set(name),
-                file::set(file),
-                size::set(size),
-                installed_files::set(installed_files),
-                source::connect(source),
-                instance::connect(instance),
+                file_size::set(file_size),
+                source::set(source),
+                project_id::set(project_id),
+                project_name::set(project_name),
             ]);
             CreateQuery::new(self.client, _params)
         }
         pub fn create_unchecked(
             self,
-            r#mod: String,
-            name: String,
-            file: String,
-            size: Int,
-            installed_files: String,
-            source_id: Int,
-            instance_id: Int,
+            file_size: Int,
+            source: String,
+            project_id: String,
+            project_name: String,
             mut _params: Vec<UncheckedSetParam>,
         ) -> CreateUncheckedQuery<'a> {
             _params.extend([
-                r#mod::set(r#mod),
-                name::set(name),
-                file::set(file),
-                size::set(size),
-                installed_files::set(installed_files),
-                source_id::set(source_id),
-                instance_id::set(instance_id),
+                file_size::set(file_size),
+                source::set(source),
+                project_id::set(project_id),
+                project_name::set(project_name),
             ]);
             CreateUncheckedQuery::new(self.client, _params.into_iter().map(Into::into).collect())
         }
@@ -6759,90 +2585,84 @@ pub mod r#mod {
             CountQuery::new(self.client, _where)
         }
     }
-    pub mod _count {
+    pub mod file_size {
         use super::super::{_prisma::*, *};
         use super::{SetParam, UncheckedSetParam, UniqueWhereParam, WhereParam, WithParam};
-        pub const NAME: &str = "_count";
-        pub struct Order(super::SortOrder);
-        pub fn order<T: From<Order>>(v: super::SortOrder) -> T {
-            Order(v).into()
-        }
-        impl From<Order> for super::OrderByRelationAggregateParam {
-            fn from(Order(v): Order) -> Self {
-                Self::_Count(v)
-            }
-        }
-    }
-    pub mod file {
-        use super::super::{_prisma::*, *};
-        use super::{SetParam, UncheckedSetParam, UniqueWhereParam, WhereParam, WithParam};
-        pub const NAME: &str = "file";
-        pub type Type = String;
+        pub const NAME: &str = "fileSize";
+        pub type Type = Int;
         pub type RecursiveSafeType = Type;
-        pub struct Equals(pub String);
-        pub fn equals<T: From<Equals>>(value: String) -> T {
+        pub struct Equals(pub Int);
+        pub fn equals<T: From<Equals>>(value: Int) -> T {
             Equals(value).into()
-        }
-        impl From<Equals> for UniqueWhereParam {
-            fn from(Equals(v): Equals) -> Self {
-                UniqueWhereParam::FileEquals(v)
-            }
         }
         impl From<Equals> for WhereParam {
             fn from(Equals(v): Equals) -> Self {
-                WhereParam::File(_prisma::read_filters::StringFilter::Equals(v))
+                WhereParam::FileSize(_prisma::read_filters::IntFilter::Equals(v))
             }
         }
-        ::prisma_client_rust::scalar_where_param_fns!(_prisma::read_filters::StringFilter, File, {
-            fn in_vec(_: Vec<String>) -> InVec;
-            fn not_in_vec(_: Vec<String>) -> NotInVec;
-            fn lt(_: String) -> Lt;
-            fn lte(_: String) -> Lte;
-            fn gt(_: String) -> Gt;
-            fn gte(_: String) -> Gte;
-            fn contains(_: String) -> Contains;
-            fn starts_with(_: String) -> StartsWith;
-            fn ends_with(_: String) -> EndsWith;
-            fn not(_: String) -> Not;
-        });
+        ::prisma_client_rust::scalar_where_param_fns!(
+            _prisma::read_filters::IntFilter,
+            FileSize,
+            {
+                fn in_vec(_: Vec<Int>) -> InVec;
+                fn not_in_vec(_: Vec<Int>) -> NotInVec;
+                fn lt(_: Int) -> Lt;
+                fn lte(_: Int) -> Lte;
+                fn gt(_: Int) -> Gt;
+                fn gte(_: Int) -> Gte;
+                fn not(_: Int) -> Not;
+            }
+        );
         pub struct Order(SortOrder);
         pub fn order<T: From<Order>>(v: SortOrder) -> T {
             Order(v).into()
         }
         impl From<Order> for super::OrderByWithRelationParam {
             fn from(Order(v): Order) -> Self {
-                Self::File(v)
+                Self::FileSize(v)
             }
         }
-        pub struct Set(pub String);
+        pub struct Set(pub Int);
         impl From<Set> for SetParam {
             fn from(Set(v): Set) -> Self {
-                Self::File(_prisma::write_params::StringParam::Set(v))
+                Self::FileSize(_prisma::write_params::IntParam::Set(v))
             }
         }
-        pub fn set<T: From<Set>>(value: String) -> T {
+        pub fn set<T: From<Set>>(value: Int) -> T {
             Set(value).into()
         }
-        pub struct UpdateOperation(pub _prisma::write_params::StringParam);
+        pub struct UpdateOperation(pub _prisma::write_params::IntParam);
         impl From<UpdateOperation> for SetParam {
             fn from(UpdateOperation(v): UpdateOperation) -> Self {
-                Self::File(v)
+                Self::FileSize(v)
             }
+        }
+        pub fn increment<T: From<UpdateOperation>>(value: Int) -> T {
+            UpdateOperation(_prisma::write_params::IntParam::Increment(value)).into()
+        }
+        pub fn decrement<T: From<UpdateOperation>>(value: Int) -> T {
+            UpdateOperation(_prisma::write_params::IntParam::Decrement(value)).into()
+        }
+        pub fn multiply<T: From<UpdateOperation>>(value: Int) -> T {
+            UpdateOperation(_prisma::write_params::IntParam::Multiply(value)).into()
+        }
+        pub fn divide<T: From<UpdateOperation>>(value: Int) -> T {
+            UpdateOperation(_prisma::write_params::IntParam::Divide(value)).into()
         }
         impl From<Set> for UncheckedSetParam {
             fn from(Set(v): Set) -> Self {
-                Self::File(_prisma::write_params::StringParam::Set(v))
+                Self::FileSize(_prisma::write_params::IntParam::Set(v))
             }
         }
         impl From<UpdateOperation> for UncheckedSetParam {
             fn from(UpdateOperation(v): UpdateOperation) -> Self {
-                Self::File(v)
+                Self::FileSize(v)
             }
         }
         pub struct Select;
         impl Into<super::SelectParam> for Select {
             fn into(self) -> super::SelectParam {
-                super::SelectParam::File(self)
+                super::SelectParam::FileSize(self)
             }
         }
         impl Into<::prisma_client_rust::Selection> for Select {
@@ -6853,7 +2673,7 @@ pub mod r#mod {
         pub struct Include;
         impl Into<super::IncludeParam> for Include {
             fn into(self) -> super::IncludeParam {
-                super::IncludeParam::File(self)
+                super::IncludeParam::FileSize(self)
             }
         }
         impl Into<::prisma_client_rust::Selection> for Include {
@@ -6862,24 +2682,24 @@ pub mod r#mod {
             }
         }
     }
-    pub mod hash {
+    pub mod icon_url {
         use super::super::{_prisma::*, *};
         use super::{SetParam, UncheckedSetParam, UniqueWhereParam, WhereParam, WithParam};
-        pub const NAME: &str = "hash";
+        pub const NAME: &str = "iconUrl";
         pub type Type = Option<String>;
         pub type RecursiveSafeType = Type;
         pub struct Equals(pub Option<String>);
-        pub fn equals<T: ::prisma_client_rust::FromOptionalUniqueArg<Equals>>(value: T::Arg) -> T {
-            T::from_arg(value)
+        pub fn equals<T: From<Equals>>(value: Option<String>) -> T {
+            Equals(value).into()
         }
         impl From<Equals> for WhereParam {
             fn from(Equals(v): Equals) -> Self {
-                WhereParam::Hash(_prisma::read_filters::StringNullableFilter::Equals(v))
+                WhereParam::IconUrl(_prisma::read_filters::StringNullableFilter::Equals(v))
             }
         }
         ::prisma_client_rust::scalar_where_param_fns!(
             _prisma::read_filters::StringNullableFilter,
-            Hash,
+            IconUrl,
             {
                 fn in_vec(_: Vec<String>) -> InVec;
                 fn not_in_vec(_: Vec<String>) -> NotInVec;
@@ -6899,13 +2719,13 @@ pub mod r#mod {
         }
         impl From<Order> for super::OrderByWithRelationParam {
             fn from(Order(v): Order) -> Self {
-                Self::Hash(v)
+                Self::IconUrl(v)
             }
         }
         pub struct Set(pub Option<String>);
         impl From<Set> for SetParam {
             fn from(Set(v): Set) -> Self {
-                Self::Hash(_prisma::write_params::StringNullableParam::Set(v))
+                Self::IconUrl(_prisma::write_params::StringNullableParam::Set(v))
             }
         }
         pub fn set<T: From<Set>>(value: Option<String>) -> T {
@@ -6914,23 +2734,23 @@ pub mod r#mod {
         pub struct UpdateOperation(pub _prisma::write_params::StringNullableParam);
         impl From<UpdateOperation> for SetParam {
             fn from(UpdateOperation(v): UpdateOperation) -> Self {
-                Self::Hash(v)
+                Self::IconUrl(v)
             }
         }
         impl From<Set> for UncheckedSetParam {
             fn from(Set(v): Set) -> Self {
-                Self::Hash(_prisma::write_params::StringNullableParam::Set(v))
+                Self::IconUrl(_prisma::write_params::StringNullableParam::Set(v))
             }
         }
         impl From<UpdateOperation> for UncheckedSetParam {
             fn from(UpdateOperation(v): UpdateOperation) -> Self {
-                Self::Hash(v)
+                Self::IconUrl(v)
             }
         }
         pub struct Select;
         impl Into<super::SelectParam> for Select {
             fn into(self) -> super::SelectParam {
-                super::SelectParam::Hash(self)
+                super::SelectParam::IconUrl(self)
             }
         }
         impl Into<::prisma_client_rust::Selection> for Select {
@@ -6941,7 +2761,7 @@ pub mod r#mod {
         pub struct Include;
         impl Into<super::IncludeParam> for Include {
             fn into(self) -> super::IncludeParam {
-                super::IncludeParam::Hash(self)
+                super::IncludeParam::IconUrl(self)
             }
         }
         impl Into<::prisma_client_rust::Selection> for Include {
@@ -7048,783 +2868,10 @@ pub mod r#mod {
             }
         }
     }
-    pub mod installed_files {
+    pub mod project_desc {
         use super::super::{_prisma::*, *};
         use super::{SetParam, UncheckedSetParam, UniqueWhereParam, WhereParam, WithParam};
-        pub const NAME: &str = "installed_files";
-        pub type Type = String;
-        pub type RecursiveSafeType = Type;
-        pub struct Equals(pub String);
-        pub fn equals<T: From<Equals>>(value: String) -> T {
-            Equals(value).into()
-        }
-        impl From<Equals> for WhereParam {
-            fn from(Equals(v): Equals) -> Self {
-                WhereParam::InstalledFiles(_prisma::read_filters::StringFilter::Equals(v))
-            }
-        }
-        ::prisma_client_rust::scalar_where_param_fns!(
-            _prisma::read_filters::StringFilter,
-            InstalledFiles,
-            {
-                fn in_vec(_: Vec<String>) -> InVec;
-                fn not_in_vec(_: Vec<String>) -> NotInVec;
-                fn lt(_: String) -> Lt;
-                fn lte(_: String) -> Lte;
-                fn gt(_: String) -> Gt;
-                fn gte(_: String) -> Gte;
-                fn contains(_: String) -> Contains;
-                fn starts_with(_: String) -> StartsWith;
-                fn ends_with(_: String) -> EndsWith;
-                fn not(_: String) -> Not;
-            }
-        );
-        pub struct Order(SortOrder);
-        pub fn order<T: From<Order>>(v: SortOrder) -> T {
-            Order(v).into()
-        }
-        impl From<Order> for super::OrderByWithRelationParam {
-            fn from(Order(v): Order) -> Self {
-                Self::InstalledFiles(v)
-            }
-        }
-        pub struct Set(pub String);
-        impl From<Set> for SetParam {
-            fn from(Set(v): Set) -> Self {
-                Self::InstalledFiles(_prisma::write_params::StringParam::Set(v))
-            }
-        }
-        pub fn set<T: From<Set>>(value: String) -> T {
-            Set(value).into()
-        }
-        pub struct UpdateOperation(pub _prisma::write_params::StringParam);
-        impl From<UpdateOperation> for SetParam {
-            fn from(UpdateOperation(v): UpdateOperation) -> Self {
-                Self::InstalledFiles(v)
-            }
-        }
-        impl From<Set> for UncheckedSetParam {
-            fn from(Set(v): Set) -> Self {
-                Self::InstalledFiles(_prisma::write_params::StringParam::Set(v))
-            }
-        }
-        impl From<UpdateOperation> for UncheckedSetParam {
-            fn from(UpdateOperation(v): UpdateOperation) -> Self {
-                Self::InstalledFiles(v)
-            }
-        }
-        pub struct Select;
-        impl Into<super::SelectParam> for Select {
-            fn into(self) -> super::SelectParam {
-                super::SelectParam::InstalledFiles(self)
-            }
-        }
-        impl Into<::prisma_client_rust::Selection> for Select {
-            fn into(self) -> ::prisma_client_rust::Selection {
-                ::prisma_client_rust::sel(NAME)
-            }
-        }
-        pub struct Include;
-        impl Into<super::IncludeParam> for Include {
-            fn into(self) -> super::IncludeParam {
-                super::IncludeParam::InstalledFiles(self)
-            }
-        }
-        impl Into<::prisma_client_rust::Selection> for Include {
-            fn into(self) -> ::prisma_client_rust::Selection {
-                ::prisma_client_rust::sel(NAME)
-            }
-        }
-    }
-    pub mod instance {
-        use super::super::{_prisma::*, *};
-        use super::{SetParam, UncheckedSetParam, UniqueWhereParam, WhereParam, WithParam};
-        pub const NAME: &str = "instance";
-        pub type Type = instance::Data;
-        pub type RecursiveSafeType = Box<instance::Data>;
-        pub fn is(value: Vec<instance::WhereParam>) -> WhereParam {
-            WhereParam::InstanceIs(value)
-        }
-        pub fn is_not(value: Vec<instance::WhereParam>) -> WhereParam {
-            WhereParam::InstanceIsNot(value)
-        }
-        pub struct Order(Vec<instance::OrderByWithRelationParam>);
-        pub fn order<T: From<Order>>(v: Vec<instance::OrderByWithRelationParam>) -> T {
-            Order(v).into()
-        }
-        impl From<Order> for super::OrderByWithRelationParam {
-            fn from(Order(v): Order) -> Self {
-                Self::Instance(v)
-            }
-        }
-        pub struct Fetch(pub instance::UniqueArgs);
-        impl Fetch {
-            pub fn with(mut self, params: impl Into<instance::WithParam>) -> Self {
-                self.0 = self.0.with(params.into());
-                self
-            }
-        }
-        impl From<Fetch> for WithParam {
-            fn from(Fetch(v): Fetch) -> Self {
-                WithParam::Instance(v)
-            }
-        }
-        pub fn fetch() -> Fetch {
-            Fetch(instance::UniqueArgs::new())
-        }
-        pub struct Connect(instance::UniqueWhereParam);
-        impl From<Connect> for SetParam {
-            fn from(Connect(v): Connect) -> Self {
-                Self::ConnectInstance(v)
-            }
-        }
-        pub fn connect<T: From<Connect>>(value: instance::UniqueWhereParam) -> T {
-            Connect(value).into()
-        }
-        pub enum Select {
-            Select(Vec<instance::SelectParam>),
-            Include(Vec<instance::IncludeParam>),
-            Fetch,
-        }
-        impl Into<super::SelectParam> for Select {
-            fn into(self) -> super::SelectParam {
-                super::SelectParam::Instance(self)
-            }
-        }
-        impl Select {
-            pub fn select(nested_selections: Vec<instance::SelectParam>) -> Self {
-                Self::Select(nested_selections)
-            }
-            pub fn include(nested_selections: Vec<instance::IncludeParam>) -> Self {
-                Self::Include(nested_selections)
-            }
-        }
-        impl Into<::prisma_client_rust::Selection> for Select {
-            fn into(self) -> ::prisma_client_rust::Selection {
-                let selections = match self {
-                    Self::Select(selections) => selections.into_iter().map(Into::into).collect(),
-                    Self::Include(selections) => {
-                        let mut nested_selections = vec![];
-                        nested_selections.extend(selections.into_iter().map(Into::into));
-                        nested_selections
-                    }
-                    Self::Fetch => {
-                        <instance::Types as ::prisma_client_rust::ModelTypes>::scalar_selections()
-                    }
-                };
-                ::prisma_client_rust::Selection::new("instance", None, [], selections)
-            }
-        }
-        pub enum Include {
-            Select(Vec<instance::SelectParam>),
-            Include(Vec<instance::IncludeParam>),
-            Fetch,
-        }
-        impl Into<super::IncludeParam> for Include {
-            fn into(self) -> super::IncludeParam {
-                super::IncludeParam::Instance(self)
-            }
-        }
-        impl Include {
-            pub fn select(nested_selections: Vec<instance::SelectParam>) -> Self {
-                Self::Select(nested_selections)
-            }
-            pub fn include(nested_selections: Vec<instance::IncludeParam>) -> Self {
-                Self::Include(nested_selections)
-            }
-        }
-        impl Into<::prisma_client_rust::Selection> for Include {
-            fn into(self) -> ::prisma_client_rust::Selection {
-                let selections = match self {
-                    Self::Select(selections) => selections.into_iter().map(Into::into).collect(),
-                    Self::Include(selections) => {
-                        let mut nested_selections = < instance :: Types as :: prisma_client_rust :: ModelTypes > :: scalar_selections () ;
-                        nested_selections.extend(selections.into_iter().map(Into::into));
-                        nested_selections
-                    }
-                    Self::Fetch => {
-                        <instance::Types as ::prisma_client_rust::ModelTypes>::scalar_selections()
-                    }
-                };
-                ::prisma_client_rust::Selection::new("instance", None, [], selections)
-            }
-        }
-    }
-    pub mod instance_id {
-        use super::super::{_prisma::*, *};
-        use super::{SetParam, UncheckedSetParam, UniqueWhereParam, WhereParam, WithParam};
-        pub const NAME: &str = "instanceId";
-        pub type Type = Int;
-        pub type RecursiveSafeType = Type;
-        pub struct Equals(pub Int);
-        pub fn equals<T: From<Equals>>(value: Int) -> T {
-            Equals(value).into()
-        }
-        impl From<Equals> for WhereParam {
-            fn from(Equals(v): Equals) -> Self {
-                WhereParam::InstanceId(_prisma::read_filters::IntFilter::Equals(v))
-            }
-        }
-        ::prisma_client_rust::scalar_where_param_fns!(
-            _prisma::read_filters::IntFilter,
-            InstanceId,
-            {
-                fn in_vec(_: Vec<Int>) -> InVec;
-                fn not_in_vec(_: Vec<Int>) -> NotInVec;
-                fn lt(_: Int) -> Lt;
-                fn lte(_: Int) -> Lte;
-                fn gt(_: Int) -> Gt;
-                fn gte(_: Int) -> Gte;
-                fn not(_: Int) -> Not;
-            }
-        );
-        pub struct Order(SortOrder);
-        pub fn order<T: From<Order>>(v: SortOrder) -> T {
-            Order(v).into()
-        }
-        impl From<Order> for super::OrderByWithRelationParam {
-            fn from(Order(v): Order) -> Self {
-                Self::InstanceId(v)
-            }
-        }
-        pub struct Set(pub Int);
-        impl From<Set> for SetParam {
-            fn from(Set(v): Set) -> Self {
-                Self::InstanceId(_prisma::write_params::IntParam::Set(v))
-            }
-        }
-        pub fn set<T: From<Set>>(value: Int) -> T {
-            Set(value).into()
-        }
-        pub struct UpdateOperation(pub _prisma::write_params::IntParam);
-        impl From<UpdateOperation> for SetParam {
-            fn from(UpdateOperation(v): UpdateOperation) -> Self {
-                Self::InstanceId(v)
-            }
-        }
-        pub fn increment<T: From<UpdateOperation>>(value: Int) -> T {
-            UpdateOperation(_prisma::write_params::IntParam::Increment(value)).into()
-        }
-        pub fn decrement<T: From<UpdateOperation>>(value: Int) -> T {
-            UpdateOperation(_prisma::write_params::IntParam::Decrement(value)).into()
-        }
-        pub fn multiply<T: From<UpdateOperation>>(value: Int) -> T {
-            UpdateOperation(_prisma::write_params::IntParam::Multiply(value)).into()
-        }
-        pub fn divide<T: From<UpdateOperation>>(value: Int) -> T {
-            UpdateOperation(_prisma::write_params::IntParam::Divide(value)).into()
-        }
-        impl From<Set> for UncheckedSetParam {
-            fn from(Set(v): Set) -> Self {
-                Self::InstanceId(_prisma::write_params::IntParam::Set(v))
-            }
-        }
-        impl From<UpdateOperation> for UncheckedSetParam {
-            fn from(UpdateOperation(v): UpdateOperation) -> Self {
-                Self::InstanceId(v)
-            }
-        }
-        pub struct Select;
-        impl Into<super::SelectParam> for Select {
-            fn into(self) -> super::SelectParam {
-                super::SelectParam::InstanceId(self)
-            }
-        }
-        impl Into<::prisma_client_rust::Selection> for Select {
-            fn into(self) -> ::prisma_client_rust::Selection {
-                ::prisma_client_rust::sel(NAME)
-            }
-        }
-        pub struct Include;
-        impl Into<super::IncludeParam> for Include {
-            fn into(self) -> super::IncludeParam {
-                super::IncludeParam::InstanceId(self)
-            }
-        }
-        impl Into<::prisma_client_rust::Selection> for Include {
-            fn into(self) -> ::prisma_client_rust::Selection {
-                ::prisma_client_rust::sel(NAME)
-            }
-        }
-    }
-    pub mod r#mod {
-        use super::super::{_prisma::*, *};
-        use super::{SetParam, UncheckedSetParam, UniqueWhereParam, WhereParam, WithParam};
-        pub const NAME: &str = "mod";
-        pub type Type = String;
-        pub type RecursiveSafeType = Type;
-        pub struct Equals(pub String);
-        pub fn equals<T: From<Equals>>(value: String) -> T {
-            Equals(value).into()
-        }
-        impl From<Equals> for WhereParam {
-            fn from(Equals(v): Equals) -> Self {
-                WhereParam::Mod(_prisma::read_filters::StringFilter::Equals(v))
-            }
-        }
-        ::prisma_client_rust::scalar_where_param_fns!(_prisma::read_filters::StringFilter, Mod, {
-            fn in_vec(_: Vec<String>) -> InVec;
-            fn not_in_vec(_: Vec<String>) -> NotInVec;
-            fn lt(_: String) -> Lt;
-            fn lte(_: String) -> Lte;
-            fn gt(_: String) -> Gt;
-            fn gte(_: String) -> Gte;
-            fn contains(_: String) -> Contains;
-            fn starts_with(_: String) -> StartsWith;
-            fn ends_with(_: String) -> EndsWith;
-            fn not(_: String) -> Not;
-        });
-        pub struct Order(SortOrder);
-        pub fn order<T: From<Order>>(v: SortOrder) -> T {
-            Order(v).into()
-        }
-        impl From<Order> for super::OrderByWithRelationParam {
-            fn from(Order(v): Order) -> Self {
-                Self::Mod(v)
-            }
-        }
-        pub struct Set(pub String);
-        impl From<Set> for SetParam {
-            fn from(Set(v): Set) -> Self {
-                Self::Mod(_prisma::write_params::StringParam::Set(v))
-            }
-        }
-        pub fn set<T: From<Set>>(value: String) -> T {
-            Set(value).into()
-        }
-        pub struct UpdateOperation(pub _prisma::write_params::StringParam);
-        impl From<UpdateOperation> for SetParam {
-            fn from(UpdateOperation(v): UpdateOperation) -> Self {
-                Self::Mod(v)
-            }
-        }
-        impl From<Set> for UncheckedSetParam {
-            fn from(Set(v): Set) -> Self {
-                Self::Mod(_prisma::write_params::StringParam::Set(v))
-            }
-        }
-        impl From<UpdateOperation> for UncheckedSetParam {
-            fn from(UpdateOperation(v): UpdateOperation) -> Self {
-                Self::Mod(v)
-            }
-        }
-        pub struct Select;
-        impl Into<super::SelectParam> for Select {
-            fn into(self) -> super::SelectParam {
-                super::SelectParam::Mod(self)
-            }
-        }
-        impl Into<::prisma_client_rust::Selection> for Select {
-            fn into(self) -> ::prisma_client_rust::Selection {
-                ::prisma_client_rust::sel(NAME)
-            }
-        }
-        pub struct Include;
-        impl Into<super::IncludeParam> for Include {
-            fn into(self) -> super::IncludeParam {
-                super::IncludeParam::Mod(self)
-            }
-        }
-        impl Into<::prisma_client_rust::Selection> for Include {
-            fn into(self) -> ::prisma_client_rust::Selection {
-                ::prisma_client_rust::sel(NAME)
-            }
-        }
-    }
-    pub mod name {
-        use super::super::{_prisma::*, *};
-        use super::{SetParam, UncheckedSetParam, UniqueWhereParam, WhereParam, WithParam};
-        pub const NAME: &str = "name";
-        pub type Type = String;
-        pub type RecursiveSafeType = Type;
-        pub struct Equals(pub String);
-        pub fn equals<T: From<Equals>>(value: String) -> T {
-            Equals(value).into()
-        }
-        impl From<Equals> for WhereParam {
-            fn from(Equals(v): Equals) -> Self {
-                WhereParam::Name(_prisma::read_filters::StringFilter::Equals(v))
-            }
-        }
-        ::prisma_client_rust::scalar_where_param_fns!(_prisma::read_filters::StringFilter, Name, {
-            fn in_vec(_: Vec<String>) -> InVec;
-            fn not_in_vec(_: Vec<String>) -> NotInVec;
-            fn lt(_: String) -> Lt;
-            fn lte(_: String) -> Lte;
-            fn gt(_: String) -> Gt;
-            fn gte(_: String) -> Gte;
-            fn contains(_: String) -> Contains;
-            fn starts_with(_: String) -> StartsWith;
-            fn ends_with(_: String) -> EndsWith;
-            fn not(_: String) -> Not;
-        });
-        pub struct Order(SortOrder);
-        pub fn order<T: From<Order>>(v: SortOrder) -> T {
-            Order(v).into()
-        }
-        impl From<Order> for super::OrderByWithRelationParam {
-            fn from(Order(v): Order) -> Self {
-                Self::Name(v)
-            }
-        }
-        pub struct Set(pub String);
-        impl From<Set> for SetParam {
-            fn from(Set(v): Set) -> Self {
-                Self::Name(_prisma::write_params::StringParam::Set(v))
-            }
-        }
-        pub fn set<T: From<Set>>(value: String) -> T {
-            Set(value).into()
-        }
-        pub struct UpdateOperation(pub _prisma::write_params::StringParam);
-        impl From<UpdateOperation> for SetParam {
-            fn from(UpdateOperation(v): UpdateOperation) -> Self {
-                Self::Name(v)
-            }
-        }
-        impl From<Set> for UncheckedSetParam {
-            fn from(Set(v): Set) -> Self {
-                Self::Name(_prisma::write_params::StringParam::Set(v))
-            }
-        }
-        impl From<UpdateOperation> for UncheckedSetParam {
-            fn from(UpdateOperation(v): UpdateOperation) -> Self {
-                Self::Name(v)
-            }
-        }
-        pub struct Select;
-        impl Into<super::SelectParam> for Select {
-            fn into(self) -> super::SelectParam {
-                super::SelectParam::Name(self)
-            }
-        }
-        impl Into<::prisma_client_rust::Selection> for Select {
-            fn into(self) -> ::prisma_client_rust::Selection {
-                ::prisma_client_rust::sel(NAME)
-            }
-        }
-        pub struct Include;
-        impl Into<super::IncludeParam> for Include {
-            fn into(self) -> super::IncludeParam {
-                super::IncludeParam::Name(self)
-            }
-        }
-        impl Into<::prisma_client_rust::Selection> for Include {
-            fn into(self) -> ::prisma_client_rust::Selection {
-                ::prisma_client_rust::sel(NAME)
-            }
-        }
-    }
-    pub mod size {
-        use super::super::{_prisma::*, *};
-        use super::{SetParam, UncheckedSetParam, UniqueWhereParam, WhereParam, WithParam};
-        pub const NAME: &str = "size";
-        pub type Type = Int;
-        pub type RecursiveSafeType = Type;
-        pub struct Equals(pub Int);
-        pub fn equals<T: From<Equals>>(value: Int) -> T {
-            Equals(value).into()
-        }
-        impl From<Equals> for WhereParam {
-            fn from(Equals(v): Equals) -> Self {
-                WhereParam::Size(_prisma::read_filters::IntFilter::Equals(v))
-            }
-        }
-        ::prisma_client_rust::scalar_where_param_fns!(_prisma::read_filters::IntFilter, Size, {
-            fn in_vec(_: Vec<Int>) -> InVec;
-            fn not_in_vec(_: Vec<Int>) -> NotInVec;
-            fn lt(_: Int) -> Lt;
-            fn lte(_: Int) -> Lte;
-            fn gt(_: Int) -> Gt;
-            fn gte(_: Int) -> Gte;
-            fn not(_: Int) -> Not;
-        });
-        pub struct Order(SortOrder);
-        pub fn order<T: From<Order>>(v: SortOrder) -> T {
-            Order(v).into()
-        }
-        impl From<Order> for super::OrderByWithRelationParam {
-            fn from(Order(v): Order) -> Self {
-                Self::Size(v)
-            }
-        }
-        pub struct Set(pub Int);
-        impl From<Set> for SetParam {
-            fn from(Set(v): Set) -> Self {
-                Self::Size(_prisma::write_params::IntParam::Set(v))
-            }
-        }
-        pub fn set<T: From<Set>>(value: Int) -> T {
-            Set(value).into()
-        }
-        pub struct UpdateOperation(pub _prisma::write_params::IntParam);
-        impl From<UpdateOperation> for SetParam {
-            fn from(UpdateOperation(v): UpdateOperation) -> Self {
-                Self::Size(v)
-            }
-        }
-        pub fn increment<T: From<UpdateOperation>>(value: Int) -> T {
-            UpdateOperation(_prisma::write_params::IntParam::Increment(value)).into()
-        }
-        pub fn decrement<T: From<UpdateOperation>>(value: Int) -> T {
-            UpdateOperation(_prisma::write_params::IntParam::Decrement(value)).into()
-        }
-        pub fn multiply<T: From<UpdateOperation>>(value: Int) -> T {
-            UpdateOperation(_prisma::write_params::IntParam::Multiply(value)).into()
-        }
-        pub fn divide<T: From<UpdateOperation>>(value: Int) -> T {
-            UpdateOperation(_prisma::write_params::IntParam::Divide(value)).into()
-        }
-        impl From<Set> for UncheckedSetParam {
-            fn from(Set(v): Set) -> Self {
-                Self::Size(_prisma::write_params::IntParam::Set(v))
-            }
-        }
-        impl From<UpdateOperation> for UncheckedSetParam {
-            fn from(UpdateOperation(v): UpdateOperation) -> Self {
-                Self::Size(v)
-            }
-        }
-        pub struct Select;
-        impl Into<super::SelectParam> for Select {
-            fn into(self) -> super::SelectParam {
-                super::SelectParam::Size(self)
-            }
-        }
-        impl Into<::prisma_client_rust::Selection> for Select {
-            fn into(self) -> ::prisma_client_rust::Selection {
-                ::prisma_client_rust::sel(NAME)
-            }
-        }
-        pub struct Include;
-        impl Into<super::IncludeParam> for Include {
-            fn into(self) -> super::IncludeParam {
-                super::IncludeParam::Size(self)
-            }
-        }
-        impl Into<::prisma_client_rust::Selection> for Include {
-            fn into(self) -> ::prisma_client_rust::Selection {
-                ::prisma_client_rust::sel(NAME)
-            }
-        }
-    }
-    pub mod source {
-        use super::super::{_prisma::*, *};
-        use super::{SetParam, UncheckedSetParam, UniqueWhereParam, WhereParam, WithParam};
-        pub const NAME: &str = "source";
-        pub type Type = source::Data;
-        pub type RecursiveSafeType = Box<source::Data>;
-        pub fn is(value: Vec<source::WhereParam>) -> WhereParam {
-            WhereParam::SourceIs(value)
-        }
-        pub fn is_not(value: Vec<source::WhereParam>) -> WhereParam {
-            WhereParam::SourceIsNot(value)
-        }
-        pub struct Order(Vec<source::OrderByWithRelationParam>);
-        pub fn order<T: From<Order>>(v: Vec<source::OrderByWithRelationParam>) -> T {
-            Order(v).into()
-        }
-        impl From<Order> for super::OrderByWithRelationParam {
-            fn from(Order(v): Order) -> Self {
-                Self::Source(v)
-            }
-        }
-        pub struct Fetch(pub source::UniqueArgs);
-        impl Fetch {
-            pub fn with(mut self, params: impl Into<source::WithParam>) -> Self {
-                self.0 = self.0.with(params.into());
-                self
-            }
-        }
-        impl From<Fetch> for WithParam {
-            fn from(Fetch(v): Fetch) -> Self {
-                WithParam::Source(v)
-            }
-        }
-        pub fn fetch() -> Fetch {
-            Fetch(source::UniqueArgs::new())
-        }
-        pub struct Connect(source::UniqueWhereParam);
-        impl From<Connect> for SetParam {
-            fn from(Connect(v): Connect) -> Self {
-                Self::ConnectSource(v)
-            }
-        }
-        pub fn connect<T: From<Connect>>(value: source::UniqueWhereParam) -> T {
-            Connect(value).into()
-        }
-        pub enum Select {
-            Select(Vec<source::SelectParam>),
-            Include(Vec<source::IncludeParam>),
-            Fetch,
-        }
-        impl Into<super::SelectParam> for Select {
-            fn into(self) -> super::SelectParam {
-                super::SelectParam::Source(self)
-            }
-        }
-        impl Select {
-            pub fn select(nested_selections: Vec<source::SelectParam>) -> Self {
-                Self::Select(nested_selections)
-            }
-            pub fn include(nested_selections: Vec<source::IncludeParam>) -> Self {
-                Self::Include(nested_selections)
-            }
-        }
-        impl Into<::prisma_client_rust::Selection> for Select {
-            fn into(self) -> ::prisma_client_rust::Selection {
-                let selections = match self {
-                    Self::Select(selections) => selections.into_iter().map(Into::into).collect(),
-                    Self::Include(selections) => {
-                        let mut nested_selections = vec![];
-                        nested_selections.extend(selections.into_iter().map(Into::into));
-                        nested_selections
-                    }
-                    Self::Fetch => {
-                        <source::Types as ::prisma_client_rust::ModelTypes>::scalar_selections()
-                    }
-                };
-                ::prisma_client_rust::Selection::new("source", None, [], selections)
-            }
-        }
-        pub enum Include {
-            Select(Vec<source::SelectParam>),
-            Include(Vec<source::IncludeParam>),
-            Fetch,
-        }
-        impl Into<super::IncludeParam> for Include {
-            fn into(self) -> super::IncludeParam {
-                super::IncludeParam::Source(self)
-            }
-        }
-        impl Include {
-            pub fn select(nested_selections: Vec<source::SelectParam>) -> Self {
-                Self::Select(nested_selections)
-            }
-            pub fn include(nested_selections: Vec<source::IncludeParam>) -> Self {
-                Self::Include(nested_selections)
-            }
-        }
-        impl Into<::prisma_client_rust::Selection> for Include {
-            fn into(self) -> ::prisma_client_rust::Selection {
-                let selections = match self {
-                    Self::Select(selections) => selections.into_iter().map(Into::into).collect(),
-                    Self::Include(selections) => {
-                        let mut nested_selections =
-                            <source::Types as ::prisma_client_rust::ModelTypes>::scalar_selections(
-                            );
-                        nested_selections.extend(selections.into_iter().map(Into::into));
-                        nested_selections
-                    }
-                    Self::Fetch => {
-                        <source::Types as ::prisma_client_rust::ModelTypes>::scalar_selections()
-                    }
-                };
-                ::prisma_client_rust::Selection::new("source", None, [], selections)
-            }
-        }
-    }
-    pub mod source_id {
-        use super::super::{_prisma::*, *};
-        use super::{SetParam, UncheckedSetParam, UniqueWhereParam, WhereParam, WithParam};
-        pub const NAME: &str = "sourceId";
-        pub type Type = Int;
-        pub type RecursiveSafeType = Type;
-        pub struct Equals(pub Int);
-        pub fn equals<T: From<Equals>>(value: Int) -> T {
-            Equals(value).into()
-        }
-        impl From<Equals> for WhereParam {
-            fn from(Equals(v): Equals) -> Self {
-                WhereParam::SourceId(_prisma::read_filters::IntFilter::Equals(v))
-            }
-        }
-        ::prisma_client_rust::scalar_where_param_fns!(
-            _prisma::read_filters::IntFilter,
-            SourceId,
-            {
-                fn in_vec(_: Vec<Int>) -> InVec;
-                fn not_in_vec(_: Vec<Int>) -> NotInVec;
-                fn lt(_: Int) -> Lt;
-                fn lte(_: Int) -> Lte;
-                fn gt(_: Int) -> Gt;
-                fn gte(_: Int) -> Gte;
-                fn not(_: Int) -> Not;
-            }
-        );
-        pub struct Order(SortOrder);
-        pub fn order<T: From<Order>>(v: SortOrder) -> T {
-            Order(v).into()
-        }
-        impl From<Order> for super::OrderByWithRelationParam {
-            fn from(Order(v): Order) -> Self {
-                Self::SourceId(v)
-            }
-        }
-        pub struct Set(pub Int);
-        impl From<Set> for SetParam {
-            fn from(Set(v): Set) -> Self {
-                Self::SourceId(_prisma::write_params::IntParam::Set(v))
-            }
-        }
-        pub fn set<T: From<Set>>(value: Int) -> T {
-            Set(value).into()
-        }
-        pub struct UpdateOperation(pub _prisma::write_params::IntParam);
-        impl From<UpdateOperation> for SetParam {
-            fn from(UpdateOperation(v): UpdateOperation) -> Self {
-                Self::SourceId(v)
-            }
-        }
-        pub fn increment<T: From<UpdateOperation>>(value: Int) -> T {
-            UpdateOperation(_prisma::write_params::IntParam::Increment(value)).into()
-        }
-        pub fn decrement<T: From<UpdateOperation>>(value: Int) -> T {
-            UpdateOperation(_prisma::write_params::IntParam::Decrement(value)).into()
-        }
-        pub fn multiply<T: From<UpdateOperation>>(value: Int) -> T {
-            UpdateOperation(_prisma::write_params::IntParam::Multiply(value)).into()
-        }
-        pub fn divide<T: From<UpdateOperation>>(value: Int) -> T {
-            UpdateOperation(_prisma::write_params::IntParam::Divide(value)).into()
-        }
-        impl From<Set> for UncheckedSetParam {
-            fn from(Set(v): Set) -> Self {
-                Self::SourceId(_prisma::write_params::IntParam::Set(v))
-            }
-        }
-        impl From<UpdateOperation> for UncheckedSetParam {
-            fn from(UpdateOperation(v): UpdateOperation) -> Self {
-                Self::SourceId(v)
-            }
-        }
-        pub struct Select;
-        impl Into<super::SelectParam> for Select {
-            fn into(self) -> super::SelectParam {
-                super::SelectParam::SourceId(self)
-            }
-        }
-        impl Into<::prisma_client_rust::Selection> for Select {
-            fn into(self) -> ::prisma_client_rust::Selection {
-                ::prisma_client_rust::sel(NAME)
-            }
-        }
-        pub struct Include;
-        impl Into<super::IncludeParam> for Include {
-            fn into(self) -> super::IncludeParam {
-                super::IncludeParam::SourceId(self)
-            }
-        }
-        impl Into<::prisma_client_rust::Selection> for Include {
-            fn into(self) -> ::prisma_client_rust::Selection {
-                ::prisma_client_rust::sel(NAME)
-            }
-        }
-    }
-    pub mod version {
-        use super::super::{_prisma::*, *};
-        use super::{SetParam, UncheckedSetParam, UniqueWhereParam, WhereParam, WithParam};
-        pub const NAME: &str = "version";
+        pub const NAME: &str = "projectDesc";
         pub type Type = Option<String>;
         pub type RecursiveSafeType = Type;
         pub struct Equals(pub Option<String>);
@@ -7833,12 +2880,12 @@ pub mod r#mod {
         }
         impl From<Equals> for WhereParam {
             fn from(Equals(v): Equals) -> Self {
-                WhereParam::Version(_prisma::read_filters::StringNullableFilter::Equals(v))
+                WhereParam::ProjectDesc(_prisma::read_filters::StringNullableFilter::Equals(v))
             }
         }
         ::prisma_client_rust::scalar_where_param_fns!(
             _prisma::read_filters::StringNullableFilter,
-            Version,
+            ProjectDesc,
             {
                 fn in_vec(_: Vec<String>) -> InVec;
                 fn not_in_vec(_: Vec<String>) -> NotInVec;
@@ -7858,13 +2905,13 @@ pub mod r#mod {
         }
         impl From<Order> for super::OrderByWithRelationParam {
             fn from(Order(v): Order) -> Self {
-                Self::Version(v)
+                Self::ProjectDesc(v)
             }
         }
         pub struct Set(pub Option<String>);
         impl From<Set> for SetParam {
             fn from(Set(v): Set) -> Self {
-                Self::Version(_prisma::write_params::StringNullableParam::Set(v))
+                Self::ProjectDesc(_prisma::write_params::StringNullableParam::Set(v))
             }
         }
         pub fn set<T: From<Set>>(value: Option<String>) -> T {
@@ -7873,23 +2920,23 @@ pub mod r#mod {
         pub struct UpdateOperation(pub _prisma::write_params::StringNullableParam);
         impl From<UpdateOperation> for SetParam {
             fn from(UpdateOperation(v): UpdateOperation) -> Self {
-                Self::Version(v)
+                Self::ProjectDesc(v)
             }
         }
         impl From<Set> for UncheckedSetParam {
             fn from(Set(v): Set) -> Self {
-                Self::Version(_prisma::write_params::StringNullableParam::Set(v))
+                Self::ProjectDesc(_prisma::write_params::StringNullableParam::Set(v))
             }
         }
         impl From<UpdateOperation> for UncheckedSetParam {
             fn from(UpdateOperation(v): UpdateOperation) -> Self {
-                Self::Version(v)
+                Self::ProjectDesc(v)
             }
         }
         pub struct Select;
         impl Into<super::SelectParam> for Select {
             fn into(self) -> super::SelectParam {
-                super::SelectParam::Version(self)
+                super::SelectParam::ProjectDesc(self)
             }
         }
         impl Into<::prisma_client_rust::Selection> for Select {
@@ -7900,7 +2947,449 @@ pub mod r#mod {
         pub struct Include;
         impl Into<super::IncludeParam> for Include {
             fn into(self) -> super::IncludeParam {
-                super::IncludeParam::Version(self)
+                super::IncludeParam::ProjectDesc(self)
+            }
+        }
+        impl Into<::prisma_client_rust::Selection> for Include {
+            fn into(self) -> ::prisma_client_rust::Selection {
+                ::prisma_client_rust::sel(NAME)
+            }
+        }
+    }
+    pub mod project_id {
+        use super::super::{_prisma::*, *};
+        use super::{SetParam, UncheckedSetParam, UniqueWhereParam, WhereParam, WithParam};
+        pub const NAME: &str = "projectId";
+        pub type Type = String;
+        pub type RecursiveSafeType = Type;
+        pub struct Equals(pub String);
+        pub fn equals<T: From<Equals>>(value: String) -> T {
+            Equals(value).into()
+        }
+        impl From<Equals> for UniqueWhereParam {
+            fn from(Equals(v): Equals) -> Self {
+                UniqueWhereParam::ProjectIdEquals(v)
+            }
+        }
+        impl From<Equals> for WhereParam {
+            fn from(Equals(v): Equals) -> Self {
+                WhereParam::ProjectId(_prisma::read_filters::StringFilter::Equals(v))
+            }
+        }
+        ::prisma_client_rust::scalar_where_param_fns!(
+            _prisma::read_filters::StringFilter,
+            ProjectId,
+            {
+                fn in_vec(_: Vec<String>) -> InVec;
+                fn not_in_vec(_: Vec<String>) -> NotInVec;
+                fn lt(_: String) -> Lt;
+                fn lte(_: String) -> Lte;
+                fn gt(_: String) -> Gt;
+                fn gte(_: String) -> Gte;
+                fn contains(_: String) -> Contains;
+                fn starts_with(_: String) -> StartsWith;
+                fn ends_with(_: String) -> EndsWith;
+                fn not(_: String) -> Not;
+            }
+        );
+        pub struct Order(SortOrder);
+        pub fn order<T: From<Order>>(v: SortOrder) -> T {
+            Order(v).into()
+        }
+        impl From<Order> for super::OrderByWithRelationParam {
+            fn from(Order(v): Order) -> Self {
+                Self::ProjectId(v)
+            }
+        }
+        pub struct Set(pub String);
+        impl From<Set> for SetParam {
+            fn from(Set(v): Set) -> Self {
+                Self::ProjectId(_prisma::write_params::StringParam::Set(v))
+            }
+        }
+        pub fn set<T: From<Set>>(value: String) -> T {
+            Set(value).into()
+        }
+        pub struct UpdateOperation(pub _prisma::write_params::StringParam);
+        impl From<UpdateOperation> for SetParam {
+            fn from(UpdateOperation(v): UpdateOperation) -> Self {
+                Self::ProjectId(v)
+            }
+        }
+        impl From<Set> for UncheckedSetParam {
+            fn from(Set(v): Set) -> Self {
+                Self::ProjectId(_prisma::write_params::StringParam::Set(v))
+            }
+        }
+        impl From<UpdateOperation> for UncheckedSetParam {
+            fn from(UpdateOperation(v): UpdateOperation) -> Self {
+                Self::ProjectId(v)
+            }
+        }
+        pub struct Select;
+        impl Into<super::SelectParam> for Select {
+            fn into(self) -> super::SelectParam {
+                super::SelectParam::ProjectId(self)
+            }
+        }
+        impl Into<::prisma_client_rust::Selection> for Select {
+            fn into(self) -> ::prisma_client_rust::Selection {
+                ::prisma_client_rust::sel(NAME)
+            }
+        }
+        pub struct Include;
+        impl Into<super::IncludeParam> for Include {
+            fn into(self) -> super::IncludeParam {
+                super::IncludeParam::ProjectId(self)
+            }
+        }
+        impl Into<::prisma_client_rust::Selection> for Include {
+            fn into(self) -> ::prisma_client_rust::Selection {
+                ::prisma_client_rust::sel(NAME)
+            }
+        }
+    }
+    pub mod project_name {
+        use super::super::{_prisma::*, *};
+        use super::{SetParam, UncheckedSetParam, UniqueWhereParam, WhereParam, WithParam};
+        pub const NAME: &str = "projectName";
+        pub type Type = String;
+        pub type RecursiveSafeType = Type;
+        pub struct Equals(pub String);
+        pub fn equals<T: From<Equals>>(value: String) -> T {
+            Equals(value).into()
+        }
+        impl From<Equals> for WhereParam {
+            fn from(Equals(v): Equals) -> Self {
+                WhereParam::ProjectName(_prisma::read_filters::StringFilter::Equals(v))
+            }
+        }
+        ::prisma_client_rust::scalar_where_param_fns!(
+            _prisma::read_filters::StringFilter,
+            ProjectName,
+            {
+                fn in_vec(_: Vec<String>) -> InVec;
+                fn not_in_vec(_: Vec<String>) -> NotInVec;
+                fn lt(_: String) -> Lt;
+                fn lte(_: String) -> Lte;
+                fn gt(_: String) -> Gt;
+                fn gte(_: String) -> Gte;
+                fn contains(_: String) -> Contains;
+                fn starts_with(_: String) -> StartsWith;
+                fn ends_with(_: String) -> EndsWith;
+                fn not(_: String) -> Not;
+            }
+        );
+        pub struct Order(SortOrder);
+        pub fn order<T: From<Order>>(v: SortOrder) -> T {
+            Order(v).into()
+        }
+        impl From<Order> for super::OrderByWithRelationParam {
+            fn from(Order(v): Order) -> Self {
+                Self::ProjectName(v)
+            }
+        }
+        pub struct Set(pub String);
+        impl From<Set> for SetParam {
+            fn from(Set(v): Set) -> Self {
+                Self::ProjectName(_prisma::write_params::StringParam::Set(v))
+            }
+        }
+        pub fn set<T: From<Set>>(value: String) -> T {
+            Set(value).into()
+        }
+        pub struct UpdateOperation(pub _prisma::write_params::StringParam);
+        impl From<UpdateOperation> for SetParam {
+            fn from(UpdateOperation(v): UpdateOperation) -> Self {
+                Self::ProjectName(v)
+            }
+        }
+        impl From<Set> for UncheckedSetParam {
+            fn from(Set(v): Set) -> Self {
+                Self::ProjectName(_prisma::write_params::StringParam::Set(v))
+            }
+        }
+        impl From<UpdateOperation> for UncheckedSetParam {
+            fn from(UpdateOperation(v): UpdateOperation) -> Self {
+                Self::ProjectName(v)
+            }
+        }
+        pub struct Select;
+        impl Into<super::SelectParam> for Select {
+            fn into(self) -> super::SelectParam {
+                super::SelectParam::ProjectName(self)
+            }
+        }
+        impl Into<::prisma_client_rust::Selection> for Select {
+            fn into(self) -> ::prisma_client_rust::Selection {
+                ::prisma_client_rust::sel(NAME)
+            }
+        }
+        pub struct Include;
+        impl Into<super::IncludeParam> for Include {
+            fn into(self) -> super::IncludeParam {
+                super::IncludeParam::ProjectName(self)
+            }
+        }
+        impl Into<::prisma_client_rust::Selection> for Include {
+            fn into(self) -> ::prisma_client_rust::Selection {
+                ::prisma_client_rust::sel(NAME)
+            }
+        }
+    }
+    pub mod project_version {
+        use super::super::{_prisma::*, *};
+        use super::{SetParam, UncheckedSetParam, UniqueWhereParam, WhereParam, WithParam};
+        pub const NAME: &str = "projectVersion";
+        pub type Type = Option<String>;
+        pub type RecursiveSafeType = Type;
+        pub struct Equals(pub Option<String>);
+        pub fn equals<T: From<Equals>>(value: Option<String>) -> T {
+            Equals(value).into()
+        }
+        impl From<Equals> for WhereParam {
+            fn from(Equals(v): Equals) -> Self {
+                WhereParam::ProjectVersion(_prisma::read_filters::StringNullableFilter::Equals(v))
+            }
+        }
+        ::prisma_client_rust::scalar_where_param_fns!(
+            _prisma::read_filters::StringNullableFilter,
+            ProjectVersion,
+            {
+                fn in_vec(_: Vec<String>) -> InVec;
+                fn not_in_vec(_: Vec<String>) -> NotInVec;
+                fn lt(_: String) -> Lt;
+                fn lte(_: String) -> Lte;
+                fn gt(_: String) -> Gt;
+                fn gte(_: String) -> Gte;
+                fn contains(_: String) -> Contains;
+                fn starts_with(_: String) -> StartsWith;
+                fn ends_with(_: String) -> EndsWith;
+                fn not(_: Option<String>) -> Not;
+            }
+        );
+        pub struct Order(SortOrder);
+        pub fn order<T: From<Order>>(v: SortOrder) -> T {
+            Order(v).into()
+        }
+        impl From<Order> for super::OrderByWithRelationParam {
+            fn from(Order(v): Order) -> Self {
+                Self::ProjectVersion(v)
+            }
+        }
+        pub struct Set(pub Option<String>);
+        impl From<Set> for SetParam {
+            fn from(Set(v): Set) -> Self {
+                Self::ProjectVersion(_prisma::write_params::StringNullableParam::Set(v))
+            }
+        }
+        pub fn set<T: From<Set>>(value: Option<String>) -> T {
+            Set(value).into()
+        }
+        pub struct UpdateOperation(pub _prisma::write_params::StringNullableParam);
+        impl From<UpdateOperation> for SetParam {
+            fn from(UpdateOperation(v): UpdateOperation) -> Self {
+                Self::ProjectVersion(v)
+            }
+        }
+        impl From<Set> for UncheckedSetParam {
+            fn from(Set(v): Set) -> Self {
+                Self::ProjectVersion(_prisma::write_params::StringNullableParam::Set(v))
+            }
+        }
+        impl From<UpdateOperation> for UncheckedSetParam {
+            fn from(UpdateOperation(v): UpdateOperation) -> Self {
+                Self::ProjectVersion(v)
+            }
+        }
+        pub struct Select;
+        impl Into<super::SelectParam> for Select {
+            fn into(self) -> super::SelectParam {
+                super::SelectParam::ProjectVersion(self)
+            }
+        }
+        impl Into<::prisma_client_rust::Selection> for Select {
+            fn into(self) -> ::prisma_client_rust::Selection {
+                ::prisma_client_rust::sel(NAME)
+            }
+        }
+        pub struct Include;
+        impl Into<super::IncludeParam> for Include {
+            fn into(self) -> super::IncludeParam {
+                super::IncludeParam::ProjectVersion(self)
+            }
+        }
+        impl Into<::prisma_client_rust::Selection> for Include {
+            fn into(self) -> ::prisma_client_rust::Selection {
+                ::prisma_client_rust::sel(NAME)
+            }
+        }
+    }
+    pub mod source {
+        use super::super::{_prisma::*, *};
+        use super::{SetParam, UncheckedSetParam, UniqueWhereParam, WhereParam, WithParam};
+        pub const NAME: &str = "source";
+        pub type Type = String;
+        pub type RecursiveSafeType = Type;
+        pub struct Equals(pub String);
+        pub fn equals<T: From<Equals>>(value: String) -> T {
+            Equals(value).into()
+        }
+        impl From<Equals> for WhereParam {
+            fn from(Equals(v): Equals) -> Self {
+                WhereParam::Source(_prisma::read_filters::StringFilter::Equals(v))
+            }
+        }
+        ::prisma_client_rust::scalar_where_param_fns!(
+            _prisma::read_filters::StringFilter,
+            Source,
+            {
+                fn in_vec(_: Vec<String>) -> InVec;
+                fn not_in_vec(_: Vec<String>) -> NotInVec;
+                fn lt(_: String) -> Lt;
+                fn lte(_: String) -> Lte;
+                fn gt(_: String) -> Gt;
+                fn gte(_: String) -> Gte;
+                fn contains(_: String) -> Contains;
+                fn starts_with(_: String) -> StartsWith;
+                fn ends_with(_: String) -> EndsWith;
+                fn not(_: String) -> Not;
+            }
+        );
+        pub struct Order(SortOrder);
+        pub fn order<T: From<Order>>(v: SortOrder) -> T {
+            Order(v).into()
+        }
+        impl From<Order> for super::OrderByWithRelationParam {
+            fn from(Order(v): Order) -> Self {
+                Self::Source(v)
+            }
+        }
+        pub struct Set(pub String);
+        impl From<Set> for SetParam {
+            fn from(Set(v): Set) -> Self {
+                Self::Source(_prisma::write_params::StringParam::Set(v))
+            }
+        }
+        pub fn set<T: From<Set>>(value: String) -> T {
+            Set(value).into()
+        }
+        pub struct UpdateOperation(pub _prisma::write_params::StringParam);
+        impl From<UpdateOperation> for SetParam {
+            fn from(UpdateOperation(v): UpdateOperation) -> Self {
+                Self::Source(v)
+            }
+        }
+        impl From<Set> for UncheckedSetParam {
+            fn from(Set(v): Set) -> Self {
+                Self::Source(_prisma::write_params::StringParam::Set(v))
+            }
+        }
+        impl From<UpdateOperation> for UncheckedSetParam {
+            fn from(UpdateOperation(v): UpdateOperation) -> Self {
+                Self::Source(v)
+            }
+        }
+        pub struct Select;
+        impl Into<super::SelectParam> for Select {
+            fn into(self) -> super::SelectParam {
+                super::SelectParam::Source(self)
+            }
+        }
+        impl Into<::prisma_client_rust::Selection> for Select {
+            fn into(self) -> ::prisma_client_rust::Selection {
+                ::prisma_client_rust::sel(NAME)
+            }
+        }
+        pub struct Include;
+        impl Into<super::IncludeParam> for Include {
+            fn into(self) -> super::IncludeParam {
+                super::IncludeParam::Source(self)
+            }
+        }
+        impl Into<::prisma_client_rust::Selection> for Include {
+            fn into(self) -> ::prisma_client_rust::Selection {
+                ::prisma_client_rust::sel(NAME)
+            }
+        }
+    }
+    pub mod updated {
+        use super::super::{_prisma::*, *};
+        use super::{SetParam, UncheckedSetParam, UniqueWhereParam, WhereParam, WithParam};
+        pub const NAME: &str = "updated";
+        pub type Type = DateTime;
+        pub type RecursiveSafeType = Type;
+        pub struct Equals(pub DateTime);
+        pub fn equals<T: From<Equals>>(value: DateTime) -> T {
+            Equals(value).into()
+        }
+        impl From<Equals> for WhereParam {
+            fn from(Equals(v): Equals) -> Self {
+                WhereParam::Updated(_prisma::read_filters::DateTimeFilter::Equals(v))
+            }
+        }
+        ::prisma_client_rust::scalar_where_param_fns!(
+            _prisma::read_filters::DateTimeFilter,
+            Updated,
+            {
+                fn in_vec(_: Vec<DateTime>) -> InVec;
+                fn not_in_vec(_: Vec<DateTime>) -> NotInVec;
+                fn lt(_: DateTime) -> Lt;
+                fn lte(_: DateTime) -> Lte;
+                fn gt(_: DateTime) -> Gt;
+                fn gte(_: DateTime) -> Gte;
+                fn not(_: DateTime) -> Not;
+            }
+        );
+        pub struct Order(SortOrder);
+        pub fn order<T: From<Order>>(v: SortOrder) -> T {
+            Order(v).into()
+        }
+        impl From<Order> for super::OrderByWithRelationParam {
+            fn from(Order(v): Order) -> Self {
+                Self::Updated(v)
+            }
+        }
+        pub struct Set(pub DateTime);
+        impl From<Set> for SetParam {
+            fn from(Set(v): Set) -> Self {
+                Self::Updated(_prisma::write_params::DateTimeParam::Set(v))
+            }
+        }
+        pub fn set<T: From<Set>>(value: DateTime) -> T {
+            Set(value).into()
+        }
+        pub struct UpdateOperation(pub _prisma::write_params::DateTimeParam);
+        impl From<UpdateOperation> for SetParam {
+            fn from(UpdateOperation(v): UpdateOperation) -> Self {
+                Self::Updated(v)
+            }
+        }
+        impl From<Set> for UncheckedSetParam {
+            fn from(Set(v): Set) -> Self {
+                Self::Updated(_prisma::write_params::DateTimeParam::Set(v))
+            }
+        }
+        impl From<UpdateOperation> for UncheckedSetParam {
+            fn from(UpdateOperation(v): UpdateOperation) -> Self {
+                Self::Updated(v)
+            }
+        }
+        pub struct Select;
+        impl Into<super::SelectParam> for Select {
+            fn into(self) -> super::SelectParam {
+                super::SelectParam::Updated(self)
+            }
+        }
+        impl Into<::prisma_client_rust::Selection> for Select {
+            fn into(self) -> ::prisma_client_rust::Selection {
+                ::prisma_client_rust::sel(NAME)
+            }
+        }
+        pub struct Include;
+        impl Into<super::IncludeParam> for Include {
+            fn into(self) -> super::IncludeParam {
+                super::IncludeParam::Updated(self)
             }
         }
         impl Into<::prisma_client_rust::Selection> for Include {

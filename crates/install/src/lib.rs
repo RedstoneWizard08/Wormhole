@@ -1,5 +1,3 @@
-pub mod extract;
-pub mod magic;
+use whcore::type_map;
 
-#[macro_use]
-extern crate anyhow;
+type_map! {}

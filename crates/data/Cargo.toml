@@ -13,3 +13,4 @@ serde.workspace = true
 specta.workspace = true
 prisma-client-rust.workspace = true
 tokio.workspace = true
+whcore.workspace = true

@@ -1,29 +1,18 @@
-pub mod config;
-pub mod dirs;
-pub mod errors;
-pub mod finder;
-pub mod fs_util;
-pub mod manager;
-pub mod messaging;
-pub mod progress;
-pub mod traits;
-pub mod typing;
-pub mod util;
-
 #[macro_use]
-extern crate serde;
+pub extern crate serde;
 
 #[macro_use]
 pub extern crate async_trait;
 
-use dirs::Dirs;
-use specta::{NamedType, TypeMap};
+pub extern crate specta;
 
-pub fn type_map() -> TypeMap {
-    let mut map = TypeMap::default();
+pub mod macros;
+pub mod manager;
+pub mod traits;
 
-    let ty = Dirs::named_data_type(&mut map, &[]);
-    map.insert(Dirs::sid(), ty);
+pub use manager::CoreManager;
+pub use traits::*;
 
-    map
+type_map! {
+    CoreManager,
 }

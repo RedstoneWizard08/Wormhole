@@ -15,5 +15,6 @@ pub fn derive_event(input: TokenStream) -> TokenStream {
         #hash [derive(serde::Serialize, serde::Deserialize)]
         #input
     }
-    .to_token_stream().into()
+    .to_token_stream()
+    .into()
 }

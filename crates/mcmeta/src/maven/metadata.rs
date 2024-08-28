@@ -1,36 +1,22 @@
-use crate::util::unwrap_list;
-
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, Type)]
 #[serde(rename_all = "camelCase")]
-pub struct MavenMetadata {
+pub struct Metadata {
     pub group_id: String,
     pub artifact_id: String,
-    pub versioning: MavenVersioning,
+    pub versioning: Versioning,
 }
 
-impl MavenMetadata {
-    pub fn latest(&self) -> String {
-        self.versioning.latest.clone()
-    }
-
-    pub fn release(&self) -> String {
-        self.versioning.release.clone()
-    }
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, Type)]
 #[serde(rename_all = "camelCase")]
-pub struct MavenVersioning {
-    pub latest: String,
+pub struct Versioning {
     pub release: String,
-    pub last_updated: u64,
-
-    #[serde(deserialize_with = "unwrap_list")]
-    pub versions: Vec<String>,
+    pub latest: String,
+    pub last_updated: String,
+    pub versions: Versions,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct VersionList {
-    #[serde(rename = "$value")]
-    pub versions: Vec<String>,
+#[derive(Debug, Clone, Serialize, Deserialize, Type)]
+#[serde(rename_all = "camelCase")]
+pub struct Versions {
+    pub version: Vec<String>,
 }

@@ -1,83 +1,52 @@
-use std::io::{Cursor, Read};
+//! The module for NeoForge
+//!
+//! NeoForge version format:
+//! - [mc_minor].[mc_patch].[neo_build]
+
+pub mod meta;
+pub mod version;
 
 use anyhow::Result;
-use zip::ZipArchive;
+use meta::ReposiliteVersions;
+use version::NeoForgeVersion;
+use whcore::async_trait::async_trait;
 
-use crate::{
-    maven::{artifact::MavenArtifact, get_metadata},
-    piston::game::inherit::InheritedGameManifest,
-};
+use crate::{loader::LoaderData, maven::{artifact::Artifact, MavenRepo}};
 
-pub const NEOFORGE_MAVEN: &str = "https://maven.neoforged.net";
+pub const MAVEN_REPO: MavenRepo = MavenRepo::new("https://maven.neoforged.net/releases");
 
-pub mod extract;
-pub mod install;
-pub mod profile;
-pub mod util;
+pub const VERSIONS_API: &str =
+    "https://maven.neoforged.net/api/maven/versions/releases/net/neoforged/neoforge";
 
-/// Takes in a neoforge version and returns
-/// a tuple with the Minecraft version (1st) and
-/// the NeoForge verison (2nd).
-pub fn parse_neoforge_version(ver: impl AsRef<str>) -> (String, String) {
-    let ver = ver.as_ref().to_string();
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, PartialOrd, Ord, Type)]
+pub struct NeoForge;
 
-    if ver.starts_with("1.") {
-        (
-            ver.split("-").nth(0).unwrap().to_string(),
-            ver.split("-").nth(1).unwrap().to_string(),
-        )
-    } else if ver.starts_with("47.") {
-        ("1.20.1".to_string(), ver)
-    } else {
-        let mut spl = ver.split(".");
-        let minor = spl.next().unwrap();
-        let patch = spl.next().unwrap();
-
-        (format!("1.{}.{}", minor, patch), ver)
+#[async_trait]
+impl LoaderData for NeoForge {
+    async fn all_versions(&self) -> Result<Vec<Artifact>> {
+        Ok(reqwest::get(VERSIONS_API)
+            .await?
+            .json::<ReposiliteVersions>()
+            .await?
+            .versions
+            .iter()
+            .map(|v| Artifact::new("net.neoforged:neoforge").set_version(v))
+            .collect())
     }
-}
 
-pub async fn get_neoforge_versions() -> Result<(Vec<String>, String)> {
-    let forge = get_metadata(NEOFORGE_MAVEN, "net.neoforged:neoforge").await?;
-    let neo = get_metadata(NEOFORGE_MAVEN, "net.neoforged:neoforge").await?;
-    let mut all = Vec::new();
+    async fn versions_for(&self, game_version: impl AsRef<str> + Send) -> Result<Vec<Artifact>> {
+        let game_version = game_version.as_ref();
 
-    all.extend(forge.versioning.versions);
-    all.extend(neo.versioning.versions);
-
-    Ok((all, neo.versioning.latest))
-}
-
-pub fn get_neoforge_installer(version: impl AsRef<str>) -> MavenArtifact {
-    let ver = version.as_ref();
-
-    if ver.starts_with("1.") {
-        MavenArtifact {
-            name: format!("net.neoforged:forge:{}:installer", ver),
-            repo: NEOFORGE_MAVEN.into(),
-        }
-    } else {
-        MavenArtifact {
-            name: format!("net.neoforged:neoforge:{}:installer", ver),
-            repo: NEOFORGE_MAVEN.into(),
-        }
+        Ok(self
+            .all_versions()
+            .await?
+            .iter()
+            .filter(|v| NeoForgeVersion::new(v.version.clone().unwrap()).minecraft == game_version)
+            .cloned()
+            .collect())
     }
-}
 
-pub async fn get_neoforge_manifest(version: impl AsRef<str>) -> Result<InheritedGameManifest> {
-    let url = get_neoforge_installer(version)
-        .coordinate()
-        .url(NEOFORGE_MAVEN);
-
-    let bytes = reqwest::get(url).await?.bytes().await?;
-    let cursor = Cursor::new(bytes);
-    let mut zip = ZipArchive::new(cursor)?;
-    let mut file = zip.by_name("version.json")?;
-    let mut buf = Vec::new();
-
-    file.read_to_end(&mut buf)?;
-
-    let data = String::from_utf8(buf)?;
-
-    Ok(serde_json::from_str(&data)?)
+    async fn version_jar_url(&self, artifact: impl Into<Artifact> + Send) -> Result<String> {
+        Ok(MAVEN_REPO.get_artifact_url(artifact))
+    }
 }

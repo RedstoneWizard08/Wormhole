@@ -1,53 +1,80 @@
-use std::path::PathBuf;
-
-use anyhow::Result;
-
-use crate::download::{download_file, DownloadCallbackFn};
-
-use super::coord::MavenCoordinate;
-
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct MavenArtifact {
-    pub name: String,
-
-    #[serde(rename = "url")]
-    pub repo: String,
+#[derive(Debug, Clone, Serialize, Deserialize, Type)]
+pub struct Artifact {
+    pub package: String,
+    pub artifact: String,
+    pub version: Option<String>,
+    pub classifier: Option<String>,
 }
 
-impl MavenArtifact {
-    pub fn coordinate(&self) -> MavenCoordinate {
-        (&self.name).into()
+impl Artifact {
+    pub fn new(data: impl AsRef<str>) -> Self {
+        let data = data.as_ref();
+        let mut data = data.split(":");
+        let package = data.next().unwrap().into();
+        let artifact = data.next().unwrap().into();
+        let version = data.next().map(String::from);
+        let classifier = data.next().map(String::from);
+
+        Self {
+            package,
+            artifact,
+            version,
+            classifier,
+        }
     }
-}
 
-pub async fn download_maven_artifacts(
-    root: impl Into<PathBuf>,
-    artifacts: Vec<MavenArtifact>,
-    callback: Option<DownloadCallbackFn>,
-) -> Result<()> {
-    let root = root.into();
+    pub fn to_string(self) -> String {
+        let mut s = format!("{}:{}", self.package, self.artifact);
 
-    for mut artifact in artifacts {
-        // Fabric's LaunchWrapper config doesn't have the proper
-        // maven repo for this. It tries to use one on Fabric's
-        // own maven, but it doesn't exist. Why? I don't know.
-        // This is probably one of the most lazy-ass patches
-        // I've had to do here, but there isn't much else I can do.
-        if artifact.name == "net.minecraft:launchwrapper:1.12" {
-            artifact.repo = "https://libraries.minecraft.net".into();
+        if let Some(ver) = self.version {
+            s.push_str(&format!(":{}", ver));
         }
 
-        let coord = artifact.coordinate();
+        if let Some(cls) = self.classifier {
+            s.push_str(&format!(":{}", cls));
+        }
 
-        download_file(
-            &root,
-            coord.url(artifact.repo),
-            coord.path(),
-            Option::<String>::None,
-            &callback,
-        )
-        .await?;
+        s
     }
 
-    Ok(())
+    pub fn to_string_versionless(self) -> String {
+        format!("{}:{}", self.package, self.artifact)
+    }
+
+    pub fn base_url(self) -> String {
+        self.to_string().replace(":", "/").replace(".", "/")
+    }
+
+    pub fn base_url_versionless(self) -> String {
+        self.to_string_versionless()
+            .replace(":", "/")
+            .replace(".", "/")
+    }
+
+    pub fn set_version(mut self, ver: impl AsRef<str>) -> Self {
+        self.version = Some(ver.as_ref().into());
+        self
+    }
+
+    pub fn set_classifier(mut self, cls: impl AsRef<str>) -> Self {
+        self.classifier = Some(cls.as_ref().into());
+        self
+    }
+
+    pub fn url(self) -> String {
+        let it = self.clone().to_string();
+        let mut s = format!("{}-{}", self.artifact, self.version.unwrap());
+
+        if let Some(cls) = self.classifier {
+            s.push_str(&format!("-{}", cls));
+        }
+
+        format!("{}/{}.jar", it, s)
+    }
+}
+
+impl<T: AsRef<str>> From<T> for Artifact {
+    fn from(value: T) -> Self {
+        Self::new(value)
+    }
 }

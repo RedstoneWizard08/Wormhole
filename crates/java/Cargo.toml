@@ -18,3 +18,5 @@ strum_macros.workspace = true
 zip.workspace = true
 flate2.workspace = true
 tar.workspace = true
+whcore.workspace = true
+specta.workspace = true

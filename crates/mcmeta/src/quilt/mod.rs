@@ -1,57 +1,33 @@
-pub mod intermediary;
+//! The module for Quilt
 
 use anyhow::Result;
+use whcore::async_trait::async_trait;
 
-use crate::{
-    launchwrapper::config::LaunchWrapperConfig,
-    maven::{
-        artifact::MavenArtifact, coord::MavenCoordinate, get_metadata, metadata::MavenMetadata,
-    },
-    piston::game::inherit::InheritedGameManifest,
-};
+use crate::{fabric::meta::FabricMetaVersion, loader::LoaderData, maven::{artifact::Artifact, MavenRepo}};
 
-pub const QUILT_MAVEN: &str = "https://maven.quiltmc.org/repository/release";
+pub const MAVEN_REPO: MavenRepo = MavenRepo::new("https://maven.quiltmc.org/release");
+pub const META_API: &str = "https://meta.quiltmc.org/v3/versions/loader";
 
-pub async fn get_quilt_versions() -> Result<MavenMetadata> {
-    Ok(get_metadata(QUILT_MAVEN, "org.quiltmc:quilt-loader").await?)
-}
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, PartialOrd, Ord, Type)]
+pub struct Quilt;
 
-pub fn get_quilt_loader(version: impl AsRef<str>) -> MavenArtifact {
-    let ver = version.as_ref();
-
-    MavenArtifact {
-        name: format!("org.quiltmc:quilt-loader:{}", ver),
-        repo: QUILT_MAVEN.into(),
+#[async_trait]
+impl LoaderData for Quilt {
+    async fn all_versions(&self) -> Result<Vec<Artifact>> {
+        Ok(reqwest::get(META_API)
+            .await?
+            .json::<Vec<FabricMetaVersion>>()
+            .await?
+            .iter()
+            .map(|v| v.maven.clone().into())
+            .collect())
     }
-}
 
-pub fn get_quilt_launchwrapper_artifact(version: impl AsRef<str>) -> MavenArtifact {
-    let ver = version.as_ref();
-
-    MavenArtifact {
-        name: format!("org.quiltmc:quilt-loader:{}@json", ver),
-        repo: QUILT_MAVEN.into(),
+    async fn versions_for(&self, _game_version: impl AsRef<str> + Send) -> Result<Vec<Artifact>> {
+        self.all_versions().await
     }
-}
 
-pub async fn get_quilt_launchwrapper(version: impl AsRef<str>) -> Result<LaunchWrapperConfig> {
-    let ver = version.as_ref();
-    let coord = MavenCoordinate::from(format!("org.quiltmc:quilt-loader:{}@json", ver));
-    let url = coord.url(QUILT_MAVEN);
-
-    Ok(reqwest::get(url).await?.json().await?)
-}
-
-pub async fn get_quilt_profile(
-    mc_version: impl AsRef<str>,
-    quilt_version: impl AsRef<str>,
-) -> Result<InheritedGameManifest> {
-    Ok(reqwest::get(format!(
-        "https://meta.quiltmc.org/v3/versions/loader/{}/{}/profile/json",
-        mc_version.as_ref(),
-        quilt_version.as_ref()
-    ))
-    .await?
-    .json()
-    .await?)
+    async fn version_jar_url(&self, artifact: impl Into<Artifact> + Send) -> Result<String> {
+        Ok(MAVEN_REPO.get_artifact_url(artifact))
+    }
 }

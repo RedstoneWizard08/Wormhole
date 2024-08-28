@@ -1,53 +1,42 @@
-pub mod extract;
-pub mod install;
-pub mod mappings;
-pub mod processor;
-pub mod util;
-
-use std::io::{Cursor, Read};
+//! The module for Forge (LexForge)
+//!
+//! LexForge version format:
+//! - [mc_version]-[forge_version]
+//!
+//! Versions must be queried from Forge's maven, with the artifact `net.minecraftforge:forge`
 
 use anyhow::Result;
-use zip::ZipArchive;
+use whcore::async_trait::async_trait;
 
 use crate::{
-    maven::{artifact::MavenArtifact, get_metadata, metadata::MavenMetadata},
-    piston::game::inherit::InheritedGameManifest,
+    loader::LoaderData,
+    maven::{artifact::Artifact, MavenRepo},
 };
 
-pub const FORGE_MAVEN: &str = "https://maven.minecraftforge.net";
+pub const MAVEN_REPO: MavenRepo = MavenRepo::new("https://maven.minecraftforge.net");
 
-/// Takes in a Forge version string and returns
-/// a tuple of the Minecraft and loader versions.
-pub fn parse_forge_version(ver: impl AsRef<str>) -> (String, String) {
-    let mut ver = ver.as_ref().split('-');
-    let mc = ver.next().unwrap().to_string();
-    let forge = ver.next().unwrap().to_string();
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, PartialOrd, Ord, Type)]
+pub struct Forge;
 
-    (mc, forge)
-}
-
-pub async fn get_forge_versions() -> Result<MavenMetadata> {
-    Ok(get_metadata(FORGE_MAVEN, "net.minecraftforge:forge").await?)
-}
-
-pub fn get_forge_installer(version: impl AsRef<str>) -> MavenArtifact {
-    MavenArtifact {
-        name: format!("net.minecraftforge:forge:{}:installer", version.as_ref()),
-        repo: FORGE_MAVEN.into(),
+#[async_trait]
+impl LoaderData for Forge {
+    async fn all_versions(&self) -> Result<Vec<Artifact>> {
+        MAVEN_REPO.get_versions("net.minecraftforge:forge").await
     }
-}
 
-pub async fn get_forge_manifest(version: impl AsRef<str>) -> Result<InheritedGameManifest> {
-    let url = get_forge_installer(version).coordinate().url(FORGE_MAVEN);
-    let bytes = reqwest::get(url).await?.bytes().await?;
-    let cursor = Cursor::new(bytes);
-    let mut zip = ZipArchive::new(cursor)?;
-    let mut file = zip.by_name("version.json")?;
-    let mut buf = Vec::new();
+    async fn versions_for(&self, game_version: impl AsRef<str> + Send) -> Result<Vec<Artifact>> {
+        let game_version = game_version.as_ref();
 
-    file.read_to_end(&mut buf)?;
+        Ok(MAVEN_REPO
+            .get_versions("net.minecraftforge:forge")
+            .await?
+            .iter()
+            .filter(|v| v.version.clone().unwrap().split("-").next().unwrap() == game_version)
+            .cloned()
+            .collect())
+    }
 
-    let data = String::from_utf8(buf)?;
-
-    Ok(serde_json::from_str(&data)?)
+    async fn version_jar_url(&self, artifact: impl Into<Artifact> + Send) -> Result<String> {
+        Ok(MAVEN_REPO.get_artifact_url(artifact))
+    }
 }

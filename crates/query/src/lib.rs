@@ -26,32 +26,3 @@ pub(crate) const MODRINTH_KEY: Lazy<Option<&str>> = Lazy::new(|| option_envc!("M
 
 #[allow(unused)]
 pub(crate) const NEXUS_API_KEY: Lazy<&str> = Lazy::new(|| envc!("NEXUS_API_KEY"));
-
-/// This backend is currently not implemented.
-pub mod nexus;
-
-pub mod ckan;
-pub mod curse;
-pub mod impls;
-pub mod macros;
-pub mod mod_;
-pub mod modrinth;
-pub mod source;
-pub mod spacedock;
-pub mod thunderstore;
-
-pub use ckan::Ckan;
-pub use curse::CurseForge;
-pub use modrinth::Modrinth;
-pub use spacedock::SpaceDock;
-pub use thunderstore::Thunderstore;
-
-#[async_trait]
-pub trait IntoAsync<T> {
-    async fn into_async(self) -> T;
-}
-
-#[async_trait]
-pub trait DbIntoAsync<T> {
-    async fn db_into_async(self, client: Arc<PrismaClient>) -> T;
-}
