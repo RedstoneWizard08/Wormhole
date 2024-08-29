@@ -11,4 +11,3 @@ pub struct ReposiliteVersion {
     pub is_snapshot: bool,
     pub version: String,
 }
-

@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 use args::Arguments;
 use assets::AssetIndex;
 use download::Downloads;
@@ -15,9 +17,6 @@ pub mod libraries;
 pub mod logging;
 pub mod rules;
 pub mod system;
-
-#[cfg(test)]
-pub mod tests;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -38,4 +37,27 @@ pub struct VersionManifest {
     pub time: String,
     #[serde(rename = "type")]
     pub kind: PistonMetaVersionType,
+}
+
+impl VersionManifest {
+    pub fn game_args(&self, features: &HashMap<String, bool>) -> Vec<String> {
+        let mut args = Vec::new();
+
+        if let Some(it) = &self.arguments {
+            args.extend(it.game_args(features));
+        }
+
+        if let Some(mc_args) = &self.minecraft_arguments {
+            args.extend(mc_args.split(" ").map(String::from).collect::<Vec<_>>());
+        }
+
+        args
+    }
+
+    pub fn jvm_args(&self, features: &HashMap<String, bool>) -> Vec<String> {
+        self.arguments
+            .as_ref()
+            .map(|v| v.jvm_args(features))
+            .unwrap_or_default()
+    }
 }

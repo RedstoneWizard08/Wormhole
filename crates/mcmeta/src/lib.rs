@@ -1,3 +1,5 @@
+#![feature(path_add_extension)]
+
 use fabric::{meta::FabricMetaVersion, Fabric};
 use forge::Forge;
 use maven::{
@@ -24,11 +26,16 @@ pub extern crate anyhow;
 
 pub mod fabric;
 pub mod forge;
+pub mod installer;
 pub mod loader;
 pub mod maven;
 pub mod neoforge;
 pub mod quilt;
+pub mod util;
 pub mod vanilla;
+
+#[cfg(test)]
+pub mod tests;
 
 type_map! {
     MavenRepo,

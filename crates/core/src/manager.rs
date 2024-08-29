@@ -32,4 +32,8 @@ impl CoreManager {
     pub fn create_dir(&self, dir: impl Into<PathBuf>) {
         fs::create_dir_all(dir.into()).unwrap();
     }
+
+    pub fn dir(&self, dir: impl AsRef<str>) -> PathBuf {
+        self.root.join(dir.as_ref())
+    }
 }

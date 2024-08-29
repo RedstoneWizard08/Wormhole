@@ -3848,6 +3848,7 @@ version = "2.0.0"
 dependencies = [
  "anyhow 1.0.81",
  "base64 0.22.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "bytes 1.6.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "data 2.0.0",
  "futures 0.3.30 (registry+https://github.com/rust-lang/crates.io-index)",
  "java 2.0.0",

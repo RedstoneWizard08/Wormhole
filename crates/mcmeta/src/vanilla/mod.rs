@@ -1,7 +1,12 @@
 //! The vanilla module.
 
+use std::collections::HashMap;
+
 use anyhow::{anyhow, Result};
-use manifest::VersionManifest;
+use manifest::{
+    libraries::{Library, LibraryDownloads, LibraryFile},
+    VersionManifest,
+};
 use meta::{PistonMetaManifest, PistonMetaVersion};
 use whcore::async_trait::async_trait;
 
@@ -38,7 +43,7 @@ impl Vanilla {
     pub async fn get_manifest_for(&self, version: impl AsRef<str>) -> Result<VersionManifest> {
         let version = version.as_ref();
 
-        Ok(reqwest::get(
+        let mut mf = reqwest::get(
             self.get_versions()
                 .await?
                 .iter()
@@ -51,8 +56,24 @@ impl Vanilla {
                 .clone(),
         )
         .await?
-        .json()
-        .await?)
+        .json::<VersionManifest>()
+        .await?;
+
+        mf.libraries.push(Library {
+            downloads: LibraryDownloads {
+                artifact: Some(LibraryFile {
+                    path: format!("net/minecraft/client/{0}/client-{0}.jar", version),
+                    sha1: Some(mf.downloads.client.sha1.clone()),
+                    size: Some(mf.downloads.client.size),
+                    url: mf.downloads.client.url.clone(),
+                }),
+                classifiers: HashMap::new(),
+            },
+            name: format!("net.minecraft:client:{}", version).into(),
+            rules: Vec::new(),
+        });
+
+        Ok(mf)
     }
 }
 
@@ -82,5 +103,13 @@ impl LoaderData for Vanilla {
             .downloads
             .client
             .url)
+    }
+
+    async fn get_version_manifest(
+        &self,
+        _version: impl Into<Artifact> + Send,
+        game_version: impl AsRef<str> + Send,
+    ) -> Result<VersionManifest> {
+        self.get_manifest_for(game_version).await
     }
 }

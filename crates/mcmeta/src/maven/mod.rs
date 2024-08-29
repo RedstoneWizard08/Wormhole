@@ -7,11 +7,11 @@ pub mod metadata;
 
 #[derive(Debug, Clone, Serialize, Deserialize, Type)]
 pub struct MavenRepo {
-    root: &'static str,
+    root: String,
 }
 
 impl MavenRepo {
-    pub const fn new(root: &'static str) -> MavenRepo {
+    pub const fn new(root: String) -> MavenRepo {
         MavenRepo { root }
     }
 

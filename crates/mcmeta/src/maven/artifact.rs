@@ -4,12 +4,21 @@ pub struct Artifact {
     pub artifact: String,
     pub version: Option<String>,
     pub classifier: Option<String>,
+    pub ext: String,
 }
 
 impl Artifact {
     pub fn new(data: impl AsRef<str>) -> Self {
         let data = data.as_ref();
-        let mut data = data.split(":");
+        let raw = data.split("@").collect::<Vec<_>>();
+        let mut data = raw.get(0).unwrap().split(":");
+        
+        let ext = if raw.len() > 1 {
+            raw.get(1).unwrap().to_string()
+        } else {
+            "jar".into()
+        };
+
         let package = data.next().unwrap().into();
         let artifact = data.next().unwrap().into();
         let version = data.next().map(String::from);
@@ -20,6 +29,7 @@ impl Artifact {
             artifact,
             version,
             classifier,
+            ext,
         }
     }
 
@@ -42,7 +52,12 @@ impl Artifact {
     }
 
     pub fn base_url(self) -> String {
-        self.to_string().replace(":", "/").replace(".", "/")
+        format!(
+            "{}/{}/{}",
+            self.package.replace(".", "/"),
+            self.artifact,
+            self.version.unwrap()
+        )
     }
 
     pub fn base_url_versionless(self) -> String {
@@ -62,14 +77,14 @@ impl Artifact {
     }
 
     pub fn url(self) -> String {
-        let it = self.clone().to_string();
+        let it = self.clone().base_url();
         let mut s = format!("{}-{}", self.artifact, self.version.unwrap());
 
         if let Some(cls) = self.classifier {
             s.push_str(&format!("-{}", cls));
         }
 
-        format!("{}/{}.jar", it, s)
+        format!("{}/{}.{}", it, s, self.ext)
     }
 }
 

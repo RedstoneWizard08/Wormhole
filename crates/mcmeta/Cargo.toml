@@ -27,3 +27,4 @@ futures.workspace = true
 specta.workspace = true
 data.workspace = true
 tracing.workspace = true
+bytes.workspace = true
