@@ -1,7 +1,7 @@
-use std::{collections::HashMap, fs, path::PathBuf};
-use anyhow::Result;
-use tokio_stream::StreamExt;
 use crate::vanilla::manifest::libraries::Library;
+use anyhow::Result;
+use std::{collections::HashMap, fs, path::PathBuf};
+use tokio_stream::StreamExt;
 
 pub struct LibraryInstaller {
     /// A list of listeners.
@@ -16,18 +16,26 @@ impl LibraryInstaller {
         }
     }
 
-    pub fn add_listener<T>(&mut self, func: T) -> &mut Self where T: Fn(&PathBuf, u64, u64) + 'static {
+    pub fn add_listener<T>(&mut self, func: T) -> &mut Self
+    where
+        T: Fn(&PathBuf, u64, u64) + 'static,
+    {
         self.listeners.push(Box::new(func));
         self
     }
 
     /// Download library files into a root directory.
-    /// 
+    ///
     /// Args:
     /// - root: The root of the library folder.
     /// - libs: The libraries to download.
     /// - features: Enabled launcher features.
-    pub async fn install_libraries(&self, root: PathBuf, libs: Vec<Library>, features: &HashMap<String, bool>) -> Result<()> {
+    pub async fn install_libraries(
+        &self,
+        root: PathBuf,
+        libs: Vec<Library>,
+        features: &HashMap<String, bool>,
+    ) -> Result<()> {
         for lib in libs {
             let files = lib.get_files(features);
 

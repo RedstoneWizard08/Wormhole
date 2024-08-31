@@ -12,7 +12,7 @@ impl Artifact {
         let data = data.as_ref();
         let raw = data.split("@").collect::<Vec<_>>();
         let mut data = raw.get(0).unwrap().split(":");
-        
+
         let ext = if raw.len() > 1 {
             raw.get(1).unwrap().to_string()
         } else {

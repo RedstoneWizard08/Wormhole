@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use data::prisma::{PrismaClient, instance, installed_mod};
+use data::prisma::{installed_mod, instance, PrismaClient};
 use rpc_rs::{prisma_module, prisma_module_filtered, Router};
 
 pub fn build_router() -> Router<Arc<PrismaClient>> {
