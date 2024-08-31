@@ -11,6 +11,9 @@ use prisma_client_rust::specta::{NamedType, TypeMap};
 use tokio::sync::OnceCell;
 use whcore::{async_trait::async_trait, type_map};
 
+pub use prisma::installed_mod::Data as InstalledMod;
+pub use prisma::instance::Data as Instance;
+
 #[async_trait]
 pub trait DbIntoAsync<T> {
     async fn db_into_async(self, client: Arc<PrismaClient>) -> T;
@@ -34,4 +37,7 @@ pub async fn get_or_init_client() -> Result<Arc<PrismaClient>> {
     CLIENT.get_or_try_init(client).await.cloned()
 }
 
-type_map! {}
+type_map! {
+    InstalledMod,
+    Instance,
+}

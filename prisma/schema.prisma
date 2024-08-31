@@ -24,6 +24,7 @@ model InstalledMod {
     fileSize Int
     updated DateTime @updatedAt
     iconUrl String?
+    instanceId Int
     source String // The source that this mod comes from
     projectId String @unique // This is the project ID in the mod's source
     projectName String

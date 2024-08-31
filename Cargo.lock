@@ -1227,7 +1227,7 @@ dependencies = [
  "prisma-client-rust 0.6.8",
  "query 2.0.0",
  "reqwest 0.12.5 (registry+https://github.com/rust-lang/crates.io-index)",
- "rpc-rs 0.2.0",
+ "rpc-rs 0.3.0",
  "serde 1.0.209 (registry+https://github.com/rust-lang/crates.io-index)",
  "serde_json 1.0.120 (registry+https://github.com/rust-lang/crates.io-index)",
  "specta 2.0.0-rc.13 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -6277,12 +6277,12 @@ dependencies = [
 
 [[package]]
 name = "rpc-rs"
-version = "0.2.0"
+version = "0.3.0"
 dependencies = [
  "async-trait 0.1.81 (registry+https://github.com/rust-lang/crates.io-index)",
  "axum 0.7.5 (registry+https://github.com/rust-lang/crates.io-index)",
  "http-body-util 0.1.2 (registry+https://github.com/rust-lang/crates.io-index)",
- "rpc-rs-macros 2.0.0",
+ "rpc-rs-macros 0.3.0",
  "serde 1.0.209 (registry+https://github.com/rust-lang/crates.io-index)",
  "serde_json 1.0.120 (registry+https://github.com/rust-lang/crates.io-index)",
  "specta 2.0.0-rc.13 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -6292,7 +6292,7 @@ dependencies = [
 
 [[package]]
 name = "rpc-rs-macros"
-version = "2.0.0"
+version = "0.3.0"
 dependencies = [
  "proc-macro2 1.0.86 (registry+https://github.com/rust-lang/crates.io-index)",
  "quote 1.0.36 (registry+https://github.com/rust-lang/crates.io-index)",

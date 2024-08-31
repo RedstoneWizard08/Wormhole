@@ -12,6 +12,8 @@ pub async fn boot() -> Result<()> {
         INIT = true;
     }
 
+    data::get_or_init_client().await?;
+
     tokio::spawn(async move {
         MsaState::init().await.unwrap();
     })

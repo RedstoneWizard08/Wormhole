@@ -19,15 +19,15 @@ macro_rules! prisma_multi_module_filtered {
         primary_key: $pkey: ident,
         filter: $filter: ident = $filter_ty: ident,
     } => {
-        Module::builder()
-                .read(wrap(|cx: Arc<$client>, filt: $filter_ty| async move {
+        $crate::module::Module::builder()
+                .read($crate::proc::wrap(|cx: Arc<$client>, filt: $filter_ty| async move {
                     cx.$cont()
                         .find_many(vec![$module::$filter::equals(filt)])
                         .exec()
                         .await
                         .unwrap_or_default()
                 }))
-                .create(wrap(
+                .create($crate::proc::wrap(
                     |cx: Arc<$client>, m: Vec<$module::CreateUnchecked>| async move {
                         cx.$cont()
                             .create_many(m)
@@ -36,7 +36,7 @@ macro_rules! prisma_multi_module_filtered {
                             .map_err(|v| v.to_string())
                     },
                 ))
-                .delete(wrap(|cx: Arc<$client>, ids: Vec<i32>| async move {
+                .delete($crate::proc::wrap(|cx: Arc<$client>, ids: Vec<i32>| async move {
                     cx.$cont()
                         .delete_many(ids.iter().map(|v| $module::$pkey::equals(v.clone())).collect())
                         .exec()

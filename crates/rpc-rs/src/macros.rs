@@ -17,15 +17,15 @@ macro_rules! prisma_single_module {
         container: $cont: ident,
         primary_key: $pkey: ident,
     } => {
-        Module::builder()
-                .read(wrap(|cx: Arc<$client>, item_id: i32| async move {
+        $crate::module::Module::builder()
+                .read($crate::proc::wrap(|cx: Arc<$client>, item_id: i32| async move {
                     cx.$cont()
                         .find_first(vec![$module::$pkey::equals(item_id)])
                         .exec()
                         .await
                         .unwrap_or_default()
                 }))
-                .create(wrap(
+                .create($crate::proc::wrap(
                     |cx: Arc<$client>, item: $module::CreateUnchecked| async move {
                         cx.$cont()
                             .create_many(vec![item])
@@ -34,7 +34,7 @@ macro_rules! prisma_single_module {
                             .map_err(|v| v.to_string())
                     },
                 ))
-                .update(wrap(
+                .update($crate::proc::wrap(
                     |cx: Arc<$client>, update: $module::Update| async move {
                         cx.$cont()
                             .update($module::$pkey::equals(update.id), update.as_params())
@@ -43,7 +43,7 @@ macro_rules! prisma_single_module {
                             .map_err(|v| v.to_string())
                     },
                 ))
-                .delete(wrap(
+                .delete($crate::proc::wrap(
                     |cx: Arc<$client>, item_id: i32| async move {
                         cx.$cont()
                             .delete($module::$pkey::equals(item_id))
@@ -74,15 +74,15 @@ macro_rules! prisma_multi_module {
         container: $cont: ident,
         primary_key: $pkey: ident,
     } => {
-        Module::builder()
-                .read(wrap(|cx: Arc<$client>, _: ()| async move {
+        $crate::module::Module::builder()
+                .read($crate::proc::wrap(|cx: Arc<$client>, _: ()| async move {
                     cx.$cont()
                         .find_many(vec![])
                         .exec()
                         .await
                         .unwrap_or_default()
                 }))
-                .create(wrap(
+                .create($crate::proc::wrap(
                     |cx: Arc<$client>, m: Vec<$module::CreateUnchecked>| async move {
                         cx.$cont()
                             .create_many(m)
@@ -91,7 +91,7 @@ macro_rules! prisma_multi_module {
                             .map_err(|v| v.to_string())
                     },
                 ))
-                .delete(wrap(|cx: Arc<$client>, ids: Vec<i32>| async move {
+                .delete($crate::proc::wrap(|cx: Arc<$client>, ids: Vec<i32>| async move {
                     cx.$cont()
                         .delete_many(ids.iter().map(|v| $module::$pkey::equals(v.clone())).collect())
                         .exec()
