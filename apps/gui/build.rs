@@ -5,7 +5,7 @@ use std::fs;
 pub const CONFIG_PATH: &str = formatcp!("{}/tauri.conf.json.in", env!("CARGO_MANIFEST_DIR"));
 pub const CONFIG_PATH_OUT: &str = formatcp!("{}/tauri.conf.json", env!("CARGO_MANIFEST_DIR"));
 
-pub const ROOT: &str = formatcp!("{}/../..", env!("CARGO_MANIFEST_DIR"));
+pub const ROOT: &str = formatcp!("{}/../ui", env!("CARGO_MANIFEST_DIR"));
 pub const VERSION: &str = env!("CARGO_PKG_VERSION");
 
 fn main() -> Result<()> {
