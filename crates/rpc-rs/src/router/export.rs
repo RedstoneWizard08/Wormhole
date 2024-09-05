@@ -65,7 +65,7 @@ impl<Cx: TripleS + Clone> Router<Cx> {
     /// Export the entire router's bindings.
     /// Warning: This **does** consume the router!
     pub fn export(mut self, route_prefix: impl AsRef<str>, path: impl Into<PathBuf>) -> Result<()> {
-        let path = path.into();
+        let path: PathBuf = path.into();
         let route_prefix = route_prefix.as_ref().to_string();
         let mut code = Vec::new();
         let mut group_code = Vec::new();
@@ -125,6 +125,12 @@ impl<Cx: TripleS + Clone> Router<Cx> {
         ));
 
         let code = code.join("\n\n");
+
+        if let Some(parent) = path.clone().parent() {
+            if !parent.exists() {
+                fs::create_dir_all(parent)?;
+            }
+        }
 
         fs::write(path, code)?;
 

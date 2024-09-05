@@ -1,0 +1,30 @@
+{
+    "compilerOptions": {
+        "allowJs": true,
+        "checkJs": true,
+        "alwaysStrict": true,
+        "declaration": true,
+        "esModuleInterop": true,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "forceConsistentCasingInFileNames": true,
+        "resolveJsonModule": true,
+        "lib": ["esnext", "DOM", "DOM.Iterable"],
+        "module": "esnext",
+        "moduleResolution": "node",
+        "strict": true,
+        "target": "esnext",
+        "noEmit": true,
+        "skipLibCheck": true,
+        "sourceMap": true,
+        "allowSyntheticDefaultImports": true,
+        "preserveValueImports": false
+    },
+
+    "include": ["src", "src/*", "src/**/*"],
+    "exclude": ["src/bindings.ts"],
+
+    "ts-node": {
+        "esm": true
+    }
+}
