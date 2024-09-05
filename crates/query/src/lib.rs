@@ -3,7 +3,10 @@ use once_cell::sync::Lazy;
 #[macro_use]
 extern crate envcrypt;
 
+#[allow(unused)]
 pub(crate) const CURSEFORGE_KEY: Lazy<&str> = Lazy::new(|| envc!("CURSEFORGE_KEY"));
+
+#[allow(unused)]
 pub(crate) const MODRINTH_KEY: Lazy<Option<&str>> = Lazy::new(|| option_envc!("MODRINTH_KEY"));
 
 #[allow(unused)]
