@@ -84,7 +84,7 @@ the client exposes multiple functions for performing raw queries that use [`serd
 as arguments.
 
 All of them return a generic type that must implement
-[serde::Deserialize](https://docs.rs/serde/latest/serde/trait.Deserialize.html). 
+[serde::Deserialize](https://docs.rs/serde/latest/serde/trait.Deserialize.html).
 
 ### `_run_command_raw`
 
@@ -93,8 +93,8 @@ accepting all
 [MongoDB database commands](https://www.mongodb.com/docs/manual/reference/command/)
 except for:
 
-- `find` (use [`find_raw`](#find_raw) instead)
-- `aggregate` (use [`aggregate_raw`](#aggregate_raw) instead)
+-   `find` (use [`find_raw`](#find_raw) instead)
+-   `aggregate` (use [`aggregate_raw`](#aggregate_raw) instead)
 
 There are a few rules around using this query,
 which are documented in [Prisma's documentation](https://www.prisma.io/docs/concepts/components/prisma-client/raw-database-access#runcommandraw)
@@ -123,10 +123,9 @@ Returns actual database records for a given model.
 
 **Methods**
 
-- `filter` - Provides the query predicate filter
-- `options` - Additional options to pass to the 
-[`find` command](https://www.mongodb.com/docs/manual/reference/command/find/#command-fields)
-
+-   `filter` - Provides the query predicate filter
+-   `options` - Additional options to pass to the
+    [`find` command](https://www.mongodb.com/docs/manual/reference/command/find/#command-fields)
 
 ```rust
 use serde_json::{json, Value};
@@ -146,9 +145,9 @@ Returns aggregated database records for a given model.
 
 **Methods**
 
-- `pipeline` - An [aggregation pipeline](https://www.mongodb.com/docs/manual/reference/operator/aggregation-pipeline/)
-- `options` - Additional options to pass to the 
-[`aggregate` command](https://www.mongodb.com/docs/manual/reference/command/aggregate/#command-fields)
+-   `pipeline` - An [aggregation pipeline](https://www.mongodb.com/docs/manual/reference/operator/aggregation-pipeline/)
+-   `options` - Additional options to pass to the
+    [`aggregate` command](https://www.mongodb.com/docs/manual/reference/command/aggregate/#command-fields)
 
 ```rust
 use serde_json::{json, Value};

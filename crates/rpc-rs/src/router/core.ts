@@ -54,7 +54,7 @@ const __rpc_call = async <T, O>(
     routePrefix: string,
     method: Method,
     command: string,
-    data: T
+    data: T,
 ): Promise<O> => {
     if (!("__TAURI__" in window)) {
         return await fetch(`${routePrefix}/${command}`, {
@@ -81,7 +81,11 @@ const __rpc_call = async <T, O>(
     return promise;
 };
 
-const __rpc_invoke = async <T, O>(routePrefix: string, command: string, data: T): Promise<O> => {
+const __rpc_invoke = async <T, O>(
+    routePrefix: string,
+    command: string,
+    data: T,
+): Promise<O> => {
     if (!("__TAURI__" in window)) {
         return await fetch(`${routePrefix}/_invoke/${command}`, {
             method: "POST",
@@ -109,15 +113,18 @@ const __rpc_invoke = async <T, O>(routePrefix: string, command: string, data: T)
 export const setupTauri = () => {
     if (!("__TAURI__" in window)) return;
 
-    event.listen<TauriOutput<unknown>>("plugin:rpc-rs:transport:resp", ({ payload: data }) => {
-        responseQueue[data.id]?.(data.result);
-    });
+    event.listen<TauriOutput<unknown>>(
+        "plugin:rpc-rs:transport:resp",
+        ({ payload: data }) => {
+            responseQueue[data.id]?.(data.result);
+        },
+    );
 
     event.listen<TauriInvokeOutput<unknown>>(
         "plugin:rpc-rs:transport:invoker:resp",
         ({ payload: data }) => {
             responseQueue[data.id]?.(data.result);
-        }
+        },
     );
 };
 export const unwrap = <T>(res: Result<T, any> | Option<T>): T => {

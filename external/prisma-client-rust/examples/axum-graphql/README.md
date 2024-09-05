@@ -1,6 +1,6 @@
 # Axum + GraphQL Example
 
-This is an example of how you could use Prisma Client Rust in a GraphQL backend, written by [Aaron Leopold](https://github.com/aaronleopold). 
+This is an example of how you could use Prisma Client Rust in a GraphQL backend, written by [Aaron Leopold](https://github.com/aaronleopold).
 
 ## Running
 

@@ -59,10 +59,10 @@ Prisma Client Rust is not an official Prisma product, but has been [generously s
 
 ## Acknowledgements
 
-- [steebchen](https://github.com/steebchen) and all other contributors to [Prisma Client Go](https://github.com/prisma/prisma-client-go) for writing a lot of code and documentation that Prisma Client Rust basically copies.
-  Without Prisma Client Go, this project would not have even been attempted.
-- [seunlanlege](https://github.com/seunlanlege) for their work on [prisma-client-rs](https://github.com/polytope-labs/prisma-client-rs) which was used while integrating Prisma's query engine crates.
-- [Prisma](https://prisma.io) for developing a brilliant and flexible open source ORM, and providing sponsorship.
-- [Robert Craige](https://github.com/sponsors/RobertCraigie) for writing tests for [Prisma Client Python](https://github.com/RobertCraigie/prisma-client-py) that I have adapted.
-- [Spacedrive](https://spacedrive.com) for hiring me and letting me work on this.
-  (sure I'm a founding member but thanks anyway!)
+-   [steebchen](https://github.com/steebchen) and all other contributors to [Prisma Client Go](https://github.com/prisma/prisma-client-go) for writing a lot of code and documentation that Prisma Client Rust basically copies.
+    Without Prisma Client Go, this project would not have even been attempted.
+-   [seunlanlege](https://github.com/seunlanlege) for their work on [prisma-client-rs](https://github.com/polytope-labs/prisma-client-rs) which was used while integrating Prisma's query engine crates.
+-   [Prisma](https://prisma.io) for developing a brilliant and flexible open source ORM, and providing sponsorship.
+-   [Robert Craige](https://github.com/sponsors/RobertCraigie) for writing tests for [Prisma Client Python](https://github.com/RobertCraigie/prisma-client-py) that I have adapted.
+-   [Spacedrive](https://spacedrive.com) for hiring me and letting me work on this.
+    (sure I'm a founding member but thanks anyway!)

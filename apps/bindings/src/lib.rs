@@ -8,7 +8,7 @@ use whcore::{async_trait::async_trait, traits::Runnable};
 #[derive(Debug, Clone, Parser)]
 #[command(author, version, about, long_about = None)]
 pub struct Cli {
-    #[arg(short, long, default_value = "src/api/bindings/app.ts")]
+    #[arg(short, long, default_value = "packages/api/src/bindings.ts")]
     pub path: PathBuf,
 }
 

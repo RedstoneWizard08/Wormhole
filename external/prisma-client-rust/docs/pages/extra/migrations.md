@@ -29,13 +29,13 @@ client
 ## In Production
 
 After you have finalised your schema changes and generated migrations via the CLI,
-use `PrismaClient::_migrate_deploy` to  apply all pending migrations with the migration engine 
+use `PrismaClient::_migrate_deploy` to apply all pending migrations with the migration engine
 ([Prisma docs](https://www.prisma.io/docs/reference/api-reference/command-reference#migrate-deploy)).
 
 ## Baselining
 
 Prisma provides the ability to baseline existing database in order to make them compatible with Prisma migrate.
-The baselining process will not be detailed here as 
+The baselining process will not be detailed here as
 [the Prisma docs](https://www.prisma.io/docs/guides/database/developing-with-prisma-migrate/baselining)
 already do a great job explaining it.
 
@@ -46,7 +46,6 @@ client
   ._migrate_resolve("20210426141759_initial-migration-for-db")
   .await?;
 ```
-
 
 ## Examples
 
@@ -68,7 +67,6 @@ client._db_push().await?;
 #[cfg(not(debug_assertions))]
 client._migrate_deploy().await?;
 ```
-
 
 ### Existing Project
 

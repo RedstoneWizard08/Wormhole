@@ -37,11 +37,13 @@ const main = async () => {
             logAllRequests ||
             (!response.status().toString().startsWith("2") &&
                 !response.status().toString().startsWith("3") &&
-                console.log(green(`${response.status()} ${response.url()}`)))
+                console.log(green(`${response.status()} ${response.url()}`))),
     );
 
     page.on("requestfailed", (request) =>
-        console.log(magenta(`${request.failure()?.errorText} ${request.url()}`))
+        console.log(
+            magenta(`${request.failure()?.errorText} ${request.url()}`),
+        ),
     );
 
     await page.goto(process.argv[2]);

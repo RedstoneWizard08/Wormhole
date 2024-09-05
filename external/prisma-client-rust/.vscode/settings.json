@@ -1,7 +1,5 @@
 {
-  "rust-analyzer.files.excludeDirs": ["**/db"],
-  "rust-analyzer.checkOnSave.enable": false,
-  "conventionalCommits.scopes": [
-    "codegen"
-  ]
+    "rust-analyzer.files.excludeDirs": ["**/db"],
+    "rust-analyzer.checkOnSave.enable": false,
+    "conventionalCommits.scopes": ["codegen"]
 }

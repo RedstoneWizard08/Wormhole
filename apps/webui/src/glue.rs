@@ -17,7 +17,7 @@ mod client {
     use glue::include_dir::{self, include_dir, Dir};
 
     pub const CLIENT_DIR: Option<Dir<'static>> =
-        Some(include_dir!("$CARGO_MANIFEST_DIR/../../build"));
+        Some(include_dir!("$CARGO_MANIFEST_DIR/../ui/build"));
 }
 
 /// Create a new [`Glue`] instance.
@@ -27,7 +27,7 @@ pub fn make_glue() -> Result<Glue> {
         GlueConfig::builder()
             .base("http://localhost:4001")
             .dir(client::CLIENT_DIR)
-            .project(format!("{}/../..", env!("CARGO_MANIFEST_DIR")))
+            .project(format!("{}/../ui", env!("CARGO_MANIFEST_DIR")))
             .cmd("pnpm")
             .arg("run")
             .arg("web:dev")

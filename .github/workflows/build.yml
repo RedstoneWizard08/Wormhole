@@ -81,7 +81,7 @@ jobs:
             - name: Run conf
               if: matrix.os == 'windows-latest'
               run: .\apps\gui\genconf.ps1
-            
+
             - name: Run primsa
               if: matrix.os != 'windows-latest'
               run: cargo prisma generate

@@ -28,18 +28,18 @@ Written by [Aaron Leopold](https://github.com/aaronleopold)
 
 ```json
 [
-  {
-    "id": "5ab80953-c38c-4ec8-8b4b-3ecc4bc1196f",
-    "displayName": "oromei",
-    "posts": [
-      {
-        "id": "f001144f-438f-4fdb-9ed7-23f2cc5fffa7",
-        "content": "Woah there!",
-        "user": null,
-        "userId": "5ab80953-c38c-4ec8-8b4b-3ecc4bc1196f"
-      }
-    ]
-  }
+    {
+        "id": "5ab80953-c38c-4ec8-8b4b-3ecc4bc1196f",
+        "displayName": "oromei",
+        "posts": [
+            {
+                "id": "f001144f-438f-4fdb-9ed7-23f2cc5fffa7",
+                "content": "Woah there!",
+                "user": null,
+                "userId": "5ab80953-c38c-4ec8-8b4b-3ecc4bc1196f"
+            }
+        ]
+    }
 ]
 ```
 
@@ -47,11 +47,11 @@ Written by [Aaron Leopold](https://github.com/aaronleopold)
 
 ```json
 [
-  {
-    "id": "5ab80953-c38c-4ec8-8b4b-3ecc4bc1196f",
-    "displayName": "oromei",
-    "posts": null
-  }
+    {
+        "id": "5ab80953-c38c-4ec8-8b4b-3ecc4bc1196f",
+        "displayName": "oromei",
+        "posts": null
+    }
 ]
 ```
 
@@ -59,11 +59,11 @@ Written by [Aaron Leopold](https://github.com/aaronleopold)
 
 ```json
 [
-  {
-    "id": "f001144f-438f-4fdb-9ed7-23f2cc5fffa7",
-    "content": "Woah there!",
-    "user": null,
-    "userId": "5ab80953-c38c-4ec8-8b4b-3ecc4bc1196f"
-  }
+    {
+        "id": "f001144f-438f-4fdb-9ed7-23f2cc5fffa7",
+        "content": "Woah there!",
+        "user": null,
+        "userId": "5ab80953-c38c-4ec8-8b4b-3ecc4bc1196f"
+    }
 ]
 ```

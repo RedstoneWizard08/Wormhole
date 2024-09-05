@@ -19,9 +19,9 @@ for a great example of how to use this library.
 
 rpc-rs integrates extremely well with the following libraries and tools:
 
-- `axum`
-- `tauri`
-- `specta`
-- `serde`
-- `serde_json`
-- `prisma-client-rust` (Custom build)
+-   `axum`
+-   `tauri`
+-   `specta`
+-   `serde`
+-   `serde_json`
+-   `prisma-client-rust` (Custom build)

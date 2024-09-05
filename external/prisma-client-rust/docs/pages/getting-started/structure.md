@@ -16,7 +16,6 @@ Queries can be filtered and extended using the generated modifiers.
 Each model in your schema gets a corresponding Rust module, with corresponding modules for their fields inside.
 Field modules contain functions for constructing modifiers based on each field.
 
-
 ```rust
 use prisma::post;
 
@@ -30,6 +29,6 @@ client
     ])
     .exec()
     .await;
-```   
+```
 
 All model and field module names are converted to `snake_case` as to be consistent with Rust's naming conventions.

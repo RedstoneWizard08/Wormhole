@@ -5,10 +5,10 @@ If one of the queries fails, all changes will be rolled back.
 
 Data provided to `_batch` falls under two categories:
 
-- Containers: Root level collections that contain all items in the batch.
-Can be either a tuple or a type implementing `IntoIter`.
+-   Containers: Root level collections that contain all items in the batch.
+    Can be either a tuple or a type implementing `IntoIter`.
 
-- Items: Either a query or a collection (`Vec` or tuple) of nested queries.
+-   Items: Either a query or a collection (`Vec` or tuple) of nested queries.
 
 ## Containers
 

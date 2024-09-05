@@ -92,8 +92,8 @@ enum CustomError {
 ### Specifying The Error Type
 
 1. Use the generic parameter directly. This works,
-but requires `_` for the rest of the `run`'s generic parameters,
-which probably isn't desirable.
+   but requires `_` for the rest of the `run`'s generic parameters,
+   which probably isn't desirable.
 
 ```rust
 cilent
@@ -101,8 +101,9 @@ cilent
 		.run::<CustomError, _, _, _>(..)
 		.await?;
 ```
+
 2. Type casting. If your closure returns `Ok`,
-you can cast it to a `Result` with the appropriate error type.
+   you can cast it to a `Result` with the appropriate error type.
 
 ```rust
 client
@@ -120,9 +121,9 @@ client
 ```
 
 3. Returning a query's `Result` -
-this is probably the nicest looking solution.
-If you are using a custom error type,
-use `map_err` after `await` to transform the `QueryError` into your custom error type.
+   this is probably the nicest looking solution.
+   If you are using a custom error type,
+   use `map_err` after `await` to transform the `QueryError` into your custom error type.
 
 ```rust
 client
@@ -137,7 +138,6 @@ client
 		})
 		.await?
 ```
-
 
 ## Manual Transactions
 
@@ -165,10 +165,9 @@ and as an extra precaution against the transaction-specific client being used on
 
 ```rust
 tx.commit(client).await?;
-// or 
+// or
 tx.rollback(client).await?;
 ```
-
 
 ### Error Handling
 
@@ -176,6 +175,7 @@ Care must be taken when handling errors using this method.
 Simply using `?` could result in your code returning before `commit` or `rollback` is ran.
 An easy way to avoid this is to put your transaction logic in a function where it is safe to use `?`,
 and then `commit` or `rollback` based on the result of the function.
+
 ```rust
 let (tx, client) = client
 		._transaction()

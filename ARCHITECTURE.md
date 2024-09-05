@@ -2,11 +2,13 @@
 
 Wormhole's architecture will be as follows:
 
-                |---> [Frontend](#frontend)
+```
+                |---> [Frontend]
                 |
-[Backend](#backend) ------|---> [Query Service](#query-service)
+[Backend] ------|---> [Query Service]
                 |
-                |---> [Database](#database)
+                |---> [Database]
+```
 
 ## Backend
 
@@ -20,53 +22,53 @@ The frontend will either be the CLI or the GUI.
 The GUI is powered by Tauri, and uses the SvelteKit framework to do its rendering logic.
 The basic flow will be:
 
-- Home
-    - Game list
-        - [Game]
-            - Instances
-                - [Instance]
-                    - Manage mods:
-                        - Browse & add mods
-                        - Remove mods based on a list
-                            - List contains:
-                                - Mod name
-                                - File name
-                                - File size
-                                - Modified date
-                        - Update description
-                        - View log outputs
-                        - Manage instance-specific settings
-                - Create
-                    - Instance created
-                    - Redirect to its page
-            - Settings
-                - Change game path
-                - Log in to game accounts
-    - Settings
+-   Home
+    -   Game list
+        -   [Game]
+            -   Instances
+                -   [Instance]
+                    -   Manage mods:
+                        -   Browse & add mods
+                        -   Remove mods based on a list
+                            -   List contains:
+                                -   Mod name
+                                -   File name
+                                -   File size
+                                -   Modified date
+                        -   Update description
+                        -   View log outputs
+                        -   Manage instance-specific settings
+                -   Create
+                    -   Instance created
+                    -   Redirect to its page
+            -   Settings
+                -   Change game path
+                -   Log in to game accounts
+    -   Settings
 
 For the CLI, there will be a few commands:
 
 NOTE: `wh` is an alias for `wormhole`.
 
-- `wh version` - Print version information
-- `wh gui` - Open the GUI version
-- `wh game list` - List installed games
-- `wh game detect` - Detect installed games
-- `wh game remote`- List supported games
-- `wh game install [game]` - Install a game (using the proper launcher)
-- `wh game uninstall [game]` - Uninstall a game (using the proper launcher)
-- `wh game info [game]` - Print information about a game
-- `wh inst(ance) [game] (list)` - List instances
-- `wh inst [game] add` - Open a prompt interface to create a new instance
-- `wh inst [game] del [name]` - Remove an instance
-- `wh inst [game] mods [name]` - List mods for an instance
-- `wh inst [game] mods [name] add [mod]` - Add a mod to an instance
-- `wh inst [game] mods [name] del [mod]` - Remove a mod from an instance
-- `wh inst [game] mods [name] update ([mod]...)` - Update all mods for an instance
-- `wh update` - Check for updates
-- `wh cache info` - Get information about cache usage
-- `wh cache prune` - Prune cached files
-- `wh reset` - Reset and remove all instances and installed games, clearing all data.
+-   `wh version` - Print version information
+-   `wh gui` - Open the GUI version
+-   `wh game list` - List installed games
+-   `wh game detect` - Detect installed games
+-   `wh game remote`- List supported games
+-   `wh game install [game]` - Install a game (using the proper launcher)
+-   `wh game uninstall [game]` - Uninstall a game (using the proper launcher)
+-   `wh game info [game]` - Print information about a game
+-   `wh inst(ance) [game] (list)` - List instances
+-   `wh inst [game] add` - Open a prompt interface to create a new instance
+-   `wh inst [game] del [name]` - Remove an instance
+-   `wh inst [game] mods [name]` - List mods for an instance
+-   `wh inst [game] mods [name] add [mod]` - Add a mod to an instance
+-   `wh inst [game] mods [name] del [mod]` - Remove a mod from an instance
+-   `wh inst [game] mods [name] update ([mod]...)` - Update all mods for an instance
+-   `wh update` - Check for updates
+-   `wh cache info` - Get information about cache usage
+-   `wh cache prune` - Prune cached files
+-   `wh reset` - Reset and remove all instances and installed games, clearing all data.
 
 The CLI will be installed alongside the GUI.
 
@@ -76,13 +78,14 @@ The Query Service manages mod sources and indexing. This handles searching for m
 retaining metadata, and much more.
 
 Mod sources:
-- Spacedock (supported)
-- CKAN (WIP) ([crate](https://crates.io/crates/ckandex))
-- CurseForge (planned)
-- Modrinth (planned)
-- Thunderstore (planned)
-- Nexus Mods (planned*)
-- More?**
+
+-   Spacedock (supported)
+-   CKAN (WIP) ([crate](https://crates.io/crates/ckandex))
+-   CurseForge (planned)
+-   Modrinth (planned)
+-   Thunderstore (planned)
+-   Nexus Mods (planned\*)
+-   More?\*\*
 
 \* Nexus mods is dependent on the developer friendliness and capability of its API.
 \*\* More can be suggested! Go to the repository discussions tab and suggest there!

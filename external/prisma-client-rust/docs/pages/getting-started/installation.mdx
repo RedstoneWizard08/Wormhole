@@ -27,6 +27,7 @@ cargo add serde
 ```
 
 You'll also need to make sure you're using edition 2021 of Rust.
+
 ```toml
 [package]
 # ... package stuff
@@ -49,12 +50,13 @@ Technically, this is all that is required! Just run the following to access the 
 $ cargo run --bin <prisma binary name> -- <command>
 ```
 
-import { Callout } from "nextra/components"
+import { Callout } from "nextra/components";
 
 <Callout type="info">
-If using Apple Silicon it is recommended to ensure Rosetta is installed, **even if you have installed it previously**.
-Run `softwareupdate --install-rosetta --agree-to-license` to install it.
-Not doing so may result in nondescript errors from Prisma's `query-engine` binary.
+    If using Apple Silicon it is recommended to ensure Rosetta is installed,
+    **even if you have installed it previously**. Run `softwareupdate
+    --install-rosetta --agree-to-license` to install it. Not doing so may result
+    in nondescript errors from Prisma's `query-engine` binary.
 </Callout>
 
 This isn't a very friendly command to run, though. Luckily Cargo allows us to define project-wide aliases for running commands! Create a folder at the root of your project called `.cargo` and inside it create a file `config.toml` containing the following:
@@ -67,6 +69,7 @@ prisma = "run --bin <prisma binary name> --"
 Now you can run `cargo prisma <command>` anywhere in your project to access the CLI!
 
 This approach has some problems though:
+
 1. `prisma-client-rust-cli` is included as a dependency in your crate, which is likely not desirable.
 2. If your crate has errors during compilation then you aren't able to generate the client, since the CLI will also fail to compile!
 

@@ -14,53 +14,53 @@ Minecraft, and the Private Division launcher.
 
 ## Features
 
-- A fully featured mod manager and installer.
-- Supports many different games.
-- Full CurseForge integration.
-- Full Modrinth integration.
-- Full SpaceDock integration.
-- Full CKAN integration (See: https://github.com/RedstoneWizard08/CKANDex)
-- Available for many platforms.
-- Easy-to-use UI.
-- Blazingly fast.
-- Super memory-efficient.
+-   A fully featured mod manager and installer.
+-   Supports many different games.
+-   Full CurseForge integration.
+-   Full Modrinth integration.
+-   Full SpaceDock integration.
+-   Full CKAN integration (See: https://github.com/RedstoneWizard08/CKANDex)
+-   Available for many platforms.
+-   Easy-to-use UI.
+-   Blazingly fast.
+-   Super memory-efficient.
 
 ## Roadmap
 
-- [x] Run udeps
-- [ ] Mod deletion
-- [x] Support for KSP 2
-- [x] Support for KSP 1
-- [x] Support for Minecraft
-- [ ] Support for other suggested games.
-- [x] Support for Windows, Linux, and MacOS
-- [x] Support for any Steam library location
-- [x] Support for any Epic Games library location
-- [x] Support for Private Division launcher
-- [x] Mod installation & browsing from SpaceDock
-- [x] Mod installation & browsing from CKAN
-- [x] Mod installation & browsing from CurseForge
-- [x] Mod installation & browsing from Modrinth
-- [ ] Modpack installation & browsing from SpaceDock
-- [ ] Modpack installation & browsing from CKAN
-- [ ] Modpack installation & browsing from CurseForge
-- [ ] Modpack installation & browsing from Modrinth
-- [x] GUI app
-- [x] Full instances support
-- [x] Friendly UI
-- [x] Fast UI
-- [x] 100% Open Source
-- [ ] CLI app
-- [ ] Memory & CPU settings
-- [ ] General settings
-- [ ] Network limiting settings
-- [ ] Mod config editor
-- [ ] Mod dependency resolution & installation
-- [ ] Mod conflict resolution (KSP 1 & KSP 2)
-- [ ] Game version compatibility filter
-- [ ] Game log viewer
-- [ ] Modpack export & management
-- [ ] Modpack creator & editor (CLI)
+-   [x] Run udeps
+-   [ ] Mod deletion
+-   [x] Support for KSP 2
+-   [x] Support for KSP 1
+-   [x] Support for Minecraft
+-   [ ] Support for other suggested games.
+-   [x] Support for Windows, Linux, and MacOS
+-   [x] Support for any Steam library location
+-   [x] Support for any Epic Games library location
+-   [x] Support for Private Division launcher
+-   [x] Mod installation & browsing from SpaceDock
+-   [x] Mod installation & browsing from CKAN
+-   [x] Mod installation & browsing from CurseForge
+-   [x] Mod installation & browsing from Modrinth
+-   [ ] Modpack installation & browsing from SpaceDock
+-   [ ] Modpack installation & browsing from CKAN
+-   [ ] Modpack installation & browsing from CurseForge
+-   [ ] Modpack installation & browsing from Modrinth
+-   [x] GUI app
+-   [x] Full instances support
+-   [x] Friendly UI
+-   [x] Fast UI
+-   [x] 100% Open Source
+-   [ ] CLI app
+-   [ ] Memory & CPU settings
+-   [ ] General settings
+-   [ ] Network limiting settings
+-   [ ] Mod config editor
+-   [ ] Mod dependency resolution & installation
+-   [ ] Mod conflict resolution (KSP 1 & KSP 2)
+-   [ ] Game version compatibility filter
+-   [ ] Game log viewer
+-   [ ] Modpack export & management
+-   [ ] Modpack creator & editor (CLI)
 
 ## History
 

@@ -92,5 +92,5 @@ export default tslint.config(
             semi: "off",
             "jsdoc/no-multi-asterisks": "off",
         },
-    }
+    },
 );

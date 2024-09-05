@@ -54,10 +54,13 @@ When TypeScript is generated it will look something like this:
 
 ```ts
 export type Operations = {
-    queries: { key: ["posts"], result: Array<Post> }
+    queries: { key: ["posts"]; result: Array<Post> };
 };
 
-export interface Post { id: string, title: string }
+export interface Post {
+    id: string;
+    title: string;
+}
 ```
 
 This also works for [select & include](/select-include):
@@ -88,7 +91,7 @@ The generated TypeScript will look something like this:
 
 ```ts
 export type Operations = {
-    queries: { key: ["posts"], result: Array<{ id: string, title: string}> }
+    queries: { key: ["posts"]; result: Array<{ id: string; title: string }> };
 };
 ```
 
@@ -97,7 +100,6 @@ These are only provided for extenuating cirsumstances though,
 and it is instead recommended that you use helpers from `rspc`
 such as `rspc.inferProcedureResult` to access procedure results
 instead of relying on the named types.
-
 
 ### Relation types
 
@@ -111,7 +113,7 @@ as is the case when using `with/fetch`,
 each function has to explicitly specify the relations it wants loaded:
 
 ```ts
-import { User, Post } from "./exported-types"
+import { User, Post } from "./exported-types";
 
 // Only recieves scalar fields of User
 function needsOneUser(user: User) {}
@@ -121,10 +123,11 @@ function needsOneUserWithPosts(user: User & { posts: Post[] }) {}
 ```
 
 There are a few downsides to this approach:
-- It is necessary to know the name and type of the relation you are including in TypeScript
-  (though this is being worked on)
-- `with/fetch` can be modified dynamically
-- `with/fetch` provides better editor autocomplete
+
+-   It is necessary to know the name and type of the relation you are including in TypeScript
+    (though this is being worked on)
+-   `with/fetch` can be modified dynamically
+-   `with/fetch` provides better editor autocomplete
 
 However, we've found that these downsides are outweighed by the benefits of having full type-safety across your backend and frontend.
 

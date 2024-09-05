@@ -5,13 +5,14 @@ The field modules of relation fields will contain `fetch` functions, the results
 The `fetch` function of a many relation takes a `Vec` of `WhereParam`, while a single relation's `fetch` function takes no arguments.
 
 Once fetched, relation data can be accessed in two ways:
+
 1. (Recommended) Use relation access functions on the parent struct.
-These will give you a `Result` containing a reference to the relation data.
-This is the recommended approach as the `Result` error type will inform you that the field hasn't been fetched using `with`.
+   These will give you a `Result` containing a reference to the relation data.
+   This is the recommended approach as the `Result` error type will inform you that the field hasn't been fetched using `with`.
 
 2. Use the data directly on the parent struct.
-This gives you direct access to the relation data, where it is wrapped inside an `Option` to determine whether it has been fetched.
-Doing this only recommended if you need to take ownership of the relation data, as dealing with nested options can be tricky and not as descriptive as the errors provided by accessor functions.
+   This gives you direct access to the relation data, where it is wrapped inside an `Option` to determine whether it has been fetched.
+   Doing this only recommended if you need to take ownership of the relation data, as dealing with nested options can be tricky and not as descriptive as the errors provided by accessor functions.
 
 Whether a relation has been loaded can only be guaranteed at compile time if the accessor's `Result` is not able to panic - ie. `unwrap`, `expect` etc are not called on it.
 See [Select & Include](select-include) for completely type-safe ways of fetching relations.

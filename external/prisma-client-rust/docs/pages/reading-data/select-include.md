@@ -7,6 +7,7 @@ providing an exact type for each field and relation you choose to fetch.
 Select also provides the ability to only fetch specific fields, whereas include will fetch all scalar fields and any specified relations.
 
 The examples use the following schema:
+
 ```prisma
 model Post {
     id        String   @id @default(cuid())

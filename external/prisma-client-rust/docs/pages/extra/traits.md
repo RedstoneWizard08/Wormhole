@@ -32,32 +32,32 @@ Each of these traits expose functions for adding additional parameters.
 
 ### `WhereQuery`
 
-- `add_where`: adds one `WhereParam`
+-   `add_where`: adds one `WhereParam`
 
 Implemented for `Count`, `FindMany`, `FindFirst`, `UpdateMany`, and `DeleteMany`
 
 ### `WithQuery`
 
-- `add_with`: adds one `WithParam`
+-   `add_with`: adds one `WithParam`
 
 Implemented for `FindUnique`, `FindMany`, `FindFirst`, `Create`, `Update`, `Upsert`, and `Delete`
 
 ### `OrderByQuery`
 
-- `add_with`: adds one `OrderByParam`
+-   `add_with`: adds one `OrderByParam`
 
 Implemented for `FindMany`, `FindFirst`, and `Count`
 
 ### `PaginatedQuery`
 
-- `add_cursor`: adds one `UniqueWhereParam` as a cursor
-- `set_skip`: sets the number of records to skip
-- `set_take`: sets the number of records to take
+-   `add_cursor`: adds one `UniqueWhereParam` as a cursor
+-   `set_skip`: sets the number of records to skip
+-   `set_take`: sets the number of records to take
 
 Implemented for `Count`, `FindFirst` and `FindMany`.
 
 ### `SetQuery`
 
-- `add_set`: adds one `SetParam`
+-   `add_set`: adds one `SetParam`
 
 Implemented for `Create`, `Update`, and `Upsert`

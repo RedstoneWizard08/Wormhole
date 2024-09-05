@@ -3,6 +3,7 @@
 Upserting allows you to update a record if it exists, or create it if it does not.
 
 `upsert` takes three arguments:
+
 1. A unique filter
 2. A tuple of create arguments
 3. A list of update data

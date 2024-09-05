@@ -90,10 +90,8 @@ let comment: comment::Data = client
     .await?;
 ```
 
-
 Connecting records like this is equivalent to directly setting the values of the relation's foreign keys, eg.
 setting `post_id` from the above example with `comment::post_id::set()`.
-
 
 ## Create Unchecked
 
@@ -124,11 +122,12 @@ let comment: comment::Data = client
 It accepts a `Vec` of tuples with the same shape as `create_unchecked`,
 so only scalar fields can be set.
 
-import { Callout } from "nextra/components"
+import { Callout } from "nextra/components";
 
 <Callout type="info">
-	SQLite support for `create_many` is **UNSTABLE**,
-	but can be enabled by adding the `sqlite-create-many` feature to `prisma-client-rust` and `prisma-client-rust-cli` in your `Cargo.toml` files.
+    SQLite support for `create_many` is **UNSTABLE**, but can be enabled by
+    adding the `sqlite-create-many` feature to `prisma-client-rust` and
+    `prisma-client-rust-cli` in your `Cargo.toml` files.
 </Callout>
 
 To assist in constructing tuples of the right shape,

@@ -67,7 +67,7 @@ fn main() -> Result<()> {
     let n2 = lenient_semver::parse("1.20.1")?;
     let n3 = lenient_semver::parse("1.21.1")?;
     let n4 = lenient_semver::parse("1.22")?;
-    
+
     println!("{} in {}: {}", n, v, v.matches(&n));
     println!("{} in {}: {}", n2, v, v.matches(&n2));
     println!("{} in {}: {}", n3, v, v.matches(&n3));
@@ -79,12 +79,12 @@ fn main() -> Result<()> {
 
 ## Commands
 
-- `wh pack init`: Initialize a modpack project (interactively or non-interactively)
-- `wh pack add [slug|id|url] (--file [file_id] --source [source])`: Add a mod
-- `wh pack export (--format [format] --side [side])`: Export the pack
-- `wh pack refresh`: Refresh the index lock
-- `wh pack list`: List all mods in a modpack
-- `wh pack update (--all)`: Update mods
+-   `wh pack init`: Initialize a modpack project (interactively or non-interactively)
+-   `wh pack add [slug|id|url] (--file [file_id] --source [source])`: Add a mod
+-   `wh pack export (--format [format] --side [side])`: Export the pack
+-   `wh pack refresh`: Refresh the index lock
+-   `wh pack list`: List all mods in a modpack
+-   `wh pack update (--all)`: Update mods
 
 ## Mod Metadata (mods/[mod_id].toml)
 
@@ -123,7 +123,7 @@ define_binary_format! {
         NUL;
         literal(1 => u8);
         NUL;
-        
+
         // Body
         ascii("DATA");
         NUL
@@ -155,7 +155,7 @@ define_binary_format! {
     "pack": {
         "name": "My Modpack",
         "version": "0.1.0",
-        
+
         "authors": [
             "Me!"
         ]
@@ -220,7 +220,7 @@ define_binary_format! {
             "version": "1.0.0-beta.1+mc1.21",
             "loaders": ["forge", "neoforge"],
             "url": "<jar_url>",
-            
+
             "hash": {
                 "format": "sha1",
                 "value": "<sha1>"
