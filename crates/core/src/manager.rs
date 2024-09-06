@@ -36,4 +36,8 @@ impl CoreManager {
     pub fn dir(&self, dir: impl AsRef<str>) -> PathBuf {
         self.root.join(dir.as_ref())
     }
+
+    pub fn path(&self, path: impl AsRef<str>) -> PathBuf {
+        self.root.join(path.as_ref())
+    }
 }

@@ -2,12 +2,15 @@ use anyhow::Result;
 use commands::router::build_router;
 use data::get_or_init_client;
 use tracing::level_filters::LevelFilter;
+use whcore::CoreManager;
 
 use crate::log::init_file_logger;
 
 /// Initialize a logger and start the Tauri app.
 pub async fn run() -> Result<()> {
-    init_file_logger("./logs/app.log", LevelFilter::INFO)?;
+    let log_path = CoreManager::get().dir("logs").join("app.log");
+
+    init_file_logger(log_path, LevelFilter::INFO)?;
 
     init::boot().await?;
 

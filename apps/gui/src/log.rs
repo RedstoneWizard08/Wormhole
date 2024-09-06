@@ -11,8 +11,8 @@ use tracing_subscriber::{
     EnvFilter,
 };
 
-pub fn init_file_logger(file: impl AsRef<str>, verbosity: LevelFilter) -> Result<()> {
-    let file = PathBuf::from(file.as_ref());
+pub fn init_file_logger(file: impl Into<PathBuf>, verbosity: LevelFilter) -> Result<()> {
+    let file = file.into();
     let file = rolling::hourly(file.parent().unwrap(), file.file_name().unwrap());
     let (appender, _guard) = non_blocking(file);
     let mut filter = EnvFilter::from_default_env().add_directive(verbosity.into());
