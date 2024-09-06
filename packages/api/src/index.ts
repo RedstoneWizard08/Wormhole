@@ -8,6 +8,8 @@ import {
     Result,
 } from "./bindings";
 
+export * from "./bindings";
+
 const toNullable = <T, E = any>(o: Option<T> | Result<T, E>): T | undefined => {
     if ("Some" in o) {
         return o.Some;
@@ -19,49 +21,61 @@ const toNullable = <T, E = any>(o: Option<T> | Result<T, E>): T | undefined => {
 };
 
 export class Wormhole {
-    public static INSTANCE = new Wormhole();
-
     // ============= Instances =============
 
-    public async getInstances() {
-        return await RPC.instances.read();
+    public static async getInstances(game: number) {
+        return await RPC.instances.read(game);
     }
 
-    public async getInstance(id: number) {
+    public static async getInstance(id: number) {
         return toNullable(await RPC.instance.read(id));
     }
 
-    public async createInstance(data: InstanceCreation) {
+    public static async createInstance(data: InstanceCreation) {
         return toNullable(await RPC.instance.create(data));
     }
 
-    public async updateInstance(data: InstanceUpdate) {
+    public static async updateInstance(data: InstanceUpdate) {
         return toNullable(await RPC.instance.update(data));
     }
 
-    public async deleteInstance(id: number) {
+    public static async deleteInstance(id: number) {
         return toNullable(await RPC.instance.delete(id));
     }
 
     // ============= Mods =============
 
-    public async getMods(instance: number) {
+    public static async getMods(instance: number) {
         return await RPC.mods.read(instance);
     }
 
-    public async getMod(id: number) {
+    public static async getMod(id: number) {
         return toNullable(await RPC.mod.read(id));
     }
 
-    public async createMod(data: InstalledModCreation) {
+    public static async createMod(data: InstalledModCreation) {
         return toNullable(await RPC.mod.create(data));
     }
 
-    public async updateMod(data: InstalledModUpdate) {
+    public static async updateMod(data: InstalledModUpdate) {
         return toNullable(await RPC.mod.update(data));
     }
 
-    public async deleteMod(id: number) {
+    public static async deleteMod(id: number) {
         return toNullable(await RPC.mod.delete(id));
+    }
+
+    // ============= Utils =============
+
+    public static async getAppDir() {
+        return await RPC.invoke.dataDir();
+    }
+
+    public static async getVersion() {
+        return await RPC.invoke.version();
+    }
+
+    public static async gameDir(game: string) {
+        return await RPC.invoke.gameDir(game);
     }
 }

@@ -3,7 +3,7 @@ import InstanceCard from "$components/InstanceCard.svelte";
 import { onMount } from "svelte";
 import { page } from "$app/stores";
 import { plugins } from "../../../api/stores";
-import { RPC, unwrap, type Instance } from "$bindings";
+import { Wormhole, type Instance } from "@wormhole/api/src";
 
 let adding = false;
 let deleteing = false;
@@ -15,32 +15,32 @@ let gameId = Number.parseInt($page.params.game);
 let name = "";
 
 onMount(async () => {
-    instances = await RPC.instances.read(gameId);
+    instances = await Wormhole.getInstances(gameId);
 });
 
 const addInstance = async () => {
     const game = $plugins.find((v) => v.game === gameId)!
-    const dirs = await RPC.dirs.read(game.display_name);
+    const root = await Wormhole.gameDir(game.display_name);
 
-    await RPC.instance.create({
+    await Wormhole.createInstance({
         name,
         gameId,
-        cacheDir: dirs.cache,
-        dataDir: dirs.data,
-        installDir: dirs.root,
+        description: "",
+        extraData: "{}",
+        plugin: "",
     });
 
     name = "";
     adding = false;
 
-    instances = await RPC.instances.read(gameId);
+    instances = await Wormhole.getInstances(gameId);
 };
 
 const deleteInstance = async () => {
     // commands.deleteInstance(current?.id!, null);
 
     deleteing = false;
-    instances = await RPC.instances.read(gameId);
+    instances = await Wormhole.getInstances(gameId);
 };
 
 const toggleAdding = () => {

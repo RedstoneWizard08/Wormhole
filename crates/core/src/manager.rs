@@ -40,4 +40,8 @@ impl CoreManager {
     pub fn path(&self, path: impl AsRef<str>) -> PathBuf {
         self.root.join(path.as_ref())
     }
+
+    pub fn root(&self) -> PathBuf {
+        self.root.clone()
+    }
 }

@@ -1,2 +1,4 @@
 [alias]
 prisma = "run --bin prisma-cli --"
+wh = "run --bin wh --"
+server = "run --bin webui --"

@@ -17,6 +17,7 @@ model Instance {
     iconUrl String? // If this isn't present, just use the game's icon.
     bannerUrl String? // If this isn't present, just use the game's banner (or none).
     extraData String // Any extra JSON-serialized data for the plugin/instance.
+    gameId Int
 }
 
 model InstalledMod {

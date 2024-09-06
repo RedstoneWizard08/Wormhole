@@ -7,7 +7,8 @@
         "dev": "tauri dev",
         "dev:remote": "cargo run --bin webui",
         "build": "tauri build",
-        "tauri": "tauri"
+        "tauri": "tauri",
+        "app:build": "pnpm -C apps/ui run app:build"
     },
     "devDependencies": {
         "@tauri-apps/cli": "^1.5.11",
