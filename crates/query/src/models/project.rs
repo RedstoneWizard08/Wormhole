@@ -1,6 +1,4 @@
-use std::collections::HashMap;
-
-use chrono::{DateTime, Utc};
+use furse::structures::common_structs::Classes;
 
 pub const GENERATED_SUMMARY_LENGTH: usize = 32;
 
@@ -42,8 +40,8 @@ pub struct Project {
     /// The description of this project.
     pub description: Option<String>,
 
-    /// A map of version IDs to version names and their publication dates for this project.
-    pub versions: Option<HashMap<String, (String, DateTime<Utc>)>>,
+    /// A list of versions for this project.
+    pub versions: Option<Vec<String>>,
 }
 
 impl Project {
@@ -65,4 +63,16 @@ pub enum ProjectKind {
     Shader,
     ResourcePack,
     Datapack,
+}
+
+impl ProjectKind {
+    pub fn class(&self) -> Classes {
+        match self {
+            Self::Mod => Classes::Mod,
+            Self::Modpack => Classes::Modpack,
+            Self::Shader => Classes::Shader,
+            Self::ResourcePack => Classes::ResourcePack,
+            Self::Datapack => Classes::Datapack,
+        }
+    }
 }

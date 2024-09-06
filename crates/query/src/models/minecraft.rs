@@ -1,6 +1,6 @@
 use super::project::ProjectKind;
 
-#[derive(Debug, Clone, Serialize, Deserialize, Type)]
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, Type)]
 pub enum ModLoader {
     Forge,
     NeoForge,

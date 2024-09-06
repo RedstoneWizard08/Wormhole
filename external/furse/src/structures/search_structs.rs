@@ -1,9 +1,9 @@
 use serde::{Deserialize, Serialize};
 use serde_repr::{Deserialize_repr, Serialize_repr};
 
-use super::mod_structs::Mod;
+use super::{common_structs::ModLoaderType, mod_structs::Mod};
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct SearchOptions {
     pub game_id: i32,
     pub class_id: Option<i32>,
@@ -49,18 +49,6 @@ pub enum SortOrder {
 
     #[serde(rename = "desc")]
     Descending,
-}
-
-#[derive(Deserialize_repr, Serialize_repr, Debug, Clone, PartialEq, Eq)]
-#[repr(u8)]
-pub enum ModLoaderType {
-    Any = 0,
-    Forge = 1,
-    Cauldron = 2,
-    LiteLoader = 3,
-    Fabric = 4,
-    Quilt = 5,
-    NeoForge = 6,
 }
 
 #[derive(Deserialize, Serialize, Debug, Clone)]

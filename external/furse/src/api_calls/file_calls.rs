@@ -1,6 +1,6 @@
 use crate::{
     request::API_URL_BASE,
-    structures::{file_structs::*, ID},
+    structures::{common_structs::ModLoaderType, file_structs::*, ID},
     Furse, Result,
 };
 
@@ -24,6 +24,23 @@ impl Furse {
             .join(&format!("{}/", mod_id))?
             .join("files")?;
         url.set_query(Some("pageSize=10000"));
+        Ok(self.get(url).await?.data)
+    }
+
+    pub async fn get_mod_files_filtered(
+        &self,
+        mod_id: ID,
+        game_version: String,
+        loader: ModLoaderType,
+    ) -> Result<Vec<File>> {
+        let mut url = API_URL_BASE
+            .join("mods/")?
+            .join(&format!("{}/", mod_id))?
+            .join("files")?;
+        url.set_query(Some(&format!(
+            "pageSize=10000&gameVersion={}&modLoaderType={}",
+            game_version, loader as u8
+        )));
         Ok(self.get(url).await?.data)
     }
 

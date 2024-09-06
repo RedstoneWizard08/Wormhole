@@ -18,7 +18,7 @@ pub struct ProjectVersion {
     pub version_number: Option<String>,
 
     /// The URL to find this version on the source's website.
-    pub url: String,
+    pub url: Option<String>,
 
     /// The version's author. This account uploaded the version.
     pub author: Option<String>,

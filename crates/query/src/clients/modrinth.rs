@@ -5,13 +5,29 @@ use ferinth::{
     Ferinth,
 };
 
-use crate::models::{
-    minecraft::MinecraftInput, pagination::Paginated, project::Project, version::ProjectVersion,
-    QueryClient,
+use crate::{
+    models::{
+        minecraft::MinecraftInput, pagination::Paginated, project::Project,
+        version::ProjectVersion, QueryClient,
+    },
+    MODRINTH_KEY,
 };
 
 pub struct ModrinthClient {
     ferinth: Ferinth,
+}
+
+impl ModrinthClient {
+    pub fn new(key: Option<&str>) -> Result<Self> {
+        Ok(Self {
+            ferinth: Ferinth::new(
+                "Wormhole Query",
+                option_env!("CARGO_PKG_VERSION"),
+                None,
+                key.or(MODRINTH_KEY.clone()),
+            )?,
+        })
+    }
 }
 
 #[async_trait]

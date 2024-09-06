@@ -18,9 +18,9 @@ use models::project::Project;
 use once_cell::sync::Lazy;
 use whcore::type_map;
 
+pub mod clients;
 pub mod conversions;
 pub mod models;
-pub mod modrinth;
 
 #[macro_use]
 extern crate envcrypt;
@@ -31,10 +31,7 @@ extern crate serde;
 #[macro_use]
 extern crate specta;
 
-#[allow(unused)]
 pub(crate) const CURSEFORGE_KEY: Lazy<&str> = Lazy::new(|| envc!("CURSEFORGE_KEY"));
-
-#[allow(unused)]
 pub(crate) const MODRINTH_KEY: Lazy<Option<&str>> = Lazy::new(|| option_envc!("MODRINTH_KEY"));
 
 #[allow(unused)]

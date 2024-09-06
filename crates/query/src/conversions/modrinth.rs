@@ -5,13 +5,13 @@ use ferinth::structures::{
 };
 
 use crate::{
+    clients::modrinth::ModrinthClient,
     models::{
         pagination::Paginated,
         project::{Project, ProjectKind},
         version::{ProjectVersion, VersionKind},
         QueryClient,
     },
-    modrinth::ModrinthClient,
 };
 
 impl Into<Paginated<Project>> for (Response, u64) {
@@ -65,7 +65,7 @@ impl Into<Project> for ferinth::structures::project::Project {
             slug: Some(self.slug.clone()),
             source_id: ModrinthClient::id().to_string(),
             url: format!("https://modrinth.com/mod/{}", self.slug),
-            versions: None,
+            versions: Some(self.versions),
         }
     }
 }
@@ -108,10 +108,10 @@ impl Into<ProjectVersion> for Version {
             name: self.name,
             source_id: ModrinthClient::id().into(),
             uploaded: Some(self.date_published),
-            url: format!(
+            url: Some(format!(
                 "https://modrinth.com/mod/{}/version/{}",
                 &self.project_id, &self.id
-            ),
+            )),
             id: self.id,
             project_id: self.project_id,
             version_number: Some(self.version_number),
