@@ -55,6 +55,7 @@ xz = "0.1.0"
 walkdir = "2.5.0"
 base64 = "0.22.1"
 ferinth = "2.11.0"
+thunderstore = "0.2.0"
 tempfile = "3.10.1"
 specta = { version = "2.0.0-rc.13", features = [
     "function",
@@ -127,6 +128,7 @@ wormhole-gui = { path = "./apps/gui" }
 
 anyhow = { path = "./external/anyhow" }
 ckandex = { path = "./external/ckandex/ckandex" }
+furse = { path = "./external/furse" }
 
 api = { path = "./crates/api" }
 auth = { path = "./crates/auth" }
@@ -181,5 +183,7 @@ members = [
     "external/prisma-client-rust/crates/generator-macros",
     "external/prisma-client-rust/crates/generator-shared",
     "external/prisma-client-rust/crates/sdk",
-    "external/prisma-client-rust/prisma-cli", "crates/rpc-rs-macros",
+    "external/prisma-client-rust/prisma-cli",
+    "crates/rpc-rs-macros",
+    "external/furse",
 ]
