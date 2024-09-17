@@ -1,6 +1,7 @@
 use anyhow::Result;
 use clap::{Parser, Subcommand};
 use whcore::{async_trait::async_trait, traits::Runnable};
+use wormhole_cli::cli::pack::PackCommands;
 
 #[derive(Parser)]
 #[command(version, about, long_about = None)]
@@ -25,12 +26,15 @@ pub enum Commands {
     /// Web UI management CLI.
     Server(webui::cli::Cli),
 
-    /// Wormhole CLI.
-    Cli(wormhole_cli::cli::Cli),
-
     /// Wormhole GUI app.
     #[default]
     Gui,
+
+    /// Commands for modpack management
+    Pack {
+        #[command(subcommand)]
+        command: PackCommands,
+    },
 }
 
 #[async_trait]
@@ -39,7 +43,7 @@ impl Runnable for Commands {
         match self {
             Self::Bindgen(b) => b.run().await?,
             Self::Server(s) => s.run().await?,
-            Self::Cli(c) => c.run().await?,
+            Self::Pack { command } => command.run().await?,
             Self::Gui => wormhole_gui::run().await?,
         };
 

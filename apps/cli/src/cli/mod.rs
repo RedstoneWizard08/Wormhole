@@ -28,6 +28,15 @@ pub enum Commands {
 }
 
 #[async_trait]
+impl Runnable for Commands {
+    async fn run(&self) -> Result<()> {
+        match self {
+            Commands::Pack { command } => command.run().await,
+        }
+    }
+}
+
+#[async_trait]
 impl Runnable for Cli {
     async fn run(&self) -> Result<()> {
         if env::var("GITHUB_TOKEN").is_err() {
@@ -42,9 +51,7 @@ impl Runnable for Cli {
         }
 
         if let Some(command) = cli.command {
-            let res = match command {
-                Commands::Pack { command } => command.run().await,
-            };
+            let res = command.run().await;
 
             if let Err(err) = res {
                 let mut cmd = Cli::command();
