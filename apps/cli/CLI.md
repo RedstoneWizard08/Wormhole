@@ -1,5 +1,15 @@
 # Modpacks
 
+## Commands
+
+- `wh pack init`: Initialize a modpack project (interactively or non-interactively)
+- `wh pack add (--source [source] --side [client|server]) [slug|id|url]`: Add a mod
+    - The slug/id may end be in the format `[slug|id](=[version])` where `=[version]` is optional.
+- `wh pack export (--format [format] --side [client|server])`: Export the pack
+- `wh pack refresh`: Refresh the index lock
+- `wh pack list (--save [file] --format [markdown|txt|html])`: List all mods in a modpack
+- `wh pack update (--all) [project]`: Update mods
+
 ## Pack Info (pack.toml)
 
 ```toml
@@ -9,7 +19,27 @@ version = "0.1.0" # Adheres to SemVer
 authors = ["Me!"]
 
 [versions]
-minecraft = "1.21.x" # SemVer range
+minecraft = ["1.21.x"] # List of SemVer ranges
+
+# ========== Loaders ==========
+
+[[loaders]]
+id = "fabric"
+version = "0.16.5"
+
+[[loaders]]
+id = "quilt"
+version = "0.26.1-beta.1"
+
+[[loaders]]
+id = "forge"
+version = "51.0.16"
+
+[[loaders]]
+id = "neoforge"
+version = "21.0.21-beta"
+
+# ========== Export Formats ==========
 
 [[export]]
 side = "client"
@@ -30,22 +60,6 @@ format = "tar+gz"
 [[export]]
 side = "both"
 format = "wormhole"
-
-[[loaders]]
-id = "fabric"
-version = "0.15.11"
-
-[[loaders]]
-id = "quilt"
-version = "0.26.1-beta.1"
-
-[[loaders]]
-id = "forge"
-version = "51.0.16"
-
-[[loaders]]
-id = "neoforge"
-version = "21.0.21-beta"
 ```
 
 ## Version Handling Example
@@ -77,15 +91,6 @@ fn main() -> Result<()> {
 }
 ```
 
-## Commands
-
--   `wh pack init`: Initialize a modpack project (interactively or non-interactively)
--   `wh pack add [slug|id|url] (--file [file_id] --source [source])`: Add a mod
--   `wh pack export (--format [format] --side [side])`: Export the pack
--   `wh pack refresh`: Refresh the index lock
--   `wh pack list`: List all mods in a modpack
--   `wh pack update (--all)`: Update mods
-
 ## Mod Metadata (mods/[mod_id].toml)
 
 ```toml
@@ -112,33 +117,25 @@ url = "<jar_url>"
 define_binary_format! {
     gzip = true,
 
-    input = array({
-        path: str,
-        hash: [char; 40],
+    input = array(struct { // Files
+        path: str;
+        hash: str;
     }),
 
     body = {
         // Header
         ascii("INDX");
-        NUL;
-        literal(1 => u8);
-        NUL;
+        literal(u8: 1);
+        literal(u8: 0);
+        literal(u8: 0);
 
         // Body
         ascii("DATA");
-        NUL
 
-        array({
-            ascii(F);
-            NUL;
-            input(path => str + '\0'); // Yes there are two null characters after the string.
-            NUL;
-            input(hash => [char; 40]); // sha-1 is always 40 chars long
-            NUL;
+        array(|item| {
+            input(str + '\0': item.path); // File path
+            input(str + '\0': item.hash); // sha-1 of file
         });
-
-        // End
-        EOF;
     }
 }
 ```
@@ -150,7 +147,7 @@ define_binary_format! {
 ```json
 {
     "$schema": "TODO",
-    "version": 1,
+    "version": "1.0.0", // SemVer, format version of the manifest, will be 1.0.0 until release
 
     "pack": {
         "name": "My Modpack",
@@ -162,13 +159,13 @@ define_binary_format! {
     },
 
     "management": {
-        "game_id": "mc", // Wormhole Plugin ID
-        "game_version": "1.21.x", // Optional for anything but Minecraft
+        "game_id": "minecraft", // Wormhole Plugin ID
+        "game_version": "1.21.1", // Optional for anything but Minecraft
 
         "mod_loaders": [
             {
                 "id": "fabric",
-                "version": "0.15.11"
+                "version": "0.16.5"
             },
 
             {

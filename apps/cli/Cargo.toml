@@ -19,3 +19,7 @@ auth.workspace = true
 whcore.workspace = true
 install.workspace = true
 anyhow.workspace = true
+inquire.workspace = true
+pack.workspace = true
+semver.workspace = true
+toml.workspace = true
