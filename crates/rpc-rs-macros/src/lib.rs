@@ -19,7 +19,7 @@ pub fn derive_event(raw_input: TokenStream) -> TokenStream {
         #hash [derive(serde::Serialize, serde::Deserialize)]
         #input
 
-        impl rpc_rc::Event for #name {
+        impl rpc_rs::Event for #name {
             fn name() -> &'static str {
                 #name_str
             }

@@ -12,6 +12,13 @@ Minecraft, and the Private Division launcher.
 
 [API Documentation](https://docs.rs/wormhole-common)
 
+## Project Status - 11/4/2024
+
+This project is **NOT** dead! I've been on hiatus to work on other things for a while,
+but I plan to come back to this VERY soon!
+
+Thanks for your patience!
+
 ## Features
 
 -   A fully featured mod manager and installer.
