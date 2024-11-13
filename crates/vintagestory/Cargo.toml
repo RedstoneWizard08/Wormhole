@@ -1,0 +1,22 @@
+[package]
+name = "vintagestory"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+authors.workspace = true
+
+[dependencies]
+tokio.workspace = true
+tokio-stream.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+reqwest.workspace = true
+anyhow.workspace = true
+lazy_static.workspace = true
+whcore.workspace = true
+specta.workspace = true
+data.workspace = true
+tracing.workspace = true
+serde_with.workspace = true

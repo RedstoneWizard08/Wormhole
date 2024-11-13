@@ -44,7 +44,7 @@ impl Runnable for Commands {
             Self::Bindgen(b) => b.run().await?,
             Self::Server(s) => s.run().await?,
             Self::Pack { command } => command.run().await?,
-            Self::Gui => wormhole_gui::run().await?,
+            Self::Gui => wormhole_gui::run_app().await?,
         };
 
         Ok(())

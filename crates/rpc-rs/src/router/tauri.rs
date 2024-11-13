@@ -1,16 +1,17 @@
 //! The [`tauri`] support module.
 
+use super::{router::Router, Method};
+use crate::util::TripleS;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
-use tauri::{
-    plugin::{Plugin, Result},
-    AppHandle, Manager, Runtime,
-};
+use tauri::{plugin::Plugin, AppHandle, Emitter, Listener, Runtime};
 use tokio::sync::mpsc::unbounded_channel;
 
-use crate::util::TripleS;
+/// An alias to `Box<dyn Error>`.
+pub type StdError = Box<dyn std::error::Error>;
 
-use super::{router::Router, Method};
+/// A utility `Result` type that uses `StdError` as the default error type.
+pub type Result<T, E = StdError> = std::result::Result<T, E>;
 
 /// Command input model for [`tauri`].
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -130,14 +131,13 @@ impl<Cx: TripleS + Clone> RouterPlugin<Cx> {
 
             async move {
                 while let Some(data) = rrx.recv().await {
-                    let _ = handle.emit_all("plugin:rpc-rs:transport:resp", data);
+                    let _ = handle.emit("plugin:rpc-rs:transport:resp", data);
                 }
             }
         });
 
-        app.listen_global("plugin:rpc-rs:transport", move |event| {
-            let data =
-                serde_json::from_str::<TauriCommandInput>(event.payload().unwrap_or_default());
+        app.listen_any("plugin:rpc-rs:transport", move |event| {
+            let data = serde_json::from_str::<TauriCommandInput>(event.payload());
 
             let _ = match data {
                 Ok(data) => tx.send(data),
@@ -193,14 +193,13 @@ impl<Cx: TripleS + Clone> RouterPlugin<Cx> {
 
             async move {
                 while let Some(data) = rrx.recv().await {
-                    let _ = handle.emit_all("plugin:rpc-rs:transport:invoker:resp", data);
+                    let _ = handle.emit("plugin:rpc-rs:transport:invoker:resp", data);
                 }
             }
         });
 
-        app.listen_global("plugin:rpc-rs:transport:invoker", move |event| {
-            let data =
-                serde_json::from_str::<TauriInvokerInput>(event.payload().unwrap_or_default());
+        app.listen_any("plugin:rpc-rs:transport:invoker", move |event| {
+            let data = serde_json::from_str::<TauriInvokerInput>(event.payload());
 
             let _ = match data {
                 Ok(data) => tx.send(data),
